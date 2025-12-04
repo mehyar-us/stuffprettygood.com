@@ -1,73 +1,135 @@
-# React + TypeScript + Vite
+# stuffprettygood.com
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend application for stuffprettygood.com with dual API architecture.
 
-Currently, two official plugins are available:
+## 🏗️ Architecture
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This application connects to **two separate APIs**:
 
-## React Compiler
+### 1. Cloudflare Worker API (Serverless)
+- **Production**: `https://api.stuffprettygood.com`
+- **Local Development**: `http://127.0.0.1:8787`
+- Used for: Serverless edge functions, fast global endpoints
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 2. Express Backend API (EC2)
+- **Production**: `https://backend.stuffprettygood.com`
+- **Local Development**: `http://localhost:3000`
+- Used for: Traditional backend operations, database access, heavy processing
 
-## Expanding the ESLint configuration
+## 🔧 Environment Variables
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Copy `.env.example` to `.env` for local development:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# Cloudflare Worker API
+VITE_WORKER_API_URL=http://127.0.0.1:8787
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Express Backend API
+VITE_BACKEND_API_URL=http://localhost:3000
 ```
+
+For production, use the production URLs in your deployment environment.
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
+
+```bash
+npm run dev
+```
+
+The app will run at `http://localhost:5173/`
+
+### Build
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── api/
+│   ├── client.ts              # workerApiClient & backendApiClient
+│   ├── services/
+│   │   ├── example.service.ts # Worker API services
+│   │   └── backend.service.ts # Backend API services
+│   └── hooks/
+│       └── example.hooks.ts   # React Query hooks
+├── store/
+│   ├── index.ts               # Redux store
+│   ├── hooks.ts               # Typed Redux hooks
+│   └── slices/                # Redux slices
+├── config/
+│   └── env.ts                 # Environment config
+└── App.tsx
+```
+
+## 🛠️ Tech Stack
+
+- **React 19** with TypeScript
+- **Vite** for build tooling
+- **Redux Toolkit** for client state management
+- **React Query** for server state management
+- **Dual API Architecture**:
+  - Cloudflare Worker (Serverless)
+  - Express Backend (EC2)
+
+## 📝 Usage Examples
+
+### Using Worker API
+
+```typescript
+import { workerApiClient } from './api/client';
+
+// Direct client usage
+const data = await workerApiClient.get('/hello');
+
+// Or use services
+import { exampleService } from './api';
+const hello = await exampleService.getHello();
+```
+
+### Using Backend API
+
+```typescript
+import { backendApiClient } from './api/client';
+
+// Direct client usage
+const data = await backendApiClient.get('/health');
+
+// Or use services
+import { backendService } from './api';
+const health = await backendService.getHealth();
+```
+
+## 🌍 Deployment
+
+This app is deployed to Cloudflare Pages and automatically connects to:
+- Production Worker API at `https://api.stuffprettygood.com`
+- Production Backend API at `https://backend.stuffprettygood.com`
+
+Environment variables are configured in Cloudflare Pages settings.

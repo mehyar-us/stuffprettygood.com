@@ -1,16 +1,17 @@
 /**
  * Example API Service
- * Demonstrates how to create API service methods
+ * Demonstrates how to create API service methods for Worker API
  */
 
-import { apiClient } from '../client';
+import { workerApiClient } from '../client';
 
 export interface HelloResponse {
     message: string;
 }
 
 export const exampleService = {
-    getHello: () => apiClient.get<HelloResponse>('/hello'),
+    // Using Cloudflare Worker API
+    getHello: () => workerApiClient.get<HelloResponse>('/hello'),
 
-    // Add more API methods here as needed
+    // Add more Worker API methods here as needed
 };

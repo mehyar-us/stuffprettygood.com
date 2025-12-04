@@ -3,12 +3,16 @@
  * Central export point for all API-related functionality
  */
 
-// API Client
-export { apiClient, ApiClient } from './client';
+// API Clients
+export { workerApiClient, backendApiClient, ApiClient } from './client';
 
-// Services
+// Worker API Services
 export { exampleService } from './services/example.service';
 export type { HelloResponse } from './services/example.service';
+
+// Backend API Services
+export { backendService } from './services/backend.service';
+export type { BackendHealthResponse } from './services/backend.service';
 
 // Hooks
 export { useHello } from './hooks/example.hooks';
