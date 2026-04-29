@@ -1,0 +1,14 @@
+{
+  "name": "mehyarmedia-crm",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Mehyar Media CRM command center foundation.",
+  "scripts": {
+    "test": "node --test",
+    "compliance:demo": "node src/compliance/gates.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
