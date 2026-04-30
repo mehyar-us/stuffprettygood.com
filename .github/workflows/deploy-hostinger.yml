@@ -1,0 +1,123 @@
+name: Deploy CRM to Hostinger VPS
+
+on:
+  push:
+    branches:
+      - production
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Deployment target label
+        required: false
+        default: production
+
+concurrency:
+  group: hostinger-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '20'
+  APP_NAME: mehyarmedia-crm
+  DEPLOY_PATH: /opt/mehyarmedia-crm
+  HEALTH_URL: https://mehyarmedia.mehyar.us/health
+
+jobs:
+  test:
+    name: Build and test deployment artifact
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies when lockfile exists
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install --package-lock=false
+          fi
+
+      - name: Run tests
+        run: npm test
+
+      - name: Create release artifact
+        run: |
+          mkdir -p release
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            ./ release/
+          tar -czf mehyarmedia-crm-${{ github.sha }}.tgz -C release .
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mehyarmedia-crm-${{ github.sha }}
+          path: mehyarmedia-crm-${{ github.sha }}.tgz
+          retention-days: 14
+
+  deploy:
+    name: Deploy over SSH, restart app, verify health
+    runs-on: ubuntu-latest
+    needs: test
+    environment: production
+    steps:
+      - name: Download release artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mehyarmedia-crm-${{ github.sha }}
+
+      - name: Configure SSH key
+        env:
+          HOSTINGER_SSH_PRIVATE_KEY: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
+          HOSTINGER_VPS_SERVER_IP: ${{ secrets.HOSTINGER_VPS_SERVER_IP }}
+        run: |
+          test -n "$HOSTINGER_SSH_PRIVATE_KEY"
+          test -n "$HOSTINGER_VPS_SERVER_IP"
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$HOSTINGER_SSH_PRIVATE_KEY" > ~/.ssh/hostinger_deploy
+          chmod 600 ~/.ssh/hostinger_deploy
+          ssh-keyscan -H "$HOSTINGER_VPS_SERVER_IP" >> ~/.ssh/known_hosts
+
+      - name: Copy artifact to VPS
+        env:
+          HOSTINGER_VPS_SERVER_IP: ${{ secrets.HOSTINGER_VPS_SERVER_IP }}
+          HOSTINGER_VPS_SERVER_USERNAME: ${{ secrets.HOSTINGER_VPS_SERVER_USERNAME }}
+        run: |
+          scp -i ~/.ssh/hostinger_deploy \
+            mehyarmedia-crm-${{ github.sha }}.tgz \
+            "$HOSTINGER_VPS_SERVER_USERNAME@$HOSTINGER_VPS_SERVER_IP:/tmp/mehyarmedia-crm-${{ github.sha }}.tgz"
+
+      - name: Activate release
+        env:
+          HOSTINGER_VPS_SERVER_IP: ${{ secrets.HOSTINGER_VPS_SERVER_IP }}
+          HOSTINGER_VPS_SERVER_USERNAME: ${{ secrets.HOSTINGER_VPS_SERVER_USERNAME }}
+          DEPLOY_ENV_B64: ${{ secrets.PRODUCTION_ENV_B64 }}
+        run: |
+          ssh -i ~/.ssh/hostinger_deploy "$HOSTINGER_VPS_SERVER_USERNAME@$HOSTINGER_VPS_SERVER_IP" \
+            "GITHUB_SHA='${{ github.sha }}' APP_NAME='$APP_NAME' DEPLOY_PATH='$DEPLOY_PATH' DEPLOY_ENV_B64='$DEPLOY_ENV_B64' bash -s" < ops/hostinger/activate-release.sh
+
+      - name: Verify public health endpoint
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            body="$(curl -fsS --max-time 10 "$HEALTH_URL" || true)"
+            if printf '%s' "$body" | grep -qi 'ok'; then
+              echo "Health check passed"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Health check failed for $HEALTH_URL" >&2
+          exit 1

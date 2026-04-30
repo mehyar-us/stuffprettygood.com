@@ -5,8 +5,10 @@
   "type": "module",
   "description": "Mehyar Media CRM command center foundation.",
   "scripts": {
+    "start": "node src/server.js",
     "test": "node --test",
-    "compliance:demo": "node src/compliance/gates.js"
+    "compliance:demo": "node src/compliance/gates.js",
+    "segments:demo": "node src/segments/builder.js"
   },
   "engines": {
     "node": ">=20"
