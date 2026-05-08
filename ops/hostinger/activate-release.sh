@@ -43,16 +43,20 @@ mkdir -p "$RELEASE_DIR"
 tar --no-same-owner --no-same-permissions --delay-directory-restore -xzf "$ARTIFACT" -C "$RELEASE_DIR"
 
 if [ -n "${DEPLOY_ENV_B64:-}" ]; then
-  printf '%s' "$DEPLOY_ENV_B64" | base64 -d > "$SHARED_DIR/.env"
-  run_sudo chmod 600 "$SHARED_DIR/.env"
+  ENV_TMP="$(mktemp)"
+  printf '%s' "$DEPLOY_ENV_B64" | base64 -d > "$ENV_TMP"
+  run_sudo install -m 600 -o "$APP_USER" -g "$APP_USER" "$ENV_TMP" "$SHARED_DIR/.env"
+  rm -f "$ENV_TMP"
 elif [ ! -f "$SHARED_DIR/.env" ]; then
-  cat > "$SHARED_DIR/.env" <<ENV
+  ENV_TMP="$(mktemp)"
+  cat > "$ENV_TMP" <<ENV
 NODE_ENV=production
 PORT=$APP_PORT
 CRM_DOMAIN=mehyarmedia.mehyar.us
 FIRST_BRAND_DOMAIN=stuffprettygood.com
 ENV
-  run_sudo chmod 600 "$SHARED_DIR/.env"
+  run_sudo install -m 600 -o "$APP_USER" -g "$APP_USER" "$ENV_TMP" "$SHARED_DIR/.env"
+  rm -f "$ENV_TMP"
 fi
 
 ln -sfn "$SHARED_DIR/.env" "$RELEASE_DIR/.env"
