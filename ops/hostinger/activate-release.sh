@@ -14,17 +14,29 @@ SERVICE_NAME="$APP_NAME.service"
 APP_USER="$APP_NAME"
 APP_PORT="${PORT:-3000}"
 
+if [ -z "${DEPLOY_SUDO_PASSWORD:-}" ] && [ -n "${DEPLOY_SUDO_PASSWORD_B64:-}" ]; then
+  DEPLOY_SUDO_PASSWORD="$(printf '%s' "$DEPLOY_SUDO_PASSWORD_B64" | base64 -d)"
+fi
+
+run_sudo() {
+  if [ -n "${DEPLOY_SUDO_PASSWORD:-}" ]; then
+    printf '%s\n' "$DEPLOY_SUDO_PASSWORD" | sudo -S -p '' "$@"
+  else
+    sudo "$@"
+  fi
+}
+
 if [ ! -f "$ARTIFACT" ]; then
   echo "Artifact not found: $ARTIFACT" >&2
   exit 1
 fi
 
 if ! id "$APP_USER" >/dev/null 2>&1; then
-  sudo useradd --system --home "$DEPLOY_PATH" --shell /usr/sbin/nologin "$APP_USER"
+  run_sudo useradd --system --home "$DEPLOY_PATH" --shell /usr/sbin/nologin "$APP_USER"
 fi
 
-sudo mkdir -p "$RELEASES_DIR" "$SHARED_DIR" "$DEPLOY_PATH/backups" "$DEPLOY_PATH/logs"
-sudo chown -R "$APP_USER:$APP_USER" "$DEPLOY_PATH"
+run_sudo mkdir -p "$RELEASES_DIR" "$SHARED_DIR" "$DEPLOY_PATH/backups" "$DEPLOY_PATH/logs"
+run_sudo chown -R "$APP_USER:$APP_USER" "$DEPLOY_PATH"
 
 mkdir -p "$RELEASE_DIR"
 tar -xzf "$ARTIFACT" -C "$RELEASE_DIR"
@@ -52,10 +64,10 @@ else
 fi
 npm test
 
-sudo ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
-sudo chown -h "$APP_USER:$APP_USER" "$CURRENT_LINK"
+run_sudo ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
+run_sudo chown -h "$APP_USER:$APP_USER" "$CURRENT_LINK"
 
-sudo tee "/etc/systemd/system/$SERVICE_NAME" >/dev/null <<UNIT
+run_sudo tee "/etc/systemd/system/$SERVICE_NAME" >/dev/null <<UNIT
 [Unit]
 Description=Mehyar Media CRM Command Center
 After=network.target
@@ -78,9 +90,9 @@ ReadWritePaths=$DEPLOY_PATH
 WantedBy=multi-user.target
 UNIT
 
-sudo systemctl daemon-reload
-sudo systemctl enable "$SERVICE_NAME"
-sudo systemctl restart "$SERVICE_NAME"
+run_sudo systemctl daemon-reload
+run_sudo systemctl enable "$SERVICE_NAME"
+run_sudo systemctl restart "$SERVICE_NAME"
 
 for attempt in 1 2 3 4 5 6; do
   if curl -fsS --max-time 5 "http://127.0.0.1:$APP_PORT/health" | grep -Eqi 'ok|healthy'; then
@@ -88,7 +100,7 @@ for attempt in 1 2 3 4 5 6; do
     break
   fi
   if [ "$attempt" = "6" ]; then
-    sudo journalctl -u "$SERVICE_NAME" -n 80 --no-pager
+    run_sudo journalctl -u "$SERVICE_NAME" -n 80 --no-pager
     exit 1
   fi
   sleep 5

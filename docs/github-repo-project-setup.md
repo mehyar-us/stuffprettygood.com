@@ -48,6 +48,7 @@ Configured/expected secret names only; values must never be committed or printed
 - `HOSTINGER_HOST` (preferred) or `HOSTINGER_VPS_SERVER_IP`
 - `HOSTINGER_USER` (preferred) or `HOSTINGER_VPS_SERVER_USERNAME`
 - `HOSTINGER_PORT` (defaults to `22` when absent)
+- `DEPLOY_SUDO_PASSWORD` or `HOSTINGER_VPS_SERVER_PASS` if the deploy user requires sudo password auth
 - `PRODUCTION_ENV_B64`
 
 `PRODUCTION_ENV_B64` should be a base64-encoded production `.env` payload containing runtime app settings only. Keep deploy credentials in separate GitHub Actions secrets.

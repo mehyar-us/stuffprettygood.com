@@ -110,9 +110,11 @@ jobs:
           HOSTINGER_VPS_SERVER_USERNAME: ${{ secrets.HOSTINGER_USER || secrets.HOSTINGER_VPS_SERVER_USERNAME }}
           HOSTINGER_PORT: ${{ secrets.HOSTINGER_PORT || '22' }}
           DEPLOY_ENV_B64: ${{ secrets.PRODUCTION_ENV_B64 }}
+          DEPLOY_SUDO_PASSWORD: ${{ secrets.DEPLOY_SUDO_PASSWORD || secrets.HOSTINGER_VPS_SERVER_PASS }}
         run: |
+          DEPLOY_SUDO_PASSWORD_B64="$(printf '%s' "$DEPLOY_SUDO_PASSWORD" | base64 -w0)"
           ssh -i ~/.ssh/hostinger_deploy -p "$HOSTINGER_PORT" "$HOSTINGER_VPS_SERVER_USERNAME@$HOSTINGER_VPS_SERVER_IP" \
-            "GITHUB_SHA='${{ github.sha }}' APP_NAME='$APP_NAME' DEPLOY_PATH='$DEPLOY_PATH' DEPLOY_ENV_B64='$DEPLOY_ENV_B64' bash -s" < ops/hostinger/activate-release.sh
+            "GITHUB_SHA='${{ github.sha }}' APP_NAME='$APP_NAME' DEPLOY_PATH='$DEPLOY_PATH' DEPLOY_ENV_B64='$DEPLOY_ENV_B64' DEPLOY_SUDO_PASSWORD_B64='$DEPLOY_SUDO_PASSWORD_B64' bash -s" < ops/hostinger/activate-release.sh
 
       - name: Verify public health endpoint
         run: |
