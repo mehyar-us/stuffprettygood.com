@@ -44,7 +44,7 @@ tar --no-same-owner --no-same-permissions --delay-directory-restore -xzf "$ARTIF
 
 if [ -n "${DEPLOY_ENV_B64:-}" ]; then
   printf '%s' "$DEPLOY_ENV_B64" | base64 -d > "$SHARED_DIR/.env"
-  chmod 600 "$SHARED_DIR/.env"
+  run_sudo chmod 600 "$SHARED_DIR/.env"
 elif [ ! -f "$SHARED_DIR/.env" ]; then
   cat > "$SHARED_DIR/.env" <<ENV
 NODE_ENV=production
@@ -52,7 +52,7 @@ PORT=$APP_PORT
 CRM_DOMAIN=mehyarmedia.mehyar.us
 FIRST_BRAND_DOMAIN=stuffprettygood.com
 ENV
-  chmod 600 "$SHARED_DIR/.env"
+  run_sudo chmod 600 "$SHARED_DIR/.env"
 fi
 
 ln -sfn "$SHARED_DIR/.env" "$RELEASE_DIR/.env"
