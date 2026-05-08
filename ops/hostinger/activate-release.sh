@@ -14,16 +14,8 @@ SERVICE_NAME="$APP_NAME.service"
 APP_USER="$APP_NAME"
 APP_PORT="${PORT:-3000}"
 
-if [ -z "${DEPLOY_SUDO_PASSWORD:-}" ] && [ -n "${DEPLOY_SUDO_PASSWORD_B64:-}" ]; then
-  DEPLOY_SUDO_PASSWORD="$(printf '%s' "$DEPLOY_SUDO_PASSWORD_B64" | base64 -d)"
-fi
-
 run_sudo() {
-  if [ -n "${DEPLOY_SUDO_PASSWORD:-}" ]; then
-    printf '%s\n' "$DEPLOY_SUDO_PASSWORD" | sudo -S -p '' "$@"
-  else
-    sudo "$@"
-  fi
+  sudo -n "$@"
 }
 
 if [ ! -f "$ARTIFACT" ]; then
