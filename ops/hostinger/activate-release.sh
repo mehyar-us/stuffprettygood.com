@@ -64,7 +64,8 @@ npm test
 run_sudo ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 run_sudo chown -h "$APP_USER:$APP_USER" "$CURRENT_LINK"
 
-run_sudo tee "/etc/systemd/system/$SERVICE_NAME" >/dev/null <<UNIT
+UNIT_TMP="$(mktemp)"
+cat > "$UNIT_TMP" <<UNIT
 [Unit]
 Description=Mehyar Media CRM Command Center
 After=network.target
@@ -86,6 +87,8 @@ ReadWritePaths=$DEPLOY_PATH
 [Install]
 WantedBy=multi-user.target
 UNIT
+run_sudo install -m 644 -o root -g root "$UNIT_TMP" "/etc/systemd/system/$SERVICE_NAME"
+rm -f "$UNIT_TMP"
 
 run_sudo systemctl daemon-reload
 run_sudo systemctl enable "$SERVICE_NAME"
