@@ -10,7 +10,7 @@
 
 ## Branch protection baseline
 
-Production/deploy branch `main` is protected with:
+Target policy for production/deploy branch `main`:
 
 - Required pull request review before merge
 - Dismiss stale approvals on new commits
@@ -21,6 +21,8 @@ Production/deploy branch `main` is protected with:
 - Branch deletion disabled
 
 Emergency administration remains possible for owners so Week-1 setup can recover quickly if a required check name changes.
+
+Current limitation: GitHub returned HTTP 403 for both classic branch protection and repository rulesets on this private organization repository: `Upgrade to GitHub Pro or make this repository public to enable this feature.` Until the organization plan/repo visibility supports protection, treat `main` as operationally protected by owner discipline: merge via PR only, require passing Actions, and do not force-push or delete the branch.
 
 ## GitHub Project mapping
 
