@@ -31,6 +31,7 @@ For Hostinger deployment and operations, use:
 - `ops/hostinger/activate-release.sh`
 - `ops/hostinger/rollback.sh`
 - `docs/hostinger-deployment-runbook.md`
+- `docs/github-repo-project-setup.md`
 
 ## Commands
 

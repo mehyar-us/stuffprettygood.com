@@ -83,7 +83,7 @@ sudo systemctl enable "$SERVICE_NAME"
 sudo systemctl restart "$SERVICE_NAME"
 
 for attempt in 1 2 3 4 5 6; do
-  if curl -fsS --max-time 5 "http://127.0.0.1:$APP_PORT/health" | grep -qi ok; then
+  if curl -fsS --max-time 5 "http://127.0.0.1:$APP_PORT/health" | grep -Eqi 'ok|healthy'; then
     echo "Local health check passed"
     break
   fi
