@@ -44,9 +44,10 @@ No campaign send/blast work is enabled by this setup.
 
 Configured/expected secret names only; values must never be committed or printed:
 
-- `HOSTINGER_VPS_SERVER_IP`
-- `HOSTINGER_VPS_SERVER_USERNAME`
-- `HOSTINGER_SSH_PRIVATE_KEY`
+- `HOSTINGER_DEPLOY_SSH_PRIVATE_KEY` (preferred) or `HOSTINGER_SSH_PRIVATE_KEY`
+- `HOSTINGER_HOST` (preferred) or `HOSTINGER_VPS_SERVER_IP`
+- `HOSTINGER_USER` (preferred) or `HOSTINGER_VPS_SERVER_USERNAME`
+- `HOSTINGER_PORT` (defaults to `22` when absent)
 - `PRODUCTION_ENV_B64`
 
 `PRODUCTION_ENV_B64` should be a base64-encoded production `.env` payload containing runtime app settings only. Keep deploy credentials in separate GitHub Actions secrets.

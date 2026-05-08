@@ -83,8 +83,8 @@ jobs:
 
       - name: Configure SSH key
         env:
-          HOSTINGER_SSH_PRIVATE_KEY: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
-          HOSTINGER_VPS_SERVER_IP: ${{ secrets.HOSTINGER_VPS_SERVER_IP }}
+          HOSTINGER_SSH_PRIVATE_KEY: ${{ secrets.HOSTINGER_DEPLOY_SSH_PRIVATE_KEY || secrets.HOSTINGER_SSH_PRIVATE_KEY }}
+          HOSTINGER_VPS_SERVER_IP: ${{ secrets.HOSTINGER_HOST || secrets.HOSTINGER_VPS_SERVER_IP }}
         run: |
           test -n "$HOSTINGER_SSH_PRIVATE_KEY"
           test -n "$HOSTINGER_VPS_SERVER_IP"
@@ -95,20 +95,23 @@ jobs:
 
       - name: Copy artifact to VPS
         env:
-          HOSTINGER_VPS_SERVER_IP: ${{ secrets.HOSTINGER_VPS_SERVER_IP }}
-          HOSTINGER_VPS_SERVER_USERNAME: ${{ secrets.HOSTINGER_VPS_SERVER_USERNAME }}
+          HOSTINGER_VPS_SERVER_IP: ${{ secrets.HOSTINGER_HOST || secrets.HOSTINGER_VPS_SERVER_IP }}
+          HOSTINGER_VPS_SERVER_USERNAME: ${{ secrets.HOSTINGER_USER || secrets.HOSTINGER_VPS_SERVER_USERNAME }}
+          HOSTINGER_PORT: ${{ secrets.HOSTINGER_PORT || '22' }}
         run: |
           scp -i ~/.ssh/hostinger_deploy \
+            -P "$HOSTINGER_PORT" \
             mehyarmedia-crm-${{ github.sha }}.tgz \
             "$HOSTINGER_VPS_SERVER_USERNAME@$HOSTINGER_VPS_SERVER_IP:/tmp/mehyarmedia-crm-${{ github.sha }}.tgz"
 
       - name: Activate release
         env:
-          HOSTINGER_VPS_SERVER_IP: ${{ secrets.HOSTINGER_VPS_SERVER_IP }}
-          HOSTINGER_VPS_SERVER_USERNAME: ${{ secrets.HOSTINGER_VPS_SERVER_USERNAME }}
+          HOSTINGER_VPS_SERVER_IP: ${{ secrets.HOSTINGER_HOST || secrets.HOSTINGER_VPS_SERVER_IP }}
+          HOSTINGER_VPS_SERVER_USERNAME: ${{ secrets.HOSTINGER_USER || secrets.HOSTINGER_VPS_SERVER_USERNAME }}
+          HOSTINGER_PORT: ${{ secrets.HOSTINGER_PORT || '22' }}
           DEPLOY_ENV_B64: ${{ secrets.PRODUCTION_ENV_B64 }}
         run: |
-          ssh -i ~/.ssh/hostinger_deploy "$HOSTINGER_VPS_SERVER_USERNAME@$HOSTINGER_VPS_SERVER_IP" \
+          ssh -i ~/.ssh/hostinger_deploy -p "$HOSTINGER_PORT" "$HOSTINGER_VPS_SERVER_USERNAME@$HOSTINGER_VPS_SERVER_IP" \
             "GITHUB_SHA='${{ github.sha }}' APP_NAME='$APP_NAME' DEPLOY_PATH='$DEPLOY_PATH' DEPLOY_ENV_B64='$DEPLOY_ENV_B64' bash -s" < ops/hostinger/activate-release.sh
 
       - name: Verify public health endpoint
