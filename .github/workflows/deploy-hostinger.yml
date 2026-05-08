@@ -22,7 +22,7 @@ env:
   NODE_VERSION: '20'
   APP_NAME: mehyarmedia-crm
   DEPLOY_PATH: /opt/mehyarmedia-crm
-  HEALTH_URL: https://mehyarmedia.mehyar.us/health
+  HEALTH_URL: https://mehyarmedia.mehyar.us/crm-health
 
 jobs:
   test:
