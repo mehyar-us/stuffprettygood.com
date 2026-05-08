@@ -113,12 +113,13 @@ jobs:
           HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
           HOSTINGER_PORT: ${{ secrets.HOSTINGER_PORT }}
           DEPLOY_ENV_B64: ${{ secrets.PRODUCTION_ENV_B64 }}
+          DEPLOY_SUDO_PASSWORD_B64: ${{ secrets.DEPLOY_SUDO_PASSWORD_B64 }}
         run: |
           test -n "$HOSTINGER_HOST"
           test -n "$HOSTINGER_USER"
           test -n "$HOSTINGER_PORT"
           ssh -i ~/.ssh/hostinger_deploy -p "$HOSTINGER_PORT" "$HOSTINGER_USER@$HOSTINGER_HOST" \
-            "GITHUB_SHA='${{ github.sha }}' APP_NAME='$APP_NAME' DEPLOY_PATH='$DEPLOY_PATH' DEPLOY_ENV_B64='$DEPLOY_ENV_B64' bash -s" < ops/hostinger/activate-release.sh
+            "GITHUB_SHA='${{ github.sha }}' APP_NAME='$APP_NAME' DEPLOY_PATH='$DEPLOY_PATH' DEPLOY_ENV_B64='$DEPLOY_ENV_B64' DEPLOY_SUDO_PASSWORD_B64='$DEPLOY_SUDO_PASSWORD_B64' bash -s" < ops/hostinger/activate-release.sh
 
       - name: Verify public health endpoint
         run: |
