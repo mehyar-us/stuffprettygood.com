@@ -36,7 +36,8 @@ if ! id "$APP_USER" >/dev/null 2>&1; then
 fi
 
 run_sudo mkdir -p "$RELEASES_DIR" "$SHARED_DIR" "$DEPLOY_PATH/backups" "$DEPLOY_PATH/logs"
-run_sudo chown -R "$APP_USER:$APP_USER" "$DEPLOY_PATH"
+run_sudo chown -R "$APP_USER:deploy" "$DEPLOY_PATH"
+run_sudo chmod -R g+rwX "$DEPLOY_PATH"
 
 mkdir -p "$RELEASE_DIR"
 tar -xzf "$ARTIFACT" -C "$RELEASE_DIR"
