@@ -16,7 +16,7 @@ export function createApp({ authStore = new AuthStore({ auditLog }), audit = aud
       const url = new URL(req.url, 'http://127.0.0.1');
       const method = req.method || 'GET';
 
-      if (method === 'GET' && url.pathname === '/health') {
+      if (method === 'GET' && (url.pathname === '/health' || url.pathname === '/crm-health')) {
         return sendJson(res, 200, { status: 'healthy', service: 'mehyarmedia-crm', massSendingEnabled: false });
       }
 

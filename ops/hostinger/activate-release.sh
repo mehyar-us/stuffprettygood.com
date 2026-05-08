@@ -40,7 +40,7 @@ run_sudo chown -R "$APP_USER:deploy" "$DEPLOY_PATH"
 run_sudo chmod -R g+rwX "$DEPLOY_PATH"
 
 mkdir -p "$RELEASE_DIR"
-tar -xzf "$ARTIFACT" -C "$RELEASE_DIR"
+tar --no-same-owner --no-same-permissions --delay-directory-restore -xzf "$ARTIFACT" -C "$RELEASE_DIR"
 
 if [ -n "${DEPLOY_ENV_B64:-}" ]; then
   printf '%s' "$DEPLOY_ENV_B64" | base64 -d > "$SHARED_DIR/.env"
