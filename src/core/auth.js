@@ -4,8 +4,18 @@ const PASSWORD_ALGORITHM = 'sha256';
 const DEFAULT_SESSION_TTL_MS = 1000 * 60 * 60 * 8;
 
 export const ROLES = Object.freeze({
-  admin: Object.freeze(['dashboard:read', 'users:manage', 'audit:read', 'system:health']),
-  operator: Object.freeze(['dashboard:read', 'audit:read']),
+  admin: Object.freeze([
+    'dashboard:read',
+    'users:manage',
+    'audit:read',
+    'command_center:read',
+    'records:read',
+    'records:write',
+    'compliance:evaluate',
+    'segments:evaluate',
+    'system:health',
+  ]),
+  operator: Object.freeze(['dashboard:read', 'command_center:read', 'records:read']),
   viewer: Object.freeze(['dashboard:read']),
 });
 

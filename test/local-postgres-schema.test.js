@@ -42,6 +42,9 @@ test('initial migration encodes Phase 1 safety guardrails and operational indexe
   assert.match(sql, /full_table_pull_allowed boolean not null default false/);
   assert.match(sql, /read_only boolean not null default true/);
   assert.match(sql, /secret_ref text null/);
+  assert.match(sql, /safe_query_source text not null/);
+  assert.match(sql, /segment_filters_source_date_channel_idx/);
+  assert.match(sql, /crm_domain_not_sender_ready/);
   assert.doesNotMatch(sql, /password\s+text/);
   assert.doesNotMatch(sql, /api_key\s+text/);
 

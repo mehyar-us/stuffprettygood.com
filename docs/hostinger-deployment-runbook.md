@@ -68,6 +68,8 @@ GitHub Actions workflow lives at:
 
 It builds, uploads artifact, copies to `/tmp/mehyarmedia-crm-<sha>.tgz`, activates via `ops/hostinger/activate-release.sh`, and checks public health.
 
+Canonical same-server route contract is documented in `docs/production-route-map.md`: brand hosts own `/` and `/health`; CRM owns `/crm/health` and `/crm/api/*`; `/crm-health` is a public compatibility alias for the CRM health payload.
+
 ## 5) Rollback path
 
 On VPS or operator machine:

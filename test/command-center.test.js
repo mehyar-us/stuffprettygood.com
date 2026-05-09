@@ -57,12 +57,20 @@ test('HTTP command center routes manage brands, domains, lists, integrations, qu
   const baseUrl = `http://127.0.0.1:${server.address().port}`;
 
   try {
-    const summary = await requestJson(`${baseUrl}/api/command-center`);
+    const login = await requestJson(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      body: { email: 'admin@mehyarmedia.local', password: 'change-me-before-production' },
+    });
+    assert.equal(login.status, 200);
+    const authHeaders = { authorization: `Bearer ${login.body.session.id}` };
+
+    const summary = await requestJson(`${baseUrl}/api/command-center`, { headers: authHeaders });
     assert.equal(summary.status, 200);
     assert.equal(summary.body.firstBrandReady, true);
 
     const list = await requestJson(`${baseUrl}/api/lists`, {
       method: 'POST',
+      headers: authHeaders,
       body: { name: 'Safe email preview list', source: 'safe-query-1', channel: 'email', usableCount: 900, suppressionCount: 100, riskLevel: 'medium' },
     });
     assert.equal(list.status, 201);
@@ -70,6 +78,7 @@ test('HTTP command center routes manage brands, domains, lists, integrations, qu
 
     const campaign = await requestJson(`${baseUrl}/api/campaigns`, {
       method: 'POST',
+      headers: authHeaders,
       body: { name: 'Welcome draft', brandId: 'brand-1', channel: 'email', targetSegment: 'Safe email preview list' },
     });
     assert.equal(campaign.status, 201);
@@ -78,6 +87,7 @@ test('HTTP command center routes manage brands, domains, lists, integrations, qu
 
     const inspect = await requestJson(`${baseUrl}/api/legacy-source/inspect`, {
       method: 'POST',
+      headers: authHeaders,
       body: { connectionStatus: 'connected', schemas: ['public'], tables: [{ schema: 'public', table: 'legacy_signups', estimatedRows: 200000000 }] },
     });
     assert.equal(inspect.status, 200);
@@ -85,7 +95,7 @@ test('HTTP command center routes manage brands, domains, lists, integrations, qu
     assert.equal(inspect.body.fullTablePullsAllowed, false);
     assert.equal(inspect.body.tables[0].previewAllowed, true);
 
-    const dashboard = await requestJson(`${baseUrl}/api/dashboard`);
+    const dashboard = await requestJson(`${baseUrl}/api/dashboard`, { headers: authHeaders });
     assert.equal(dashboard.status, 200);
     assert.equal(dashboard.body.widgets.domains.crmDomain, 'mehyarmedia.mehyar.us');
     assert.equal(dashboard.body.widgets.campaigns.massSendingEnabled, false);

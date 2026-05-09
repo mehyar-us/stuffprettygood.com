@@ -32,6 +32,7 @@ For Hostinger deployment and operations, use:
 - `ops/hostinger/rollback.sh`
 - `docs/hostinger-deployment-runbook.md`
 - `docs/github-repo-project-setup.md`
+- `docs/production-route-map.md`
 
 ## Commands
 
@@ -40,7 +41,17 @@ npm test
 npm start
 ```
 
+## Runtime configuration
+
+Server-only legacy source table configuration:
+- `LEGACY_CONTACT_TABLE`: required SQL identifier used by the segment preview builder.
+- `LEGACY_CONTACT_TABLE_ALLOWLIST`: optional comma-separated allowlist extension for deployment-specific safe identifiers.
+
+Do not expose DB names, table names, or database credentials in frontend/public assets. The segment preview builder fails closed when table configuration is missing or not allowlisted.
+
 ## Local routes
+
+Public production routing is defined in `docs/production-route-map.md`. Canonical live CRM health is `GET /crm/health`; compatibility alias `GET /crm-health` must return the same CRM health payload for monitors still using the original route.
 
 - `GET /health`
 - `GET /api/dashboard`

@@ -69,31 +69,33 @@ test('HTTP app exposes health, dashboard, auth, session, audit, and compliance t
     assert.equal(health.status, 200);
     assert.equal(health.body.status, 'healthy');
 
-    const dashboard = await requestJson(`${baseUrl}/api/dashboard`);
-    assert.equal(dashboard.status, 200);
-    assert.equal(dashboard.body.service.massSendingEnabled, false);
-
     const login = await requestJson(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       body: { email: 'admin@mehyarmedia.local', password: 'change-me-before-production' },
     });
     assert.equal(login.status, 200);
     assert.equal(login.body.ok, true);
+    const authHeaders = { authorization: `Bearer ${login.body.session.id}` };
+
+    const dashboard = await requestJson(`${baseUrl}/api/dashboard`, { headers: authHeaders });
+    assert.equal(dashboard.status, 200);
+    assert.equal(dashboard.body.service.massSendingEnabled, false);
 
     const session = await requestJson(`${baseUrl}/api/auth/session`, {
-      headers: { authorization: `Bearer ${login.body.session.id}` },
+      headers: authHeaders,
     });
     assert.equal(session.status, 200);
     assert.equal(session.body.session.role, 'admin');
 
     const transition = await requestJson(`${baseUrl}/api/campaigns/evaluate-transition`, {
       method: 'POST',
+      headers: authHeaders,
       body: { campaign: { id: 'camp-http', channel: 'email' }, targetStatus: 'review', actorId: 'tester' },
     });
     assert.equal(transition.status, 200);
     assert.equal(transition.body.allowed, false);
 
-    const audit = await requestJson(`${baseUrl}/api/audit`);
+    const audit = await requestJson(`${baseUrl}/api/audit`, { headers: authHeaders });
     assert.equal(audit.status, 200);
     assert.ok(audit.body.events.length >= 1);
   } finally {

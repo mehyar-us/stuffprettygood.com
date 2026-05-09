@@ -9,6 +9,8 @@ export const RISK_TIERS = Object.freeze({
 
 const ALLOWED_CHANNELS = Object.freeze(['email', 'sms']);
 const ALLOWED_CONSENT_STATES = Object.freeze(['explicit', 'implied', 'unknown']);
+const SQL_IDENTIFIER_PATTERN = /^[a-z_][a-z0-9_]*(\.[a-z_][a-z0-9_]*)?$/;
+const DEFAULT_LEGACY_CONTACT_TABLE_ALLOWLIST = Object.freeze(['crm_legacy_contacts', 'public.crm_legacy_contacts']);
 
 export function evaluateSegmentPlan({
   name = 'Untitled segment',
@@ -20,10 +22,17 @@ export function evaluateSegmentPlan({
 } = {}) {
   const normalizedFilters = normalizeFilters(filters);
   const normalizedCounts = normalizeCounts(counts);
-  const reasons = validateSegmentRequest({ channel, filters: normalizedFilters, counts: normalizedCounts, materialization });
+  const legacyContactTable = resolveLegacyContactTable();
+  const reasons = validateSegmentRequest({
+    channel,
+    filters: normalizedFilters,
+    counts: normalizedCounts,
+    materialization,
+    legacyContactTable,
+  });
   const suppression = computeSuppressionOverlap(normalizedCounts);
   const riskTier = determineRiskTier({ filters: normalizedFilters, counts: normalizedCounts, suppression });
-  const previewQuery = buildPreviewQuery(normalizedFilters, channel);
+  const previewQuery = legacyContactTable.ok ? buildPreviewQuery(normalizedFilters, channel, legacyContactTable.identifier) : null;
   const materializationDecision = evaluateMaterialization({
     requested: Boolean(materialization.requested),
     approved: Boolean(materialization.approved),
@@ -83,8 +92,12 @@ function normalizeCounts(counts) {
   };
 }
 
-function validateSegmentRequest({ channel, filters, counts, materialization }) {
+function validateSegmentRequest({ channel, filters, counts, materialization, legacyContactTable }) {
   const reasons = [];
+
+  if (!legacyContactTable.ok) {
+    reasons.push(legacyContactTable.reason);
+  }
 
   if (!ALLOWED_CHANNELS.includes(channel)) {
     reasons.push(`unsupported channel: ${channel}`);
@@ -170,23 +183,24 @@ function evaluateMaterialization({ requested, approved, requestedLimit, counts, 
   };
 }
 
-function buildPreviewQuery(filters, channel) {
+function buildPreviewQuery(filters, channel, legacyContactTable) {
+  const contactAlias = 'c';
   const clauses = [
-    'source_id = ANY(:sourceIds)',
-    'created_at >= :dateFrom',
-    'created_at < :dateTo',
+    `${contactAlias}.source_id = ANY(:sourceIds)`,
+    `${contactAlias}.created_at >= :dateFrom`,
+    `${contactAlias}.created_at < :dateTo`,
   ];
 
-  if (channel === 'email') clauses.push('email IS NOT NULL');
-  if (channel === 'sms') clauses.push('phone IS NOT NULL');
-  if (filters.geo.countries.length > 0) clauses.push('country = ANY(:countries)');
-  if (filters.geo.regions.length > 0) clauses.push('region = ANY(:regions)');
-  if (filters.consentStates.length > 0) clauses.push('consent_state = ANY(:consentStates)');
-  if (filters.excludeUnsubscribed) clauses.push('unsubscribed_at IS NULL');
-  if (filters.excludeSuppressed) clauses.push('NOT EXISTS (SELECT 1 FROM suppressions s WHERE s.contact_hash = legacy_signups.contact_hash)');
+  if (channel === 'email') clauses.push(`${contactAlias}.email IS NOT NULL`);
+  if (channel === 'sms') clauses.push(`${contactAlias}.phone IS NOT NULL`);
+  if (filters.geo.countries.length > 0) clauses.push(`${contactAlias}.country = ANY(:countries)`);
+  if (filters.geo.regions.length > 0) clauses.push(`${contactAlias}.region = ANY(:regions)`);
+  if (filters.consentStates.length > 0) clauses.push(`${contactAlias}.consent_state = ANY(:consentStates)`);
+  if (filters.excludeUnsubscribed) clauses.push(`${contactAlias}.unsubscribed_at IS NULL`);
+  if (filters.excludeSuppressed) clauses.push(`NOT EXISTS (SELECT 1 FROM suppressions s WHERE s.contact_hash = ${contactAlias}.contact_hash)`);
 
   return {
-    text: `SELECT id, source_id, created_at, country, region, consent_state FROM legacy_signups WHERE ${clauses.join(' AND ')} ORDER BY created_at DESC, id DESC LIMIT ${MAX_PREVIEW_LIMIT}`,
+    text: `SELECT ${contactAlias}.id, ${contactAlias}.source_id, ${contactAlias}.created_at, ${contactAlias}.country, ${contactAlias}.region, ${contactAlias}.consent_state FROM ${legacyContactTable} ${contactAlias} WHERE ${clauses.join(' AND ')} ORDER BY ${contactAlias}.created_at DESC, ${contactAlias}.id DESC LIMIT ${MAX_PREVIEW_LIMIT}`,
     parameters: {
       sourceIds: filters.sourceIds,
       dateFrom: filters.dateRange.from,
@@ -196,6 +210,21 @@ function buildPreviewQuery(filters, channel) {
       consentStates: filters.consentStates,
     },
   };
+}
+
+function resolveLegacyContactTable(env = process.env) {
+  const identifier = String(env.LEGACY_CONTACT_TABLE || '').trim();
+  if (!identifier) {
+    return { ok: false, identifier: null, reason: 'LEGACY_CONTACT_TABLE server config is required' };
+  }
+
+  const configuredAllowlist = uniqueStrings(String(env.LEGACY_CONTACT_TABLE_ALLOWLIST || '').split(','));
+  const allowlist = new Set([...DEFAULT_LEGACY_CONTACT_TABLE_ALLOWLIST, ...configuredAllowlist]);
+  if (!SQL_IDENTIFIER_PATTERN.test(identifier) || !allowlist.has(identifier)) {
+    return { ok: false, identifier: null, reason: 'LEGACY_CONTACT_TABLE must be a known-safe SQL identifier' };
+  }
+
+  return { ok: true, identifier, reason: null };
 }
 
 function normalizeDateRange(dateRange = {}) {

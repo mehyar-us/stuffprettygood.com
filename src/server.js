@@ -15,93 +15,121 @@ export function createApp({ authStore = new AuthStore({ auditLog }), audit = aud
     try {
       const url = new URL(req.url, 'http://127.0.0.1');
       const method = req.method || 'GET';
+      const pathname = normalizePathname(url.pathname);
 
-      if (method === 'GET' && (url.pathname === '/health' || url.pathname === '/crm-health')) {
+      if (method === 'GET' && PUBLIC_HEALTH_PATHS.has(pathname)) {
         return sendJson(res, 200, { status: 'healthy', service: 'mehyarmedia-crm', massSendingEnabled: false });
       }
 
-      if (method === 'GET' && url.pathname === '/api/dashboard') {
-        audit.record({ actorId: actorFromRequest(req), action: 'dashboard.viewed', resourceType: 'dashboard' });
+      if (method === 'GET' && pathname === '/api/dashboard') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'dashboard:read' });
+        if (!session) return null;
+        audit.record({ actorId: session.userId, action: 'dashboard.viewed', resourceType: 'dashboard' });
         return sendJson(res, 200, buildDashboard({ authStore, auditLog: audit, commandCenter }));
       }
 
-      if (method === 'GET' && url.pathname === '/api/command-center') {
-        audit.record({ actorId: actorFromRequest(req), action: 'command_center.viewed', resourceType: 'command_center' });
+      if (method === 'GET' && pathname === '/api/command-center') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'command_center:read' });
+        if (!session) return null;
+        audit.record({ actorId: session.userId, action: 'command_center.viewed', resourceType: 'command_center' });
         return sendJson(res, 200, commandCenter.buildSummary());
       }
 
-      if (method === 'POST' && url.pathname === '/api/brands/seed-required') {
+      if (method === 'POST' && pathname === '/api/brands/seed-required') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:write' });
+        if (!session) return null;
         const summary = commandCenter.seedFirstBrand();
-        audit.record({ actorId: actorFromRequest(req), action: 'brands.required_seeded', resourceType: 'brands', metadata: { counts: summary.counts } });
+        audit.record({ actorId: session.userId, action: 'brands.required_seeded', resourceType: 'brands', metadata: { counts: summary.counts } });
         return sendJson(res, 200, summary);
       }
 
-      const campaignDraftMatch = url.pathname.match(/^\/api\/campaign-drafts\/([^/]+)$/);
+      const campaignDraftMatch = pathname.match(/^\/api\/campaign-drafts\/([^/]+)$/);
       if (method === 'GET' && campaignDraftMatch) {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:read' });
+        if (!session) return null;
         const record = commandCenter.get('campaigns', decodeURIComponent(campaignDraftMatch[1]));
         if (!record || record.status !== 'draft') return sendJson(res, 404, { error: 'campaign draft not found' });
         return sendJson(res, 200, { record, massSendingEnabled: false });
       }
 
-      const entityType = routeEntityFromPath(url.pathname);
+      const entityType = routeEntityFromPath(pathname);
       if (entityType && method === 'GET') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:read' });
+        if (!session) return null;
         return sendJson(res, 200, { records: commandCenter.list(entityType) });
       }
       if (entityType && method === 'POST') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:write' });
+        if (!session) return null;
         const body = await readJson(req);
-        const record = commandCenter.create(entityType, body, { actorId: actorFromRequest(req) });
+        const record = commandCenter.create(entityType, body, { actorId: session.userId });
         return sendJson(res, 201, { record });
       }
 
-      if (method === 'POST' && url.pathname === '/api/legacy-source/inspect') {
+      if (method === 'POST' && pathname === '/api/legacy-source/inspect') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:read' });
+        if (!session) return null;
         const body = await readJson(req);
-        const legacySource = commandCenter.inspectLegacySource({ ...body, actorId: actorFromRequest(req) });
+        const legacySource = commandCenter.inspectLegacySource({ ...body, actorId: session.userId });
         return sendJson(res, 200, legacySource);
       }
 
-      if (method === 'GET' && url.pathname === '/api/auth/users') {
+      if (method === 'GET' && pathname === '/api/auth/users') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'users:manage' });
+        if (!session) return null;
         return sendJson(res, 200, { users: authStore.listUsers() });
       }
 
-      if (method === 'POST' && url.pathname === '/api/auth/users') {
+      if (method === 'POST' && pathname === '/api/auth/users') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'users:manage' });
+        if (!session) return null;
         const body = await readJson(req);
-        const user = authStore.createUser({ ...body, actorId: actorFromRequest(req) });
+        const user = authStore.createUser({ ...body, actorId: session.userId });
         return sendJson(res, 201, { user });
       }
 
-      if (method === 'POST' && url.pathname === '/api/auth/login') {
+      if (method === 'POST' && pathname === '/api/auth/login') {
         const body = await readJson(req);
         const result = authStore.login(body);
         return sendJson(res, result.ok ? 200 : 401, result);
       }
 
-      if (method === 'GET' && url.pathname === '/api/auth/session') {
+      if (method === 'GET' && pathname === '/api/auth/session') {
         const session = authStore.getSession(bearerToken(req));
+        if (!session) {
+          auditAccessDenied({ audit, req, pathname, reason: 'missing_session' });
+        }
         return sendJson(res, session ? 200 : 401, { ok: Boolean(session), session });
       }
 
-      if (method === 'GET' && url.pathname === '/api/audit') {
+      if (method === 'GET' && pathname === '/api/audit') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'audit:read' });
+        if (!session) return null;
         const limit = Number.parseInt(url.searchParams.get('limit') || '50', 10);
         return sendJson(res, 200, { events: audit.list({ limit }) });
       }
 
-      if (method === 'POST' && url.pathname === '/api/campaigns/evaluate-transition') {
+      if (method === 'POST' && pathname === '/api/campaigns/evaluate-transition') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'compliance:evaluate' });
+        if (!session) return null;
         const body = await readJson(req);
-        const decision = evaluateCampaignTransition({ ...body, actorId: body.actorId || actorFromRequest(req) });
+        const decision = evaluateCampaignTransition({ ...body, actorId: session.userId });
         audit.record({ actorId: decision.actorId, action: 'campaign.transition.evaluated', resourceType: 'campaign', resourceId: decision.campaignId, metadata: { targetStatus: decision.targetStatus, decision: decision.decision } });
         return sendJson(res, 200, decision);
       }
 
-      if (method === 'POST' && url.pathname === '/api/segments/evaluate') {
+      if (method === 'POST' && pathname === '/api/segments/evaluate') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'segments:evaluate' });
+        if (!session) return null;
         const body = await readJson(req);
         const plan = evaluateSegmentPlan(body);
-        audit.record({ actorId: actorFromRequest(req), action: 'segment.plan.evaluated', resourceType: 'segment', resourceId: body.name || null, metadata: { ok: plan.ok, riskTier: plan.riskTier, usableCount: plan.suppressionOverlap.usableCount } });
+        audit.record({ actorId: session.userId, action: 'segment.plan.evaluated', resourceType: 'segment', resourceId: body.name || null, metadata: { ok: plan.ok, riskTier: plan.riskTier, usableCount: plan.suppressionOverlap.usableCount } });
         return sendJson(res, plan.ok ? 200 : 422, plan);
       }
 
       return sendJson(res, 404, { error: 'not found' });
     } catch (error) {
-      return sendJson(res, error.statusCode || 500, { error: error.message, details: error.details || null });
+      return sendJson(res, error.statusCode || 500, { error: error.message });
     }
   };
 }
@@ -110,6 +138,48 @@ export function startServer({ port = Number(process.env.PORT || 3000), host = pr
   const server = http.createServer(createApp());
   return server.listen(port, host, () => {
     console.log(`Mehyar Media CRM listening on http://${host}:${port}`);
+  });
+}
+
+const PUBLIC_HEALTH_PATHS = new Set(['/health', '/crm/health', '/crm-health']);
+
+function normalizePathname(pathname) {
+  if (pathname.startsWith('/crm/api/')) return pathname.replace('/crm/api/', '/api/');
+  if (pathname === '/crm/api') return '/api';
+  return pathname;
+}
+
+function requirePermission({ req, res, authStore, audit, pathname, permission }) {
+  const token = bearerToken(req);
+  const session = authStore.getSession(token);
+  if (!session) {
+    auditAccessDenied({ audit, req, pathname, permission, reason: 'missing_session' });
+    sendJson(res, 401, { error: 'authentication required', massSendingEnabled: false });
+    return null;
+  }
+
+  if (!session.permissions.includes(permission)) {
+    auditAccessDenied({ audit, req, pathname, permission, reason: 'missing_permission', session });
+    sendJson(res, 403, { error: 'forbidden', massSendingEnabled: false });
+    return null;
+  }
+
+  return session;
+}
+
+function auditAccessDenied({ audit, req, pathname, permission = null, reason, session = null }) {
+  audit.record({
+    actorId: session?.userId || 'anonymous',
+    action: 'access.denied',
+    resourceType: 'access_control',
+    resourceId: pathname,
+    metadata: {
+      path: pathname,
+      method: req.method || 'GET',
+      permission,
+      reason,
+      role: session?.role || null,
+    },
   });
 }
 

@@ -71,7 +71,8 @@ CREATE TABLE IF NOT EXISTS domains (
   status TEXT NOT NULL DEFAULT 'planned' CHECK (status IN ('planned', 'active', 'blocked', 'retired')),
   dns_status TEXT NOT NULL DEFAULT 'unchecked' CHECK (dns_status IN ('unchecked', 'pending', 'verified', 'failed')),
   ssl_status TEXT NOT NULL DEFAULT 'unchecked' CHECK (ssl_status IN ('unchecked', 'pending', 'valid', 'failed')),
-  sender_readiness TEXT NOT NULL DEFAULT 'not_applicable' CHECK (sender_readiness IN ('not_applicable', 'not_ready', 'ready', 'blocked')),
+  sender_readiness TEXT NOT NULL DEFAULT 'not_applicable' CHECK (sender_readiness IN ('not_applicable', 'not_a_sending_domain', 'not_ready', 'ready', 'blocked')),
+  CONSTRAINT crm_domain_not_sender_ready CHECK (domain_type <> 'crm' OR sender_readiness <> 'ready'),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -98,7 +99,7 @@ CREATE TABLE IF NOT EXISTS lists (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   brand_id UUID NULL REFERENCES brands(id) ON DELETE SET NULL,
   name TEXT NOT NULL,
-  source_system TEXT NOT NULL,
+  safe_query_source TEXT NOT NULL,
   channel TEXT NOT NULL CHECK (channel IN ('email', 'sms', 'mixed')),
   status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'active', 'blocked', 'archived')),
   usable_count INTEGER NOT NULL DEFAULT 0 CHECK (usable_count >= 0),
@@ -112,8 +113,17 @@ CREATE TABLE IF NOT EXISTS segments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   list_id UUID NULL REFERENCES lists(id) ON DELETE SET NULL,
   name TEXT NOT NULL,
-  source_system TEXT NOT NULL,
+  safe_query_source TEXT NOT NULL,
+  channel TEXT NOT NULL CHECK (channel IN ('email', 'sms')),
   filter_definition JSONB NOT NULL DEFAULT '{}'::jsonb,
+  source_filters JSONB NOT NULL DEFAULT '[]'::jsonb,
+  date_filter JSONB NOT NULL DEFAULT '{}'::jsonb,
+  email_filter JSONB NOT NULL DEFAULT '{}'::jsonb,
+  phone_filter JSONB NOT NULL DEFAULT '{}'::jsonb,
+  geo_filter JSONB NOT NULL DEFAULT '{}'::jsonb,
+  consent_filter JSONB NOT NULL DEFAULT '[]'::jsonb,
+  exclude_unsubscribed BOOLEAN NOT NULL DEFAULT true,
+  exclude_suppressed BOOLEAN NOT NULL DEFAULT true,
   preview_limit INTEGER NOT NULL DEFAULT 100 CHECK (preview_limit BETWEEN 1 AND 1000),
   full_table_pull_allowed BOOLEAN NOT NULL DEFAULT false,
   suppression_overlap_count INTEGER NOT NULL DEFAULT 0 CHECK (suppression_overlap_count >= 0),
@@ -193,7 +203,8 @@ CREATE INDEX IF NOT EXISTS idx_brands_domain ON brands(domain);
 CREATE INDEX IF NOT EXISTS idx_domains_type_status ON domains(domain_type, status);
 CREATE INDEX IF NOT EXISTS idx_campaigns_brand_status ON campaigns(brand_id, status);
 CREATE INDEX IF NOT EXISTS idx_lists_channel_status ON lists(channel, status);
-CREATE INDEX IF NOT EXISTS idx_segments_source_risk ON segments(source_system, risk_tier);
+CREATE INDEX IF NOT EXISTS idx_segments_source_risk ON segments(safe_query_source, risk_tier);
+CREATE INDEX IF NOT EXISTS segment_filters_source_date_channel_idx ON segments(safe_query_source, channel, risk_tier);
 CREATE INDEX IF NOT EXISTS idx_suppressions_identifier_hash ON suppressions(identifier_hash);
 CREATE INDEX IF NOT EXISTS idx_integrations_kind_status ON integrations(kind, status);
 CREATE INDEX IF NOT EXISTS idx_query_templates_source_system ON query_templates(source_system);

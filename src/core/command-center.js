@@ -1,15 +1,19 @@
 const ENTITY_CONFIG = Object.freeze({
   brands: {
-    required: ['name', 'domain', 'vertical', 'type', 'status'],
-    defaults: { status: 'planning', senderReadiness: 'not_ready', complianceUrls: [] },
+    required: ['name', 'domain', 'vertical', 'type', 'status', 'senderIdentity', 'complianceUrls'],
+    defaults: { status: 'planning', senderReadiness: 'not_ready', complianceUrls: {} },
   },
   domains: {
-    required: ['domain', 'domainType', 'status'],
+    required: ['domain', 'domainType', 'status', 'dnsStatus', 'sslStatus', 'senderReadiness'],
     defaults: { dnsStatus: 'unknown', sslStatus: 'unknown', senderReadiness: 'not_ready' },
   },
   lists: {
-    required: ['name', 'source', 'channel'],
+    required: ['name', 'safeQuerySource', 'channel'],
     defaults: { usableCount: 0, suppressionCount: 0, riskLevel: 'unknown', status: 'draft' },
+  },
+  segments: {
+    required: ['name', 'safeQuerySource', 'channel', 'filters', 'riskTier'],
+    defaults: { status: 'draft', suppressionOverlapCount: 0, previewLimit: 100, materializationAllowed: false },
   },
   campaigns: {
     required: ['name', 'brandId', 'channel', 'targetSegment'],
@@ -27,6 +31,18 @@ const ENTITY_CONFIG = Object.freeze({
 
 const SAFE_DOMAIN_TYPES = Object.freeze(['crm', 'landing', 'sending', 'tracking']);
 const SAFE_CHANNELS = Object.freeze(['email', 'sms']);
+const SAFE_RISK_LEVELS = Object.freeze(['unknown', 'low', 'medium', 'high', 'blocked']);
+const REQUIRED_SEGMENT_FILTERS = Object.freeze([
+  'sourceIds',
+  'dateRange',
+  'email',
+  'phone',
+  'geo',
+  'consentStates',
+  'excludeUnsubscribed',
+  'excludeSuppressed',
+  'riskTier',
+]);
 
 export class CommandCenterStore {
   constructor({ auditLog = null, now = () => new Date().toISOString() } = {}) {
@@ -54,7 +70,7 @@ export class CommandCenterStore {
       type: 'internal_command_center',
       status: 'planning',
       senderIdentity: 'not-a-sending-brand',
-      complianceUrls: [],
+      complianceUrls: { privacy: 'https://mehyarmedia.mehyar.us/privacy' },
       senderReadiness: 'not_a_sending_domain',
     }, { actorId: 'system-seed' });
     this.create('brands', {
@@ -64,7 +80,7 @@ export class CommandCenterStore {
       type: 'first_affiliate_site',
       status: 'planning',
       senderIdentity: 'no-send-phase-1',
-      complianceUrls: ['https://stuffprettygood.com/privacy', 'https://stuffprettygood.com/unsubscribe'],
+      complianceUrls: { privacy: 'https://stuffprettygood.com/privacy', unsubscribe: 'https://stuffprettygood.com/unsubscribe' },
       senderReadiness: 'blocked_until_compliance_approved',
     }, { actorId: 'system-seed' });
     this.create('domains', {
@@ -108,7 +124,7 @@ export class CommandCenterStore {
     const missing = config.required.filter((field) => !normalized[field]);
     const violations = validateEntity(entityType, normalized);
     if (missing.length || violations.length) {
-      const error = new Error(`invalid ${entityType} record`);
+      const error = new Error(`invalid ${entityType} record${violations.length ? `: ${violations.join('; ')}` : ''}`);
       error.statusCode = 422;
       error.details = { missing, violations };
       throw error;
@@ -168,6 +184,8 @@ export class CommandCenterStore {
       firstBrandReady: this.records.get('brands').some((brand) => brand.domain === 'stuffprettygood.com'),
       crmDomain: this.records.get('domains').find((domain) => domain.domainType === 'crm') || null,
       legacySource: this.legacySource,
+      moduleReadiness: buildModuleReadiness(),
+      senderDomainSeparation: buildSenderDomainSeparation(this.records.get('domains')),
       guardrails: [
         'campaigns remain draft-only until suppression and compliance approvals pass',
         'legacy IONOS access is read-only with bounded previews only',
@@ -179,7 +197,7 @@ export class CommandCenterStore {
 }
 
 export function routeEntityFromPath(pathname) {
-  const match = pathname.match(/^\/api\/(brands|domains|lists|campaigns|integrations|query-templates)$/);
+  const match = pathname.match(/^\/api\/(brands|domains|lists|segments|campaigns|integrations|query-templates)$/);
   if (!match) return null;
   return match[1] === 'query-templates' ? 'queryTemplates' : match[1];
 }
@@ -190,7 +208,12 @@ function assertEntityType(entityType) {
 
 function normalizeEntity(entityType, record) {
   const normalized = Object.fromEntries(Object.entries(record).map(([key, value]) => [key, typeof value === 'string' ? value.trim() : value]));
+  if (entityType === 'lists' && !normalized.safeQuerySource && normalized.source) normalized.safeQuerySource = normalized.source;
   if (entityType === 'campaigns') normalized.status = normalized.status || 'draft';
+  if (entityType === 'segments') {
+    normalized.filters = normalizeSegmentFilters(normalized.filters || {});
+    normalized.riskTier = normalized.riskTier || 'unknown';
+  }
   if (entityType === 'queryTemplates') {
     normalized.readOnly = normalized.readOnly !== false;
     normalized.fullTablePullAllowed = false;
@@ -201,8 +224,29 @@ function normalizeEntity(entityType, record) {
 
 function validateEntity(entityType, record) {
   const violations = [];
-  if (entityType === 'domains' && !SAFE_DOMAIN_TYPES.includes(record.domainType)) violations.push(`domainType must be one of ${SAFE_DOMAIN_TYPES.join(', ')}`);
-  if ((entityType === 'lists' || entityType === 'campaigns') && !SAFE_CHANNELS.includes(record.channel)) violations.push('channel must be email or sms');
+  if (entityType === 'brands') {
+    if (!isObject(record.senderIdentity) && typeof record.senderIdentity !== 'string') violations.push('senderIdentity is required');
+    if (!validComplianceUrls(record.complianceUrls)) violations.push('complianceUrls must include at least privacy or unsubscribe URL metadata');
+  }
+  if (entityType === 'domains') {
+    if (!SAFE_DOMAIN_TYPES.includes(record.domainType)) violations.push(`domainType must be one of ${SAFE_DOMAIN_TYPES.join(', ')}`);
+    if (record.domainType === 'crm' && !['not_a_sending_domain', 'not_applicable', 'blocked'].includes(record.senderReadiness)) violations.push('CRM domains cannot be sender-ready');
+  }
+  if ((entityType === 'lists' || entityType === 'segments' || entityType === 'campaigns') && !SAFE_CHANNELS.includes(record.channel)) violations.push('channel must be email or sms');
+  if (entityType === 'lists') {
+    if (!isSafeQuerySource(record.safeQuerySource)) violations.push('safeQuerySource is required and must reference an approved safe query source');
+    if (!SAFE_RISK_LEVELS.includes(record.riskLevel)) violations.push(`riskLevel must be one of ${SAFE_RISK_LEVELS.join(', ')}`);
+  }
+  if (entityType === 'segments') {
+    if (!isSafeQuerySource(record.safeQuerySource)) violations.push('safeQuerySource is required and must reference an approved safe query source');
+    if (!SAFE_RISK_LEVELS.includes(record.riskTier)) violations.push(`riskTier must be one of ${SAFE_RISK_LEVELS.join(', ')}`);
+    if (record.filters.sourceIds.length === 0) violations.push('segments require at least one source filter');
+    if (!record.filters.dateRange.from || !record.filters.dateRange.to) violations.push('segments require bounded dateRange filters');
+    if (record.channel === 'email' && record.filters.email.required !== true) violations.push('email segments require email.required=true');
+    if (record.channel === 'sms' && record.filters.phone.required !== true) violations.push('SMS segments require phone.required=true');
+    if (record.filters.excludeUnsubscribed !== true) violations.push('segments must exclude unsubscribed records');
+    if (record.filters.excludeSuppressed !== true) violations.push('segments must exclude suppressed records');
+  }
   if (entityType === 'campaigns' && record.status !== 'draft') violations.push('Phase 1 campaigns must be created as draft only');
   if (entityType === 'integrations' && record.secretsStoredExternally !== true) violations.push('integration secrets must be stored externally');
   if (entityType === 'queryTemplates') {
@@ -224,4 +268,69 @@ function uniqueStrings(values = []) {
 function nonNegativeInteger(value) {
   const number = Number(value || 0);
   return Number.isFinite(number) && number > 0 ? Math.floor(number) : 0;
+}
+
+function buildModuleReadiness() {
+  return {
+    brandManager: {
+      requiredFields: ['name', 'domain', 'vertical', 'type', 'status', 'senderIdentity', 'complianceUrls'],
+      workflow: ['create brand', 'attach compliance URLs', 'review sender identity', 'audit changes'],
+    },
+    domainManager: {
+      requiredFields: ['domain', 'domainType', 'status', 'dnsStatus', 'sslStatus', 'senderReadiness'],
+      workflow: ['inventory CRM/landing/sending/tracking domains', 'verify DNS', 'verify SSL', 'block sender readiness until compliance gates pass'],
+    },
+    listManager: {
+      requiredFields: ['name', 'safeQuerySource', 'channel', 'usableCount', 'suppressionCount', 'riskLevel'],
+      workflow: ['select approved safe query source', 'record usable count', 'record suppression count', 'assign risk level before activation'],
+    },
+    segmentBuilder: {
+      requiredFilters: [...REQUIRED_SEGMENT_FILTERS],
+      workflow: ['choose source/date/contact/geo/consent filters', 'exclude unsubscribes', 'exclude suppressions', 'review risk before materialization'],
+    },
+  };
+}
+
+function buildSenderDomainSeparation(domains) {
+  const crmDomain = domains.find((domain) => domain.domainType === 'crm') || null;
+  const sendingDomains = domains.filter((domain) => domain.domainType === 'sending');
+  return {
+    crmDomainUsedForSending: Boolean(crmDomain && crmDomain.senderReadiness === 'ready'),
+    crmDomain,
+    sendingDomains,
+  };
+}
+
+function normalizeSegmentFilters(filters) {
+  return {
+    sourceIds: uniqueStrings(filters.sourceIds),
+    dateRange: {
+      from: typeof filters.dateRange?.from === 'string' ? filters.dateRange.from : null,
+      to: typeof filters.dateRange?.to === 'string' ? filters.dateRange.to : null,
+    },
+    email: { required: Boolean(filters.email?.required), verifiedOnly: Boolean(filters.email?.verifiedOnly) },
+    phone: { required: Boolean(filters.phone?.required), verifiedOnly: Boolean(filters.phone?.verifiedOnly) },
+    geo: {
+      countries: uniqueStrings(filters.geo?.countries),
+      regions: uniqueStrings(filters.geo?.regions),
+    },
+    consentStates: uniqueStrings(filters.consentStates),
+    excludeUnsubscribed: filters.excludeUnsubscribed === true,
+    excludeSuppressed: filters.excludeSuppressed === true,
+  };
+}
+
+function validComplianceUrls(value) {
+  if (Array.isArray(value)) return value.length > 0;
+  if (!isObject(value)) return false;
+  return Boolean(value.privacy || value.unsubscribe || value.terms);
+}
+
+function isSafeQuerySource(value) {
+  const source = String(value || '');
+  return source.startsWith('query-template:') || source.startsWith('safe-query-');
+}
+
+function isObject(value) {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
