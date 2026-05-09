@@ -32,6 +32,7 @@ For Hostinger deployment and operations, use:
 - `ops/hostinger/rollback.sh`
 - `docs/hostinger-deployment-runbook.md`
 - `docs/github-repo-project-setup.md`
+- `docs/private-repo-compensating-controls.md`
 - `docs/production-route-map.md`
 
 ## Commands

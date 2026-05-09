@@ -24,6 +24,8 @@ Emergency administration remains possible for owners so Week-1 setup can recover
 
 Current limitation: GitHub returned HTTP 403 for both classic branch protection and repository rulesets on this private organization repository: `Upgrade to GitHub Pro or make this repository public to enable this feature.` Until the organization plan/repo visibility supports protection, treat `main` as operationally protected by owner discipline: merge via PR only, require passing Actions, and do not force-push or delete the branch.
 
+Phase 1 compensating controls are documented in `docs/private-repo-compensating-controls.md`, with production-critical ownership in `.github/CODEOWNERS` and PR gate prompts in `.github/pull_request_template.md`.
+
 ## GitHub Project mapping
 
 GitHub Project: `Mehyar CRM Command Center`
