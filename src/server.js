@@ -3,11 +3,17 @@ import http from 'node:http';
 import { auditLog } from './core/audit.js';
 import { AuthStore, seedAdmin } from './core/auth.js';
 import { buildDashboard } from './core/dashboard.js';
+import { collectDatabaseStatus } from './core/database-status.js';
 import { CommandCenterStore, routeEntityFromPath } from './core/command-center.js';
 import { evaluateCampaignTransition } from './compliance/gates.js';
 import { evaluateSegmentPlan } from './segments/builder.js';
 
-export function createApp({ authStore = new AuthStore({ auditLog }), audit = auditLog, commandCenter = new CommandCenterStore({ auditLog: audit }) } = {}) {
+export function createApp({
+  authStore = new AuthStore({ auditLog }),
+  audit = auditLog,
+  commandCenter = new CommandCenterStore({ auditLog: audit }),
+  databaseStatus = collectDatabaseStatus,
+} = {}) {
   seedAdmin(authStore);
   commandCenter.seedFirstBrand();
 
@@ -25,7 +31,8 @@ export function createApp({ authStore = new AuthStore({ auditLog }), audit = aud
         const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'dashboard:read' });
         if (!session) return null;
         audit.record({ actorId: session.userId, action: 'dashboard.viewed', resourceType: 'dashboard' });
-        return sendJson(res, 200, buildDashboard({ authStore, auditLog: audit, commandCenter }));
+        const database = await databaseStatus();
+        return sendJson(res, 200, buildDashboard({ authStore, auditLog: audit, commandCenter, database }));
       }
 
       if (method === 'GET' && pathname === '/api/command-center') {

@@ -14,7 +14,12 @@ export function buildDashboard({ authStore, auditLog, database = null, commandCe
     database: {
       status: databaseStatus,
       host: database?.host || null,
+      port: database?.port || null,
+      database: database?.database || null,
       migrations: database?.migrations || 'pending',
+      appliedMigrations: database?.appliedMigrations || 0,
+      pendingMigrations: database?.pendingMigrations || [],
+      configuredEnv: database?.configuredEnv || [],
     },
     auth: {
       status: auth.users > 0 ? 'ready' : 'needs_admin_seed',
