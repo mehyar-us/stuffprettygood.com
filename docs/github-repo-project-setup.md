@@ -48,7 +48,7 @@ Configured/expected secret names only; values must never be committed or printed
 - `HOSTINGER_HOST` (preferred) or `HOSTINGER_VPS_SERVER_IP`
 - `HOSTINGER_USER` (preferred) or `HOSTINGER_VPS_SERVER_USERNAME`
 - `HOSTINGER_PORT` (defaults to `22` when absent)
-- `DEPLOY_SUDO_PASSWORD` or `HOSTINGER_VPS_SERVER_PASS` if the deploy user requires sudo password auth
+- `DEPLOY_SUDO_PASSWORD_B64` if the deploy user requires sudo password auth
 - `PRODUCTION_ENV_B64`
 
 `PRODUCTION_ENV_B64` should be a base64-encoded production `.env` payload containing runtime app settings only. Keep deploy credentials in separate GitHub Actions secrets.
@@ -60,7 +60,7 @@ Rollback path is documented in `docs/hostinger-deployment-runbook.md` and implem
 1. Identify prior release under `/opt/mehyarmedia-crm/releases`.
 2. Repoint `/opt/mehyarmedia-crm/current` to the prior release.
 3. Restart `mehyarmedia-crm.service`.
-4. Verify local health: `http://127.0.0.1:3000/health`.
-5. Verify public health: `https://mehyarmedia.mehyar.us/health`.
+4. Verify local health: `http://127.0.0.1:3000/crm-health`.
+5. Verify public health: `https://mehyarmedia.mehyar.us/crm-health`.
 
 Rollback preserves release artifacts and does not run destructive database queries.

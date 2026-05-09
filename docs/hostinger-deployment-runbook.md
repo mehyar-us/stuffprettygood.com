@@ -59,7 +59,7 @@ ssh -i "$HOSTINGER_SSH_PRIVATE_KEY_PATH" "$HOSTINGER_VPS_SERVER_USERNAME@$HOSTIN
   "APP_NAME='$APP_NAME' CRM_DOMAIN='$CRM_DOMAIN' LETSENCRYPT_EMAIL='$LETSENCRYPT_EMAIL' PORT='$PORT' bash -s" < ops/hostinger/configure-nginx-https.sh
 ```
 
-Script expectation: `curl -fsS https://$DOMAIN/health` returns healthy response.
+Script expectation: `curl -fsS https://$DOMAIN/crm-health` returns healthy CRM response.
 
 ## 4) CI/CD path
 
@@ -79,12 +79,12 @@ ssh -i "$HOSTINGER_SSH_PRIVATE_KEY_PATH" "$HOSTINGER_VPS_SERVER_USERNAME@$HOSTIN
 
 ## 6) Health checks
 
-- App local target (during activation): `http://127.0.0.1:3000/health`
-- Public target: `https://mehyarmedia.mehyar.us/health`
+- App local target (during activation): `http://127.0.0.1:3000/crm-health`
+- Public target: `https://mehyarmedia.mehyar.us/crm-health`
 
 Accept criteria:
 - return status 200
-- response contains `ok` keyword
+- JSON response contains `status: healthy`, `service: mehyarmedia-crm`, and `massSendingEnabled: false`
 
 ## 7) Secrets hygiene (non-negotiable)
 
