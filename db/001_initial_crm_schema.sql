@@ -82,15 +82,17 @@ CREATE TABLE IF NOT EXISTS campaigns (
   brand_id UUID NOT NULL REFERENCES brands(id) ON DELETE RESTRICT,
   name TEXT NOT NULL,
   channel TEXT NOT NULL CHECK (channel IN ('email', 'sms', 'web', 'push')),
-  status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'review', 'approved', 'blocked', 'archived')),
+  status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'review', 'remediation', 'future_pilot_approved', 'blocked', 'archived')),
   target_segment_id UUID NULL,
   copy JSONB NOT NULL DEFAULT '{}'::jsonb,
   sender TEXT NULL,
   suppression_status TEXT NOT NULL DEFAULT 'pending' CHECK (suppression_status IN ('pending', 'passed', 'failed')),
   compliance_status TEXT NOT NULL DEFAULT 'pending' CHECK (compliance_status IN ('pending', 'passed', 'failed')),
-  approval_status TEXT NOT NULL DEFAULT 'not_requested' CHECK (approval_status IN ('not_requested', 'requested', 'approved', 'rejected')),
+  approval_status TEXT NOT NULL DEFAULT 'not_requested' CHECK (approval_status IN ('not_requested', 'requested', 'future_pilot_approved', 'rejected', 'remediation')),
   send_enabled BOOLEAN NOT NULL DEFAULT false,
-  CONSTRAINT campaigns_no_mass_send_phase_1 CHECK (send_enabled = false),
+  provider_push_enabled BOOLEAN NOT NULL DEFAULT false,
+  recipient_export_enabled BOOLEAN NOT NULL DEFAULT false,
+  CONSTRAINT campaigns_no_mass_send_phase_1 CHECK (send_enabled = false AND provider_push_enabled = false AND recipient_export_enabled = false),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -135,10 +137,14 @@ CREATE TABLE IF NOT EXISTS segments (
 CREATE TABLE IF NOT EXISTS suppressions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   brand_id UUID NULL REFERENCES brands(id) ON DELETE SET NULL,
-  scope TEXT NOT NULL CHECK (scope IN ('global', 'brand', 'channel', 'legal', 'manual')),
-  channel TEXT NULL CHECK (channel IN ('email', 'sms')),
+  scope TEXT NOT NULL CHECK (scope IN ('global', 'brand', 'channel', 'contact', 'source', 'legal', 'manual')),
+  channel TEXT NULL CHECK (channel IN ('email', 'sms', 'all')),
   identifier_hash TEXT NOT NULL,
-  reason TEXT NOT NULL CHECK (reason IN ('global_unsubscribe', 'brand_unsubscribe', 'sms_stop', 'spam_complaint', 'hard_bounce', 'legal_suppression', 'manual_suppression')),
+  contact_hash TEXT NULL,
+  email_hash TEXT NULL,
+  phone_hash TEXT NULL,
+  source_id TEXT NULL,
+  reason TEXT NOT NULL CHECK (reason IN ('global_unsubscribe', 'brand_unsubscribe', 'sms_stop', 'spam_complaint', 'hard_bounce', 'soft_bounce_cooldown', 'legal_suppression', 'manual_suppression', 'invalid_contact_point', 'source_hold', 'prohibited_source', 'provider_warning_hold')),
   source TEXT NOT NULL,
   notes TEXT NULL,
   created_by UUID NULL REFERENCES crm_users(id) ON DELETE SET NULL,
@@ -206,6 +212,7 @@ CREATE INDEX IF NOT EXISTS idx_lists_channel_status ON lists(channel, status);
 CREATE INDEX IF NOT EXISTS idx_segments_source_risk ON segments(safe_query_source, risk_tier);
 CREATE INDEX IF NOT EXISTS segment_filters_source_date_channel_idx ON segments(safe_query_source, channel, risk_tier);
 CREATE INDEX IF NOT EXISTS idx_suppressions_identifier_hash ON suppressions(identifier_hash);
+CREATE INDEX IF NOT EXISTS idx_suppressions_contact_level ON suppressions(contact_hash, email_hash, phone_hash, source_id, reason);
 CREATE INDEX IF NOT EXISTS idx_integrations_kind_status ON integrations(kind, status);
 CREATE INDEX IF NOT EXISTS idx_query_templates_source_system ON query_templates(source_system);
 CREATE INDEX IF NOT EXISTS idx_sync_jobs_status ON sync_jobs(status, created_at DESC);

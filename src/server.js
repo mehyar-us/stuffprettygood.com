@@ -6,6 +6,7 @@ import { buildDashboard } from './core/dashboard.js';
 import { collectDatabaseStatus } from './core/database-status.js';
 import { CommandCenterStore, routeEntityFromPath } from './core/command-center.js';
 import { evaluateCampaignTransition } from './compliance/gates.js';
+import { SuppressionStore } from './compliance/suppression.js';
 import { evaluateSegmentPlan } from './segments/builder.js';
 
 export function createApp({
@@ -13,6 +14,7 @@ export function createApp({
   audit = auditLog,
   commandCenter = new CommandCenterStore({ auditLog: audit }),
   databaseStatus = collectDatabaseStatus,
+  suppressionStore = new SuppressionStore({ auditLog: audit }),
 } = {}) {
   seedAdmin(authStore);
   commandCenter.seedFirstBrand();
@@ -25,6 +27,87 @@ export function createApp({
 
       if (method === 'GET' && PUBLIC_HEALTH_PATHS.has(pathname)) {
         return sendJson(res, 200, { status: 'healthy', service: 'mehyarmedia-crm', massSendingEnabled: false });
+      }
+
+      if ((method === 'POST' || method === 'GET') && pathname === '/api/preferences/unsubscribe') {
+        const body = method === 'GET' ? {} : await readJson(req);
+        const token = method === 'GET' ? url.searchParams.get('token') : body.token;
+        const brandId = method === 'GET' ? url.searchParams.get('brandId') : body.brandId;
+        const scope = method === 'GET' ? (url.searchParams.get('scope') || 'brand_and_global') : (body.scope || 'brand_and_global');
+        const result = suppressionStore.recordEmailUnsubscribe({
+          token,
+          brandId,
+          scope,
+          actorId: 'public-unsubscribe',
+          requestId: req.headers['x-request-id'] || null,
+        });
+        return sendJson(res, 200, {
+          ok: true,
+          massSendingEnabled: false,
+          suppression: {
+            categories: result.categories,
+            effectiveBeforeFutureEligibility: true,
+          },
+        });
+      }
+
+      if ((method === 'POST' || method === 'GET') && pathname === '/api/preferences/sms-stop') {
+        const body = method === 'GET' ? {} : await readJson(req);
+        const token = method === 'GET' ? url.searchParams.get('token') : body.token;
+        const brandId = method === 'GET' ? url.searchParams.get('brandId') : body.brandId;
+        const result = suppressionStore.recordSmsStop({
+          token,
+          brandId,
+          actorId: 'public-sms-stop',
+          requestId: req.headers['x-request-id'] || null,
+        });
+        return sendJson(res, 200, {
+          ok: true,
+          massSendingEnabled: false,
+          suppression: {
+            categories: result.categories,
+            effectiveBeforeFutureEligibility: true,
+          },
+        });
+      }
+
+      if (method === 'POST' && pathname === '/api/consent-reviews') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'compliance:evaluate' });
+        if (!session) return null;
+        const body = await readJson(req);
+        const contactHash = String(body.contactHash || '').trim();
+        if (!contactHash) return sendJson(res, 422, { error: 'contactHash is required', massSendingEnabled: false });
+        audit.record({
+          actorId: session.userId,
+          action: 'consent.review.changed',
+          resourceType: 'consent_review',
+          resourceId: contactHash,
+          metadata: {
+            brandId: body.brandId || null,
+            reviewStatus: body.reviewStatus || null,
+            consentChannel: body.consentChannel || null,
+          },
+        });
+        return sendJson(res, 200, { ok: true, massSendingEnabled: false, review: { contactHash, reviewStatus: body.reviewStatus || null } });
+      }
+
+      const blockedExecutionAction = blockedExecutionActionFor(pathname);
+      if (method === 'POST' && blockedExecutionAction) {
+        const token = bearerToken(req);
+        const session = authStore.getSession(token);
+        audit.record({
+          actorId: session?.userId || 'anonymous',
+          action: `execution.${blockedExecutionAction}.denied`,
+          resourceType: 'execution_control',
+          resourceId: pathname,
+          metadata: {
+            path: pathname,
+            method,
+            reason: 'phase_1_no_send_export_or_provider_push',
+            authenticated: Boolean(session),
+          },
+        });
+        return sendJson(res, 403, { error: `${blockedExecutionAction.replace('_', ' ')} blocked in Phase 1`, massSendingEnabled: false });
       }
 
       if (method === 'GET' && pathname === '/api/dashboard') {
@@ -154,6 +237,13 @@ function normalizePathname(pathname) {
   if (pathname.startsWith('/crm/api/')) return pathname.replace('/crm/api/', '/api/');
   if (pathname === '/crm/api') return '/api';
   return pathname;
+}
+
+function blockedExecutionActionFor(pathname) {
+  if (pathname === '/api/campaigns/send') return 'send';
+  if (pathname === '/api/campaigns/export') return 'export';
+  if (pathname === '/api/campaigns/provider-push') return 'provider_push';
+  return null;
 }
 
 function requirePermission({ req, res, authStore, audit, pathname, permission }) {

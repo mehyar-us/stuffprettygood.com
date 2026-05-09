@@ -1,20 +1,15 @@
 export const CAMPAIGN_STATUSES = Object.freeze([
   'draft',
   'review',
-  'approved',
-  'scheduled',
-  'active',
-  'sent',
+  'remediation',
+  'future_pilot_approved',
   'paused',
   'cancelled',
 ]);
 
 export const STATUSES_REQUIRING_APPROVAL = Object.freeze([
   'review',
-  'approved',
-  'scheduled',
-  'active',
-  'sent',
+  'future_pilot_approved',
 ]);
 
 export const REQUIRED_SUPPRESSION_CATEGORIES = Object.freeze([
@@ -23,8 +18,13 @@ export const REQUIRED_SUPPRESSION_CATEGORIES = Object.freeze([
   'sms_stop',
   'spam_complaint',
   'hard_bounce',
+  'soft_bounce_cooldown',
   'legal_suppression',
   'manual_suppression',
+  'invalid_contact_point',
+  'source_hold',
+  'prohibited_source',
+  'provider_warning_hold',
 ]);
 
 const APPROVED = 'approved';
@@ -102,13 +102,18 @@ export function evaluateCampaignTransition({ campaign = {}, targetStatus, actorI
     return auditDecision({ campaign, targetStatus, actorId, now, allowed: false, reasons: [`unknown target status: ${targetStatus}`] });
   }
 
-  if (targetStatus === 'draft' || targetStatus === 'cancelled' || targetStatus === 'paused') {
+  if (targetStatus === 'draft' || targetStatus === 'cancelled' || targetStatus === 'paused' || targetStatus === 'remediation') {
     return auditDecision({ campaign, targetStatus, actorId, now, allowed: true, reasons: [] });
   }
 
   const suppression = validateSuppressionApproval(campaign.suppressionApproval);
   const compliance = validateComplianceApproval(campaign.complianceApproval, campaign);
   const reasons = [...suppression.reasons, ...compliance.reasons];
+
+  if (targetStatus === 'future_pilot_approved') {
+    const pilotAuthorization = validatePilotAuthorization(campaign.pilotAuthorization);
+    reasons.push(...pilotAuthorization.reasons);
+  }
 
   return auditDecision({
     campaign,
@@ -118,6 +123,28 @@ export function evaluateCampaignTransition({ campaign = {}, targetStatus, actorI
     allowed: reasons.length === 0,
     reasons,
   });
+}
+
+export function validatePilotAuthorization(authorization = {}) {
+  const reasons = [];
+
+  if (authorization.state !== APPROVED) {
+    reasons.push('future pilot approval requires separate pilot authorization');
+  }
+  if (!authorization.authorizedBy) {
+    reasons.push('future pilot authorization requires authorizedBy');
+  }
+  if (!authorization.authorizedAt) {
+    reasons.push('future pilot authorization requires authorizedAt');
+  }
+  if (authorization.externalExecutionAllowed === true || authorization.providerPushAllowed === true || authorization.recipientExportAllowed === true) {
+    reasons.push('future pilot approval cannot authorize send, export, or provider push in Phase 1');
+  }
+
+  return {
+    ok: reasons.length === 0,
+    reasons,
+  };
 }
 
 function auditDecision({ campaign, targetStatus, actorId, now, allowed, reasons }) {
