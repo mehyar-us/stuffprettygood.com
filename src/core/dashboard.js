@@ -36,6 +36,7 @@ export function buildDashboard({ authStore, auditLog, database = null, commandCe
       integrations: { status: 'external_secret_required', total: commandSummary?.counts.integrations || 0 },
       segments: { status: 'safe_preview_available', materializationRequiresApproval: true, maxPreviewRows: 100 },
       suppressions: { status: 'compliance_gate_available', blockingCategories: 7 },
+      pilotReadiness: commandSummary?.pilotReadiness || null,
       riskAlerts: [
         'No mass sending endpoint enabled in Phase 1',
         'Legacy IONOS source must remain read-only with limited previews',

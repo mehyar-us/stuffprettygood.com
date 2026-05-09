@@ -1,3 +1,11 @@
+import {
+  REQUIRED_SUPPRESSION_CATEGORIES,
+  validateComplianceApproval,
+  validateSuppressionApproval,
+} from '../compliance/gates.js';
+
+const PILOT_BRAND_DOMAIN = 'stuffprettygood.com';
+
 const ENTITY_CONFIG = Object.freeze({
   brands: {
     required: ['name', 'domain', 'vertical', 'type', 'status', 'senderIdentity', 'complianceUrls'],
@@ -185,6 +193,7 @@ export class CommandCenterStore {
       crmDomain: this.records.get('domains').find((domain) => domain.domainType === 'crm') || null,
       legacySource: this.legacySource,
       moduleReadiness: buildModuleReadiness(),
+      pilotReadiness: buildPilotReadiness(this.records),
       senderDomainSeparation: buildSenderDomainSeparation(this.records.get('domains')),
       guardrails: [
         'campaigns remain draft-only until suppression and compliance approvals pass',
@@ -288,6 +297,83 @@ function buildModuleReadiness() {
       requiredFilters: [...REQUIRED_SEGMENT_FILTERS],
       workflow: ['choose source/date/contact/geo/consent filters', 'exclude unsubscribes', 'exclude suppressions', 'review risk before materialization'],
     },
+  };
+}
+
+function buildPilotReadiness(records) {
+  const brands = records.get('brands') || [];
+  const domains = records.get('domains') || [];
+  const segments = records.get('segments') || [];
+  const campaigns = records.get('campaigns') || [];
+
+  const brand = brands.find((candidate) => candidate.domain === PILOT_BRAND_DOMAIN) || null;
+  const landingDomain = domains.find((domain) => domain.domain === PILOT_BRAND_DOMAIN) || null;
+  const sendingDomain = domains.find((domain) => domain.domainType === 'sending' && domain.domain.endsWith(PILOT_BRAND_DOMAIN)) || null;
+  const pilotCampaign = campaigns.find((campaign) => campaign.brandId === brand?.id || campaign.brandDomain === PILOT_BRAND_DOMAIN) || null;
+  const approvedSegment = segments.find((segment) => ['approved', 'ready', 'materialized'].includes(segment.status) && segment.materializationAllowed === true) || null;
+  const suppression = validateSuppressionApproval(pilotCampaign?.suppressionApproval);
+  const compliance = validateComplianceApproval(pilotCampaign?.complianceApproval, pilotCampaign || { channel: 'email' });
+  const senderDomainReady = sendingDomain?.senderReadiness === 'ready' && sendingDomain?.status === 'active';
+  const approvalReady = pilotCampaign?.approvalStatus === 'approved';
+
+  const gateFailures = [
+    ...(!brand ? ['pilot brand record missing'] : []),
+    ...(!approvedSegment ? ['pilot segment is not approved/materialized'] : []),
+    ...suppression.reasons.map((reason) => `suppression: ${reason}`),
+    ...compliance.reasons.map((reason) => `compliance: ${reason}`),
+    ...(!senderDomainReady ? ['sender/domain readiness is blocked'] : []),
+    ...(!approvalReady ? ['Boss/operator approval is not granted'] : []),
+  ];
+  const allGatesPassed = gateFailures.length === 0;
+
+  return {
+    brandDomain: PILOT_BRAND_DOMAIN,
+    overallStatus: allGatesPassed ? 'ready_for_reviewed_export' : 'blocked',
+    allGatesPassed,
+    segment: {
+      status: approvedSegment ? 'ready' : 'not_ready',
+      segmentId: approvedSegment?.id || null,
+      materializationAllowed: Boolean(approvedSegment?.materializationAllowed),
+      reason: approvedSegment ? null : 'no approved/materialized pilot segment is available',
+    },
+    suppression: {
+      status: suppression.ok ? 'approved' : 'pending_approval',
+      ok: suppression.ok,
+      requiredCategories: [...REQUIRED_SUPPRESSION_CATEGORIES],
+      missingOrBlockingReasons: suppression.reasons,
+    },
+    compliance: {
+      status: compliance.ok ? 'approved' : 'pending_approval',
+      ok: compliance.ok,
+      requiredChecks: ['legal_basis', 'sender_identity', 'unsubscribe_url_or_sms_stop', 'unresolved_findings_clear'],
+      missingOrBlockingReasons: compliance.reasons,
+    },
+    senderDomain: {
+      status: senderDomainReady ? 'ready' : 'blocked',
+      landingDomain: landingDomain?.domain || null,
+      sendingDomain: sendingDomain?.domain || null,
+      senderReadiness: sendingDomain?.senderReadiness || 'not_configured',
+      reason: senderDomainReady ? null : 'sending domain is not active and sender-ready',
+    },
+    approval: {
+      status: approvalReady ? 'approved' : 'not_requested',
+      campaignId: pilotCampaign?.id || null,
+      campaignStatus: pilotCampaign?.status || 'not_created',
+    },
+    blockedActions: {
+      send: true,
+      export: !allGatesPassed,
+      providerPush: !allGatesPassed,
+      reasons: [
+        'mass sending is disabled in Phase 1',
+        ...(!suppression.ok ? ['pilot requires approved suppression review'] : []),
+        ...(!compliance.ok ? ['pilot requires approved compliance review'] : []),
+        ...(!approvedSegment ? ['pilot requires approved segment readiness'] : []),
+        ...(!senderDomainReady ? ['pilot requires sender/domain readiness'] : []),
+        ...(!approvalReady ? ['pilot requires explicit approval'] : []),
+      ],
+    },
+    gateFailures,
   };
 }
 

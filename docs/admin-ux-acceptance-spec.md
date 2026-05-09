@@ -42,6 +42,7 @@ User goal: understand operational readiness and highest risks in under one minut
 Acceptance criteria:
 
 - Screen shows API health, local database readiness, legacy IONOS status, audit status, and deployment/CI status.
+- Screen shows Stuff Pretty Good pilot readiness: segment status, suppression status, compliance status, sender/domain readiness, approval status, and blocked send/export/provider-push states.
 - Screen shows counts for brands, domains, lists, campaigns, suppressions, integrations, and safe query templates.
 - Risk alerts appear above routine metrics.
 - Alerts include missing compliance URLs, unverified DNS/SSL, blocked sending readiness, high suppression overlap, legacy source failures, and campaigns blocked by approvals.

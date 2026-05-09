@@ -52,12 +52,14 @@ Primary components:
 
 - Health summary cards: API, local PostgreSQL, legacy IONOS, audit log, CI/CD/deployment state.
 - Business object cards: brands, domains, lists, campaigns, suppressions, integrations.
+- Stuff Pretty Good pilot readiness panel: segment gate, suppression gate, compliance gate, sender/domain gate, approval gate, and blocked send/export/provider-push actions.
 - Risk alert panel: unapproved campaigns, missing compliance URLs, unverified DNS/SSL, legacy source errors, high-risk segment overlap.
 - Recent audit feed.
 
 Acceptance checklist:
 
 - Dashboard exposes system health and database status.
+- Dashboard exposes Stuff Pretty Good pilot readiness gates before any export/provider-push decision.
 - Dashboard shows lead/list/campaign/suppression summaries without exposing raw secrets.
 - Risk alerts are visible above routine metrics.
 - Each dashboard metric links to its owner module.

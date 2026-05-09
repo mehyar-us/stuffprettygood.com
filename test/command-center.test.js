@@ -19,6 +19,28 @@ test('command center seeds first brand, CRM domain, and legacy integration with 
   assert.equal(summary.counts.integrations, 1);
 });
 
+test('command center exposes stuffprettygood pilot readiness gates and blocks send/export until approvals pass', () => {
+  const store = new CommandCenterStore({ now: () => '2026-04-29T16:00:00.000Z' });
+  store.seedFirstBrand();
+
+  const summary = store.buildSummary();
+  const readiness = summary.pilotReadiness;
+
+  assert.equal(readiness.brandDomain, 'stuffprettygood.com');
+  assert.equal(readiness.overallStatus, 'blocked');
+  assert.equal(readiness.allGatesPassed, false);
+  assert.equal(readiness.segment.status, 'not_ready');
+  assert.equal(readiness.suppression.status, 'pending_approval');
+  assert.equal(readiness.compliance.status, 'pending_approval');
+  assert.equal(readiness.senderDomain.status, 'blocked');
+  assert.equal(readiness.approval.status, 'not_requested');
+  assert.equal(readiness.blockedActions.send, true);
+  assert.equal(readiness.blockedActions.export, true);
+  assert.equal(readiness.blockedActions.providerPush, true);
+  assert.ok(readiness.blockedActions.reasons.includes('pilot requires approved suppression review'));
+  assert.ok(readiness.suppression.requiredCategories.includes('sms_stop'));
+});
+
 test('command center rejects unsafe records and preserves Phase 1 guardrails', () => {
   const store = new CommandCenterStore();
 
@@ -99,6 +121,9 @@ test('HTTP command center routes manage brands, domains, lists, integrations, qu
     assert.equal(dashboard.status, 200);
     assert.equal(dashboard.body.widgets.domains.crmDomain, 'mehyarmedia.mehyar.us');
     assert.equal(dashboard.body.widgets.campaigns.massSendingEnabled, false);
+    assert.equal(dashboard.body.widgets.pilotReadiness.brandDomain, 'stuffprettygood.com');
+    assert.equal(dashboard.body.widgets.pilotReadiness.blockedActions.send, true);
+    assert.equal(dashboard.body.widgets.pilotReadiness.blockedActions.export, true);
   } finally {
     await close(server);
   }
