@@ -53,6 +53,12 @@ test('public health remains accessible while admin APIs require authenticated ad
     assert.equal(denialEvent.metadata.path, '/api/dashboard');
     assert.equal(denialEvent.metadata.reason, 'missing_session');
     assert.equal(Object.hasOwn(denialEvent.metadata, 'authorization'), false);
+
+    const audit = await requestJson(`${baseUrl}/api/audit`, {
+      headers: { authorization: `Bearer ${login.body.session.id}` },
+    });
+    assert.equal(audit.status, 200);
+    assert.equal(JSON.stringify(audit.body.events).includes('@mehyarmedia.local'), false);
   } finally {
     await close(server);
   }

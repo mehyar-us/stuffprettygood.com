@@ -44,7 +44,7 @@ export class AuthStore {
       createdAt: this.now().toISOString(),
     });
     this.users.set(normalizedEmail, user);
-    this.auditLog?.record({ actorId, action: 'auth.user.created', resourceType: 'user', resourceId: user.id, metadata: { email: normalizedEmail, role } });
+    this.auditLog?.record({ actorId, action: 'auth.user.created', resourceType: 'user', resourceId: user.id, metadata: { role } });
     return publicUser(user);
   }
 
@@ -52,7 +52,7 @@ export class AuthStore {
     const normalizedEmail = (email || '').trim().toLowerCase();
     const user = this.users.get(normalizedEmail);
     if (!user || user.passwordHash !== hash(password || '')) {
-      this.auditLog?.record({ actorId: actorId || normalizedEmail || 'anonymous', action: 'auth.login.failed', resourceType: 'session', metadata: { email: normalizedEmail } });
+      this.auditLog?.record({ actorId: actorId || (normalizedEmail ? `login_${hash(normalizedEmail).slice(0, 12)}` : 'anonymous'), action: 'auth.login.failed', resourceType: 'session', metadata: { identifierHash: normalizedEmail ? hash(normalizedEmail).slice(0, 12) : null } });
       return { ok: false, error: 'invalid credentials' };
     }
 
@@ -67,7 +67,7 @@ export class AuthStore {
       expiresAt: new Date(createdAt.getTime() + ttlMs).toISOString(),
     });
     this.sessions.set(session.id, session);
-    this.auditLog?.record({ actorId: user.id, action: 'auth.login.succeeded', resourceType: 'session', resourceId: session.id, metadata: { role: user.role } });
+    this.auditLog?.record({ actorId: user.id, action: 'auth.login.succeeded', resourceType: 'session', resourceId: null, metadata: { role: user.role } });
     return { ok: true, session, user: publicUser(user) };
   }
 

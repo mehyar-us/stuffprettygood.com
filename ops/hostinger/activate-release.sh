@@ -31,8 +31,10 @@ run_sudo mkdir -p "$RELEASES_DIR" "$SHARED_DIR" "$DEPLOY_PATH/backups" "$DEPLOY_
 run_sudo chown -R "$APP_USER:deploy" "$DEPLOY_PATH"
 run_sudo chmod -R g+rwX "$DEPLOY_PATH"
 
-mkdir -p "$RELEASE_DIR"
-tar --no-same-owner --no-same-permissions --delay-directory-restore -xzf "$ARTIFACT" -C "$RELEASE_DIR"
+run_sudo mkdir -p "$RELEASE_DIR"
+run_sudo tar --no-same-owner --no-same-permissions --delay-directory-restore -xzf "$ARTIFACT" -C "$RELEASE_DIR"
+run_sudo chown -R "$APP_USER:deploy" "$RELEASE_DIR"
+run_sudo chmod -R g+rwX "$RELEASE_DIR"
 
 if [ -n "${DEPLOY_ENV_B64:-}" ]; then
   ENV_TMP="$(mktemp)"
