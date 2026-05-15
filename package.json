@@ -8,7 +8,11 @@
     "start": "node src/server.js",
     "test": "node --test",
     "compliance:demo": "node src/compliance/gates.js",
-    "segments:demo": "node src/segments/builder.js"
+    "segments:demo": "node src/segments/builder.js",
+    "spg:trends:fetch": "node scripts/fetch-google-trends.mjs data/google-trends-snapshot.json",
+    "spg:trends:update": "node scripts/update-trend-offers.mjs data/google-trends-snapshot.json src/spg/trending-offers.js",
+    "spg:trends:build": "node scripts/build-spg-trend-pages.mjs",
+    "spg:trends:daily": "npm run spg:trends:fetch && npm run spg:trends:update && npm run spg:trends:build && npm test"
   },
   "engines": {
     "node": ">=20"

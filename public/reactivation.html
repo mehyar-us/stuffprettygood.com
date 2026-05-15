@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Return Credit and Preference Reset | StuffPrettyGood</title>
+  <meta name="description" content="Low-pressure reactivation page for return credit, private drops, AI/business offers, updates, or unsubscribe.">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body class="">
+  <a class="skip-link" href="#main">Skip to content</a>
+  
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="/index.html">StuffPrettyGood</a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+  <div id="nav-links" class="nav-links">
+    <a href="/ai-tool-stack-quiz.html">Quiz</a>
+    <a href="/tools-by-job/index.html">Tools by Job</a>
+    <a href="/starter-kits/solopreneur-automation.html">Starter Kit</a>
+    <a href="/savings-finder.html">Savings Finder</a>
+    <a href="/ai-readiness-score.html">AI Readiness</a>
+    <a href="/templates.html">Templates</a>
+    <a href="/reactivation.html">Return Credit</a>
+    <a href="/crm-command-center-ux.html">CRM UX</a>
+    <a href="/deals.html">Deals</a>
+    <a href="/preferences.html">Preferences</a>
+    <a class="nav-cta" href="/ai-tool-stack-quiz.html">Take quiz</a>
+  </div>
+</nav>
+  <main id="main">
+<section class="hero compact surface" data-surface="reactivation-return-credit" data-crm-events="reactivation_page_viewed,return_credit_claim_started,return_credit_claimed,private_drop_interest,ai_business_offer_interest,stuffprettygood_updates_optin,preferences_updated,global_unsubscribe">
+  <p class="eyebrow">Preference-first reactivation</p>
+  <h1>Choose whether StuffPrettyGood should be useful to you again.</h1>
+  <p class="lede">Claim a return-credit placeholder, ask for private drops, request AI/business offers, get StuffPrettyGood updates, or unsubscribe from everything. No guaranteed reward, no hidden send, no SMS.</p>
+  <div class="cta-row"><a class="button primary" href="#claim">Claim return credit</a><a class="button" href="/unsubscribe.html">Unsubscribe everything</a></div>
+</section>
+<section class="cards three" aria-label="Reactivation choices">
+  <article class="card"><p class="eyebrow">Option 1</p><h2>Return credit</h2><p>A future credit or perk placeholder if approved. No guaranteed dollar value is promised.</p></article>
+  <article class="card"><p class="eyebrow">Option 2</p><h2>Private drops</h2><p>Opt into practical offers, sponsor-funded giveaways, or tool drops only if they match your preferences.</p></article>
+  <article class="card"><p class="eyebrow">Option 3</p><h2>AI/business offers</h2><p>Get AI tools, templates, software savings, and MehyarSoft setup options after explicit interest.</p></article>
+</section>
+<form id="claim" class="grid-form" data-form="reactivation-return-credit">
+  <label for="return_credit_interest">Return-credit interest</label><select id="return_credit_interest" name="return_credit_interest"><option>Interested if approved</option><option>Private drops only</option><option>AI/business offers only</option><option>Updates only</option><option>Unsubscribe everything</option></select>
+  <label for="reactivation_topic">What should we send, if anything?</label><select id="reactivation_topic" name="reactivation_topic"><option>AI tools</option><option>Software savings</option><option>Templates</option><option>Private drops</option><option>StuffPrettyGood updates</option><option>Nothing</option></select>
+  <label for="preferred_channel">Preferred channel</label><select id="preferred_channel" name="preferred_channel"><option>Email opt-in only</option><option>Preference center only</option><option>No messages</option></select>
+  <label for="reactivation_email">Email to update preferences</label><input id="reactivation_email" name="reactivation_email" type="email"><p class="hint">Prototype redacts raw email in frontend events. Production must write suppression/preference audit server-side.</p>
+  <label class="check"><input type="checkbox" name="affiliate_disclosure_seen" required> I saw the affiliate disclosure and understand offers may be tracked if approved.</label>
+  <label class="check"><input type="checkbox" name="no_sms_acknowledged" required> I understand this is not SMS consent and no SMS should be sent from this form.</label>
+  <button type="submit">Save reactivation preference</button>
+</form>
+<section class="panel status-panel"><h2>No-send state is intentional</h2><p><span class="status no-go">NO-SEND</span> Production must pass unsubscribe, suppression, provider, audit, and copy-review gates before any outbound reactivation send. This page is safe as an on-site preference capture surface.</p></section></main>
+  
+<footer class="footer">
+  <section class="disclosure" data-crm-event="disclosure_seen">
+    <strong>Affiliate disclosure:</strong> StuffPrettyGood may earn a commission or referral credit if you use some links. Recommendations are practical starting points, not guarantees, rankings, or professional advice.
+  </section>
+  <section class="foot-grid" aria-label="Compliance links">
+    <a href="/affiliate-disclosure.html">Affiliate disclosure</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/preferences.html">Preferences</a><a href="/unsubscribe.html">Unsubscribe</a>
+  </section>
+  <p class="fineprint">No mass activation, no provider push, no export, and no send are available from this public MVP. We never ask for passwords, secrets, invoices, payment details, health details, or other sensitive information.</p>
+</footer>
+</body>
+</html>

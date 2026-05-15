@@ -1,0 +1,438 @@
+{
+  "name": "StuffPrettyGood recurring Scout source list",
+  "generated_at": "2026-05-15T13:26:07.010Z",
+  "source_snapshot": "data/google-trends-snapshot.json",
+  "authority": "Scout Tier 0 source discovery; no sends, no scraping, no spend, no public claims beyond generated site copy",
+  "amazon_associates_tag": "mehyarmedia-20",
+  "guardrails": [
+    "Use trends as editorial/offer discovery signals, not as proof of product quality.",
+    "Do not scrape Amazon prices/images/reviews; use manual Associates links only until PA-API access exists.",
+    "Outbound email/SMS remains blocked until compliance gates approve explicit cohorts.",
+    "Use Amazon manual search/deep links only with disclosure-visible /go bridges.",
+    "Do not activate pending direct/referral/sponsor targets until terms and landing URLs are reviewed.",
+    "No raw PII, no raw secrets, no email/SMS activation from this cadence."
+  ],
+  "ranked_trend_lanes": [
+    {
+      "rank_score": 245.9,
+      "recommendation": "pursue",
+      "slug": "weekend-hobby-kits",
+      "trend_lane": "Weekend hobby kits: indoor gardens, sourdough, pickleball",
+      "seed": "indoor garden kit",
+      "momentum_pct": 1950,
+      "latest_index": 17,
+      "risk": "low",
+      "buyer_audience": "gift buyers, hobby starters, families, weekend project shoppers",
+      "pain_signal": "indoor smart herb garden kit, herb indoor garden kit, herb garden kit, indoor herb garden",
+      "offer_angle": "Weekend hobby starter-kit guide",
+      "first_test": "Keep/regenerate /trends/weekend-hobby-kits.html, route 2 compliant offers through /go/manual or signup CTA, measure lane views + /go clicks + preference starts.",
+      "revenue_model": "Amazon/manual links, retail affiliate programs, gift guide signup",
+      "amazon_manual_categories": [
+        "indoor garden kits",
+        "sourdough/hobby starter kits",
+        "pickleball starter accessories"
+      ],
+      "kill_criteria": "Kill/park if 7-day lane views <50, signup starts <3, /go CTR <0.5%, or source cannot be monetized without prohibited claims/scraping.",
+      "compliance_gate": "No email/SMS activation; no Amazon scraping; no copied prices/images/reviews/ratings/availability; visible affiliate disclosure; only approved /go targets active."
+    },
+    {
+      "rank_score": 188.6,
+      "recommendation": "pursue",
+      "slug": "portable-power-stations",
+      "trend_lane": "Portable power stations and solar generators",
+      "seed": "portable power station",
+      "momentum_pct": 387,
+      "latest_index": 27,
+      "risk": "medium",
+      "buyer_audience": "apartment dwellers, road trippers, storm prep buyers",
+      "pain_signal": "anker solix c1000 gen 2 portable power station, anker solix c2000 gen 2 portable power station, jackery explorer 1500 ultra portable power station, wattbricks 100w portable power station",
+      "offer_angle": "Backup power starter kit + Amazon manual links",
+      "first_test": "Keep/regenerate /trends/portable-power-stations.html, route 2 compliant offers through /go/manual or signup CTA, measure lane views + /go clicks + preference starts.",
+      "revenue_model": "Amazon Associates manual links, direct brand programs, preparedness checklist opt-in",
+      "amazon_manual_categories": [
+        "portable power stations",
+        "solar generator kits",
+        "camping/emergency power accessories"
+      ],
+      "kill_criteria": "Kill/park if 7-day lane views <50, signup starts <3, /go CTR <0.5%, or source cannot be monetized without prohibited claims/scraping.",
+      "compliance_gate": "No email/SMS activation; no Amazon scraping; no copied prices/images/reviews/ratings/availability; visible affiliate disclosure; only approved /go targets active."
+    },
+    {
+      "rank_score": 184.9,
+      "recommendation": "pursue",
+      "slug": "robot-vacuums-smart-home",
+      "trend_lane": "Robot vacuums and smart-home helpers",
+      "seed": "robot vacuum",
+      "momentum_pct": 348,
+      "latest_index": 38,
+      "risk": "low",
+      "buyer_audience": "busy families, pet owners, renters, smart-home buyers",
+      "pain_signal": "eufy robot vacuum omni e25, best robot vacuum 2026, shark stratos 2-in-1 robot vacuum & mop, best robot vacuum 2025",
+      "offer_angle": "Robot vacuum and smart apartment guide",
+      "first_test": "Keep/regenerate /trends/robot-vacuums-smart-home.html, route 2 compliant offers through /go/manual or signup CTA, measure lane views + /go clicks + preference starts.",
+      "revenue_model": "Amazon/manual links, smart-home affiliate programs",
+      "amazon_manual_categories": [
+        "robot vacuums/mops",
+        "smart plugs/sensors",
+        "apartment cleaning helpers"
+      ],
+      "kill_criteria": "Kill/park if 7-day lane views <50, signup starts <3, /go CTR <0.5%, or source cannot be monetized without prohibited claims/scraping.",
+      "compliance_gate": "No email/SMS activation; no Amazon scraping; no copied prices/images/reviews/ratings/availability; visible affiliate disclosure; only approved /go targets active."
+    },
+    {
+      "rank_score": 170.9,
+      "recommendation": "pursue",
+      "slug": "pet-tech-safety",
+      "trend_lane": "Pet tech: GPS trackers, cameras, and travel safety",
+      "seed": "dog GPS tracker",
+      "momentum_pct": 346,
+      "latest_index": 29,
+      "risk": "medium",
+      "buyer_audience": "dog owners, travelers, apartment pet owners",
+      "pain_signal": "optimus gps tracker, mini gps tracker, gps tracker for car, gps tracker for dog",
+      "offer_angle": "Pet safety tech starter kit",
+      "first_test": "Keep/regenerate /trends/pet-tech-safety.html, route 2 compliant offers through /go/manual or signup CTA, measure lane views + /go clicks + preference starts.",
+      "revenue_model": "Amazon/manual links, pet retailer affiliates, direct programs",
+      "amazon_manual_categories": [
+        "dog GPS trackers",
+        "pet cameras",
+        "pet travel safety gear"
+      ],
+      "kill_criteria": "Kill/park if 7-day lane views <50, signup starts <3, /go CTR <0.5%, or source cannot be monetized without prohibited claims/scraping.",
+      "compliance_gate": "No email/SMS activation; no Amazon scraping; no copied prices/images/reviews/ratings/availability; visible affiliate disclosure; only approved /go targets active."
+    },
+    {
+      "rank_score": 155.4,
+      "recommendation": "pursue",
+      "slug": "air-purifiers",
+      "trend_lane": "Air purifiers and small-space air quality",
+      "seed": "air purifier",
+      "momentum_pct": 297,
+      "latest_index": 48,
+      "risk": "medium",
+      "buyer_audience": "pet owners, renters, parents, bedroom/home office shoppers",
+      "pain_signal": "dyson hushjet compact air purifier, portable air purifier, car air purifier, miko air purifier",
+      "offer_angle": "Air purifier finder for bedrooms, pets, and apartments",
+      "first_test": "Keep/regenerate /trends/air-purifiers.html, route 2 compliant offers through /go/manual or signup CTA, measure lane views + /go clicks + preference starts.",
+      "revenue_model": "Amazon Associates manual links, retailer direct programs",
+      "amazon_manual_categories": [
+        "HEPA air purifiers",
+        "air quality monitors",
+        "replacement-filter reminder content only"
+      ],
+      "kill_criteria": "Kill/park if 7-day lane views <50, signup starts <3, /go CTR <0.5%, or source cannot be monetized without prohibited claims/scraping.",
+      "compliance_gate": "No email/SMS activation; no Amazon scraping; no copied prices/images/reviews/ratings/availability; visible affiliate disclosure; only approved /go targets active."
+    },
+    {
+      "rank_score": 103.2,
+      "recommendation": "pursue",
+      "slug": "walking-pad-desk",
+      "trend_lane": "Walking pads, standing desks, and compact home office",
+      "seed": "walking pad",
+      "momentum_pct": 158,
+      "latest_index": 49,
+      "risk": "low",
+      "buyer_audience": "remote workers, creators, operators, small apartment buyers",
+      "pain_signal": "compact treadmill, compact walking pad, portable walking pad, walking pad for under desk",
+      "offer_angle": "Small-space office movement setup",
+      "first_test": "Keep/regenerate /trends/walking-pad-desk.html, route 2 compliant offers through /go/manual or signup CTA, measure lane views + /go clicks + preference starts.",
+      "revenue_model": "Amazon/manual links, office furniture affiliates, setup checklist",
+      "amazon_manual_categories": [
+        "under-desk walking pads",
+        "standing desk accessories",
+        "small-space office ergonomics"
+      ],
+      "kill_criteria": "Kill/park if 7-day lane views <50, signup starts <3, /go CTR <0.5%, or source cannot be monetized without prohibited claims/scraping.",
+      "compliance_gate": "No email/SMS activation; no Amazon scraping; no copied prices/images/reviews/ratings/availability; visible affiliate disclosure; only approved /go targets active."
+    },
+    {
+      "rank_score": 101.1,
+      "recommendation": "watch",
+      "slug": "meal-prep-starter-kit",
+      "trend_lane": "Meal prep containers and protein snack kits",
+      "seed": "meal prep containers",
+      "momentum_pct": 187,
+      "latest_index": 34,
+      "risk": "medium",
+      "buyer_audience": "busy workers, students, families, budget shoppers",
+      "pain_signal": "cooking for gains, cooking for gains meal prep containers, lidl near me, best meal prep containers",
+      "offer_angle": "Meal prep starter kit and snack finder",
+      "first_test": "Keep/regenerate /trends/meal-prep-starter-kit.html, route 2 compliant offers through /go/manual or signup CTA, measure lane views + /go clicks + preference starts.",
+      "revenue_model": "Amazon/manual links, grocery/coupon partners, checklist signup",
+      "amazon_manual_categories": [
+        "meal prep containers",
+        "protein snack storage",
+        "kitchen portion tools"
+      ],
+      "kill_criteria": "Kill/park if 7-day lane views <50, signup starts <3, /go CTR <0.5%, or source cannot be monetized without prohibited claims/scraping.",
+      "compliance_gate": "No email/SMS activation; no Amazon scraping; no copied prices/images/reviews/ratings/availability; visible affiliate disclosure; only approved /go targets active."
+    },
+    {
+      "rank_score": 86.9,
+      "recommendation": "pursue",
+      "slug": "travel-tech-esim",
+      "trend_lane": "Travel tech: eSIMs, backpacks, and compact gear",
+      "seed": "eSIM travel",
+      "momentum_pct": 131,
+      "latest_index": 37,
+      "risk": "low",
+      "buyer_audience": "travelers, digital nomads, families, remote workers",
+      "pain_signal": "travel news today, ai news today, roamless esim, openai news today",
+      "offer_angle": "Travel tech checklist and eSIM guide",
+      "first_test": "Keep/regenerate /trends/travel-tech-esim.html, route 2 compliant offers through /go/manual or signup CTA, measure lane views + /go clicks + preference starts.",
+      "revenue_model": "eSIM affiliate programs, travel gear manual links, checklist opt-in",
+      "amazon_manual_categories": [
+        "travel tech accessories",
+        "charging organizers",
+        "carry-on/backpack organizers"
+      ],
+      "kill_criteria": "Kill/park if 7-day lane views <50, signup starts <3, /go CTR <0.5%, or source cannot be monetized without prohibited claims/scraping.",
+      "compliance_gate": "No email/SMS activation; no Amazon scraping; no copied prices/images/reviews/ratings/availability; visible affiliate disclosure; only approved /go targets active."
+    },
+    {
+      "rank_score": 86.8,
+      "recommendation": "watch",
+      "slug": "home-wellness-gadgets",
+      "trend_lane": "Home wellness gadgets: red light, sauna, air quality",
+      "seed": "red light therapy",
+      "momentum_pct": 132,
+      "latest_index": 64,
+      "risk": "medium",
+      "buyer_audience": "wellness shoppers, home office buyers, gift buyers",
+      "pain_signal": "clara red light therapy mask, ihome red light therapy mask, inia red light mask, shark cryoglow mask",
+      "offer_angle": "At-home wellness gadget guide",
+      "first_test": "Keep/regenerate /trends/home-wellness-gadgets.html, route 2 compliant offers through /go/manual or signup CTA, measure lane views + /go clicks + preference starts.",
+      "revenue_model": "Amazon/manual affiliate, retailer affiliate, weekly picks",
+      "amazon_manual_categories": [
+        "red light panels",
+        "home recovery accessories",
+        "air quality helpers"
+      ],
+      "kill_criteria": "Kill/park if 7-day lane views <50, signup starts <3, /go CTR <0.5%, or source cannot be monetized without prohibited claims/scraping.",
+      "compliance_gate": "No email/SMS activation; no Amazon scraping; no copied prices/images/reviews/ratings/availability; visible affiliate disclosure; only approved /go targets active."
+    },
+    {
+      "rank_score": 56.3,
+      "recommendation": "watch",
+      "slug": "ai-note-takers",
+      "trend_lane": "AI note takers and meeting assistants",
+      "seed": "AI note taker",
+      "momentum_pct": 65,
+      "latest_index": 63,
+      "risk": "low",
+      "buyer_audience": "students, sales teams, recruiters, agencies, founders",
+      "pain_signal": "pocket, pocket ai, cluely, turboai",
+      "offer_angle": "AI meeting note taker short list + AI Tool Stack Quiz",
+      "first_test": "Keep/regenerate /trends/ai-note-takers.html, route 2 compliant offers through /go/manual or signup CTA, measure lane views + /go clicks + preference starts.",
+      "revenue_model": "SaaS affiliate/referral, setup audit, newsletter opt-in",
+      "amazon_manual_categories": [
+        "AI meeting recorders",
+        "USB/portable voice recorders",
+        "desk microphones for calls"
+      ],
+      "kill_criteria": "Kill/park if 7-day lane views <50, signup starts <3, /go CTR <0.5%, or source cannot be monetized without prohibited claims/scraping.",
+      "compliance_gate": "No email/SMS activation; no Amazon scraping; no copied prices/images/reviews/ratings/availability; visible affiliate disclosure; only approved /go targets active."
+    },
+    {
+      "rank_score": 55.1,
+      "recommendation": "watch",
+      "slug": "sleep-beauty-microtrends",
+      "trend_lane": "Sleep and beauty microtrends",
+      "seed": "sleep bonnet",
+      "momentum_pct": 74,
+      "latest_index": 48,
+      "risk": "medium",
+      "buyer_audience": "beauty shoppers, gift buyers, sleep-routine optimizers",
+      "pain_signal": "mulberry silk, mulberry silk bonnet, satin sleep cap, hair bonnet",
+      "offer_angle": "Low-lift sleep and beauty finds",
+      "first_test": "Keep/regenerate /trends/sleep-beauty-microtrends.html, route 2 compliant offers through /go/manual or signup CTA, measure lane views + /go clicks + preference starts.",
+      "revenue_model": "Amazon/manual links, beauty retailer programs, weekly picks",
+      "amazon_manual_categories": [
+        "sleep bonnets",
+        "silk/satin pillowcases",
+        "sleep masks"
+      ],
+      "kill_criteria": "Kill/park if 7-day lane views <50, signup starts <3, /go CTR <0.5%, or source cannot be monetized without prohibited claims/scraping.",
+      "compliance_gate": "No email/SMS activation; no Amazon scraping; no copied prices/images/reviews/ratings/availability; visible affiliate disclosure; only approved /go targets active."
+    }
+  ],
+  "direct_referral_programs": [
+    {
+      "program": "Amazon Associates manual/SiteStripe",
+      "url": "https://affiliate-program.amazon.com/",
+      "fit": "All physical-product lanes",
+      "status": "active-owned tag available",
+      "gate": "manual links only; visible disclosure; no PA-API/scraping/prices/images/reviews/ratings/availability"
+    },
+    {
+      "program": "Shopify affiliates",
+      "url": "https://www.shopify.com/affiliates",
+      "fit": "solopreneur/ecommerce tools pages",
+      "status": "verified public page 200",
+      "gate": "apply when SPG has traffic/content proof"
+    },
+    {
+      "program": "HubSpot affiliates",
+      "url": "https://www.hubspot.com/partners/affiliates",
+      "fit": "CRM/marketing/tool-stack pages",
+      "status": "verified public page 200",
+      "gate": "claim-safe software recommendations"
+    },
+    {
+      "program": "Canva partners directory",
+      "url": "https://partners.canva.com/",
+      "fit": "templates/content/creator stack",
+      "status": "verified redirect/public page 200",
+      "gate": "confirm affiliate acceptance before monetized routing"
+    },
+    {
+      "program": "Brevo partners",
+      "url": "https://www.brevo.com/partners/",
+      "fit": "email/CRM starter kit and marketing ops",
+      "status": "verified public page 200",
+      "gate": "avoid outbound-send claims; route as tool education only"
+    },
+    {
+      "program": "Airalo partners",
+      "url": "https://partners.airalo.com/",
+      "fit": "travel-tech eSIM lane",
+      "status": "verified public page 200",
+      "gate": "verify terms and landing URLs before /go activation"
+    },
+    {
+      "program": "Jackery affiliate program",
+      "url": "https://www.jackery.com/pages/affiliate-program",
+      "fit": "portable power station lane",
+      "status": "verified public page 200",
+      "gate": "avoid price/availability claims; direct program review"
+    },
+    {
+      "program": "Zapier partner/developer ecosystem",
+      "url": "https://zapier.com/partner",
+      "fit": "automation starter kits and AI readiness",
+      "status": "verified redirect/public page 200; partnership type needs review",
+      "gate": "treat as watch until monetization path is confirmed"
+    },
+    {
+      "program": "Make partner ecosystem",
+      "url": "https://www.make.com/en/partners",
+      "fit": "automation starter kits",
+      "status": "public path returned 403 to bot; human/manual verification needed",
+      "gate": "watch only until verified"
+    }
+  ],
+  "sponsor_targets": [
+    {
+      "category": "AI meeting assistants",
+      "example_targets": [
+        "Fathom",
+        "Fireflies.ai",
+        "Otter.ai",
+        "tl;dv",
+        "Granola"
+      ],
+      "angle": "sponsor the AI note taker quiz/results lane",
+      "proof_needed": "AI quiz completions + /go clicks"
+    },
+    {
+      "category": "Portable power / preparedness",
+      "example_targets": [
+        "Jackery",
+        "EcoFlow",
+        "Anker SOLIX",
+        "BLUETTI"
+      ],
+      "angle": "sponsor storm-prep checklist and power-station guide",
+      "proof_needed": "lane views + Amazon bridge clicks"
+    },
+    {
+      "category": "Air quality / smart home",
+      "example_targets": [
+        "Coway",
+        "Blueair",
+        "Shark",
+        "Levoit"
+      ],
+      "angle": "sponsor apartment/pet air-quality finder",
+      "proof_needed": "air-purifier page views + opt-ins"
+    },
+    {
+      "category": "Home-office movement",
+      "example_targets": [
+        "WalkingPad",
+        "FlexiSpot",
+        "Uplift Desk",
+        "Vari"
+      ],
+      "angle": "sponsor small-space office checklist",
+      "proof_needed": "remote-worker preferences"
+    },
+    {
+      "category": "eSIM/travel tech",
+      "example_targets": [
+        "Airalo",
+        "Holafly",
+        "Nomad",
+        "Saily"
+      ],
+      "angle": "sponsor travel tech checklist",
+      "proof_needed": "travel lane clicks + destination interest"
+    },
+    {
+      "category": "Pet tech",
+      "example_targets": [
+        "Tractive",
+        "Whistle",
+        "Furbo",
+        "Fi"
+      ],
+      "angle": "sponsor pet safety starter kit",
+      "proof_needed": "pet-tech page views + dog-owner preferences"
+    }
+  ],
+  "network_readiness_metrics": [
+    {
+      "metric": "trend_page_views",
+      "source": "public/trends.html + lane pages analytics",
+      "network_ready_threshold": "1,000+ 30-day views across trend pages",
+      "status": "instrumentation path defined; live analytics/import not proven here"
+    },
+    {
+      "metric": "lane_views_by_slug",
+      "source": "data-trend-lane attributes",
+      "network_ready_threshold": "100+ 30-day views in a lane before targeted outreach",
+      "status": "ready for CRM attribution ingestion"
+    },
+    {
+      "metric": "signup_starts/preferences",
+      "source": "trend forms and preference forms",
+      "network_ready_threshold": "50+ explicit preferences across categories",
+      "status": "dry-run/no-send frontend exists; backend audit storage must be verified by WebDev/LeadFS"
+    },
+    {
+      "metric": "/go clicks by offer-source category",
+      "source": "public/go bridge pages + CRM event map",
+      "network_ready_threshold": "100+ compliant click-outs before network applications",
+      "status": "bridge pages regenerated; conversion imports not available yet"
+    },
+    {
+      "metric": "content_count",
+      "source": "public/trends/*.html + tools-by-job + kits/templates",
+      "network_ready_threshold": "30+ useful indexed pages",
+      "status": "trend lane pages present; SEO indexing not verified"
+    },
+    {
+      "metric": "compliance_page_presence",
+      "source": "privacy/terms/affiliate disclosure/preferences/unsubscribe",
+      "network_ready_threshold": "all compliance pages live and linked sitewide",
+      "status": "covered by tests"
+    }
+  ],
+  "daily_loop": [
+    "Run npm run spg:trends:daily from /home/mehya/work/mehyarmedia.",
+    "Review data/google-trends-snapshot.json for rising queries and anomalies.",
+    "Review src/spg/trending-offers.js and regenerated public/trends*.html plus public/go/amazon-*.html.",
+    "Update this source list with pursue/watch/kill notes and new direct/sponsor candidates.",
+    "Route approved implementation gaps to WebDev/LeadFS/ComplyOps/DevOps; do not send, scrape Amazon, or spend."
+  ]
+}

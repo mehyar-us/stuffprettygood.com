@@ -18,12 +18,17 @@ Current implemented workstreams:
 - Suppression reason taxonomy covering global unsubscribe, brand unsubscribe, SMS STOP, complaints, bounces, legal suppression, and manual suppression.
 - Product workflows and admin UX specification covering every Phase 1 module with owner-facing flows and acceptance checklists.
 - Admin UX acceptance specification with screen-by-screen acceptance criteria and blocker list for each Phase 1 admin screen.
+- Campaign Manager 2026 API/data contracts for offer catalog, preference engine, attribution ledger, readiness gates, simulator, risky-action audit blockers, and revenue dashboard rollups.
+- A-to-Z reactivation command-center contracts for Contact War Room, tier classifier/quarantine, count-only Clean Segment Finder, Sponsor Pilot Manager, manual Gmail outreach, reactivation/preference/return-credit workflows, SMS Consent Vault, small-cohort approval, and scale/kill decisions.
+- DevOps provider/outreach operations rails for dry-run provider readiness, manual Gmail sponsor outreach, scheduler/monitor tasks, SMS consent gating, kill switches, rollback, backups, and no-send proof.
+- StuffPrettyGood public offer/sign-up surfaces, Google Trends powered daily offer lanes, Amazon Associates manual `/go` bridges, preference/unsubscribe/reactivation pages, and SEO-safe trend pages.
 
-No mass-sending function is implemented in this repository.
+No mass-sending function is implemented in this repository. The simulator, small-cohort approval, SMS vault, risky-action contract, and DevOps ops rails explicitly keep send/export/provider-push/SMS blocked by default.
 
 ## Deployment / Infra
 
 For Hostinger deployment and operations, use:
+
 - `.github/workflows/deploy-hostinger.yml`
 - `ops/hostinger/bootstrap-vps.sh`
 - `ops/hostinger/ssh-hardening.sh`
@@ -40,11 +45,13 @@ For Hostinger deployment and operations, use:
 ```bash
 npm test
 npm start
+npm run spg:trends:daily
 ```
 
 ## Runtime configuration
 
 Server-only legacy source table configuration:
+
 - `LEGACY_CONTACT_TABLE`: required SQL identifier used by the segment preview builder.
 - `LEGACY_CONTACT_TABLE_ALLOWLIST`: optional comma-separated allowlist extension for deployment-specific safe identifiers.
 
@@ -73,6 +80,17 @@ Public production routing is defined in `docs/production-route-map.md`. Canonica
 - `POST /api/segments/evaluate`
 
 The default seeded local admin is `admin@mehyarmedia.local` with password `change-me-before-production` for local foundation testing only. Replace before any deployment.
+
+## StuffPrettyGood daily trend pipeline
+
+```bash
+npm run spg:trends:fetch
+npm run spg:trends:update
+npm run spg:trends:build
+npm run spg:trends:daily
+```
+
+The daily pipeline queries Google Trends through SerpAPI, updates trend lanes, rebuilds SEO pages, and regenerates Amazon manual `/go` bridge pages using the approved Amazon Associates tag. It does not send email/SMS, push providers, scrape Amazon, copy Amazon prices/images/ratings/reviews/availability, or spend money.
 
 ## Compliance invariant
 
