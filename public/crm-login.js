@@ -74,8 +74,63 @@ function section(title, eyebrow, body, actions = '') {
   return `<section id="${escapeHtml(id)}" class="crm-module"><div class="crm-module-head"><div><p class="eyebrow">${escapeHtml(eyebrow)}</p><h2>${escapeHtml(title)}</h2></div>${actions}</div>${body}</section>`;
 }
 
+function jobCard(job = {}) {
+  const latest = job.latest_run || {};
+  const env = Array.isArray(job.env_status) ? job.env_status : [];
+  const missing = env.filter((item) => !item.available).length;
+  const status = job.running ? 'running' : (latest.status || 'idle');
+  return `<article class="job-card card" data-job-status="${escapeHtml(status)}">
+    <div class="job-card-top">
+      <div>
+        <p class="eyebrow">${escapeHtml(job.owner || 'ops')}</p>
+        <h3>${escapeHtml(job.label || job.job_id)}</h3>
+      </div>
+      <span class="status ${escapeHtml(status)}">${escapeHtml(status)}</span>
+    </div>
+    <p>${escapeHtml(job.description || '')}</p>
+    <div class="job-meta">
+      <span>Schedule: ${escapeHtml(job.schedule || 'manual')}</span>
+      <span>Artifact: ${escapeHtml(job.expected_artifact || '—')}</span>
+      <span>Env: ${missing ? `${missing} missing` : 'ready by key name'}</span>
+    </div>
+    <div class="job-env-row">${env.map((item) => `<span class="pill" data-ready="${item.available ? 'yes' : 'no'}">${escapeHtml(item.label)} ${item.available ? '✓' : 'needs key'}</span>`).join('')}</div>
+    <div class="job-card-actions">
+      <button class="button primary job-run-button" type="button" data-job-id="${escapeHtml(job.job_id)}">Run now</button>
+      ${latest.run_id ? `<button class="button ghost job-log-button" type="button" data-run-id="${escapeHtml(latest.run_id)}">View latest log</button>` : ''}
+    </div>
+    <p class="trust-note">Last run: ${escapeHtml(latest.started_at || 'never')} · ${escapeHtml(latest.finished_at || 'not finished')} · ${escapeHtml(latest.command_ref || job.command_ref || 'allowlist')}</p>
+  </article>`;
+}
+
+function envSummary(jobs = []) {
+  const statuses = jobs.flatMap((job) => job.env_status || []);
+  const unique = new Map(statuses.map((item) => [item.label, item]));
+  return [...unique.values()].map((item) => `${item.available ? '✓' : '⚠'} ${item.label}`).join(' · ') || 'No job env requirements.';
+}
+
+function logModal(run) {
+  return `<div class="job-log-modal card" role="dialog" aria-modal="true" aria-label="Job log">
+    <div class="crm-module-head"><div><p class="eyebrow">Job log</p><h2>${escapeHtml(run.label || run.job_id || 'Run')}</h2></div><button id="job-log-close" class="button ghost" type="button">Close</button></div>
+    <p class="trust-note">${escapeHtml(run.status)} · ${escapeHtml(run.started_at)} → ${escapeHtml(run.finished_at || 'running')} · ${escapeHtml(run.command_ref)}</p>
+    <pre class="job-log-output">${escapeHtml(run.log_excerpt || 'No log captured yet.')}</pre>
+  </div>`;
+}
+
 function opportunityScore(record = {}) {
-  return Number(record.latest_score?.total_score || record.latest_score?.weighted_score || record.score?.overall_score || record.priority_score || record.score || 0);
+  return Number(
+    record.latest_score?.total_score
+    || record.latest_score?.weighted_score
+    || record.score?.overall_score
+    || record.score?.total_score
+    || record.score?.weighted_score
+    || record.priority_score
+    || (typeof record.score === 'number' ? record.score : 0)
+    || 0
+  );
+}
+
+function opportunityRecommendation(record = {}) {
+  return record.recommendation || record.score?.recommendation || record.latest_score?.recommendation || record.next_best_action || record.status || record.gate_status || 'review';
 }
 
 function dailyPullNextActions(summary = {}) {
@@ -114,6 +169,7 @@ async function loadCommandCenterData() {
     ['spgCandidates', '/spg/offer-candidates'],
     ['spgProof', '/spg/proof/network-readiness'],
     ['dailyPull', '/daily-pull/summary'],
+    ['jobs', '/jobs'],
     ['opportunityDashboard', '/opportunity-desk/dashboard'],
     ['opportunityOperations', '/opportunity-desk/operations'],
     ['opportunities', '/opportunity-desk/opportunities'],
@@ -130,23 +186,119 @@ function dataOf(result, key, fallback) {
   return result?.ok ? (key ? result.body?.[key] : result.body) ?? fallback : fallback;
 }
 
+function sourceRunFor(source = {}, runs = []) {
+  const id = source.source_id || source.id || source.name || source.source_name || source.source_family;
+  return runs.find((run) => run.source_id === id || run.source_family === source.source_family || run.source_family === source.family) || {};
+}
+
+function sourceLedgerRows({ jobs = [], oppSources = [], sourceRuns = [], spgSources = [], dailyPull = {}, spgAccounts = [] }) {
+  const rows = [];
+  for (const source of oppSources) {
+    const run = sourceRunFor(source, sourceRuns);
+    rows.push({
+      source: source.source_name || source.name || source.source_id,
+      class: source.source_family || source.family || 'opportunity',
+      credential: source.credential_ref || source.access_method || source.required_key_name || 'public/no secret',
+      lastPull: run.finished_at || source.last_run_at || source.updated_at || 'missing',
+      status: run.status || source.source_health || source.latest_run_status || 'pending',
+      records: run.opportunity_count || run.records_seen || source.records_seen || 0,
+      proof: source.artifact_path || run.artifact_path || source.source_url || 'source registry',
+      allowed: source.allowed_actions || source.allowed_action || 'collect + score only',
+    });
+  }
+  for (const source of spgSources) {
+    rows.push({
+      source: source.name || source.source_name || source.source_id || source.url,
+      class: source.source_type || source.family || 'spg offer feed',
+      credential: source.credential_ref || source.required_key_name || 'public/no secret',
+      lastPull: source.last_seen_at || source.updated_at || dailyPull.generated_at || 'missing',
+      status: source.status || source.approval_status || 'pending',
+      records: source.records_seen || source.item_count || 0,
+      proof: source.artifact_path || source.url || 'spg source registry',
+      allowed: source.allowed_actions || 'discovery only',
+    });
+  }
+  for (const account of spgAccounts) {
+    rows.push({
+      source: account.network_name || account.name,
+      class: 'affiliate/network account',
+      credential: account.credential_ref || 'secret-ref only',
+      lastPull: account.last_verified_at || account.updated_at || 'pending',
+      status: account.approval_status || account.status || 'pending',
+      records: account.offer_count || 0,
+      proof: account.login_url || account.dashboard_url || 'account record',
+      allowed: account.next_action || 'verify account',
+    });
+  }
+  for (const job of jobs) {
+    rows.push({
+      source: job.label || job.job_id,
+      class: 'job/collector',
+      credential: (job.env_status || []).map((item) => item.label).join(', ') || 'none',
+      lastPull: job.latest_run?.finished_at || job.latest_run?.started_at || 'never',
+      status: job.running ? 'running' : (job.latest_run?.status || 'idle'),
+      records: job.latest_run?.summary?.records || job.latest_run?.summary?.opportunities || 0,
+      proof: job.expected_artifact || job.command_ref || 'allowlist',
+      allowed: 'manual rerun',
+    });
+  }
+  if (!rows.length) {
+    rows.push({ source: 'No verified source records yet', class: 'missing', credential: '—', lastPull: '—', status: 'missing', records: 0, proof: 'Run Daily Pull Everything', allowed: 'Jobs Control → run collector' });
+  }
+  return rows;
+}
+
+function revenueActionQueue({ opportunities = [], spgOffers = [], spgCandidates = [], jobs = [], dailyPull = {}, oppOps = {} }) {
+  const actions = [];
+  for (const opp of [...(oppOps.top_first_cash_opportunities || []), ...opportunities].slice(0, 8)) {
+    actions.push({
+      priority: opportunityScore(opp) || opp.priority || 0,
+      lane: opp.source_family || opp.money_lane || opp.source_id || 'opportunity',
+      action: opp.title || 'Review opportunity',
+      why: opp.summary || opp.description || opp.company_fit || 'Artifact-backed opportunity needs go/no-go review.',
+      owner: opp.route_owner_profile || opp.owner || 'Scout → ProductOps',
+      status: opportunityRecommendation(opp),
+      proof: opp.artifact_path || opp.source_url || opp.source_id || 'opportunity artifact',
+    });
+  }
+  if (spgOffers.length) {
+    actions.push({ priority: 80, lane: 'StuffPrettyGood', action: `Promote top ${Math.min(10, spgOffers.length)} monetized SPG offers`, why: 'Amazon/affiliate offer inventory exists; push highest-fit offers into public rails and track clicks.', owner: 'WebDev + LeadFS', status: 'pursue', proof: 'SPG offer records + /offers→/go QA' });
+  }
+  if (spgCandidates.length) {
+    actions.push({ priority: 65, lane: 'Offer intake', action: `Review ${spgCandidates.length} SPG offer candidates`, why: 'Candidates are not revenue until monetization and disclosure gates approve them.', owner: 'Scout + ComplyOps', status: 'watch', proof: 'SPG candidate artifact' });
+  }
+  const failedJobs = jobs.filter((job) => (job.latest_run?.status || '').includes('fail') || (job.env_status || []).some((item) => !item.available));
+  for (const job of failedJobs.slice(0, 4)) {
+    actions.push({ priority: 90, lane: 'Ops blocker', action: `Fix ${job.label || job.job_id}`, why: 'Daily revenue engine depends on clean source collection and env readiness.', owner: job.owner || 'DevOps', status: 'blocked', proof: job.expected_artifact || job.command_ref || 'job allowlist' });
+  }
+  for (const action of dailyPullNextActions(dailyPull)) {
+    actions.push({ priority: 55, lane: action.route_type || 'daily pull', action: action.label, why: 'Generated from latest daily pull summary.', owner: 'Hot Zero', status: 'review', proof: action.href || 'daily-pull/latest.json' });
+  }
+  return actions.sort((a, b) => Number(b.priority || 0) - Number(a.priority || 0)).slice(0, 12);
+}
+
+function actionCards(actions = []) {
+  if (!actions.length) return '<p class="trust-note">No revenue actions yet. Run Daily Pull Everything, then review Source Ledger blockers.</p>';
+  return `<div class="revenue-queue">${actions.map((item, index) => `<article class="revenue-action-card card" data-status="${escapeHtml(item.status || 'review')}">
+    <div class="queue-rank">${index + 1}</div>
+    <div>
+      <p class="eyebrow">${escapeHtml(item.lane || 'money lane')} · ${escapeHtml(item.status || 'review')}</p>
+      <h3>${escapeHtml(item.action || 'Review action')}</h3>
+      <p>${escapeHtml(item.why || 'No rationale recorded yet.')}</p>
+      <div class="tag-row"><span class="pill">Owner: ${escapeHtml(item.owner || 'unassigned')}</span><span class="pill">Proof: ${escapeHtml(item.proof || 'missing')}</span><span class="pill">Priority: ${escapeHtml(item.priority || '—')}</span></div>
+    </div>
+  </article>`).join('')}</div>`;
+}
+
 function renderModules(data) {
-  const dashboard = dataOf(data.dashboard, null, {});
   const commandCenter = dataOf(data.commandCenter, null, {});
-  const brands = dataOf(data.brands, 'records', []);
-  const domains = dataOf(data.domains, 'records', []);
-  const lists = dataOf(data.lists, 'records', []);
-  const segments = dataOf(data.segments, 'records', []);
-  const campaigns = dataOf(data.campaigns, 'records', []);
-  const integrations = dataOf(data.integrations, 'records', []);
-  const queryTemplates = dataOf(data.queryTemplates, 'records', []);
   const spgOffers = dataOf(data.spgOffers, 'offers', []);
   const spgWall = dataOf(data.spgOfferWall, 'offers', []);
   const spgSources = dataOf(data.spgSources, 'sources', []);
   const spgAccounts = dataOf(data.spgAccounts, 'accounts', []);
   const spgCandidates = dataOf(data.spgCandidates, 'offer_candidates', []);
-  const spgProof = dataOf(data.spgProof, null, {});
   const dailyPull = dataOf(data.dailyPull, 'summary', {});
+  const jobs = dataOf(data.jobs, 'jobs', []);
   const oppDash = dataOf(data.opportunityDashboard, null, {});
   const oppOps = dataOf(data.opportunityOperations, null, {});
   const opportunities = dataOf(data.opportunities, 'opportunities', []);
@@ -154,132 +306,82 @@ function renderModules(data) {
   const sourceRuns = dataOf(data.opportunitySourceRuns, 'source_runs', []);
   const digest = dataOf(data.opportunityDigest, 'digest', {});
   const auditEvents = dataOf(data.audit, 'events', []);
-  const counts = commandCenter.counts || {};
-  const topOpportunities = [...opportunities].sort((a, b) => opportunityScore(b) - opportunityScore(a)).slice(0, 8);
-  const healthCounts = dailyPull.opportunity_source_health || {};
-  const trendStatus = dailyPull.counts?.google_trend_related_queries ? 'ready' : spgCandidates.length ? 'candidates' : 'check';
-  const rssRun = sourceRuns.find((run) => String(run.source_family || '').toLowerCase() === 'rss') || {};
-  const rssStatus = rssRun.status || (dailyPull.counts?.spg_rss_candidates ? 'ready' : 'check');
+  const healthCounts = dailyPull.opportunity_source_health || oppOps.source_health || {};
+  const ledgerRows = sourceLedgerRows({ jobs, oppSources, sourceRuns, spgSources, dailyPull, spgAccounts });
+  const actions = revenueActionQueue({ opportunities, spgOffers, spgCandidates, jobs, dailyPull, oppOps });
+  const topOpportunities = [...opportunities].sort((a, b) => opportunityScore(b) - opportunityScore(a)).slice(0, 12);
 
   return `
-    <nav class="crm-tabs" aria-label="CRM modules">
-      <a href="#daily-money-dashboard">Money Dashboard</a>
-      <a href="#crm-overview">Overview</a>
-      <a href="#contact-war-room">Contact War Room</a>
-      <a href="#campaign-manager">Campaign Manager</a>
-      <a href="#spg-offers">SPG Offers</a>
+    <nav class="crm-tabs truth-tabs" aria-label="CRM modules">
+      <a href="#source-ledger">Source Ledger</a>
+      <a href="#jobs-control">Jobs Control</a>
       <a href="#opportunity-desk">Opportunity Desk</a>
-      <a href="#compliance-gates">Gates</a>
-      <a href="#audit-log">Audit</a>
+      <a href="#revenue-action-queue">Revenue Action Queue</a>
+      <a href="#evidence-audit">Evidence</a>
     </nav>
-    ${section('Daily Money Dashboard', 'Daily pull health + next money actions', `
-      <div class="cards four admin-grid">
-        ${card('Daily pull', compact(dailyPull.status || 'missing'), dailyPull.generated_at ? `Updated ${dailyPull.generated_at}` : 'Waiting for data/daily-pull/latest.json', statusTone(dailyPull.status))}
-        ${card('Healthy sources', formatCount(healthCounts.ok), `${formatCount(healthCounts.warning)} warning · ${formatCount(healthCounts.skipped)} skipped`, Number(healthCounts.warning || 0) ? 'neutral' : 'success')}
-        ${card('SPG monetized offers', formatCount(dailyPull.counts?.spg_offer_records || spgOffers.length), `${formatCount(dailyPull.counts?.spg_page_placements || spgWall.length)} placements · ${formatCount(dailyPull.counts?.spg_offer_candidates || spgCandidates.length)} candidates`, 'success')}
-        ${card('Trend/RSS status', `${compact(trendStatus)} / ${compact(rssStatus)}`, `${formatCount(dailyPull.counts?.google_trend_related_queries)} trend queries · ${formatCount(dailyPull.counts?.spg_rss_candidates)} RSS candidates`, statusTone(`${trendStatus} ${rssStatus}`))}
+
+    <section class="truth-hero card" aria-label="Truth-first CRM status">
+      <div>
+        <p class="eyebrow">Truth-first Revenue OS</p>
+        <h2>No fake counts. Only source-backed money moves.</h2>
+        <p class="lede">This dashboard shows what was pulled, what can be rerun safely, which opportunities are backed by artifacts, and what action should happen next.</p>
       </div>
-      ${rows(sourceRuns.slice(0, 8), [
-        { label: 'Source', value: (r) => r.source_id || r.source_family },
-        { label: 'Family', value: (r) => r.source_family },
-        { label: 'Status', value: (r) => r.status || r.source_health_after },
-        { label: 'Count', value: (r) => r.opportunity_count || r.records_seen },
-        { label: 'Warning', value: (r) => r.error || r.skip_reason || r.source_health_reason },
-      ])}
-      ${rows(topOpportunities, [
-        { label: 'Top opportunity', value: (r) => r.title },
-        { label: 'Fit', value: (r) => r.company_fit },
-        { label: 'Source', value: (r) => r.source_family || r.source_id },
-        { label: 'Score', value: (r) => opportunityScore(r) || '—' },
-        { label: 'Next action', value: (r) => r.next_best_action || r.recommendation || r.status },
-      ])}
-      <div class="crm-action-row" aria-label="Internal Kanban next actions">
-        ${dailyPullNextActions(dailyPull).map((action) => `<a class="button ghost" href="${escapeHtml(action.href || '#daily-money-dashboard')}" data-kanban-only="true" data-route-type="${escapeHtml(action.route_type || 'review')}">${escapeHtml(action.label)} · Kanban only</a>`).join('')}
+      <div class="cards four admin-grid truth-summary">
+        ${card('Daily pull', compact(dailyPull.status || 'missing'), dailyPull.generated_at ? `Updated ${dailyPull.generated_at}` : 'Run Daily Pull Everything', statusTone(dailyPull.status))}
+        ${card('Source health', `${formatCount(healthCounts.ok)} ok`, `${formatCount(healthCounts.warning)} warning · ${formatCount(healthCounts.skipped)} skipped`, Number(healthCounts.warning || 0) ? 'neutral' : 'success')}
+        ${card('Opportunities', formatCount(oppDash?.counts?.opportunities || opportunities.length), 'Artifact-backed records only.', opportunities.length ? 'success' : 'neutral')}
+        ${card('Revenue actions', formatCount(actions.length), 'Internal actions. No external commitments.', actions.length ? 'success' : 'neutral')}
       </div>
-      <p class="trust-note">Internal-only surface. Buttons do not bid, apply, submit, spend, publish, email, SMS, provider-push, or contact anyone.</p>
-    `)}
-    <section id="crm-overview" class="cards four admin-grid">
-      ${card('Mass sending', dashboard?.service?.massSendingEnabled === false ? 'NO-SEND' : 'CHECK', 'Provider push/export remain gated.', 'error')}
-      ${card('Command records', formatCount(Object.values(counts).reduce((sum, value) => sum + Number(value || 0), 0)), 'Seeded CRM operating records.', 'success')}
-      ${card('SPG monetized offers', formatCount(spgOffers.length || spgWall.length), 'Published/approved offer inventory visible to CRM.', spgOffers.length || spgWall.length ? 'success' : 'neutral')}
-      ${card('Opportunities', formatCount(oppDash?.counts?.opportunities || opportunities.length), 'SAM/jobs/affiliate/network desk.', opportunities.length ? 'success' : 'neutral')}
     </section>
-    ${section('Contact War Room', 'Audience legality + profitability sorting', `
-      <div class="cards three admin-grid">
-        ${card('Lists', formatCount(lists.length || counts.lists), 'Safe query sources only.')}
-        ${card('Segments', formatCount(segments.length || counts.segments), 'Tiered, suppressed, bounded previews.')}
-        ${card('Legacy source', compact(commandCenter.legacySource?.status), 'Read-only. Full pulls blocked.', statusTone(commandCenter.legacySource?.status))}
+
+    ${section('Source Ledger', 'Verified upstream data, credential readiness by name only, and source proof', `
+      <div class="cards four admin-grid">
+        ${card('Ledger rows', formatCount(ledgerRows.length), 'Sources, jobs, affiliate accounts and feeds.')}
+        ${card('SPG offers', formatCount(spgOffers.length || spgWall.length), `${formatCount(spgCandidates.length)} candidates`, spgOffers.length ? 'success' : 'neutral')}
+        ${card('Source runs', formatCount(sourceRuns.length), 'Latest collector artifacts.')}
+        ${card('Legacy audience', compact(commandCenter.legacySource?.status || 'blocked/missing'), 'Count-only until evidence gate.', 'error')}
       </div>
-      ${rows(lists, [
-        { label: 'List', value: (r) => r.name },
-        { label: 'Channel', value: (r) => r.channel },
-        { label: 'Usable', value: (r) => r.usableCount },
-        { label: 'Risk', value: (r) => r.riskLevel },
-        { label: 'Source', value: (r) => r.safeQuerySource },
-      ])}
-      ${rows(segments, [
-        { label: 'Segment', value: (r) => r.name },
-        { label: 'Channel', value: (r) => r.channel },
-        { label: 'Risk tier', value: (r) => r.riskTier },
+      ${rows(ledgerRows, [
+        { label: 'Source', value: (r) => r.source },
+        { label: 'Class', value: (r) => r.class },
+        { label: 'Credential', value: (r) => r.credential },
+        { label: 'Last pull', value: (r) => r.lastPull },
         { label: 'Status', value: (r) => r.status },
-        { label: 'Materialize', value: (r) => r.materializationAllowed ? 'allowed' : 'blocked' },
+        { label: 'Records', value: (r) => r.records },
+        { label: 'Proof', value: (r) => r.proof },
+        { label: 'Allowed', value: (r) => r.allowed },
       ])}
+      <p class="trust-note">Credential readiness uses env key names only. No raw keys, no raw PII, no false audience records.</p>
     `)}
-    ${section('Campaign Manager', 'Draft-only journeys, simulators, send gates', `
-      <div class="cards three admin-grid">
-        ${card('Campaigns', formatCount(campaigns.length || counts.campaigns), 'Draft-only until gates pass.')}
-        ${card('Pilot status', compact(commandCenter.pilotReadiness?.overallStatus), compact(commandCenter.pilotReadiness?.brandDomain), statusTone(commandCenter.pilotReadiness?.overallStatus))}
-        ${card('Sender domain', compact(commandCenter.pilotReadiness?.senderDomain?.status), compact(commandCenter.pilotReadiness?.senderDomain?.reason), statusTone(commandCenter.pilotReadiness?.senderDomain?.status))}
-      </div>
-      ${rows(campaigns, [
-        { label: 'Campaign', value: (r) => r.name },
-        { label: 'Brand', value: (r) => r.brandId || r.brandDomain },
-        { label: 'Channel', value: (r) => r.channel },
-        { label: 'Segment', value: (r) => r.targetSegment },
-        { label: 'Approval', value: (r) => r.approvalStatus },
-      ])}
-    `)}
-    ${section('SPG Offers', 'Monetized-only inventory + network proof', `
+
+    ${section('Jobs Control', 'Safely rerun approved collectors, scrapers, builds and QA', `
       <div class="cards four admin-grid">
-        ${card('Offers', formatCount(spgOffers.length), 'Admin/public offer records.')}
-        ${card('Homepage wall', formatCount(spgWall.length), 'Cards route /offers → /go.')}
-        ${card('Candidates', formatCount(spgCandidates.length), 'Daily source/RSS/trend candidates.')}
-        ${card('Accounts', formatCount(spgAccounts.length), 'Affiliate/source account records.')}
+        ${card('Allowed jobs', formatCount(jobs.length), 'Server-side allowlist only.', 'success')}
+        ${card('Running now', formatCount(jobs.filter((job) => job.running).length), 'Long jobs continue after click.', jobs.some((job) => job.running) ? 'neutral' : 'success')}
+        ${card('Env readiness', jobs.some((job) => (job.env_status || []).some((item) => !item.available)) ? 'CHECK' : 'READY', envSummary(jobs), jobs.some((job) => (job.env_status || []).some((item) => !item.available)) ? 'neutral' : 'success')}
+        ${card('External actions', 'BLOCKED', 'Collect/build/QA only. No bids, outreach, SMS, email, spend or provider push.', 'error')}
       </div>
-      ${rows(spgOffers.slice(0, 10), [
-        { label: 'Offer', value: (r) => r.title || r.name || r.slug },
-        { label: 'Network', value: (r) => r.network || r.network_name || r.monetization_basis },
-        { label: 'Approval', value: (r) => r.approval_status || r.status },
-        { label: 'Landing', value: (r) => r.public_landing_url || r.landing_url },
-        { label: 'Redirect', value: (r) => r.redirect_url || r.go_link },
-      ])}
-      ${rows(spgAccounts, [
-        { label: 'Account', value: (r) => r.network_name || r.name },
-        { label: 'Status', value: (r) => r.approval_status || r.status },
-        { label: 'Credential', value: (r) => r.credential_ref || 'secret-ref only' },
-        { label: 'Next action', value: (r) => r.next_action },
-      ])}
-      <p class="trust-note">Network readiness: ${escapeHtml(compact(spgProof?.status || spgProof?.readiness_status || spgProof?.summary || 'collecting proof'))}</p>
+      <div class="jobs-grid">
+        ${jobs.length ? jobs.map(jobCard).join('') : '<p class="trust-note">No jobs returned by /crm-api/jobs.</p>'}
+      </div>
+      <div id="job-run-output" class="job-run-output" aria-live="polite"></div>
     `)}
-    ${section('Opportunity Desk', 'AI Decision Desk for SAM, jobs, networks and sponsors', `
-      <div class="cards four admin-grid">
-        ${card('Last run', compact(oppOps?.last_run?.generated_at || dailyPull.generated_at || 'unknown'), compact(oppOps?.last_run?.status || 'status unknown'), statusTone(oppOps?.last_run?.status || ''))}
-        ${card('Deploy status', compact(oppOps?.deploy_status || dailyPull.deploy_status || 'unknown'), `${formatCount(oppOps?.counts?.source_runs || oppDash?.counts?.source_runs || sourceRuns.length)} source runs`, statusTone(oppOps?.deploy_status || dailyPull.deploy_status || ''))}
-        ${card('Source health', formatCount(oppOps?.counts?.sources || oppDash?.counts?.sources || oppSources.length), compact(oppOps?.source_health || dailyPull.opportunity_source_health || {}), statusTone(JSON.stringify(oppOps?.source_health || dailyPull.opportunity_source_health || {})))}
-        ${card('External actions', oppDash?.externalActionsEnabled === false ? 'BLOCKED' : 'CHECK', 'AI drafts only. No submission/spend.', 'error')}
-      </div>
+
+    ${section('Opportunity Desk', 'Artifact-backed opportunities and AI decision signals', `
       <div class="cards four admin-grid">
         ${card('Opportunity count', formatCount(oppOps?.counts?.opportunities || oppDash?.counts?.opportunities || opportunities.length), compact(oppOps?.opportunity_counts?.by_status || {}))}
-        ${card('SPG offer records', formatCount(oppOps?.spg?.counts?.offer_records || dailyPull.counts?.spg_offer_records || 0), 'Durable store offer inventory')}
-        ${card('SPG placements', formatCount(oppOps?.spg?.counts?.page_placements || dailyPull.counts?.spg_page_placements || 0), 'Published offer placements')}
-        ${card('Blockers', formatCount((oppOps?.blockers || []).length), compact((oppOps?.blockers || []).slice(0, 2)), (oppOps?.blockers || []).length ? 'error' : 'success')}
+        ${card('Last run', compact(oppOps?.last_run?.generated_at || dailyPull.generated_at || 'unknown'), compact(oppOps?.last_run?.status || 'status unknown'), statusTone(oppOps?.last_run?.status || ''))}
+        ${card('Source families', formatCount(oppOps?.counts?.sources || oppDash?.counts?.sources || oppSources.length), compact(oppOps?.source_health || dailyPull.opportunity_source_health || {}))}
+        ${card('External actions', oppDash?.externalActionsEnabled === false ? 'BLOCKED' : 'CHECK', 'AI drafts only; Boss approval required.', 'error')}
       </div>
-      ${rows((oppOps?.top_first_cash_opportunities || opportunities).slice(0, 10), [
+      ${rows(topOpportunities, [
         { label: 'Opportunity', value: (r) => r.title },
         { label: 'Source', value: (r) => r.source_family || r.source_id },
-        { label: 'First cash', value: (r) => r.first_cash_window_days ? `${r.first_cash_window_days} days` : 'unknown' },
-        { label: 'Score', value: (r) => r.latest_score?.total_score || r.score || r.priority_score },
-        { label: 'Decision', value: (r) => r.recommendation || r.status || r.gate_status },
+        { label: 'Deadline', value: (r) => r.due_date || r.deadline || r.close_date },
+        { label: 'Fit', value: (r) => r.company_fit || r.fit_reason },
+        { label: 'Score', value: (r) => opportunityScore(r) || '—' },
+        { label: 'Decision', value: (r) => opportunityRecommendation(r) },
+        { label: 'Proof', value: (r) => r.artifact_path || r.source_url || r.notice_id || r.source_id },
       ])}
       ${rows((oppOps?.source_runs?.latest_runs || sourceRuns).slice(0, 8), [
         { label: 'Run', value: (r) => r.source_id || r.source_family },
@@ -288,59 +390,27 @@ function renderModules(data) {
         { label: 'Count', value: (r) => r.opportunity_count || r.records_seen },
         { label: 'Issue', value: (r) => r.error || r.skip_reason || r.source_health_reason },
       ])}
-      ${rows((oppOps?.sources || oppSources).slice(0, 10), [
-        { label: 'Source', value: (r) => r.source_name || r.name },
-        { label: 'Family', value: (r) => r.source_family || r.family },
-        { label: 'Health', value: (r) => r.source_health },
-        { label: 'Owner', value: (r) => r.route_owner_profile || r.owner_profile },
-        { label: 'Last run', value: (r) => r.last_run_at || r.latest_run_status },
-      ])}
-      <p class="trust-note">Top first-cash queue is sanitized internal ops data only. Digest scope: ${escapeHtml(compact(digest?.scope || 'all sources'))}. SPG readiness: ${escapeHtml(compact(oppOps?.spg?.network_readiness?.readiness_status || spgProof?.readiness_status || 'unknown'))}.</p>
+      <p class="trust-note">Digest scope: ${escapeHtml(compact(digest?.scope || 'all sources'))}. No bid/application/outreach can be submitted from this UI.</p>
     `)}
-    ${section('Compliance Gates', 'No-send controls and approval blockers', `
-      <div class="cards three admin-grid">
-        ${card('Suppression', compact(commandCenter.pilotReadiness?.suppression?.status), compact(commandCenter.pilotReadiness?.suppression?.missingOrBlockingReasons), statusTone(commandCenter.pilotReadiness?.suppression?.status))}
-        ${card('Compliance', compact(commandCenter.pilotReadiness?.compliance?.status), compact(commandCenter.pilotReadiness?.compliance?.missingOrBlockingReasons), statusTone(commandCenter.pilotReadiness?.compliance?.status))}
-        ${card('Blocked actions', 'send / export / push', compact(commandCenter.pilotReadiness?.blockedActions?.reasons), 'error')}
+
+    ${section('Revenue Action Queue', 'The daily money queue: pursue, fix, review, or block', `
+      ${actionCards(actions)}
+      <div class="crm-action-row" aria-label="Internal next actions">
+        ${dailyPullNextActions(dailyPull).map((action) => `<a class="button ghost" href="${escapeHtml(action.href || '#revenue-action-queue')}" data-kanban-only="true" data-route-type="${escapeHtml(action.route_type || 'review')}">${escapeHtml(action.label)} · internal only</a>`).join('')}
       </div>
-      ${rows(integrations, [
-        { label: 'Integration', value: (r) => r.name },
-        { label: 'Kind', value: (r) => r.kind },
-        { label: 'Status', value: (r) => r.status },
-        { label: 'Secrets', value: (r) => r.secretsStoredExternally ? 'external only' : 'check' },
-      ])}
-      ${rows(queryTemplates, [
-        { label: 'Template', value: (r) => r.name },
-        { label: 'Source', value: (r) => r.sourceSystem },
-        { label: 'Purpose', value: (r) => r.purpose },
-        { label: 'Preview max', value: (r) => r.maxPreviewRows },
-        { label: 'Full pull', value: (r) => r.fullTablePullAllowed ? 'blocked violation' : 'blocked' },
-      ])}
+      <p class="trust-note">Queue entries are internal recommendations. They do not contact buyers, submit applications, send messages, spend money, or publish provider actions.</p>
     `)}
-    ${section('Brands + Domains', 'Operating records', `
-      ${rows(brands, [
-        { label: 'Brand', value: (r) => r.name },
-        { label: 'Domain', value: (r) => r.domain },
-        { label: 'Vertical', value: (r) => r.vertical },
-        { label: 'Status', value: (r) => r.status },
+
+    ${section('Evidence Audit', 'Recent auditable CRM activity and source proof trail', `
+      ${rows(auditEvents, [
+        { label: 'Time', value: (r) => r.createdAt || r.timestamp },
+        { label: 'Actor', value: (r) => r.actorId },
+        { label: 'Action', value: (r) => r.action },
+        { label: 'Resource', value: (r) => `${r.resourceType || ''} ${r.resourceId || ''}`.trim() },
       ])}
-      ${rows(domains, [
-        { label: 'Domain', value: (r) => r.domain },
-        { label: 'Type', value: (r) => r.domainType },
-        { label: 'DNS', value: (r) => r.dnsStatus },
-        { label: 'SSL', value: (r) => r.sslStatus },
-        { label: 'Sender', value: (r) => r.senderReadiness },
-      ])}
-    `)}
-    ${section('Audit Log', 'Recent CRM activity', rows(auditEvents, [
-      { label: 'Time', value: (r) => r.createdAt || r.timestamp },
-      { label: 'Actor', value: (r) => r.actorId },
-      { label: 'Action', value: (r) => r.action },
-      { label: 'Resource', value: (r) => `${r.resourceType || ''} ${r.resourceId || ''}`.trim() },
-    ]), '<button id="crm-refresh" class="button ghost" type="button">Refresh</button>')}
+    `, '<button id="crm-refresh" class="button ghost" type="button">Refresh</button>')}
   `;
 }
-
 async function showDashboard({ session }) {
   document.body.dataset.crmState = 'authenticated';
   loginCard.hidden = true;
@@ -349,12 +419,12 @@ async function showDashboard({ session }) {
     <div class="crm-auth-topline">
       <div>
         <p class="eyebrow">Signed in</p>
-        <h1>Command Center</h1>
-        <p class="lede">${escapeHtml(session.email)} · ${escapeHtml(session.role)} · loading modules…</p>
+        <h1>Revenue OS</h1>
+        <p class="lede">${escapeHtml(session.email)} · ${escapeHtml(session.role)} · loading Source Ledger, Jobs Control, Opportunity Desk and Revenue Queue…</p>
       </div>
       <button id="crm-logout" class="button ghost" type="button">Log out</button>
     </div>
-    <div class="card"><p class="trust-note">Loading Contact War Room, Campaign Manager, SPG Offers, Opportunity Desk, gates and audit…</p></div>
+    <div class="card"><p class="trust-note">Loading truth-first modules. No fake records are shown while source artifacts load…</p></div>
   `;
   document.getElementById('crm-logout')?.addEventListener('click', () => {
     localStorage.removeItem(TOKEN_KEY);
@@ -366,8 +436,8 @@ async function showDashboard({ session }) {
     <div class="crm-auth-topline">
       <div>
         <p class="eyebrow">Signed in</p>
-        <h1>Command Center</h1>
-        <p class="lede">${escapeHtml(session.email)} · ${escapeHtml(session.role)} · private Mehyar Media CRM</p>
+        <h1>Revenue OS</h1>
+        <p class="lede">${escapeHtml(session.email)} · ${escapeHtml(session.role)} · private Mehyar Media truth-first CRM</p>
       </div>
       <button id="crm-logout" class="button ghost" type="button">Log out</button>
     </div>
@@ -379,6 +449,47 @@ async function showDashboard({ session }) {
     setStatus('Signed out.', 'neutral');
   });
   document.getElementById('crm-refresh')?.addEventListener('click', () => loadSession());
+  bindJobControls();
+}
+
+function setJobOutput(html) {
+  const output = document.getElementById('job-run-output');
+  if (output) output.innerHTML = html;
+}
+
+async function bindJobControls() {
+  for (const button of document.querySelectorAll('.job-run-button')) {
+    button.addEventListener('click', async () => {
+      const jobId = button.getAttribute('data-job-id');
+      button.disabled = true;
+      button.textContent = 'Starting…';
+      try {
+        const result = await requestJson(`${CRM_API_BASE}/jobs/run`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: JSON.stringify({ job_id: jobId }),
+        });
+        setJobOutput(`<div class="card"><p class="eyebrow">Job started</p><h3>${escapeHtml(result.run.label || jobId)}</h3><p class="trust-note">Run ID: ${escapeHtml(result.run.run_id)} · status ${escapeHtml(result.run.status)}. Refresh in a moment to see completion/logs.</p></div>`);
+        setTimeout(() => loadSession(), 1800);
+      } catch (error) {
+        setJobOutput(`<div class="card"><p class="eyebrow">Job failed to start</p><h3>${escapeHtml(jobId)}</h3><p class="trust-note">${escapeHtml(error.message)}</p></div>`);
+        button.disabled = false;
+        button.textContent = 'Run now';
+      }
+    });
+  }
+  for (const button of document.querySelectorAll('.job-log-button')) {
+    button.addEventListener('click', async () => {
+      const runId = button.getAttribute('data-run-id');
+      try {
+        const result = await requestJson(`${CRM_API_BASE}/jobs/runs/${encodeURIComponent(runId)}`, { headers: authHeaders() });
+        setJobOutput(logModal(result.run));
+        document.getElementById('job-log-close')?.addEventListener('click', () => setJobOutput(''));
+      } catch (error) {
+        setJobOutput(`<div class="card"><p class="eyebrow">Log unavailable</p><p class="trust-note">${escapeHtml(error.message)}</p></div>`);
+      }
+    });
+  }
 }
 
 async function loadSession() {
