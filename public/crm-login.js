@@ -74,6 +74,20 @@ function section(title, eyebrow, body, actions = '') {
   return `<section id="${escapeHtml(id)}" class="crm-module"><div class="crm-module-head"><div><p class="eyebrow">${escapeHtml(eyebrow)}</p><h2>${escapeHtml(title)}</h2></div>${actions}</div>${body}</section>`;
 }
 
+function opportunityScore(record = {}) {
+  return Number(record.latest_score?.total_score || record.latest_score?.weighted_score || record.score?.overall_score || record.priority_score || record.score || 0);
+}
+
+function dailyPullNextActions(summary = {}) {
+  const actions = Array.isArray(summary.next_actions) ? summary.next_actions : [];
+  if (actions.length) return actions.slice(0, 4);
+  return [
+    { label: 'Route top opportunity for ProductOps review', href: '#opportunity-desk', route_type: 'review' },
+    { label: 'Create SPG offer proof review card', href: '#spg-offers', route_type: 'review' },
+    { label: 'Open source-health fix card', href: '#daily-money-dashboard', route_type: 'data_quality' },
+  ];
+}
+
 async function safeRequest(path) {
   try {
     return { ok: true, body: await requestJson(`${CRM_API_BASE}${path}`, { headers: authHeaders() }) };
@@ -83,29 +97,33 @@ async function safeRequest(path) {
 }
 
 async function loadCommandCenterData() {
-  const entries = await Promise.all([
-    ['dashboard', safeRequest('/dashboard')],
-    ['commandCenter', safeRequest('/command-center')],
-    ['brands', safeRequest('/brands')],
-    ['domains', safeRequest('/domains')],
-    ['lists', safeRequest('/lists')],
-    ['segments', safeRequest('/segments')],
-    ['campaigns', safeRequest('/campaigns')],
-    ['integrations', safeRequest('/integrations')],
-    ['queryTemplates', safeRequest('/query-templates')],
-    ['spgOffers', safeRequest('/spg/offers')],
-    ['spgOfferWall', safeRequest('/spg/offer-wall/public?surface=home')],
-    ['spgSources', safeRequest('/spg/sources')],
-    ['spgAccounts', safeRequest('/spg/offer-accounts')],
-    ['spgCandidates', safeRequest('/spg/offer-candidates')],
-    ['spgProof', safeRequest('/spg/proof/network-readiness')],
-    ['opportunityDashboard', safeRequest('/opportunity-desk/dashboard')],
-    ['opportunities', safeRequest('/opportunity-desk/opportunities')],
-    ['opportunitySources', safeRequest('/opportunity-desk/sources')],
-    ['opportunityDigest', safeRequest('/opportunity-desk/digest')],
-    ['audit', safeRequest('/audit?limit=20')],
-  ]);
-  return Object.fromEntries(entries.map(([key, promise]) => [key, promise]));
+  const requests = [
+    ['dashboard', '/dashboard'],
+    ['commandCenter', '/command-center'],
+    ['brands', '/brands'],
+    ['domains', '/domains'],
+    ['lists', '/lists'],
+    ['segments', '/segments'],
+    ['campaigns', '/campaigns'],
+    ['integrations', '/integrations'],
+    ['queryTemplates', '/query-templates'],
+    ['spgOffers', '/spg/offers'],
+    ['spgOfferWall', '/spg/offer-wall/public?surface=home'],
+    ['spgSources', '/spg/sources'],
+    ['spgAccounts', '/spg/offer-accounts'],
+    ['spgCandidates', '/spg/offer-candidates'],
+    ['spgProof', '/spg/proof/network-readiness'],
+    ['dailyPull', '/daily-pull/summary'],
+    ['opportunityDashboard', '/opportunity-desk/dashboard'],
+    ['opportunityOperations', '/opportunity-desk/operations'],
+    ['opportunities', '/opportunity-desk/opportunities'],
+    ['opportunitySources', '/opportunity-desk/sources'],
+    ['opportunitySourceRuns', '/opportunity-desk/source-runs'],
+    ['opportunityDigest', '/opportunity-desk/digest'],
+    ['audit', '/audit?limit=20'],
+  ];
+  const entries = await Promise.all(requests.map(async ([key, path]) => [key, await safeRequest(path)]));
+  return Object.fromEntries(entries);
 }
 
 function dataOf(result, key, fallback) {
@@ -128,15 +146,24 @@ function renderModules(data) {
   const spgAccounts = dataOf(data.spgAccounts, 'accounts', []);
   const spgCandidates = dataOf(data.spgCandidates, 'offer_candidates', []);
   const spgProof = dataOf(data.spgProof, null, {});
+  const dailyPull = dataOf(data.dailyPull, 'summary', {});
   const oppDash = dataOf(data.opportunityDashboard, null, {});
+  const oppOps = dataOf(data.opportunityOperations, null, {});
   const opportunities = dataOf(data.opportunities, 'opportunities', []);
   const oppSources = dataOf(data.opportunitySources, 'sources', []);
+  const sourceRuns = dataOf(data.opportunitySourceRuns, 'source_runs', []);
   const digest = dataOf(data.opportunityDigest, 'digest', {});
   const auditEvents = dataOf(data.audit, 'events', []);
   const counts = commandCenter.counts || {};
+  const topOpportunities = [...opportunities].sort((a, b) => opportunityScore(b) - opportunityScore(a)).slice(0, 8);
+  const healthCounts = dailyPull.opportunity_source_health || {};
+  const trendStatus = dailyPull.counts?.google_trend_related_queries ? 'ready' : spgCandidates.length ? 'candidates' : 'check';
+  const rssRun = sourceRuns.find((run) => String(run.source_family || '').toLowerCase() === 'rss') || {};
+  const rssStatus = rssRun.status || (dailyPull.counts?.spg_rss_candidates ? 'ready' : 'check');
 
   return `
     <nav class="crm-tabs" aria-label="CRM modules">
+      <a href="#daily-money-dashboard">Money Dashboard</a>
       <a href="#crm-overview">Overview</a>
       <a href="#contact-war-room">Contact War Room</a>
       <a href="#campaign-manager">Campaign Manager</a>
@@ -145,6 +172,32 @@ function renderModules(data) {
       <a href="#compliance-gates">Gates</a>
       <a href="#audit-log">Audit</a>
     </nav>
+    ${section('Daily Money Dashboard', 'Daily pull health + next money actions', `
+      <div class="cards four admin-grid">
+        ${card('Daily pull', compact(dailyPull.status || 'missing'), dailyPull.generated_at ? `Updated ${dailyPull.generated_at}` : 'Waiting for data/daily-pull/latest.json', statusTone(dailyPull.status))}
+        ${card('Healthy sources', formatCount(healthCounts.ok), `${formatCount(healthCounts.warning)} warning · ${formatCount(healthCounts.skipped)} skipped`, Number(healthCounts.warning || 0) ? 'neutral' : 'success')}
+        ${card('SPG monetized offers', formatCount(dailyPull.counts?.spg_offer_records || spgOffers.length), `${formatCount(dailyPull.counts?.spg_page_placements || spgWall.length)} placements · ${formatCount(dailyPull.counts?.spg_offer_candidates || spgCandidates.length)} candidates`, 'success')}
+        ${card('Trend/RSS status', `${compact(trendStatus)} / ${compact(rssStatus)}`, `${formatCount(dailyPull.counts?.google_trend_related_queries)} trend queries · ${formatCount(dailyPull.counts?.spg_rss_candidates)} RSS candidates`, statusTone(`${trendStatus} ${rssStatus}`))}
+      </div>
+      ${rows(sourceRuns.slice(0, 8), [
+        { label: 'Source', value: (r) => r.source_id || r.source_family },
+        { label: 'Family', value: (r) => r.source_family },
+        { label: 'Status', value: (r) => r.status || r.source_health_after },
+        { label: 'Count', value: (r) => r.opportunity_count || r.records_seen },
+        { label: 'Warning', value: (r) => r.error || r.skip_reason || r.source_health_reason },
+      ])}
+      ${rows(topOpportunities, [
+        { label: 'Top opportunity', value: (r) => r.title },
+        { label: 'Fit', value: (r) => r.company_fit },
+        { label: 'Source', value: (r) => r.source_family || r.source_id },
+        { label: 'Score', value: (r) => opportunityScore(r) || '—' },
+        { label: 'Next action', value: (r) => r.next_best_action || r.recommendation || r.status },
+      ])}
+      <div class="crm-action-row" aria-label="Internal Kanban next actions">
+        ${dailyPullNextActions(dailyPull).map((action) => `<a class="button ghost" href="${escapeHtml(action.href || '#daily-money-dashboard')}" data-kanban-only="true" data-route-type="${escapeHtml(action.route_type || 'review')}">${escapeHtml(action.label)} · Kanban only</a>`).join('')}
+      </div>
+      <p class="trust-note">Internal-only surface. Buttons do not bid, apply, submit, spend, publish, email, SMS, provider-push, or contact anyone.</p>
+    `)}
     <section id="crm-overview" class="cards four admin-grid">
       ${card('Mass sending', dashboard?.service?.massSendingEnabled === false ? 'NO-SEND' : 'CHECK', 'Provider push/export remain gated.', 'error')}
       ${card('Command records', formatCount(Object.values(counts).reduce((sum, value) => sum + Number(value || 0), 0)), 'Seeded CRM operating records.', 'success')}
@@ -210,18 +263,39 @@ function renderModules(data) {
     `)}
     ${section('Opportunity Desk', 'AI Decision Desk for SAM, jobs, networks and sponsors', `
       <div class="cards four admin-grid">
-        ${card('Sources', formatCount(oppDash?.counts?.sources || oppSources.length), 'SAM/job/network/RSS registries.')}
-        ${card('Open', formatCount(oppDash?.counts?.open || opportunities.filter((o) => o.status === 'open').length), 'Potential pursue/watch items.')}
+        ${card('Last run', compact(oppOps?.last_run?.generated_at || dailyPull.generated_at || 'unknown'), compact(oppOps?.last_run?.status || 'status unknown'), statusTone(oppOps?.last_run?.status || ''))}
+        ${card('Deploy status', compact(oppOps?.deploy_status || dailyPull.deploy_status || 'unknown'), `${formatCount(oppOps?.counts?.source_runs || oppDash?.counts?.source_runs || sourceRuns.length)} source runs`, statusTone(oppOps?.deploy_status || dailyPull.deploy_status || ''))}
+        ${card('Source health', formatCount(oppOps?.counts?.sources || oppDash?.counts?.sources || oppSources.length), compact(oppOps?.source_health || dailyPull.opportunity_source_health || {}), statusTone(JSON.stringify(oppOps?.source_health || dailyPull.opportunity_source_health || {})))}
         ${card('External actions', oppDash?.externalActionsEnabled === false ? 'BLOCKED' : 'CHECK', 'AI drafts only. No submission/spend.', 'error')}
-        ${card('Digest', compact(digest?.date || 'daily'), compact(digest?.scope || 'all sources'))}
       </div>
-      ${rows(opportunities, [
+      <div class="cards four admin-grid">
+        ${card('Opportunity count', formatCount(oppOps?.counts?.opportunities || oppDash?.counts?.opportunities || opportunities.length), compact(oppOps?.opportunity_counts?.by_status || {}))}
+        ${card('SPG offer records', formatCount(oppOps?.spg?.counts?.offer_records || dailyPull.counts?.spg_offer_records || 0), 'Durable store offer inventory')}
+        ${card('SPG placements', formatCount(oppOps?.spg?.counts?.page_placements || dailyPull.counts?.spg_page_placements || 0), 'Published offer placements')}
+        ${card('Blockers', formatCount((oppOps?.blockers || []).length), compact((oppOps?.blockers || []).slice(0, 2)), (oppOps?.blockers || []).length ? 'error' : 'success')}
+      </div>
+      ${rows((oppOps?.top_first_cash_opportunities || opportunities).slice(0, 10), [
         { label: 'Opportunity', value: (r) => r.title },
         { label: 'Source', value: (r) => r.source_family || r.source_id },
-        { label: 'Type', value: (r) => r.opportunity_type },
+        { label: 'First cash', value: (r) => r.first_cash_window_days ? `${r.first_cash_window_days} days` : 'unknown' },
         { label: 'Score', value: (r) => r.latest_score?.total_score || r.score || r.priority_score },
         { label: 'Decision', value: (r) => r.recommendation || r.status || r.gate_status },
       ])}
+      ${rows((oppOps?.source_runs?.latest_runs || sourceRuns).slice(0, 8), [
+        { label: 'Run', value: (r) => r.source_id || r.source_family },
+        { label: 'Status', value: (r) => r.status || r.source_health_after },
+        { label: 'Finished', value: (r) => r.finished_at },
+        { label: 'Count', value: (r) => r.opportunity_count || r.records_seen },
+        { label: 'Issue', value: (r) => r.error || r.skip_reason || r.source_health_reason },
+      ])}
+      ${rows((oppOps?.sources || oppSources).slice(0, 10), [
+        { label: 'Source', value: (r) => r.source_name || r.name },
+        { label: 'Family', value: (r) => r.source_family || r.family },
+        { label: 'Health', value: (r) => r.source_health },
+        { label: 'Owner', value: (r) => r.route_owner_profile || r.owner_profile },
+        { label: 'Last run', value: (r) => r.last_run_at || r.latest_run_status },
+      ])}
+      <p class="trust-note">Top first-cash queue is sanitized internal ops data only. Digest scope: ${escapeHtml(compact(digest?.scope || 'all sources'))}. SPG readiness: ${escapeHtml(compact(oppOps?.spg?.network_readiness?.readiness_status || spgProof?.readiness_status || 'unknown'))}.</p>
     `)}
     ${section('Compliance Gates', 'No-send controls and approval blockers', `
       <div class="cards three admin-grid">

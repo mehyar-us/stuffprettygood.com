@@ -145,6 +145,12 @@ test('CRM command center static page exposes only login shell before auth', () =
   assert.doesNotMatch(page, /<nav class="nav"|<footer class="footer"/i);
 });
 
+test('CRM command center awaits authenticated module data before rendering counts', () => {
+  const app = html('crm-login.js');
+  assert.match(app, /requests\.map\(async \(\[key, path\]\) => \[key, await safeRequest\(path\)\]\)/);
+  assert.doesNotMatch(app, /Object\.fromEntries\(entries\.map\(\(\[key, promise\]\) => \[key, promise\]\)\)/);
+});
+
 test('frontend app redacts raw PII-like keys before CRM event dispatch', () => {
   const app = html('app.js');
   assert.match(app, /email\|phone\|name\|password\|secret\|token\|invoice\|payment/i);

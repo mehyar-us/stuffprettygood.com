@@ -332,7 +332,7 @@ write('crm-command-center-ux.html', `<!doctype html>
   <title>Mehyar Media CRM Login</title>
   <meta name="description" content="Private Mehyar Media CRM command center login.">
   <link rel="stylesheet" href="/styles.css">
-  <script type="module" src="/crm-login.js?v=crm-dashboard-20260515"></script>
+  <script type="module" src="/crm-login.js?v=crm-opportunity-fix-20260515T1818"></script>
 </head>
 <body class="crm-login-body">
   <main id="main" class="crm-login-shell" aria-label="Mehyar Media CRM login">
@@ -433,6 +433,13 @@ textarea { min-height: 7rem; }
 .check input { width: auto; margin-top: .22rem; }
 .hint, .fineprint, .trust-note { color: var(--muted); font-size: .92rem; }
 .go-link { display: inline-flex; margin-top: .5rem; font-weight: 900; }
+.tag-row { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .65rem; margin: .9rem 0; }
+.tag-row > * { margin: 0; }
+.sticker, .pill { display: inline-flex; align-items: center; max-width: 100%; border: 1px solid var(--line); border-radius: 999px; padding: .35rem .68rem; font-size: .82rem; font-weight: 900; line-height: 1.2; white-space: normal; }
+.sticker { background: color-mix(in srgb, var(--accent-2) 16%, var(--panel)); color: var(--text); }
+.pill { background: color-mix(in srgb, var(--panel) 84%, transparent); color: var(--muted); }
+.offer-badge-row { gap: .55rem .75rem; margin: 1rem 0 1.15rem; }
+.offer-badge-row .sticker, .offer-badge-row .pill { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--panel) 60%, transparent); }
 .article-layout { max-width: 76rem; margin: 0 auto 2rem; display: grid; grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr); gap: 1rem; align-items: start; }
 .event-list { display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; list-style: none; }
 .event-list li { border: 1px solid var(--line); border-radius: 999px; padding: .25rem .55rem; }
