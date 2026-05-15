@@ -45,10 +45,11 @@ test('StuffPrettyGood public surface data covers required MVP routes', () => {
   }
 });
 
-test('all required static pages exist and expose disclosure/preferences/unsubscribe paths', () => {
+test('all required static pages exist and public SPG pages expose disclosure/preferences/unsubscribe paths', () => {
   for (const route of requiredStaticRoutes) {
     assert.ok(existsSync(join(publicDir, route)), `${route} missing`);
     const page = html(route);
+    if (route === 'crm-command-center-ux.html') continue;
     assert.match(page, /Affiliate disclosure/i, `${route} missing affiliate disclosure`);
     assert.match(page, /href="\/privacy\.html"/, `${route} missing privacy link`);
     assert.match(page, /href="\/preferences\.html"/, `${route} missing preference link`);
@@ -115,7 +116,7 @@ test('starter, savings, readiness, weekly, template, preference and unsubscribe 
     ['templates.html', ['template_download_started', 'license', 'paid_interest']],
     ['reactivation.html', ['return_credit_interest', 'private drops', 'ai/business offers', 'stuffprettygood updates', 'Unsubscribe everything', 'NO-SEND']],
     ['thank-you.html', ['Preference Saved', 'next_step_clicked', 'Unsubscribe']],
-    ['crm-command-center-ux.html', ['Contact War Room', 'Sponsor pilot', 'Offer manager', 'Test simulator', 'Metrics dashboard', 'NO-SEND']],
+    ['crm-command-center-ux.html', ['Mehyar Media Command Center', 'Sign in to continue', 'crm-login-form']],
     ['preferences.html', ['brand_optout', 'global_optout', 'frequency']],
     ['unsubscribe.html', ['suppression_created', 'global_unsubscribe', 'brand_unsubscribe']],
   ];
@@ -133,6 +134,15 @@ test('/go pages are disclosure-visible placeholders for every approved offer', (
     assert.match(page, /Production redirect must record/i);
     assert.match(page, /disclosure_seen/i);
   }
+});
+
+test('CRM command center static page exposes only login shell before auth', () => {
+  const page = html('crm-command-center-ux.html');
+  assert.match(page, /id="crm-login-form"/);
+  assert.match(page, /type="password"/);
+  assert.match(page, /src="\/crm-login\.js"/);
+  assert.doesNotMatch(page, /Contact War Room|Sponsor pilot|Offer manager|Test simulator|Metrics dashboard|NO-SEND/i);
+  assert.doesNotMatch(page, /<nav class="nav"|<footer class="footer"/i);
 });
 
 test('frontend app redacts raw PII-like keys before CRM event dispatch', () => {

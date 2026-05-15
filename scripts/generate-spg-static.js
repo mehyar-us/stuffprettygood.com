@@ -29,7 +29,6 @@ const nav = `
     <a href="/ai-readiness-score.html">AI Readiness</a>
     <a href="/templates.html">Templates</a>
     <a href="/reactivation.html">Return Credit</a>
-    <a href="/crm-command-center-ux.html">CRM UX</a>
     <a href="/deals.html">Deals</a>
     <a href="/preferences.html">Preferences</a>
     <a class="nav-cta" href="/ai-tool-stack-quiz.html">Take quiz</a>
@@ -324,23 +323,36 @@ write('thank-you.html', page({
 </section>`
 }));
 
-write('crm-command-center-ux.html', page({
-  title: 'CRM Command Center UX Prototype',
-  description: 'Admin UX prototype for reactivation, sponsor pilot, offer manager, simulator, metrics, and blocked states.',
-  body: `
-<section class="hero compact surface" data-surface="crm-command-center-ux" data-crm-events="${crmEvents.adminUx.join(',')}">
-  <p class="eyebrow">Operator UX prototype</p><h1>Campaign Manager CRM should make blocked states impossible to miss.</h1><p class="lede">Boss-facing admin prioritizes status, evidence, owner, next action, and recovery over vanity.</p>
-</section>
-<section class="cards three admin-grid">
-  <article class="card"><p class="eyebrow">Contact War Room</p><h2>Source + tier intelligence</h2><p>Aggregate counts only, masked refs, evidence links, quarantine queues.</p><p><span class="status watch">WATCH</span> source proof incomplete</p></article>
-  <article class="card"><p class="eyebrow">Tier status</p><h2>Clean / dormant / quarantine / no-SMS</h2><p>Tier 3 unknown provenance and Tier 4 no written SMS consent stay quarantined.</p><p><span class="status no-go">NO-SMS</span> written consent missing</p></article>
-  <article class="card"><p class="eyebrow">Sponsor pilot</p><h2>$5K setup package tracker</h2><p>Proof packet, no-data-transfer evidence, aggregate reporting only, approval status.</p><p><span class="status blocked">BLOCKED</span> contract/payment requires approval</p></article>
-  <article class="card"><p class="eyebrow">Offer manager</p><h2>Terms + disclosure + /go readiness</h2><p>Return credit, private drops, AI business offers, Amazon manual links, SaaS referrals.</p><p><span class="status watch">TERMS REVIEW</span> affiliate terms unknown</p></article>
-  <article class="card"><p class="eyebrow">Test simulator</p><h2>Segment × offer × channel</h2><p>Outputs GO/WATCH/NO-GO, RP1000, CP1000, complaint risk, approval owner.</p><p><span class="status no-go">NO-GO</span> provider readiness missing</p></article>
-  <article class="card"><p class="eyebrow">Metrics dashboard</p><h2>Scale / watch / kill</h2><p>Separates audience growth, sponsor pipeline, on-site intent, outbound readiness, SMS readiness.</p><p><span class="status blocked">NO-SEND</span> live send disabled</p></article>
-</section>
-<section class="panel"><h2>Admin interaction rules</h2><ul><li>Every disabled CTA states blocker class, owner, and next action.</li><li>No table shows raw email, phone, name, or address by default.</li><li>Proof packets export aggregate buckets only.</li><li>Send, export, provider push, SMS activation, payment collection, and public claims remain disabled until scoped gates pass.</li></ul></section>`
-}));
+write('crm-command-center-ux.html', `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Mehyar Media CRM Login</title>
+  <meta name="description" content="Private Mehyar Media CRM command center login.">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/crm-login.js"></script>
+</head>
+<body class="crm-login-body">
+  <main id="main" class="crm-login-shell" aria-label="Mehyar Media CRM login">
+    <section class="crm-login-card" data-auth-state="logged-out">
+      <p class="eyebrow">Private CRM</p>
+      <h1>Mehyar Media Command Center</h1>
+      <p class="lede">Sign in to continue.</p>
+      <form id="crm-login-form" class="grid-form compact" autocomplete="on">
+        <label for="crm-email">Email</label>
+        <input id="crm-email" name="email" type="email" autocomplete="username" required>
+        <label for="crm-password">Password</label>
+        <input id="crm-password" name="password" type="password" autocomplete="current-password" required>
+        <button class="button primary" type="submit">Sign in</button>
+        <p id="crm-login-status" class="trust-note" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+    <section id="crm-authenticated-panel" class="crm-login-card" hidden></section>
+  </main>
+</body>
+</html>`);
 
 write('preferences.html', page({
   title: 'Preference Center',
@@ -432,6 +444,11 @@ textarea { min-height: 7rem; }
 .status.no-go, .status.blocked { color: #b73526; }
 .status.watch { color: var(--accent-2); }
 .status-panel { border-style: dashed; }
+.crm-login-body { min-height:100vh; display:grid; place-items:center; }
+.crm-login-shell { width:min(100%,760px); padding:clamp(1rem,4vw,3rem); }
+.crm-login-card { padding:clamp(1.25rem,4vw,2.4rem); border:1px solid var(--line); border-radius:2rem; background:color-mix(in srgb,var(--panel) 94%,transparent); box-shadow:var(--shadow); }
+.crm-login-card input { width:100%; min-height:3rem; }
+.crm-auth-topline { display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; margin-bottom:1rem; }
 @media (max-width: 880px) { .nav { align-items: flex-start; } .nav-toggle { display: inline-flex; } .nav-links { display: none; width: 100%; flex-direction: column; align-items: flex-start; } .nav.open .nav-links { display: flex; } .cards.two, .cards.three, .grid-form, .article-layout { grid-template-columns: 1fr; } .hero { border-radius: 1.25rem; min-height: 42vh; } }
 @media (max-width: 520px) { main { padding-inline: .85rem; } .hero, .card, .panel, form { padding: 1rem; } h1 { font-size: clamp(2rem, 16vw, 3.4rem); } .cta-row, .foot-grid { flex-direction: column; } }
 `);

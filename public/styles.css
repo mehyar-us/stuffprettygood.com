@@ -113,3 +113,17 @@ a{color:inherit;text-underline-offset:.22em}.skip-link{position:absolute;left:-9
 .fact-list li { border:1px solid var(--color-border); border-radius:.9rem; padding:.55rem .65rem; background:color-mix(in srgb,var(--color-surface-2) 56%,transparent); }
 .related-offer-card { text-decoration:none; display:grid; gap:.35rem; border:2px solid var(--cartoon-ink); box-shadow:5px 6px 0 color-mix(in srgb,var(--cartoon-ink) 76%,transparent); }
 @media (max-width:900px){ .offer-landing-grid{grid-template-columns:1fr}.offer-hero-image{transform:none} }
+
+
+/* Mehyar Media private CRM login shell */
+.crm-login-body { min-height:100vh; display:grid; place-items:center; background:radial-gradient(circle at 20% 10%, color-mix(in srgb,var(--color-accent) 18%,transparent), transparent 24rem), radial-gradient(circle at 80% 90%, color-mix(in srgb,var(--color-accent-2) 16%,transparent), transparent 24rem), var(--color-bg); }
+.crm-login-shell { width:min(100%, 760px); padding:clamp(1rem,4vw,3rem); }
+.crm-login-card { padding:clamp(1.25rem,4vw,2.4rem); border:1px solid var(--color-border); border-radius:var(--radius-lg); background:linear-gradient(145deg,color-mix(in srgb,var(--color-surface) 97%,transparent),color-mix(in srgb,var(--color-surface-2) 70%,transparent)); box-shadow:var(--shadow); }
+.crm-login-card h1 { font-size:clamp(2.1rem,6vw,4.3rem); }
+.crm-login-card form { box-shadow:none; border-radius:var(--radius-md); margin-top:1rem; }
+.crm-login-card input { width:100%; min-height:3rem; border:1.5px solid var(--color-border); border-radius:.9rem; background:var(--color-surface); color:var(--color-text); padding:.75rem .85rem; font:inherit; }
+.crm-login-card [hidden] { display:none !important; }
+.crm-auth-topline { display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; margin-bottom:1rem; }
+#crm-login-status[data-tone="error"] { color:var(--color-danger); }
+#crm-login-status[data-tone="success"] { color:var(--color-ok); }
+@media (max-width:680px){ .crm-auth-topline{display:block}.crm-auth-topline .button{margin-top:.75rem} }
