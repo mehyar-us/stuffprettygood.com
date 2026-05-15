@@ -24,6 +24,7 @@ run_daily() {
   "$NODE_BIN" scripts/fetch-spg-rss.mjs data/spg-rss-source-registry.json data/spg-rss-snapshot.json
   "$NODE_BIN" scripts/update-spg-rss-candidates.mjs data/spg-rss-snapshot.json data/spg-rss-candidates.json
   "$NODE_BIN" scripts/build-spg-trend-pages.mjs
+  "$NODE_BIN" scripts/qa-spg-offers.mjs
   "$NODE_BIN" --test
 }
 
