@@ -33,6 +33,10 @@ test('SPG public offer JSON contract exposes approved safe offers only', async (
     assert.ok(response.body.offers.length >= 4);
     for (const offer of response.body.offers) {
       assert.equal(offer.approval_state, 'approved');
+      assert.equal(offer.monetization_status, 'approved_monetized');
+      assert.notEqual(offer.payout_model, 'none');
+      assert.equal(offer.account_status, 'active');
+      assert.equal(offer.tracking_status, 'active');
       assert.match(offer.go_link, /^\/go\//);
       assert.ok(offer.image.url);
       assert.ok(offer.image.license);
@@ -62,6 +66,17 @@ test('SPG public offer JSON contract exposes approved safe offers only', async (
     const viewerPlacements = await requestJson(`${baseUrl}/api/spg/page-placements`, { headers: { authorization: `Bearer ${viewerLogin.body.session.id}` } });
     assert.equal(viewerPlacements.status, 200);
     assert.equal(viewerPlacements.body.placements.some((placement) => placement.id === 'plc_private_test'), false);
+
+    spgStore.state.offers.push({ ...spgStore.state.offers[0], id: 'off_private_test', offer_key: 'private-unapproved-test', approval_status: 'paused', publish_state: 'draft', monetization_status: 'pending', payout_model: 'none' });
+    spgStore.state.page_placements.push({ id: 'plc_private_offer_wall', surface: 'home', entity_type: 'offer', entity_key: 'private-unapproved-test', approval_status: 'approved', publish_state: 'published', display_order: 1 });
+    const offerWall = await requestJson(`${baseUrl}/api/spg/offer-wall/public?surface=home&limit=8`);
+    assert.equal(offerWall.status, 200);
+    assert.equal(offerWall.body.massSendingEnabled, false);
+    assert.equal(offerWall.body.providerPushEnabled, false);
+    assert.equal(offerWall.body.offers.length, 8);
+    assert.equal(offerWall.body.offers.some((offer) => offer.offer_key === 'private-unapproved-test'), false);
+    assert.ok(offerWall.body.offers.every((offer) => offer.placement.surface === 'home'));
+    assert.ok(offerWall.body.offers.every((offer) => offer.monetization_status === 'approved_monetized' && offer.payout_model !== 'none'));
   } finally {
     await close(server);
   }
