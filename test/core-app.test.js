@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import http from 'node:http';
 
 import { AuditLog } from '../src/core/audit.js';
-import { AuthStore } from '../src/core/auth.js';
+import { AuthStore, seedAdmin } from '../src/core/auth.js';
 import { buildDashboard } from '../src/core/dashboard.js';
 import { createApp } from '../src/server.js';
 
@@ -77,6 +77,7 @@ test('HTTP app seeds admin credentials from environment when provided', async ()
 
   const auditLog = new AuditLog();
   const auth = new AuthStore({ auditLog });
+  seedAdmin(auth);
   const server = http.createServer(createApp({ authStore: auth, audit: auditLog }));
   await listen(server);
   const baseUrl = `http://127.0.0.1:${server.address().port}`;
@@ -100,6 +101,7 @@ test('HTTP app seeds admin credentials from environment when provided', async ()
 test('HTTP app exposes health, dashboard, auth, session, audit, and compliance transition routes', async () => {
   const auditLog = new AuditLog();
   const auth = new AuthStore({ auditLog });
+  seedAdmin(auth);
   const server = http.createServer(createApp({ authStore: auth, audit: auditLog }));
   await listen(server);
   const baseUrl = `http://127.0.0.1:${server.address().port}`;

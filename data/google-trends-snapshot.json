@@ -2,7 +2,7 @@
   "source": "SerpAPI Google Trends",
   "geo": "US",
   "date": "today 12-m",
-  "generatedAt": "2026-05-15T13:59:05.237Z",
+  "generatedAt": "2026-05-15T20:09:40.014Z",
   "seeds": [
     {
       "seed": "AI note taker",
@@ -70,10 +70,10 @@
       ],
       "momentum": {
         "points": 53,
-        "latest": 63,
-        "first4Avg": 41,
-        "last4Avg": 68,
-        "momentumPct": 65
+        "latest": 60,
+        "first4Avg": 42,
+        "last4Avg": 70,
+        "momentumPct": 67
       }
     },
     {
@@ -96,28 +96,28 @@
         },
         {
           "bucket": "rising",
-          "query": "wattbricks 100w portable power station",
-          "value": "Breakout"
-        },
-        {
-          "bucket": "rising",
           "query": "ecoflow delta 3 portable power station",
           "value": "+200%"
         },
         {
           "bucket": "rising",
-          "query": "portable power station reviews",
+          "query": "anker solix",
           "value": "+100%"
         },
         {
           "bucket": "rising",
-          "query": "anker solix",
+          "query": "portable power station reviews",
           "value": "+90%"
         },
         {
           "bucket": "rising",
-          "query": "anker power station",
+          "query": "bluetti portable power station",
           "value": "+70%"
+        },
+        {
+          "bucket": "rising",
+          "query": "anker portable power station",
+          "value": "+60%"
         },
         {
           "bucket": "top",
@@ -126,26 +126,26 @@
         },
         {
           "bucket": "top",
-          "query": "ecoflow",
-          "value": "93"
+          "query": "solar portable power station",
+          "value": "99"
         },
         {
           "bucket": "top",
-          "query": "portable solar power station",
-          "value": "92"
+          "query": "ecoflow",
+          "value": "99"
         },
         {
           "bucket": "top",
           "query": "ecoflow power station",
-          "value": "92"
+          "value": "95"
         }
       ],
       "momentum": {
         "points": 53,
         "latest": 27,
-        "first4Avg": 8,
+        "first4Avg": 7,
         "last4Avg": 37,
-        "momentumPct": 387
+        "momentumPct": 403
       }
     },
     {
@@ -159,17 +159,22 @@
         {
           "bucket": "rising",
           "query": "ihome red light therapy mask",
-          "value": "+1,150%"
+          "value": "Breakout"
         },
         {
           "bucket": "rising",
           "query": "inia red light mask",
-          "value": "+700%"
+          "value": "+750%"
         },
         {
           "bucket": "rising",
-          "query": "shark cryoglow mask",
-          "value": "+700%"
+          "query": "red light therapy mask shark",
+          "value": "+650%"
+        },
+        {
+          "bucket": "rising",
+          "query": "shark red light mask",
+          "value": "+650%"
         },
         {
           "bucket": "rising",
@@ -187,37 +192,32 @@
           "value": "+160%"
         },
         {
-          "bucket": "rising",
-          "query": "red light therapy face mask",
-          "value": "+150%"
-        },
-        {
           "bucket": "top",
-          "query": "red light therapy mask",
+          "query": "light therapy mask",
           "value": "100"
         },
         {
           "bucket": "top",
-          "query": "red light mask",
-          "value": "99"
+          "query": "red light therapy mask",
+          "value": "94"
         },
         {
           "bucket": "top",
-          "query": "light therapy mask",
-          "value": "99"
+          "query": "red light mask",
+          "value": "91"
         },
         {
           "bucket": "top",
           "query": "best red light therapy",
-          "value": "87"
+          "value": "69"
         }
       ],
       "momentum": {
         "points": 53,
-        "latest": 64,
-        "first4Avg": 32,
-        "last4Avg": 74,
-        "momentumPct": 132
+        "latest": 58,
+        "first4Avg": 29,
+        "last4Avg": 69,
+        "momentumPct": 141
       }
     },
     {
@@ -245,6 +245,11 @@
         },
         {
           "bucket": "rising",
+          "query": "ikea air purifier",
+          "value": "+400%"
+        },
+        {
+          "bucket": "rising",
           "query": "coway airmega",
           "value": "+250%"
         },
@@ -259,18 +264,13 @@
           "value": "+190%"
         },
         {
-          "bucket": "rising",
-          "query": "air purifier with hepa filter",
-          "value": "+130%"
-        },
-        {
           "bucket": "top",
-          "query": "air filter",
+          "query": "hepa air purifier",
           "value": "100"
         },
         {
           "bucket": "top",
-          "query": "hepa air purifier",
+          "query": "air filter",
           "value": "100"
         },
         {
@@ -286,10 +286,10 @@
       ],
       "momentum": {
         "points": 53,
-        "latest": 48,
+        "latest": 45,
         "first4Avg": 15,
-        "last4Avg": 61,
-        "momentumPct": 297
+        "last4Avg": 60,
+        "momentumPct": 302
       }
     },
     {
@@ -297,8 +297,8 @@
       "related": [
         {
           "bucket": "rising",
-          "query": "compact treadmill",
-          "value": "+450%"
+          "query": "overself walking pad",
+          "value": "Breakout"
         },
         {
           "bucket": "rising",
@@ -317,49 +317,49 @@
         },
         {
           "bucket": "rising",
+          "query": "pink walking pad",
+          "value": "+250%"
+        },
+        {
+          "bucket": "rising",
           "query": "walking pad with desk",
-          "value": "+250%"
-        },
-        {
-          "bucket": "rising",
-          "query": "home walking pad",
-          "value": "+250%"
-        },
-        {
-          "bucket": "rising",
-          "query": "under desk treadmill",
-          "value": "+250%"
-        },
-        {
-          "bucket": "rising",
-          "query": "apple walking pad",
           "value": "+200%"
         },
         {
+          "bucket": "rising",
+          "query": "mini walking pad",
+          "value": "+190%"
+        },
+        {
+          "bucket": "rising",
+          "query": "walking pad for desk",
+          "value": "+190%"
+        },
+        {
           "bucket": "top",
-          "query": "walking treadmill",
+          "query": "treadmill walking pad",
           "value": "100"
         },
         {
           "bucket": "top",
-          "query": "treadmill",
-          "value": "99"
+          "query": "walking treadmill",
+          "value": "97"
         },
         {
           "bucket": "top",
-          "query": "walking treadmill pad",
-          "value": "98"
+          "query": "treadmill",
+          "value": "94"
         },
         {
           "bucket": "top",
           "query": "desk walking pad",
-          "value": "50"
+          "value": "51"
         }
       ],
       "momentum": {
         "points": 53,
-        "latest": 49,
-        "first4Avg": 23,
+        "latest": 48,
+        "first4Avg": 22,
         "last4Avg": 58,
         "momentumPct": 158
       }
@@ -370,11 +370,6 @@
         {
           "bucket": "rising",
           "query": "cooking for gains",
-          "value": "Breakout"
-        },
-        {
-          "bucket": "rising",
-          "query": "cooking for gains meal prep containers",
           "value": "Breakout"
         },
         {
@@ -404,28 +399,33 @@
         },
         {
           "bucket": "top",
-          "query": "meal prep glass containers",
-          "value": "66"
-        },
-        {
-          "bucket": "top",
           "query": "glass containers",
-          "value": "63"
-        },
-        {
-          "bucket": "top",
-          "query": "glass meal prep",
-          "value": "62"
+          "value": "64"
         },
         {
           "bucket": "top",
           "query": "containers for meal prep",
-          "value": "57"
+          "value": "55"
+        },
+        {
+          "bucket": "top",
+          "query": "food prep containers",
+          "value": "31"
         },
         {
           "bucket": "top",
           "query": "meal prep food containers",
-          "value": "32"
+          "value": "31"
+        },
+        {
+          "bucket": "top",
+          "query": "food containers",
+          "value": "30"
+        },
+        {
+          "bucket": "top",
+          "query": "meal prep storage containers",
+          "value": "21"
         }
       ],
       "momentum": {
@@ -433,7 +433,7 @@
         "latest": 34,
         "first4Avg": 17,
         "last4Avg": 49,
-        "momentumPct": 187
+        "momentumPct": 193
       }
     },
     {
@@ -441,43 +441,38 @@
       "related": [
         {
           "bucket": "rising",
-          "query": "optimus gps tracker",
+          "query": "itagpro",
+          "value": "Breakout"
+        },
+        {
+          "bucket": "rising",
+          "query": "optimus 3.0 gps tracker",
+          "value": "Breakout"
+        },
+        {
+          "bucket": "rising",
+          "query": "vyncs gps tracker",
           "value": "Breakout"
         },
         {
           "bucket": "rising",
           "query": "mini gps tracker",
-          "value": "+900%"
+          "value": "+700%"
         },
         {
           "bucket": "rising",
           "query": "gps tracker for car",
-          "value": "+500%"
+          "value": "+250%"
         },
         {
           "bucket": "rising",
           "query": "gps tracker for dog",
-          "value": "+60%"
-        },
-        {
-          "bucket": "rising",
-          "query": "gps pet tracker",
-          "value": "+60%"
-        },
-        {
-          "bucket": "rising",
-          "query": "tractive gps dog",
           "value": "+50%"
         },
         {
           "bucket": "rising",
-          "query": "tractive dog tracker",
-          "value": "+50%"
-        },
-        {
-          "bucket": "rising",
-          "query": "tractive gps",
-          "value": "+50%"
+          "query": "pet gps tracker",
+          "value": "+40%"
         },
         {
           "bucket": "top",
@@ -486,26 +481,31 @@
         },
         {
           "bucket": "top",
+          "query": "dog collar gps tracker",
+          "value": "47"
+        },
+        {
+          "bucket": "top",
+          "query": "dog collar tracker",
+          "value": "46"
+        },
+        {
+          "bucket": "top",
           "query": "gps dog collar",
-          "value": "50"
+          "value": "46"
         },
         {
           "bucket": "top",
-          "query": "dog tracker collar",
-          "value": "49"
-        },
-        {
-          "bucket": "top",
-          "query": "tractive dog tracker",
-          "value": "40"
+          "query": "gps collar",
+          "value": "46"
         }
       ],
       "momentum": {
         "points": 53,
-        "latest": 29,
+        "latest": 28,
         "first4Avg": 10,
-        "last4Avg": 44,
-        "momentumPct": 346
+        "last4Avg": 43,
+        "momentumPct": 338
       }
     },
     {
@@ -513,12 +513,7 @@
       "related": [
         {
           "bucket": "rising",
-          "query": "eufy robot vacuum omni e25",
-          "value": "Breakout"
-        },
-        {
-          "bucket": "rising",
-          "query": "best robot vacuum 2026",
+          "query": "irobot roomba 104 robot vacuum & mop",
           "value": "Breakout"
         },
         {
@@ -528,18 +523,18 @@
         },
         {
           "bucket": "rising",
+          "query": "irobot roomba 960 wi-fi connected robot vacuum",
+          "value": "Breakout"
+        },
+        {
+          "bucket": "rising",
+          "query": "irobot roomba 980 robot vacuum",
+          "value": "Breakout"
+        },
+        {
+          "bucket": "rising",
           "query": "best robot vacuum 2025",
-          "value": "+1,150%"
-        },
-        {
-          "bucket": "rising",
-          "query": "irobot roomba",
-          "value": "+800%"
-        },
-        {
-          "bucket": "rising",
-          "query": "irobot vacuum",
-          "value": "+500%"
+          "value": "+1,200%"
         },
         {
           "bucket": "rising",
@@ -548,8 +543,13 @@
         },
         {
           "bucket": "rising",
-          "query": "top robot vacuum",
-          "value": "+350%"
+          "query": "dreame robot vacuum",
+          "value": "+250%"
+        },
+        {
+          "bucket": "rising",
+          "query": "roomba",
+          "value": "+250%"
         },
         {
           "bucket": "top",
@@ -558,26 +558,26 @@
         },
         {
           "bucket": "top",
-          "query": "best robot vacuum",
-          "value": "71"
-        },
-        {
-          "bucket": "top",
           "query": "robot mop and vacuum",
-          "value": "70"
+          "value": "68"
         },
         {
           "bucket": "top",
-          "query": "vacuum and mop robot",
-          "value": "69"
+          "query": "best robot vacuum",
+          "value": "67"
+        },
+        {
+          "bucket": "top",
+          "query": "roomba",
+          "value": "61"
         }
       ],
       "momentum": {
         "points": 53,
-        "latest": 38,
+        "latest": 37,
         "first4Avg": 12,
         "last4Avg": 54,
-        "momentumPct": 348
+        "momentumPct": 339
       }
     },
     {
@@ -585,17 +585,7 @@
       "related": [
         {
           "bucket": "rising",
-          "query": "travel news today",
-          "value": "Breakout"
-        },
-        {
-          "bucket": "rising",
           "query": "ai news today",
-          "value": "Breakout"
-        },
-        {
-          "bucket": "rising",
-          "query": "roamless esim",
           "value": "Breakout"
         },
         {
@@ -624,6 +614,16 @@
           "value": "+70%"
         },
         {
+          "bucket": "rising",
+          "query": "uk esim",
+          "value": "+60%"
+        },
+        {
+          "bucket": "rising",
+          "query": "esim uk travel",
+          "value": "+50%"
+        },
+        {
           "bucket": "top",
           "query": "esim for travel",
           "value": "100"
@@ -646,10 +646,10 @@
       ],
       "momentum": {
         "points": 53,
-        "latest": 37,
+        "latest": 36,
         "first4Avg": 24,
         "last4Avg": 55,
-        "momentumPct": 131
+        "momentumPct": 134
       }
     },
     {
@@ -658,7 +658,7 @@
         {
           "bucket": "rising",
           "query": "mulberry silk",
-          "value": "+400%"
+          "value": "+350%"
         },
         {
           "bucket": "rising",
@@ -668,7 +668,17 @@
         {
           "bucket": "rising",
           "query": "satin sleep cap",
-          "value": "+70%"
+          "value": "+60%"
+        },
+        {
+          "bucket": "rising",
+          "query": "satin sleep bonnet",
+          "value": "+40%"
+        },
+        {
+          "bucket": "rising",
+          "query": "satin bonnet",
+          "value": "+40%"
         },
         {
           "bucket": "top",
@@ -678,7 +688,7 @@
         {
           "bucket": "top",
           "query": "silk bonnet",
-          "value": "50"
+          "value": "51"
         },
         {
           "bucket": "top",
@@ -687,36 +697,31 @@
         },
         {
           "bucket": "top",
-          "query": "satin bonnet",
-          "value": "32"
-        },
-        {
-          "bucket": "top",
           "query": "satin sleep bonnet",
           "value": "32"
         },
         {
           "bucket": "top",
+          "query": "satin bonnet",
+          "value": "32"
+        },
+        {
+          "bucket": "top",
           "query": "silk hair bonnet",
-          "value": "27"
+          "value": "26"
         },
         {
           "bucket": "top",
           "query": "sleep cap",
           "value": "17"
-        },
-        {
-          "bucket": "top",
-          "query": "satin bonnet for sleep",
-          "value": "15"
         }
       ],
       "momentum": {
         "points": 53,
-        "latest": 48,
-        "first4Avg": 32,
-        "last4Avg": 56,
-        "momentumPct": 74
+        "latest": 47,
+        "first4Avg": 34,
+        "last4Avg": 57,
+        "momentumPct": 70
       }
     },
     {
@@ -724,18 +729,23 @@
       "related": [
         {
           "bucket": "rising",
-          "query": "indoor smart herb garden kit",
-          "value": "+180%"
+          "query": "click & grow smart garden 3",
+          "value": "Breakout"
         },
         {
-          "bucket": "top",
-          "query": "herb indoor garden kit",
-          "value": "100"
+          "bucket": "rising",
+          "query": "indoor smart herb garden kit",
+          "value": "+170%"
         },
         {
           "bucket": "top",
           "query": "herb garden kit",
-          "value": "99"
+          "value": "100"
+        },
+        {
+          "bucket": "top",
+          "query": "indoor herb garden kit",
+          "value": "100"
         },
         {
           "bucket": "top",
@@ -745,35 +755,35 @@
         {
           "bucket": "top",
           "query": "indoor garden kit with light",
-          "value": "55"
+          "value": "59"
         },
         {
           "bucket": "top",
           "query": "indoor garden system",
-          "value": "50"
-        },
-        {
-          "bucket": "top",
-          "query": "indoor hydroponic garden",
-          "value": "44"
+          "value": "54"
         },
         {
           "bucket": "top",
           "query": "hydroponic garden",
-          "value": "44"
+          "value": "48"
         },
         {
           "bucket": "top",
-          "query": "indoor garden starter kit",
-          "value": "33"
+          "query": "indoor hydroponic garden kit",
+          "value": "46"
+        },
+        {
+          "bucket": "top",
+          "query": "indoor hydroponic garden",
+          "value": "46"
         }
       ],
       "momentum": {
         "points": 53,
-        "latest": 17,
+        "latest": 16,
         "first4Avg": 2,
-        "last4Avg": 31,
-        "momentumPct": 1950
+        "last4Avg": 30,
+        "momentumPct": 1629
       }
     }
   ],

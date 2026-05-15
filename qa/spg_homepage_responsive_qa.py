@@ -20,6 +20,10 @@ with sync_playwright() as p:
         page.screenshot(path=str(OUT / f'{name}.png'), full_page=False)
         # scroll evidence: offer wall top for desktop/tablet, mid-grid for mobile
         page.locator('.offer-wall').scroll_into_view_if_needed()
+        page.evaluate("""() => {
+            document.querySelectorAll('.offer-wall img').forEach((img) => img.setAttribute('loading', 'eager'));
+        }""")
+        page.wait_for_timeout(600)
         page.screenshot(path=str(OUT / f'{name}-offerwall.png'), full_page=False)
         page.close()
     browser.close()

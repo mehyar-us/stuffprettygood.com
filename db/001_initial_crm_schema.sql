@@ -59,6 +59,10 @@ CREATE TABLE IF NOT EXISTS brands (
   status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'active', 'paused', 'archived')),
   sender_identity JSONB NOT NULL DEFAULT '{}'::jsonb,
   compliance_urls JSONB NOT NULL DEFAULT '{}'::jsonb,
+  provenance_state TEXT NOT NULL DEFAULT 'pending' CHECK (provenance_state IN ('verified', 'pending', 'simulated', 'blocked', 'missing')),
+  source_ref TEXT NULL,
+  artifact_refs_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  next_action TEXT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -72,6 +76,10 @@ CREATE TABLE IF NOT EXISTS domains (
   dns_status TEXT NOT NULL DEFAULT 'unchecked' CHECK (dns_status IN ('unchecked', 'pending', 'verified', 'failed')),
   ssl_status TEXT NOT NULL DEFAULT 'unchecked' CHECK (ssl_status IN ('unchecked', 'pending', 'valid', 'failed')),
   sender_readiness TEXT NOT NULL DEFAULT 'not_applicable' CHECK (sender_readiness IN ('not_applicable', 'not_a_sending_domain', 'not_ready', 'ready', 'blocked')),
+  provenance_state TEXT NOT NULL DEFAULT 'pending' CHECK (provenance_state IN ('verified', 'pending', 'simulated', 'blocked', 'missing')),
+  source_ref TEXT NULL,
+  artifact_refs_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  next_action TEXT NULL,
   CONSTRAINT crm_domain_not_sender_ready CHECK (domain_type <> 'crm' OR sender_readiness <> 'ready'),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -82,13 +90,17 @@ CREATE TABLE IF NOT EXISTS campaigns (
   brand_id UUID NOT NULL REFERENCES brands(id) ON DELETE RESTRICT,
   name TEXT NOT NULL,
   channel TEXT NOT NULL CHECK (channel IN ('email', 'sms', 'web', 'push')),
-  status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'review', 'remediation', 'future_pilot_approved', 'blocked', 'archived')),
+  status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'evidence-needed', 'compliance-review', 'Boss-approval-needed', 'ready-for-dry-run', 'blocked')),
   target_segment_id UUID NULL,
   copy JSONB NOT NULL DEFAULT '{}'::jsonb,
   sender TEXT NULL,
   suppression_status TEXT NOT NULL DEFAULT 'pending' CHECK (suppression_status IN ('pending', 'passed', 'failed')),
   compliance_status TEXT NOT NULL DEFAULT 'pending' CHECK (compliance_status IN ('pending', 'passed', 'failed')),
-  approval_status TEXT NOT NULL DEFAULT 'not_requested' CHECK (approval_status IN ('not_requested', 'requested', 'future_pilot_approved', 'rejected', 'remediation')),
+  approval_status TEXT NOT NULL DEFAULT 'not_requested' CHECK (approval_status IN ('not_requested', 'requested', 'Boss-approval-needed', 'ready-for-dry-run', 'rejected', 'evidence-needed')),
+  provenance_state TEXT NOT NULL DEFAULT 'pending' CHECK (provenance_state IN ('verified', 'pending', 'simulated', 'blocked', 'missing')),
+  source_ref TEXT NULL,
+  artifact_refs_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  next_action TEXT NULL,
   send_enabled BOOLEAN NOT NULL DEFAULT false,
   provider_push_enabled BOOLEAN NOT NULL DEFAULT false,
   recipient_export_enabled BOOLEAN NOT NULL DEFAULT false,
@@ -107,6 +119,10 @@ CREATE TABLE IF NOT EXISTS lists (
   usable_count INTEGER NOT NULL DEFAULT 0 CHECK (usable_count >= 0),
   suppression_count INTEGER NOT NULL DEFAULT 0 CHECK (suppression_count >= 0),
   risk_level TEXT NOT NULL DEFAULT 'unknown' CHECK (risk_level IN ('unknown', 'low', 'medium', 'high', 'blocked')),
+  provenance_state TEXT NOT NULL DEFAULT 'pending' CHECK (provenance_state IN ('verified', 'pending', 'simulated', 'blocked', 'missing')),
+  source_ref TEXT NULL,
+  artifact_refs_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  next_action TEXT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -130,6 +146,10 @@ CREATE TABLE IF NOT EXISTS segments (
   full_table_pull_allowed BOOLEAN NOT NULL DEFAULT false,
   suppression_overlap_count INTEGER NOT NULL DEFAULT 0 CHECK (suppression_overlap_count >= 0),
   risk_tier TEXT NOT NULL DEFAULT 'unknown' CHECK (risk_tier IN ('unknown', 'low', 'medium', 'high', 'blocked')),
+  provenance_state TEXT NOT NULL DEFAULT 'pending' CHECK (provenance_state IN ('verified', 'pending', 'simulated', 'blocked', 'missing')),
+  source_ref TEXT NULL,
+  artifact_refs_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  next_action TEXT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -160,6 +180,10 @@ CREATE TABLE IF NOT EXISTS integrations (
   read_only BOOLEAN NOT NULL DEFAULT true,
   config JSONB NOT NULL DEFAULT '{}'::jsonb,
   secret_ref TEXT NULL,
+  provenance_state TEXT NOT NULL DEFAULT 'pending' CHECK (provenance_state IN ('verified', 'pending', 'simulated', 'blocked', 'missing')),
+  source_ref TEXT NULL,
+  artifact_refs_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  next_action TEXT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -172,6 +196,10 @@ CREATE TABLE IF NOT EXISTS query_templates (
   sql_text TEXT NOT NULL,
   max_rows INTEGER NOT NULL DEFAULT 100 CHECK (max_rows BETWEEN 1 AND 1000),
   requires_approval BOOLEAN NOT NULL DEFAULT true,
+  provenance_state TEXT NOT NULL DEFAULT 'pending' CHECK (provenance_state IN ('verified', 'pending', 'simulated', 'blocked', 'missing')),
+  source_ref TEXT NULL,
+  artifact_refs_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  next_action TEXT NULL,
   created_by UUID NULL REFERENCES crm_users(id) ON DELETE SET NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()

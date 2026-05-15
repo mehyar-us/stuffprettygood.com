@@ -7,7 +7,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 import { AuditLog } from '../src/core/audit.js';
-import { AuthStore } from '../src/core/auth.js';
+import { AuthStore, seedAdmin } from '../src/core/auth.js';
 import { createApp } from '../src/server.js';
 import { SpgDurableStore } from '../src/spg/durable-store.js';
 
@@ -37,8 +37,17 @@ test('SPG public offer JSON contract exposes approved safe offers only', async (
       assert.notEqual(offer.payout_model, 'none');
       assert.equal(offer.account_status, 'active');
       assert.equal(offer.tracking_status, 'active');
+      assert.equal(offer.public_landing_url, `/offers/${offer.canonical_slug}`);
+      assert.equal(offer.redirect_url, `/go/${offer.canonical_slug}`);
       assert.match(offer.landing_url, /^\/offers\//);
       assert.match(offer.go_link, /^\/go\//);
+      assert.equal(offer.landing_url, offer.public_landing_url);
+      assert.equal(offer.go_link, offer.redirect_url);
+      assert.equal(Object.hasOwn(offer, 'destination_url'), false);
+      assert.ok(offer.landing_approved_at);
+      assert.ok(offer.redirect_approved_at);
+      assert.equal(offer.redirect_health, 'ok');
+      assert.ok(offer.source_attribution_text);
       assert.ok(offer.image.url);
       assert.ok(offer.image.license);
       assert.equal(offer.image.rights_status, 'approved');
@@ -87,6 +96,7 @@ test('SPG public offer JSON contract exposes approved safe offers only', async (
 test('SPG admin source and ingestion endpoints enforce auth and no-send side effects', async () => {
   const auditLog = new AuditLog();
   const auth = new AuthStore({ auditLog });
+  seedAdmin(auth);
   const spgStore = tempStore(auditLog);
   const server = http.createServer(createApp({ authStore: auth, audit: auditLog, spgStore }));
   await listen(server);
@@ -102,7 +112,16 @@ test('SPG admin source and ingestion endpoints enforce auth and no-send side eff
     const sources = await requestJson(`${baseUrl}/api/spg/sources`, { headers });
     assert.equal(sources.status, 200);
     assert.ok(sources.body.sources.some((source) => source.source_key === 'spg-rss-registry'));
+    assert.ok(sources.body.sources.some((source) => source.source_key === 'skimlinks-api-feed' && source.api_endpoint_label === 'env:SPG_SKIMLINKS_API_ENDPOINT'));
+    assert.ok(sources.body.sources.some((source) => source.source_key === 'stay22-api-feed' && source.api_endpoint_label === 'env:SPG_STAY22_API_ENDPOINT'));
     assert.ok(sources.body.sources.every((source) => source.source_type !== 'manual_amazon' || source.feed_url === null));
+
+    const accounts = await requestJson(`${baseUrl}/api/spg/offer-accounts`, { headers });
+    assert.equal(accounts.status, 200);
+    assert.ok(accounts.body.accounts.some((account) => account.account_key === 'amazon-associates-manual' && account.credential_ref === 'env:SPG_AMAZON_ASSOCIATES_TAG'));
+    assert.ok(accounts.body.accounts.some((account) => account.account_key === 'skimlinks' && account.api_key_ref === 'env:SPG_SKIMLINKS_API_KEY'));
+    assert.ok(accounts.body.accounts.some((account) => account.account_key === 'stay22-publisher' && account.api_key_ref === 'env:SPG_STAY22_API_KEY'));
+    assert.doesNotMatch(JSON.stringify(accounts.body), /(sk_live_|pk_live_|-----BEGIN|password=|api[_-]?key=|secret=|token=)/i);
 
     const blockedAmazonFeed = await requestJson(`${baseUrl}/api/spg/sources`, {
       method: 'POST',
@@ -118,6 +137,32 @@ test('SPG admin source and ingestion endpoints enforce auth and no-send side eff
     assert.equal(ingest.body.providerPushEnabled, false);
     assert.ok(ingest.body.blocked_side_effects.includes('email'));
     assert.ok(ingest.body.blocked_side_effects.includes('provider_push'));
+    assert.ok(ingest.body.blocked_side_effects.includes('frontend_direct_external_urls'));
+    assert.ok(ingest.body.source_keys.includes('amazon-manual-links'));
+    assert.ok(ingest.body.source_keys.includes('skimlinks-api-feed'));
+    assert.ok(ingest.body.source_keys.includes('stay22-api-feed'));
+    assert.ok(ingest.body.candidate_count >= 3);
+    assert.ok(ingest.body.offer_record_count >= 1);
+    assert.ok(ingest.body.offers.some((offer) => offer.offer_key === 'amazon-daily-standing-desk-cable-kit'));
+    assert.equal(ingest.body.offers.some((offer) => offer.offer_key.startsWith('skimlinks-') || offer.offer_key.startsWith('stay22-')), false);
+
+    const sourceItems = await requestJson(`${baseUrl}/api/spg/source-items`, { headers });
+    assert.equal(sourceItems.status, 200);
+    assert.ok(sourceItems.body.source_items.some((item) => item.source_id === 'skimlinks-api-feed'));
+    assert.ok(sourceItems.body.source_items.some((item) => item.source_id === 'stay22-api-feed'));
+
+    const candidates = await requestJson(`${baseUrl}/api/spg/offer-candidates`, { headers });
+    assert.equal(candidates.status, 200);
+    assert.ok(candidates.body.offer_candidates.some((candidate) => candidate.account_key === 'skimlinks' && candidate.account_status === 'application_ready'));
+    assert.ok(candidates.body.offer_candidates.some((candidate) => candidate.account_key === 'stay22-publisher' && candidate.account_status === 'application_ready'));
+
+    const publicOffers = await requestJson(`${baseUrl}/api/spg/offers/public`);
+    assert.equal(publicOffers.status, 200);
+    assert.ok(publicOffers.body.offers.some((offer) => offer.offer_key === 'amazon-daily-standing-desk-cable-kit'));
+    assert.equal(publicOffers.body.offers.some((offer) => offer.offer_key.startsWith('skimlinks-') || offer.offer_key.startsWith('stay22-')), false);
+    assert.ok(publicOffers.body.offers.every((offer) => offer.public_landing_url?.startsWith('/offers/')));
+    assert.ok(publicOffers.body.offers.every((offer) => offer.redirect_url?.startsWith('/go/')));
+    assert.equal(publicOffers.body.offers.some((offer) => Object.hasOwn(offer, 'destination_url')), false);
 
     const readiness = await requestJson(`${baseUrl}/api/spg/proof/network-readiness`, { headers });
     assert.equal(readiness.status, 200);
@@ -129,9 +174,73 @@ test('SPG admin source and ingestion endpoints enforce auth and no-send side eff
   }
 });
 
+test('SPG /offers and /go routes expose publishable-only contracts and record no-PII click audit', async () => {
+  const auditLog = new AuditLog();
+  const auth = new AuthStore({ auditLog });
+  const spgStore = tempStore(auditLog);
+  const approved = spgStore.state.offers.find((offer) => offer.approval_status === 'approved' && offer.publish_state === 'published');
+  assert.ok(approved, 'seed must include at least one approved published offer');
+  spgStore.state.offers.push({
+    ...approved,
+    id: 'off_free_unpaid_public_test',
+    offer_key: 'free-unpaid-public-test',
+    canonical_slug: 'free-unpaid-public-test',
+    public_landing_path: '/offers/free-unpaid-public-test',
+    public_redirect_path: '/go/free-unpaid-public-test',
+    monetization_status: 'free_unpaid',
+    payout_model: 'none',
+    account_status: 'inactive',
+    tracking_status: 'none',
+    landing_approved_at: approved.landing_approved_at,
+    redirect_approved_at: approved.redirect_approved_at,
+    blocked_reason: 'free_unpaid',
+  });
+  spgStore.state.page_placements.push({ id: 'plc_free_unpaid_public_test', surface: 'home', entity_type: 'offer', entity_key: 'free-unpaid-public-test', approval_status: 'approved', publish_state: 'published', display_order: 1 });
+  const server = http.createServer(createApp({ authStore: auth, audit: auditLog, spgStore }));
+  await listen(server);
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+
+  try {
+    const offers = await requestJson(`${baseUrl}/offers`);
+    assert.equal(offers.status, 200);
+    assert.equal(offers.body.route_contract, 'card -> /offers/<slug> -> /go/<slug>');
+    assert.ok(offers.body.offers.length >= 1);
+    assert.equal(offers.body.offers.some((offer) => offer.offer_key === 'free-unpaid-public-test'), false);
+    assert.ok(offers.body.offers.every((offer) => offer.public_landing_url === `/offers/${offer.canonical_slug}`));
+    assert.ok(offers.body.offers.every((offer) => offer.redirect_url === `/go/${offer.canonical_slug}`));
+    assert.doesNotMatch(JSON.stringify(offers.body), /"destination_url"\s*:/);
+
+    const landing = await requestJson(`${baseUrl}/offers/${approved.offer_key}`);
+    assert.equal(landing.status, 200);
+    assert.equal(landing.body.offer.offer_key, approved.offer_key);
+    assert.equal(landing.body.offer.public_landing_url, `/offers/${approved.offer_key}`);
+    assert.equal(landing.body.offer.redirect_url, `/go/${approved.offer_key}`);
+    assert.ok(landing.body.offer.disclosure);
+    assert.doesNotMatch(JSON.stringify(landing.body), /"destination_url"\s*:/);
+
+    const blockedLanding = await requestJson(`${baseUrl}/offers/free-unpaid-public-test`);
+    assert.equal(blockedLanding.status, 404);
+
+    const redirect = await requestRaw(`${baseUrl}/go/${approved.offer_key}?utm_source=test&email=reader@example.com`, { redirect: 'manual' });
+    assert.equal(redirect.status, 422);
+    assert.equal(redirect.body.status, 'blocked');
+    assert.ok(redirect.body.blocker_classes.includes('raw_pii_or_secret_like_payload'));
+
+    const safeRedirect = await requestRaw(`${baseUrl}/go/${approved.offer_key}?utm_source=test`, { redirect: 'manual' });
+    assert.equal(safeRedirect.status, 302);
+    assert.ok(safeRedirect.headers.get('location'));
+    assert.equal(spgStore.state.public_events.some((event) => event.event_type === 'go_click' && event.canonical_slug === approved.offer_key), true);
+    assert.equal(spgStore.state.public_events.some((event) => event.raw_ip_stored || event.raw_user_agent_stored || event.raw_pii_present), false);
+    assert.equal(auditLog.list({ limit: 20 }).some((event) => event.action === 'spg.go.redirect.resolved' && event.resourceId === approved.offer_key), true);
+  } finally {
+    await close(server);
+  }
+});
+
 test('SPG public signup/preferences/events are functional but no-send and PII-safe', async () => {
   const auditLog = new AuditLog();
   const auth = new AuthStore({ auditLog });
+  seedAdmin(auth);
   const spgStore = tempStore(auditLog);
   const server = http.createServer(createApp({ authStore: auth, audit: auditLog, spgStore }));
   await listen(server);
@@ -160,6 +269,16 @@ test('SPG public signup/preferences/events are functional but no-send and PII-sa
     assert.equal(blockedEvent.body.status, 'blocked');
     assert.equal(blockedEvent.body.blocked_payload_stored, false);
     assert.ok(blockedEvent.body.blocker_classes.includes('raw_pii_or_secret_like_payload'));
+
+    const acceptedEvent = await requestJson(`${baseUrl}/api/spg/events`, { method: 'POST', body: { event_type: 'go_click', route_path: '/go/amazon-monitor-arms.html?utm_source=test', attribution_ref: 'opaque-click-ref' } });
+    assert.equal(acceptedEvent.status, 202);
+    assert.equal(acceptedEvent.body.status, 'accepted');
+    assert.equal(acceptedEvent.body.canonical_slug, 'amazon-monitor-arms');
+    assert.equal(acceptedEvent.body.landing_path, '/offers/amazon-monitor-arms');
+    assert.equal(acceptedEvent.body.redirect_path, '/go/amazon-monitor-arms');
+    assert.equal(acceptedEvent.body.attribution_contract_version, 'spg-route-attribution-v1');
+    assert.equal(acceptedEvent.body.raw_ip_stored, false);
+    assert.equal(acceptedEvent.body.raw_user_agent_stored, false);
 
     const unsubscribe = await requestJson(`${baseUrl}/api/spg/unsubscribe`, { method: 'POST', body: { scope: 'brand_and_global' } });
     assert.equal(unsubscribe.status, 202);
@@ -193,4 +312,16 @@ async function requestJson(url, { method = 'GET', headers = {}, body = null } = 
     body: body ? JSON.stringify(body) : undefined,
   });
   return { status: response.status, body: await response.json() };
+}
+
+async function requestRaw(url, { method = 'GET', headers = {}, body = null, redirect = 'follow' } = {}) {
+  const response = await fetch(url, {
+    method,
+    redirect,
+    headers: { 'content-type': 'application/json', ...headers },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const contentType = response.headers.get('content-type') || '';
+  const parsedBody = contentType.includes('application/json') ? await response.json() : await response.text();
+  return { status: response.status, headers: response.headers, body: parsedBody };
 }

@@ -4,6 +4,7 @@ import http from 'node:http';
 
 import { AuditLog } from '../src/core/audit.js';
 import { CommandCenterStore } from '../src/core/command-center.js';
+import { AuthStore, seedAdmin } from '../src/core/auth.js';
 import { createApp } from '../src/server.js';
 
 test('command center seeds first brand, CRM domain, and legacy integration with no sending enabled', () => {
@@ -74,7 +75,9 @@ test('command center rejects unsafe records and preserves Phase 1 guardrails', (
 test('HTTP command center routes manage brands, domains, lists, integrations, query templates, and legacy source inspection', async () => {
   const auditLog = new AuditLog();
   const commandCenter = new CommandCenterStore({ auditLog, now: () => '2026-04-29T16:05:00.000Z' });
-  const server = http.createServer(createApp({ audit: auditLog, commandCenter }));
+  const auth = new AuthStore({ auditLog });
+  seedAdmin(auth);
+  const server = http.createServer(createApp({ authStore: auth, audit: auditLog, commandCenter }));
   await listen(server);
   const baseUrl = `http://127.0.0.1:${server.address().port}`;
 

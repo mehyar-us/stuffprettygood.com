@@ -5,35 +5,40 @@ import {
 } from '../compliance/gates.js';
 
 const PILOT_BRAND_DOMAIN = 'stuffprettygood.com';
+const STRUCTURAL_BOOT_SOURCE_REF = 'system:structural-boot';
+const STRUCTURAL_BOOT_ARTIFACT_REF = 'docs/crm-2026-truth-first-revenue-os-vision.md';
+const PROVENANCE_STATES = Object.freeze(['verified', 'pending', 'simulated', 'blocked', 'missing']);
+const PROVENANCE_REQUIRED_ENTITY_TYPES = Object.freeze(['lists', 'segments', 'campaigns', 'queryTemplates']);
+const SAFE_CAMPAIGN_STATUSES = Object.freeze(['draft', 'evidence-needed', 'compliance-review', 'Boss-approval-needed', 'ready-for-dry-run', 'blocked']);
 
 const ENTITY_CONFIG = Object.freeze({
   brands: {
     required: ['name', 'domain', 'vertical', 'type', 'status', 'senderIdentity', 'complianceUrls'],
-    defaults: { status: 'planning', senderReadiness: 'not_ready', complianceUrls: {} },
+    defaults: { status: 'planning', senderReadiness: 'not_ready', complianceUrls: {}, provenance_state: 'pending' },
   },
   domains: {
     required: ['domain', 'domainType', 'status', 'dnsStatus', 'sslStatus', 'senderReadiness'],
-    defaults: { dnsStatus: 'unknown', sslStatus: 'unknown', senderReadiness: 'not_ready' },
+    defaults: { dnsStatus: 'unknown', sslStatus: 'unknown', senderReadiness: 'not_ready', provenance_state: 'pending' },
   },
   lists: {
     required: ['name', 'safeQuerySource', 'channel'],
-    defaults: { usableCount: 0, suppressionCount: 0, riskLevel: 'unknown', status: 'draft' },
+    defaults: { usableCount: 0, suppressionCount: 0, riskLevel: 'unknown', status: 'draft', provenance_state: 'pending' },
   },
   segments: {
     required: ['name', 'safeQuerySource', 'channel', 'filters', 'riskTier'],
-    defaults: { status: 'draft', suppressionOverlapCount: 0, previewLimit: 100, materializationAllowed: false },
+    defaults: { status: 'draft', suppressionOverlapCount: 0, previewLimit: 100, materializationAllowed: false, provenance_state: 'pending' },
   },
   campaigns: {
     required: ['name', 'brandId', 'channel', 'targetSegment'],
-    defaults: { status: 'draft', suppressionStatus: 'pending', complianceStatus: 'pending', approvalStatus: 'draft_only' },
+    defaults: { status: 'draft', suppressionStatus: 'pending', complianceStatus: 'pending', approvalStatus: 'draft_only', provenance_state: 'pending' },
   },
   integrations: {
     required: ['name', 'kind', 'status'],
-    defaults: { secretsStoredExternally: true, lastCheckedAt: null },
+    defaults: { secretsStoredExternally: true, lastCheckedAt: null, provenance_state: 'pending' },
   },
   queryTemplates: {
     required: ['name', 'sourceSystem', 'purpose'],
-    defaults: { readOnly: true, maxPreviewRows: 100, fullTablePullAllowed: false },
+    defaults: { readOnly: true, maxPreviewRows: 100, fullTablePullAllowed: false, provenance_state: 'pending' },
   },
 });
 
@@ -70,7 +75,9 @@ export class CommandCenterStore {
   }
 
   seedFirstBrand() {
-    if (this.records.get('brands').some((brand) => brand.domain === 'stuffprettygood.com')) return this.buildSummary();
+    if (this.records.get('brands').some((brand) => brand.domain === 'stuffprettygood.com')) {
+      return this.buildSummary();
+    }
     this.create('brands', {
       name: 'Mehyar Media CRM',
       domain: 'mehyarmedia.mehyar.us',
@@ -80,6 +87,9 @@ export class CommandCenterStore {
       senderIdentity: 'not-a-sending-brand',
       complianceUrls: { privacy: 'https://mehyarmedia.mehyar.us/privacy' },
       senderReadiness: 'not_a_sending_domain',
+      source_ref: STRUCTURAL_BOOT_SOURCE_REF,
+      artifact_refs: [STRUCTURAL_BOOT_ARTIFACT_REF],
+      next_action: 'Verify CRM DNS/HTTPS and keep this brand as an internal command-center placeholder only.',
     }, { actorId: 'system-seed' });
     this.create('brands', {
       name: 'Stuff Pretty Good',
@@ -90,6 +100,9 @@ export class CommandCenterStore {
       senderIdentity: 'no-send-phase-1',
       complianceUrls: { privacy: 'https://stuffprettygood.com/privacy', unsubscribe: 'https://stuffprettygood.com/unsubscribe' },
       senderReadiness: 'blocked_until_compliance_approved',
+      source_ref: STRUCTURAL_BOOT_SOURCE_REF,
+      artifact_refs: [STRUCTURAL_BOOT_ARTIFACT_REF],
+      next_action: 'Verify SPG public compliance pages and connect monetized source artifacts before revenue actions.',
     }, { actorId: 'system-seed' });
     this.create('domains', {
       domain: 'mehyarmedia.mehyar.us',
@@ -98,6 +111,9 @@ export class CommandCenterStore {
       dnsStatus: 'pending_hostinger_dns',
       sslStatus: 'pending_https',
       senderReadiness: 'not_a_sending_domain',
+      source_ref: STRUCTURAL_BOOT_SOURCE_REF,
+      artifact_refs: [STRUCTURAL_BOOT_ARTIFACT_REF],
+      next_action: 'Verify CRM DNS and HTTPS; keep blocked from sending use.',
     }, { actorId: 'system-seed' });
     this.create('domains', {
       domain: 'stuffprettygood.com',
@@ -106,6 +122,9 @@ export class CommandCenterStore {
       dnsStatus: 'pending_hostinger_dns',
       sslStatus: 'pending_https',
       senderReadiness: 'not_a_sending_domain',
+      source_ref: STRUCTURAL_BOOT_SOURCE_REF,
+      artifact_refs: [STRUCTURAL_BOOT_ARTIFACT_REF],
+      next_action: 'Connect landing domain and verify public compliance pages before publishing offers.',
     }, { actorId: 'system-seed' });
     this.create('domains', {
       domain: 'mail.stuffprettygood.com',
@@ -114,6 +133,10 @@ export class CommandCenterStore {
       dnsStatus: 'not_configured',
       sslStatus: 'not_applicable',
       senderReadiness: 'blocked_until_suppression_and_compliance_approved',
+      provenance_state: 'blocked',
+      source_ref: STRUCTURAL_BOOT_SOURCE_REF,
+      artifact_refs: [STRUCTURAL_BOOT_ARTIFACT_REF],
+      next_action: 'Keep sending domain blocked until suppression, compliance, DNS, and Boss approval gates pass.',
     }, { actorId: 'system-seed' });
     this.create('integrations', {
       name: 'Legacy IONOS PostgreSQL',
@@ -121,6 +144,10 @@ export class CommandCenterStore {
       status: 'pending_credentials',
       secretsStoredExternally: true,
       readOnlyRequired: true,
+      provenance_state: 'blocked',
+      source_ref: STRUCTURAL_BOOT_SOURCE_REF,
+      artifact_refs: [STRUCTURAL_BOOT_ARTIFACT_REF],
+      next_action: 'Configure read-only credentials by environment variable name and attach consent/suppression classification before audience use.',
     }, { actorId: 'system-seed' });
     return this.buildSummary();
   }
@@ -128,7 +155,7 @@ export class CommandCenterStore {
   create(entityType, input = {}, { actorId = 'anonymous' } = {}) {
     assertEntityType(entityType);
     const config = ENTITY_CONFIG[entityType];
-    const normalized = normalizeEntity(entityType, { ...config.defaults, ...input });
+    const normalized = normalizeEntity(entityType, { ...config.defaults, ...input }, { actorId });
     const missing = config.required.filter((field) => !normalized[field]);
     const violations = validateEntity(entityType, normalized);
     if (missing.length || violations.length) {
@@ -195,6 +222,13 @@ export class CommandCenterStore {
       moduleReadiness: buildModuleReadiness(),
       pilotReadiness: buildPilotReadiness(this.records),
       senderDomainSeparation: buildSenderDomainSeparation(this.records.get('domains')),
+      productionSeedPolicy: {
+        structuralOnly: true,
+        allowedSeedEntityTypes: ['brands', 'domains', 'integrations'],
+        prohibitedSeedEntityTypes: [...PROVENANCE_REQUIRED_ENTITY_TYPES],
+        source_ref: STRUCTURAL_BOOT_SOURCE_REF,
+        artifact_ref: STRUCTURAL_BOOT_ARTIFACT_REF,
+      },
       guardrails: [
         'campaigns remain draft-only until suppression and compliance approvals pass',
         'legacy IONOS access is read-only with bounded previews only',
@@ -215,10 +249,11 @@ function assertEntityType(entityType) {
   if (!ENTITY_CONFIG[entityType]) throw new Error(`unknown entity type: ${entityType}`);
 }
 
-function normalizeEntity(entityType, record) {
+function normalizeEntity(entityType, record, { actorId = 'anonymous' } = {}) {
   const normalized = Object.fromEntries(Object.entries(record).map(([key, value]) => [key, typeof value === 'string' ? value.trim() : value]));
+  normalizeProvenance(entityType, normalized, actorId);
   if (entityType === 'lists' && !normalized.safeQuerySource && normalized.source) normalized.safeQuerySource = normalized.source;
-  if (entityType === 'campaigns') normalized.status = normalized.status || 'draft';
+  if (entityType === 'campaigns') normalized.status = normalizeCampaignStatus(normalized.status || 'draft');
   if (entityType === 'segments') {
     normalized.filters = normalizeSegmentFilters(normalized.filters || {});
     normalized.riskTier = normalized.riskTier || 'unknown';
@@ -233,6 +268,12 @@ function normalizeEntity(entityType, record) {
 
 function validateEntity(entityType, record) {
   const violations = [];
+  if (!PROVENANCE_STATES.includes(record.provenance_state)) violations.push(`provenance_state must be one of ${PROVENANCE_STATES.join(', ')}`);
+  if (PROVENANCE_REQUIRED_ENTITY_TYPES.includes(entityType)) {
+    if (!record.source_ref) violations.push('source_ref is required for non-structural CRM records');
+    if (!Array.isArray(record.artifact_refs) || record.artifact_refs.length === 0) violations.push('artifact_refs are required for non-structural CRM records');
+    if (!record.next_action) violations.push('next_action is required for provenance-aware CRM records');
+  }
   if (entityType === 'brands') {
     if (!isObject(record.senderIdentity) && typeof record.senderIdentity !== 'string') violations.push('senderIdentity is required');
     if (!validComplianceUrls(record.complianceUrls)) violations.push('complianceUrls must include at least privacy or unsubscribe URL metadata');
@@ -256,7 +297,7 @@ function validateEntity(entityType, record) {
     if (record.filters.excludeUnsubscribed !== true) violations.push('segments must exclude unsubscribed records');
     if (record.filters.excludeSuppressed !== true) violations.push('segments must exclude suppressed records');
   }
-  if (entityType === 'campaigns' && record.status !== 'draft') violations.push('Phase 1 campaigns must be created as draft only');
+  if (entityType === 'campaigns' && !SAFE_CAMPAIGN_STATUSES.includes(record.status)) violations.push(`campaign status must be one of ${SAFE_CAMPAIGN_STATUSES.join(', ')}`);
   if (entityType === 'integrations' && record.secretsStoredExternally !== true) violations.push('integration secrets must be stored externally');
   if (entityType === 'queryTemplates') {
     if (record.readOnly !== true) violations.push('query templates must be read-only');
@@ -264,6 +305,43 @@ function validateEntity(entityType, record) {
     if (record.maxPreviewRows > 100) violations.push('preview rows cannot exceed 100');
   }
   return violations;
+}
+
+function normalizeProvenance(entityType, record, actorId) {
+  record.provenance_state = PROVENANCE_STATES.includes(record.provenance_state) ? record.provenance_state : 'pending';
+  record.source_ref = record.source_ref || record.sourceRef || null;
+  record.artifact_refs = normalizeRefs(record.artifact_refs || record.artifactRefs || record.artifact_ref || record.artifactRef || []);
+  record.next_action = record.next_action || record.nextAction || null;
+
+  if (record.source_ref === STRUCTURAL_BOOT_SOURCE_REF && record.artifact_refs.length === 0) {
+    record.artifact_refs = [STRUCTURAL_BOOT_ARTIFACT_REF];
+  }
+
+  if (PROVENANCE_REQUIRED_ENTITY_TYPES.includes(entityType)) {
+    if (!record.source_ref) record.source_ref = `operator:${cleanActorId(actorId)}`;
+    if (record.artifact_refs.length === 0) record.artifact_refs = ['audit-log:operator-entry'];
+    if (!record.next_action) record.next_action = 'Attach verified source artifact, consent proof, and suppression clearance before production use.';
+    if (record.provenance_state === 'verified' && (!record.source_ref || record.artifact_refs.length === 0)) record.provenance_state = 'pending';
+  }
+}
+
+function normalizeCampaignStatus(status) {
+  const statusMap = {
+    review: 'compliance-review',
+    remediation: 'evidence-needed',
+    future_pilot_approved: 'ready-for-dry-run',
+    paused: 'blocked',
+    cancelled: 'blocked',
+  };
+  return statusMap[status] || status || 'draft';
+}
+
+function cleanActorId(actorId) {
+  return String(actorId || 'anonymous').replace(/[^a-zA-Z0-9_.:-]/g, '-').slice(0, 80) || 'anonymous';
+}
+
+function normalizeRefs(values = []) {
+  return [...new Set((Array.isArray(values) ? values : [values]).map((value) => String(value || '').trim()).filter(Boolean))];
 }
 
 function createId(prefix) {

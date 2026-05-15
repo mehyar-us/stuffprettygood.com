@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-05-15T00:00:00.000Z",
+  "contract": "spg-daily-monetized-offer-ingestion-v1",
+  "safety": {
+    "no_raw_pii": true,
+    "no_raw_secret_values": true,
+    "env_key_names_only": true,
+    "frontend_direct_external_urls_allowed": false
+  },
+  "offers": [
+    {
+      "source_key": "amazon-manual-links",
+      "account_key": "amazon-associates-manual",
+      "slug": "amazon-daily-standing-desk-cable-kit",
+      "title": "Standing desk cable kit",
+      "summary": "Original SPG note for cable trays, ties, and clips that make a standing desk less chaotic. Verify current merchant details on Amazon before purchase.",
+      "category": "home-office",
+      "trend_lane": "home-office",
+      "destination_url": "https://www.amazon.com/s?k=standing+desk+cable+management&tag=mehyarmedia-20",
+      "monetized": true,
+      "payout_model": "commission",
+      "approval_status": "approved",
+      "publish_decision": "publish_monetized",
+      "image_rights_status": "approved",
+      "image": {
+        "url": "https://placehold.co/1200x800/7c3aed/ffffff?text=SPG+desk+kit",
+        "source": "generated_placeholder",
+        "license": "owned/generated placeholder",
+        "rights_status": "approved",
+        "alt": "Cartoon standing desk cable organization kit"
+      },
+      "disclosure_text": "StuffPrettyGood may earn a commission if you use approved links."
+    },
+    {
+      "source_key": "skimlinks-api-feed",
+      "account_key": "skimlinks",
+      "slug": "skimlinks-sample-merchant-home-upgrade",
+      "title": "Sample merchant home upgrade",
+      "summary": "Server-side Skimlinks candidate record for a home upgrade merchant. Held until account approval and credential health are verified.",
+      "category": "home",
+      "destination_url": "https://merchant.example/home-upgrade",
+      "monetized": true,
+      "payout_model": "commission",
+      "approval_status": "approved",
+      "publish_decision": "publish_monetized",
+      "image_rights_status": "approved",
+      "image": {
+        "url": "https://placehold.co/1200x800/06b6d4/ffffff?text=SPG+home",
+        "source": "generated_placeholder",
+        "license": "owned/generated placeholder",
+        "rights_status": "approved",
+        "alt": "Cartoon home upgrade offer card"
+      },
+      "disclosure_text": "StuffPrettyGood may earn a commission if you use approved links."
+    },
+    {
+      "source_key": "stay22-api-feed",
+      "account_key": "stay22-publisher",
+      "slug": "stay22-sample-weekend-stay-map",
+      "title": "Sample weekend stay map",
+      "summary": "Server-side Stay22 travel candidate record. Held until account approval and credential health are verified.",
+      "category": "travel",
+      "destination_url": "https://travel.example/weekend-stay-map",
+      "monetized": true,
+      "payout_model": "commission",
+      "approval_status": "approved",
+      "publish_decision": "publish_monetized",
+      "image_rights_status": "approved",
+      "image": {
+        "url": "https://placehold.co/1200x800/f97316/ffffff?text=SPG+travel",
+        "source": "generated_placeholder",
+        "license": "owned/generated placeholder",
+        "rights_status": "approved",
+        "alt": "Cartoon travel stay map offer card"
+      },
+      "disclosure_text": "StuffPrettyGood may earn a commission if you use approved links."
+    }
+  ]
+}

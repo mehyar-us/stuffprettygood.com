@@ -38,7 +38,12 @@ test('initial migration encodes Phase 1 safety guardrails and operational indexe
 
   assert.match(sql, /create extension if not exists pgcrypto/);
   assert.match(sql, /campaigns_no_mass_send_phase_1/);
-  assert.match(sql, /status in \('draft', 'review', 'remediation', 'future_pilot_approved', 'blocked', 'archived'\)/);
+  assert.match(sql, /status in \('draft', 'evidence-needed', 'compliance-review', 'boss-approval-needed', 'ready-for-dry-run', 'blocked'\)/);
+  assert.match(sql, /provenance_state text not null default 'pending'/);
+  assert.match(sql, /source_ref text null/);
+  assert.match(sql, /artifact_refs_json jsonb not null default '\[\]'::jsonb/);
+  assert.match(sql, /next_action text null/);
+  assert.doesNotMatch(sql, /future_pilot_approved/);
   assert.doesNotMatch(sql, /status in \('draft', 'review', 'approved', 'scheduled', 'active', 'sent'\)/);
   assert.match(sql, /provider_push_enabled boolean not null default false/);
   assert.match(sql, /recipient_export_enabled boolean not null default false/);

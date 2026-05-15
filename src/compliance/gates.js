@@ -1,16 +1,24 @@
 export const CAMPAIGN_STATUSES = Object.freeze([
   'draft',
-  'review',
-  'remediation',
-  'future_pilot_approved',
-  'paused',
-  'cancelled',
+  'evidence-needed',
+  'compliance-review',
+  'Boss-approval-needed',
+  'ready-for-dry-run',
+  'blocked',
 ]);
 
 export const STATUSES_REQUIRING_APPROVAL = Object.freeze([
-  'review',
-  'future_pilot_approved',
+  'Boss-approval-needed',
+  'ready-for-dry-run',
 ]);
+
+const LEGACY_CAMPAIGN_STATUS_MAP = Object.freeze({
+  review: 'compliance-review',
+  remediation: 'evidence-needed',
+  future_pilot_approved: 'ready-for-dry-run',
+  paused: 'blocked',
+  cancelled: 'blocked',
+});
 
 export const REQUIRED_SUPPRESSION_CATEGORIES = Object.freeze([
   'global_unsubscribe',
@@ -98,11 +106,12 @@ export function validateComplianceApproval(approval = {}, campaign = {}) {
 }
 
 export function evaluateCampaignTransition({ campaign = {}, targetStatus, actorId, now = new Date().toISOString() }) {
+  targetStatus = LEGACY_CAMPAIGN_STATUS_MAP[targetStatus] || targetStatus;
   if (!CAMPAIGN_STATUSES.includes(targetStatus)) {
     return auditDecision({ campaign, targetStatus, actorId, now, allowed: false, reasons: [`unknown target status: ${targetStatus}`] });
   }
 
-  if (targetStatus === 'draft' || targetStatus === 'cancelled' || targetStatus === 'paused' || targetStatus === 'remediation') {
+  if (targetStatus === 'draft' || targetStatus === 'blocked' || targetStatus === 'evidence-needed') {
     return auditDecision({ campaign, targetStatus, actorId, now, allowed: true, reasons: [] });
   }
 
@@ -110,7 +119,7 @@ export function evaluateCampaignTransition({ campaign = {}, targetStatus, actorI
   const compliance = validateComplianceApproval(campaign.complianceApproval, campaign);
   const reasons = [...suppression.reasons, ...compliance.reasons];
 
-  if (targetStatus === 'future_pilot_approved') {
+  if (targetStatus === 'ready-for-dry-run') {
     const pilotAuthorization = validatePilotAuthorization(campaign.pilotAuthorization);
     reasons.push(...pilotAuthorization.reasons);
   }

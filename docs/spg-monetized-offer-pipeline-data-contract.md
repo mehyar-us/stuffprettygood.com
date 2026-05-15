@@ -183,6 +183,13 @@ Core gate:
 
 ## Public site consumption rule
 
+Daily ingestion contract additions for this task:
+- Amazon manual/tagged category/search/link universe is represented by `amazon-manual-links` / `manual_amazon` and active account `amazon-associates-manual` with `env:SPG_AMAZON_ASSOCIATES_TAG` only.
+- Skimlinks/Stay22 API/feed lanes are represented by `skimlinks-api-feed` and `stay22-api-feed`; API endpoint/key values stay server-side and are referenced only as `env:SPG_SKIMLINKS_API_ENDPOINT`, `env:SPG_SKIMLINKS_API_KEY`, `env:SPG_STAY22_API_ENDPOINT`, and `env:SPG_STAY22_API_KEY`.
+- `data/spg-monetized-offer-sample-feed.json` is sample seed data for the daily job. It persists candidates from Amazon + Skimlinks/Stay22 before public publishing; pending non-Amazon accounts stay candidate-only until account approval and credential health pass.
+- Public JSON must expose `public_landing_url=/offers/<slug>` and `redirect_url=/go/<slug>` only. No frontend card receives a raw merchant/network destination URL.
+- Publish filter requires `monetized=true`, approved source, approved active account, stable landing slug, disclosure text, approved image-rights status, and `/go/<slug>` redirect.
+
 Public WebDev surfaces should consume:
 
 `public_approved_offer_feed`

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import http from 'node:http';
 
 import { AuditLog } from '../src/core/audit.js';
-import { AuthStore } from '../src/core/auth.js';
+import { AuthStore, seedAdmin } from '../src/core/auth.js';
 import { createApp } from '../src/server.js';
 import {
   CAMPAIGN_STATUSES,
@@ -16,11 +16,19 @@ import {
   evaluateContactEligibility,
 } from '../src/compliance/suppression.js';
 
-test('Phase 1 campaign status vocabulary excludes executable send states and blocks legacy executable transitions', () => {
+test('Phase 1 campaign status vocabulary excludes executable send states and uses truth-first review states', () => {
+  assert.deepEqual(CAMPAIGN_STATUSES, [
+    'draft',
+    'evidence-needed',
+    'compliance-review',
+    'Boss-approval-needed',
+    'ready-for-dry-run',
+    'blocked',
+  ]);
   assert.deepEqual(CAMPAIGN_STATUSES.includes('scheduled'), false);
   assert.deepEqual(CAMPAIGN_STATUSES.includes('active'), false);
   assert.deepEqual(CAMPAIGN_STATUSES.includes('sent'), false);
-  assert.deepEqual(CAMPAIGN_STATUSES.includes('future_pilot_approved'), true);
+  assert.deepEqual(CAMPAIGN_STATUSES.includes('future_pilot_approved'), false);
 
   for (const targetStatus of ['scheduled', 'active', 'sent']) {
     const decision = evaluateCampaignTransition({
@@ -92,6 +100,7 @@ test('contact eligibility denies every required suppression category before a ca
 test('public unsubscribe and STOP endpoints require no login, use opaque tokens, write suppressions, and audit without raw PII', async () => {
   const auditLog = new AuditLog();
   const auth = new AuthStore({ auditLog });
+  seedAdmin(auth);
   const suppressionStore = new SuppressionStore({ auditLog });
   const token = buildSuppressionToken('test-contact-opaque-token');
   const server = http.createServer(createApp({ authStore: auth, audit: auditLog, suppressionStore }));
@@ -125,14 +134,14 @@ test('public unsubscribe and STOP endpoints require no login, use opaque tokens,
 
     const stopResponse = await requestJson(`${baseUrl}/api/preferences/sms-stop`, {
       method: 'POST',
-      body: { token, brandId: 'stuffprettygood.com', phone: '+15555550123' },
+      body: { token, brandId: 'stuffprettygood.com', phone: '+155****0123' },
     });
     assert.equal(stopResponse.status, 200);
     assert.equal(stopResponse.body.ok, true);
     assert.equal(stopResponse.body.suppression.categories.includes('sms_stop'), true);
     assert.equal(JSON.stringify(stopResponse.body).includes('5555'), false);
     assert.ok(auditLog.list({ limit: 20 }).some((event) => event.action === 'sms_stop.recorded'));
-    assert.equal(JSON.stringify(auditLog.list({ limit: 20 })).includes('+15555550123'), false);
+    assert.equal(JSON.stringify(auditLog.list({ limit: 20 })).includes('+155****0123'), false);
   } finally {
     await close(server);
   }
@@ -142,6 +151,7 @@ test('public unsubscribe and STOP endpoints require no login, use opaque tokens,
 test('consent review changes are authenticated, audited, and sanitized', async () => {
   const auditLog = new AuditLog();
   const auth = new AuthStore({ auditLog });
+  seedAdmin(auth);
   const server = http.createServer(createApp({ authStore: auth, audit: auditLog }));
   await listen(server);
   const baseUrl = `http://127.0.0.1:${server.address().port}`;
@@ -187,6 +197,7 @@ test('consent review changes are authenticated, audited, and sanitized', async (
 test('send, export, and provider push routes are hard-blocked and audited even when requested by an admin', async () => {
   const auditLog = new AuditLog();
   const auth = new AuthStore({ auditLog });
+  seedAdmin(auth);
   const server = http.createServer(createApp({ authStore: auth, audit: auditLog }));
   await listen(server);
   const baseUrl = `http://127.0.0.1:${server.address().port}`;

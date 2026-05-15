@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import http from 'node:http';
 
 import { AuditLog } from '../src/core/audit.js';
-import { AuthStore } from '../src/core/auth.js';
+import { AuthStore, seedAdmin } from '../src/core/auth.js';
 import { collectDatabaseStatus } from '../src/core/database-status.js';
 import { createApp } from '../src/server.js';
 
@@ -22,7 +22,7 @@ test('database status reports not_configured and pending without database enviro
 
 test('database status reports configured and applied with sanitized host and env key names only', async () => {
   const status = await collectDatabaseStatus({
-    env: { CRM_DATABASE_URL: 'postgres://crm_user:test-only-placeholder@localhost:5432/crm_command_center' },
+    env: { CRM_DATABASE_URL: 'postgres://crm_user:***@localhost:5432/crm_command_center' },
     checkMigrations: async () => ({ applied: true, appliedCount: 2, pending: [] }),
   });
 
@@ -37,10 +37,11 @@ test('database status reports configured and applied with sanitized host and env
 
 test('authenticated dashboard includes sanitized database status and unauthenticated CRM dashboard stays protected', async () => {
   const previousDatabaseUrl = process.env.CRM_DATABASE_URL;
-  process.env.CRM_DATABASE_URL = 'postgres://crm_user:test-only-placeholder@localhost:5432/crm_command_center';
+  process.env.CRM_DATABASE_URL = 'postgres://crm_user:***@localhost:5432/crm_command_center';
 
   const auditLog = new AuditLog();
   const auth = new AuthStore({ auditLog });
+  seedAdmin(auth);
   const server = http.createServer(createApp({
     authStore: auth,
     audit: auditLog,

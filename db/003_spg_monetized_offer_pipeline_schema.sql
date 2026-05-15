@@ -68,7 +68,7 @@ create table if not exists offer_sources (
   id uuid primary key default gen_random_uuid(),
   source_key text not null unique,
   source_name text not null,
-  source_type text not null check (source_type in ('google_trends','rss','manual_editorial','merchant_terms','affiliate_network','direct_merchant','owned_catalog','sponsor_research','public_api','other')),
+  source_type text not null check (source_type in ('google_trends','rss','manual_editorial','manual_amazon','skimlinks_feed','stay22_feed','merchant_terms','affiliate_network','direct_merchant','owned_catalog','sponsor_research','public_api','other')),
   source_url text not null,
   terms_url text,
   source_owner text not null default 'Scout',
@@ -93,7 +93,7 @@ create table if not exists daily_ingest_runs (
   run_key text not null unique,
   run_date date not null default current_date,
   source_id uuid references offer_sources(id),
-  run_type text not null check (run_type in ('trend_fetch','rss_fetch','manual_review','offer_health','public_feed_build','signup_rollup')),
+  run_type text not null check (run_type in ('trend_fetch','rss_fetch','affiliate_offer_ingest','amazon_manual_ingest','skimlinks_feed_ingest','stay22_feed_ingest','manual_review','offer_health','public_feed_build','signup_rollup')),
   run_status text not null default 'started' check (run_status in ('started','succeeded','partial','failed','blocked')),
   started_at timestamptz not null default now(),
   finished_at timestamptz,
@@ -358,6 +358,8 @@ where c.approval_status = 'approved'
 insert into account_credentials_refs (credential_ref, provider, account_label, secret_store, secret_key_label, rotation_status, owner_role)
 values
   ('env:SPG_AMAZON_ASSOCIATES_TAG', 'amazon_associates', 'StuffPrettyGood Amazon Associates tag', 'env', 'SPG_AMAZON_ASSOCIATES_TAG', 'current', 'DevOps'),
+  ('env:SPG_SKIMLINKS_API_KEY', 'skimlinks', 'Skimlinks API key placeholder', 'env', 'SPG_SKIMLINKS_API_KEY', 'unknown', 'DevOps'),
+  ('env:SPG_STAY22_API_KEY', 'stay22', 'Stay22 API key placeholder', 'env', 'SPG_STAY22_API_KEY', 'unknown', 'DevOps'),
   ('cloudflare_secret:MEHYARSOFT_AUDIT_CHECKOUT', 'stripe', 'MehyarSoft audit checkout', 'cloudflare_secret', 'MEHYARSOFT_AUDIT_CHECKOUT', 'unknown', 'DevOps')
 on conflict (credential_ref) do nothing;
 
@@ -371,7 +373,10 @@ on conflict (account_key) do nothing;
 insert into offer_sources (source_key, source_name, source_type, source_url, terms_url, allowed_use, source_status, risk_tier, source_quality_score, last_reviewed_at)
 values
   ('google-trends-us-daily', 'Google Trends US daily signal', 'google_trends', 'https://trends.google.com/trends/', 'https://policies.google.com/terms', 'metadata_only', 'approved', 'low', 80, now()),
-  ('manual-editorial-spg', 'SPG manual editorial review', 'manual_editorial', 'https://stuffprettygood.com/internal/manual-editorial', 'https://stuffprettygood.com/terms', 'owned_content', 'approved', 'low', 90, now())
+  ('manual-editorial-spg', 'SPG manual editorial review', 'manual_editorial', 'https://stuffprettygood.com/internal/manual-editorial', 'https://stuffprettygood.com/terms', 'owned_content', 'approved', 'low', 90, now()),
+  ('amazon-manual-links', 'Amazon Associates manual/tagged search universe', 'manual_amazon', 'src/spg/trend-components.js', 'https://affiliate-program.amazon.com/help/operating/policies', 'metadata_only', 'approved', 'medium', 82, now()),
+  ('skimlinks-api-feed', 'Skimlinks API/feed lane', 'skimlinks_feed', 'env:SPG_SKIMLINKS_API_ENDPOINT', 'https://www.skimlinks.com/terms/', 'merchant_creative_allowed', 'approved', 'medium', 72, now()),
+  ('stay22-api-feed', 'Stay22 API/feed lane', 'stay22_feed', 'env:SPG_STAY22_API_ENDPOINT', 'https://www.stay22.com/privacy', 'merchant_creative_allowed', 'approved', 'medium', 72, now())
 on conflict (source_key) do nothing;
 
 -- Durable seed rows from data/spg-affiliate-account-targets.json and src/spg/trend-components.js.
@@ -386,6 +391,7 @@ values
   ('shareasale-publisher', 'ShareASale publisher', 'ShareASale publisher', 'affiliate_network', 'pending_application', 'commission', 'application_ready', null, null, true, 'StuffPrettyGood may earn a commission or referral credit if you use approved links.', array['trend_page','go_bridge'], array['official partner','approved partner','guaranteed payout','guaranteed savings'], 'medium', 'Arman', now()),
   ('flexoffers-publisher', 'FlexOffers publisher', 'FlexOffers publisher', 'affiliate_network', 'pending_application', 'commission', 'application_ready', null, null, true, 'StuffPrettyGood may earn a commission or referral credit if you use approved links.', array['trend_page','go_bridge'], array['official partner','approved partner','guaranteed payout','guaranteed savings'], 'medium', 'Arman', now()),
   ('impact-com-publisher', 'Impact.com publisher', 'Impact.com publisher', 'affiliate_network', 'pending_application', 'commission', 'draft', null, null, true, 'StuffPrettyGood may earn a commission or referral credit if you use approved links.', array['trend_page','go_bridge'], array['official partner','approved partner','guaranteed payout','guaranteed savings'], 'medium', 'Arman', now()),
+  ('stay22-publisher', 'Stay22 publisher / creator account', 'Stay22', 'affiliate_network', 'pending_application', 'commission', 'application_ready', null, 'https://www.stay22.com/privacy', true, 'StuffPrettyGood may earn a commission or referral credit if you use approved links.', array['trend_page','go_bridge'], array['official partner','approved partner','guaranteed payout','guaranteed savings'], 'medium', 'Arman', now()),
   ('walmart-affiliate-walmart-creator', 'Walmart affiliate / Walmart Creator', 'Walmart affiliate / Walmart Creator', 'affiliate_network', 'pending_application', 'commission', 'draft', null, null, true, 'StuffPrettyGood may earn a commission or referral credit if you use approved links.', array['trend_page','go_bridge'], array['official partner','approved partner','guaranteed payout','guaranteed savings'], 'medium', 'Arman', now()),
   ('target-partners', 'Target Partners', 'Target Partners', 'affiliate_network', 'pending_application', 'commission', 'draft', null, null, true, 'StuffPrettyGood may earn a commission or referral credit if you use approved links.', array['trend_page','go_bridge'], array['official partner','approved partner','guaranteed payout','guaranteed savings'], 'medium', 'Arman', now()),
   ('etsy-affiliate-program', 'Etsy affiliate program', 'Etsy affiliate program', 'affiliate_network', 'pending_application', 'commission', 'draft', null, null, true, 'StuffPrettyGood may earn a commission or referral credit if you use approved links.', array['trend_page','go_bridge'], array['official partner','approved partner','guaranteed payout','guaranteed savings'], 'medium', 'Arman', now()),
@@ -400,7 +406,10 @@ on conflict (account_key) do update set
 insert into offer_sources (source_key, source_name, source_type, source_url, terms_url, allowed_use, source_status, risk_tier, source_quality_score, last_reviewed_at)
 values
   ('spg-affiliate-account-targets-2026-05-15', 'SPG affiliate/account target tracker', 'sponsor_research', 'data/spg-affiliate-account-targets.json', null, 'metadata_only', 'pending_review', 'medium', 70, now()),
-  ('spg-amazon-manual-offer-cards', 'SPG Amazon manual offer cards', 'manual_editorial', 'src/spg/trend-components.js', 'https://affiliate-program.amazon.com/help/operating/policies', 'original_summary_only', 'approved', 'medium', 82, now())
+  ('spg-affiliate-account-application-status-2026-05-15', 'SPG affiliate account application status tracker', 'sponsor_research', 'data/spg-affiliate-account-application-status-2026-05-15.json', null, 'metadata_only', 'pending_review', 'medium', 75, now()),
+  ('spg-amazon-manual-offer-cards', 'SPG Amazon manual offer cards', 'manual_editorial', 'src/spg/trend-components.js', 'https://affiliate-program.amazon.com/help/operating/policies', 'original_summary_only', 'approved', 'medium', 82, now()),
+  ('skimlinks-daily-offer-feed', 'Skimlinks daily monetized offer feed', 'skimlinks_feed', 'env:SPG_SKIMLINKS_API_ENDPOINT', 'https://www.skimlinks.com/terms/', 'merchant_creative_allowed', 'approved', 'medium', 72, now()),
+  ('stay22-daily-offer-feed', 'Stay22 daily monetized offer feed', 'stay22_feed', 'env:SPG_STAY22_API_ENDPOINT', 'https://www.stay22.com/privacy', 'merchant_creative_allowed', 'approved', 'medium', 72, now())
 on conflict (source_key) do update set
   source_status = excluded.source_status,
   source_quality_score = excluded.source_quality_score,

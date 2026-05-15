@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-15T13:59:09.877Z",
+  "generated_at": "2026-05-15T20:09:42.612Z",
   "source_count": 8,
-  "item_count": 155,
+  "item_count": 190,
   "guardrails": [
     "metadata_only_or_original_summary",
     "no_amazon_scraping",
@@ -10,69 +10,134 @@
   ],
   "items": [
     {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Atter AI",
-      "url": "https://www.producthunt.com/products/atter-ai-ai-transcription-for-meetings",
-      "published_at": "2026-05-14T03:15:38-07:00",
+      "source_id": "google-trends-daily",
+      "source_name": "Google Trends Daily",
+      "category": "trends",
+      "title": "fc cajamarca - sporting cristal",
+      "url": "https://trends.google.com/trending/rss?geo=US",
+      "published_at": "Fri, 15 May 2026 12:50:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.418Z"
+      "fetched_at": "2026-05-15T20:09:40.867Z"
     },
     {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "HasData",
-      "url": "https://www.producthunt.com/products/hasdata",
-      "published_at": "2026-05-07T02:34:26-07:00",
+      "source_id": "google-trends-daily",
+      "source_name": "Google Trends Daily",
+      "category": "trends",
+      "title": "airion simmons",
+      "url": "https://trends.google.com/trending/rss?geo=US",
+      "published_at": "Fri, 15 May 2026 12:50:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
+      "fetched_at": "2026-05-15T20:09:40.867Z"
     },
     {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Agent-Sin",
-      "url": "https://www.producthunt.com/products/agent-sin",
-      "published_at": "2026-05-14T19:36:56-07:00",
+      "source_id": "google-trends-daily",
+      "source_name": "Google Trends Daily",
+      "category": "trends",
+      "title": "binghamton university",
+      "url": "https://trends.google.com/trending/rss?geo=US",
+      "published_at": "Fri, 15 May 2026 12:40:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
+      "fetched_at": "2026-05-15T20:09:40.867Z"
     },
     {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "OpenHuman",
-      "url": "https://www.producthunt.com/products/openhuman",
-      "published_at": "2026-05-01T09:39:53-07:00",
+      "source_id": "google-trends-daily",
+      "source_name": "Google Trends Daily",
+      "category": "trends",
+      "title": "dalton knecht",
+      "url": "https://trends.google.com/trending/rss?geo=US",
+      "published_at": "Fri, 15 May 2026 12:30:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
+      "fetched_at": "2026-05-15T20:09:40.867Z"
     },
     {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "AgentRail",
-      "url": "https://www.producthunt.com/products/agentrail",
-      "published_at": "2026-05-14T07:51:39-07:00",
+      "source_id": "google-trends-daily",
+      "source_name": "Google Trends Daily",
+      "category": "trends",
+      "title": "nate diaz",
+      "url": "https://trends.google.com/trending/rss?geo=US",
+      "published_at": "Fri, 15 May 2026 12:30:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
+      "fetched_at": "2026-05-15T20:09:40.867Z"
+    },
+    {
+      "source_id": "google-trends-daily",
+      "source_name": "Google Trends Daily",
+      "category": "trends",
+      "title": "spacex ipo",
+      "url": "https://trends.google.com/trending/rss?geo=US",
+      "published_at": "Fri, 15 May 2026 12:30:00 -0700",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.867Z"
+    },
+    {
+      "source_id": "google-trends-daily",
+      "source_name": "Google Trends Daily",
+      "category": "trends",
+      "title": "mike johnson",
+      "url": "https://trends.google.com/trending/rss?geo=US",
+      "published_at": "Fri, 15 May 2026 12:20:00 -0700",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.867Z"
+    },
+    {
+      "source_id": "google-trends-daily",
+      "source_name": "Google Trends Daily",
+      "category": "trends",
+      "title": "sinner tennis",
+      "url": "https://trends.google.com/trending/rss?geo=US",
+      "published_at": "Fri, 15 May 2026 12:10:00 -0700",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.867Z"
+    },
+    {
+      "source_id": "google-trends-daily",
+      "source_name": "Google Trends Daily",
+      "category": "trends",
+      "title": "friedrich merz",
+      "url": "https://trends.google.com/trending/rss?geo=US",
+      "published_at": "Fri, 15 May 2026 12:10:00 -0700",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.867Z"
+    },
+    {
+      "source_id": "google-trends-daily",
+      "source_name": "Google Trends Daily",
+      "category": "trends",
+      "title": "medvedev",
+      "url": "https://trends.google.com/trending/rss?geo=US",
+      "published_at": "Fri, 15 May 2026 12:00:00 -0700",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.867Z"
     },
     {
       "source_id": "product-hunt",
@@ -85,20 +150,20 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
+      "fetched_at": "2026-05-15T20:09:40.955Z"
     },
     {
       "source_id": "product-hunt",
       "source_name": "Product Hunt",
       "category": "tools",
-      "title": "Lensmor",
-      "url": "https://www.producthunt.com/products/lensmor-2",
-      "published_at": "2026-05-09T01:19:13-07:00",
+      "title": "Mantel",
+      "url": "https://www.producthunt.com/products/mantel-color-coded-macos-terminal",
+      "published_at": "2026-05-14T11:46:16-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
+      "fetched_at": "2026-05-15T20:09:40.955Z"
     },
     {
       "source_id": "product-hunt",
@@ -111,280 +176,20 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
+      "fetched_at": "2026-05-15T20:09:40.955Z"
     },
     {
       "source_id": "product-hunt",
       "source_name": "Product Hunt",
       "category": "tools",
-      "title": "Agentic Website Builder 2.0 by Lokuma",
-      "url": "https://www.producthunt.com/products/agentic-website-builder-2-0-by-lokuma",
-      "published_at": "2026-05-13T19:51:00-07:00",
+      "title": "OpenHuman",
+      "url": "https://www.producthunt.com/products/openhuman",
+      "published_at": "2026-05-01T09:39:53-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Basedash MCP Connectors",
-      "url": "https://www.producthunt.com/products/basedash",
-      "published_at": "2026-05-14T14:09:07-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Cats Lock",
-      "url": "https://www.producthunt.com/products/cats-lock-keyboard-lock-for-cat-people",
-      "published_at": "2026-05-08T17:29:06-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Crustimate",
-      "url": "https://www.producthunt.com/products/findable-4",
-      "published_at": "2026-05-13T07:11:17-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Glance",
-      "url": "https://www.producthunt.com/products/glance-native-macos-markdown-viewer",
-      "published_at": "2026-05-14T07:10:53-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Cleo AI",
-      "url": "https://www.producthunt.com/products/cleo-ai",
-      "published_at": "2026-05-14T11:03:05-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Whiteout",
-      "url": "https://www.producthunt.com/products/whiteout",
-      "published_at": "2026-05-14T14:06:42-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Relay",
-      "url": "https://www.producthunt.com/products/relay-15",
-      "published_at": "2026-04-18T05:32:01-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Magic Notebook",
-      "url": "https://www.producthunt.com/products/magic-notebook",
-      "published_at": "2026-04-24T14:39:35-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Atlas Navigation",
-      "url": "https://www.producthunt.com/products/atlas-navigation",
-      "published_at": "2026-05-11T15:24:50-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Nimbus",
-      "url": "https://www.producthunt.com/products/nimbus-10",
-      "published_at": "2026-05-14T21:58:07-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Riffly",
-      "url": "https://www.producthunt.com/products/riffly",
-      "published_at": "2026-05-07T11:37:20-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Repaint",
-      "url": "https://www.producthunt.com/products/repaint-ai-website-builder",
-      "published_at": "2026-04-23T19:44:57-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Mobius",
-      "url": "https://www.producthunt.com/products/mobius-3",
-      "published_at": "2026-05-14T23:07:23-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "PromptScout",
-      "url": "https://www.producthunt.com/products/promptscout",
-      "published_at": "2026-05-14T06:13:48-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Picsart MCP",
-      "url": "https://www.producthunt.com/products/picsart",
-      "published_at": "2026-05-14T01:53:53-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "DevRecorder",
-      "url": "https://www.producthunt.com/products/devrecorder",
-      "published_at": "2026-05-14T08:15:30-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "SpotFetch by DocentPro",
-      "url": "https://www.producthunt.com/products/docentpro",
-      "published_at": "2026-05-07T22:30:30-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Tiny World Builder",
-      "url": "https://www.producthunt.com/products/tiny-world-builder",
-      "published_at": "2026-05-15T05:33:27-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Wowable",
-      "url": "https://www.producthunt.com/products/wowable",
-      "published_at": "2026-04-24T03:30:55-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Planora",
-      "url": "https://www.producthunt.com/products/planora-3",
-      "published_at": "2026-05-14T14:33:41-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
+      "fetched_at": "2026-05-15T20:09:40.955Z"
     },
     {
       "source_id": "product-hunt",
@@ -397,592 +202,1255 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:06.419Z"
+      "fetched_at": "2026-05-15T20:09:40.955Z"
     },
     {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "AI is wiping out entry-level jobs",
-      "url": "https://fortune.com/2026/05/15/ai-entry-level-jobs-higher-education-experience-gap/",
-      "published_at": "Fri, 15 May 2026 13:38:13 +0000",
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Planora",
+      "url": "https://www.producthunt.com/products/planora-3",
+      "published_at": "2026-05-14T14:33:41-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
+      "fetched_at": "2026-05-15T20:09:40.955Z"
     },
     {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "The Wonders of AI: We Are Retiring Our Bug Bounty Program",
-      "url": "https://turso.tech/blog/the-wonders-of-ai",
-      "published_at": "Fri, 15 May 2026 13:33:15 +0000",
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Glance",
+      "url": "https://www.producthunt.com/products/glance-native-macos-markdown-viewer",
+      "published_at": "2026-05-14T07:10:53-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Tiny World Builder",
+      "url": "https://www.producthunt.com/products/tiny-world-builder",
+      "published_at": "2026-05-15T05:33:27-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "AgentRail",
+      "url": "https://www.producthunt.com/products/agentrail",
+      "published_at": "2026-05-14T07:51:39-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Agent-Sin",
+      "url": "https://www.producthunt.com/products/agent-sin",
+      "published_at": "2026-05-14T19:36:56-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Atlas Navigation",
+      "url": "https://www.producthunt.com/products/atlas-navigation",
+      "published_at": "2026-05-11T15:24:50-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Nimbus",
+      "url": "https://www.producthunt.com/products/nimbus-10",
+      "published_at": "2026-05-14T21:58:07-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Cleo AI",
+      "url": "https://www.producthunt.com/products/cleo-ai",
+      "published_at": "2026-05-14T11:03:05-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "DevRecorder",
+      "url": "https://www.producthunt.com/products/devrecorder",
+      "published_at": "2026-05-14T08:15:30-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Magic Notebook",
+      "url": "https://www.producthunt.com/products/magic-notebook",
+      "published_at": "2026-04-24T14:39:35-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "DramaBox by Resemble AI",
+      "url": "https://www.producthunt.com/products/resemble-clone",
+      "published_at": "2026-05-14T12:55:25-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Wowable",
+      "url": "https://www.producthunt.com/products/wowable",
+      "published_at": "2026-04-24T03:30:55-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Riffly",
+      "url": "https://www.producthunt.com/products/riffly",
+      "published_at": "2026-05-07T11:37:20-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Picsart MCP",
+      "url": "https://www.producthunt.com/products/picsart",
+      "published_at": "2026-05-14T01:53:53-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Basedash MCP Connectors",
+      "url": "https://www.producthunt.com/products/basedash",
+      "published_at": "2026-05-14T14:09:07-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Cats Lock",
+      "url": "https://www.producthunt.com/products/cats-lock-keyboard-lock-for-cat-people",
+      "published_at": "2026-05-08T17:29:06-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Relay",
+      "url": "https://www.producthunt.com/products/relay-15",
+      "published_at": "2026-04-18T05:32:01-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Mobius",
+      "url": "https://www.producthunt.com/products/mobius-3",
+      "published_at": "2026-05-14T23:07:23-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Kimi WebBridge",
+      "url": "https://www.producthunt.com/products/kimi-ai-assistant",
+      "published_at": "2026-05-14T22:16:54-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Atter AI",
+      "url": "https://www.producthunt.com/products/atter-ai-ai-transcription-for-meetings",
+      "published_at": "2026-05-14T03:15:38-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Sleek Analytics v3",
+      "url": "https://www.producthunt.com/products/sleek-analytics",
+      "published_at": "2026-05-14T20:17:45-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Agentic Website Builder 2.0 by Lokuma",
+      "url": "https://www.producthunt.com/products/agentic-website-builder-2-0-by-lokuma",
+      "published_at": "2026-05-13T19:51:00-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "OpenIT",
+      "url": "https://www.producthunt.com/products/openit",
+      "published_at": "2026-05-15T00:00:30-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Lensmor",
+      "url": "https://www.producthunt.com/products/lensmor-2",
+      "published_at": "2026-05-09T01:19:13-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Standboy",
+      "url": "https://www.producthunt.com/products/standboy",
+      "published_at": "2026-05-14T06:02:59-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:40.955Z"
     },
     {
       "source_id": "hn-frontpage",
       "source_name": "Hacker News",
       "category": "tech",
-      "title": "Amazon workers under pressure to up their AI usage–so they're making up tasks",
+      "title": "Judge Bars Kars4Kids from Broadcasting 'Misleading' Ads in California",
+      "url": "https://www.nytimes.com/2026/05/15/us/kars4kids-advertising-banned-california.html",
+      "published_at": "Fri, 15 May 2026 19:27:15 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "WinCE64 – Windows CE 2.11 for N64",
+      "url": "https://github.com/ThroatyMumbo/WinCE64",
+      "published_at": "Fri, 15 May 2026 19:23:29 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "Show HN: Claude Code vs. Codex Global Usage Leaderboard",
+      "url": "https://costhawk.ai/leaderboard",
+      "published_at": "Fri, 15 May 2026 19:18:44 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "ABC News has taken all FiveThirtyEight articles offline",
+      "url": "https://twitter.com/baseballot/status/2055309076209492208",
+      "published_at": "Fri, 15 May 2026 19:07:08 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "Echoes (Live at Pompeii)",
+      "url": "https://genius.com/Pink-floyd-echoes-live-at-pompeii-lyrics",
+      "published_at": "Fri, 15 May 2026 18:43:59 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "Waymo recalls 3,800 robotaxis after they drive into flood waters",
+      "url": "https://www.cnbc.com/2026/05/12/waymo-recalls-3800-robotaxis-after-able-drive-into-standing-water.html",
+      "published_at": "Fri, 15 May 2026 18:00:43 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "Building a UMatrix Replacement",
+      "url": "https://lock.cmpxchg8b.com/umatrix.html",
+      "published_at": "Fri, 15 May 2026 18:00:03 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "U.S. DOJ demands Apple and Google unmask over 100k users of car-tinkering app",
+      "url": "https://macdailynews.com/2026/05/15/u-s-doj-demands-apple-and-google-unmask-over-100000-users-of-popular-car-tinkering-app-in-emissions-crackdown/",
+      "published_at": "Fri, 15 May 2026 17:28:24 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "Feedr v0.8.0 – a TUI RSS reader, now read the full article from your terminal",
+      "url": "https://github.com/bahdotsh/feedr",
+      "published_at": "Fri, 15 May 2026 17:22:53 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "I designed a nibble-oriented CPU in Verilog to build a scientific calculator",
+      "url": "https://github.com/gdevic/FPGA-Calculator",
+      "published_at": "Fri, 15 May 2026 17:15:58 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "Show HN: Sx – an open-source package manager for AI skills, MCPs, and commands",
+      "url": "https://github.com/sleuth-io/sx",
+      "published_at": "Fri, 15 May 2026 17:03:22 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "Hightouch (YC S19) Is Hiring",
+      "url": "https://hightouch.com/careers",
+      "published_at": "Fri, 15 May 2026 17:01:15 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "Bun Rust rewrite: \"codebase fails basic miri checks, allows for UB in safe rust\"",
+      "url": "https://github.com/oven-sh/bun/issues/30719",
+      "published_at": "Fri, 15 May 2026 16:51:25 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "Project Gutenberg – keeps getting better",
+      "url": "https://www.gutenberg.org/",
+      "published_at": "Fri, 15 May 2026 16:15:36 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "I built Zenith: a live local-first fixed viewport planetarium",
+      "url": "https://smorgasb.org/zenith-tech/",
+      "published_at": "Fri, 15 May 2026 15:45:11 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "Image-blaster: Creates 3D environments, SFX, and meshes from a single image",
+      "url": "https://github.com/neilsonnn/image-blaster",
+      "published_at": "Fri, 15 May 2026 15:42:37 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "ASCII by Jason Scott",
+      "url": "https://ascii.textfiles.com/",
+      "published_at": "Fri, 15 May 2026 14:02:36 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "A 0-click exploit chain for the Pixel 10",
+      "url": "https://projectzero.google/2026/05/pixel-10-exploit.html",
+      "published_at": "Fri, 15 May 2026 13:39:54 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.079Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "Amazon workers under pressure to up their AI usage are making up tasks",
       "url": "https://www.fastcompany.com/91541586/amazon-workers-pressured-to-up-ai-use-extraneous-tasks",
       "published_at": "Fri, 15 May 2026 13:28:55 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
+      "fetched_at": "2026-05-15T20:09:41.079Z"
     },
     {
       "source_id": "hn-frontpage",
       "source_name": "Hacker News",
       "category": "tech",
-      "title": "Cursing the government does not fix potholes. Spray-painting them does",
-      "url": "https://imagenotfound.writeas.com/the-holes-we-painted-and-why-we-did-it-anyway",
-      "published_at": "Fri, 15 May 2026 12:54:37 +0000",
+      "title": "High dimensional geometry is transforming the MRI industry (2017) [pdf]",
+      "url": "https://www.ams.org/government/DonohoPresentation06-28-17Final.pdf",
+      "published_at": "Fri, 15 May 2026 13:25:53 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "Too dangerous or just too expensive? The real reason Anthropic is hiding Mythos",
-      "url": "https://kingy.ai/ai/too-dangerous-to-release-or-just-too-expensive-the-real-reason-anthropic-is-hiding-its-most-powerful-ai/",
-      "published_at": "Fri, 15 May 2026 12:49:27 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "The old world of tech is dying and the new cannot be born",
-      "url": "https://www.baldurbjarnason.com/2026/the-old-world-of-tech-is-dying/",
-      "published_at": "Fri, 15 May 2026 12:29:47 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "Bitwarden scrubs 'Always free' and 'Inclusion' values from its site",
-      "url": "https://www.fastcompany.com/91542655/bitwarden-scrubs-always-free-and-inclusion-values-from-its-website-as-longtime-execs-step-down",
-      "published_at": "Fri, 15 May 2026 12:11:38 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "Radicle: Sovereign {code forge} built on Git",
-      "url": "https://radicle.dev/",
-      "published_at": "Fri, 15 May 2026 12:07:55 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "SigNoz (YC W21, open source Datadog) Is hiring for growth and engineering roles",
-      "url": "https://signoz.io/careers",
-      "published_at": "Fri, 15 May 2026 12:00:31 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "Welcome to the Strip Mining Era of OSS Security",
-      "url": "https://www.metabase.com/blog/strip-mining-era-of-open-source-security",
-      "published_at": "Fri, 15 May 2026 11:37:17 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "O(x)Caml in Space",
-      "url": "https://gazagnaire.org/blog/2026-05-14-borealis.html",
-      "published_at": "Fri, 15 May 2026 10:55:51 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "Steve Jobs Next Computer: His Forgotten Exile Years",
-      "url": "https://spectrum.ieee.org/steve-jobs-next-computer",
-      "published_at": "Fri, 15 May 2026 10:34:58 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "NanoTDB – Golang Append-Only Time Series DB",
-      "url": "https://github.com/aymanhs/nanotdb",
-      "published_at": "Fri, 15 May 2026 10:31:51 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "UK sovereign LLM inference",
-      "url": "https://relax.ai/docs",
-      "published_at": "Fri, 15 May 2026 09:27:26 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "Show HN: Find the best local LLM for your hardware, ranked by benchmarks",
-      "url": "https://github.com/Andyyyy64/whichllm",
-      "published_at": "Fri, 15 May 2026 09:19:24 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "Explore Wikipedia Like a Windows XP Desktop",
-      "url": "https://explorer.samismith.com/",
-      "published_at": "Fri, 15 May 2026 08:45:36 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "Solar-based sleep patterns compared to modern norms",
-      "url": "https://dylan.gr/1775146616",
-      "published_at": "Fri, 15 May 2026 04:15:24 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "Details of the Daring Airdrop at Tristan Da Cunha",
-      "url": "https://www.tristandc.com/government/news-2026-05-11-airdrop.php",
-      "published_at": "Fri, 15 May 2026 03:56:14 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "Mullvad exit IPs are surprisingly identifying",
-      "url": "https://tmctmt.com/posts/mullvad-exit-ips-as-a-fingerprinting-vector/",
-      "published_at": "Fri, 15 May 2026 02:35:35 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "UK government replaces Palantir software with internally-built refugee system",
-      "url": "https://www.bbc.com/news/articles/c2l2j1lxdk5o",
-      "published_at": "Thu, 14 May 2026 22:44:16 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:08.581Z"
+      "fetched_at": "2026-05-15T20:09:41.079Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "Lenovo Legion Tower 7i Gen 10 Desktop: Ultra 9 285K, 64GB RAM, 2TB SSD, RTX 5090 $4161 + Free S&H",
-      "url": "https://slickdeals.net/f/19524438-lenovo-legion-tower-7i-gen-10-intel-ultra-9-285k-rtx-5090-64gb-ddr5-2tb-ssd-4160-69?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 13:58:39 +0000",
+      "title": "Greenworks 2000 PSI (13 Amp) Electric Pressure Washer $107 + Free S&H",
+      "url": "https://slickdeals.net/f/19518582-greenworks-2000-max-psi-1-1-gpm-13-amp-electric-pressure-washer-gpw2000-1rg-106-90-amazon?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 19:58:19 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "3-Pc SwissGear Energie Hardside Expandable Spinner Luggage (19\", 24\", 27\") $175 + Free S&H",
-      "url": "https://slickdeals.net/f/19521066-3-piece-swissgear-7272-energie-hardside-expandable-luggage-w-spinner-wheels-3-piece-set-silver-174-95-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 13:53:20 +0000",
+      "title": "Calvin Klein Men's Chevron Stretch Jacket w/ Sherpa Lined Hood (3 Colors) $45 + Free S&H",
+      "url": "https://slickdeals.net/f/19525845-calvin-klein-men-s-chevron-stretch-jacket-w-sherpa-lined-hood-3-colors-45-free-store-pickup-at-macy-s-or-free-shipping-on-39?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 19:54:03 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "Select Locations: Cold Steel 4-Max Scout Folding Knife w/ G-10 Handle $43 + Free S&H",
-      "url": "https://slickdeals.net/f/19498056-42-99-cold-steel-4-max-scout-folding-knife-w-g-10-handle-at-amazon?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 13:48:01 +0000",
+      "title": "Woot! Graphic T-Shirts Sale 5 for $29 + Free S&H",
+      "url": "https://slickdeals.net/f/19513674-5-shirts-for-29-at-checkout-at-woot?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 19:46:17 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "Milwaukee M4 4V 1/4\" Hex Screwdriver 2-Battery kit w/ 28-pc SHOCKWAVE IMPACT Bits $139 + Free S&H",
-      "url": "https://slickdeals.net/f/19521699-milwaukee-m4-4-volt-lithium-ion-cordless-1-4-in-hex-screwdriver-2-battery-kit-shockwave-impact-set-28-piece-139?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 13:30:15 +0000",
+      "title": "Calvin Klein Form to Body Lightly Lined Triangle Bralette (Medium, Black) $10.18",
+      "url": "https://slickdeals.net/f/19525116-10-18-calvin-klein-form-to-body-lightly-lined-triangle-bralette-medium-at-amazon?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 19:42:08 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "Costco Members: Select Apparel/Clothing w/ Buy More & Save More Discount Extra $10 Off 3+ Products + Free S&H",
-      "url": "https://slickdeals.net/f/19525122-costco-members-extra-10-off-3-select-appparel-free-shipping?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 13:24:11 +0000",
+      "title": "Timberland Men's Redwood Falls Full Grain Leather Chukka Boots (2 Colors) $70 + Free S&H",
+      "url": "https://slickdeals.net/f/19525773-timberland-men-s-redwood-falls-full-grain-leather-chukka-boots-2-colors-70-free-s-h?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 19:34:47 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "Costco Members: 2-Pk 3M Filtrete 4\" MPR 1900 MERV 13 Air Filters From $38 & More + Free S&H",
-      "url": "https://slickdeals.net/f/19524309-filtrete-air-filter-4-mpr-1900-merv-13-premium-allergen-bacteria-and-virus-filter-electrostatic-air-cleaning-deep-pleat-filter-2-pack-39-99-various-sizes-free-shipping?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 13:23:24 +0000",
+      "title": "DeWALT 20V MAX Cordless Handheld Bagless HEPA Vacuum (Tool Only) $89 + Free S&H",
+      "url": "https://slickdeals.net/f/19525521-89-dewalt-20v-max-cordless-handheld-bagless-hepa-vacuum-tool-only-at-amazon?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 19:01:43 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "Anker Solix C1000 1800W 1056Wh LiFePO4 Portable Solar Power Station $399 + Free S&H",
-      "url": "https://slickdeals.net/f/19511220-anker-solix-c1000-1056wh-2000w-lifepo4-solar-power-station-399-free-shipping?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 13:15:24 +0000",
+      "title": "AMD Ryzen 7 9850X3D + ASUS PRIME RTX 5070 + 850W Rosewill VMG 80+ Gold $940 w/ 007 First Light (PCDD) + Free S&H",
+      "url": "https://slickdeals.net/f/19526415-amd-ryzen-7-9850x3d-asus-prime-rtx-5070-850w-rosewill-vmg-80-gold-940-w-007-first-light-pcdd-free-s-h?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 18:59:05 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "Tom Petty & the Heartbreakers: The Best Of Everything (2 CD Set) $10.90",
-      "url": "https://slickdeals.net/f/19524027-tom-petty-the-best-of-everything-the-definitive-career-spanning-hits-collection-2-cd-10-91?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 13:10:19 +0000",
+      "title": "Select Returning Members: 2-Months Paramount+ Premium No-Ads Streaming Service $1/month (Renews at $13.99/mo after 2 months)",
+      "url": "https://slickdeals.net/f/19395063-select-returning-members-2-months-paramount-premium-no-ads-streaming-service-1-month-renews-at-13-99-mo-after-2-months?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 18:56:48 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "WOLFBOX X3 PRO 1440P Front & Rear Dash Cam $120 + Free S&H",
-      "url": "https://slickdeals.net/f/19302183-wolfbox-x3-pro-1440p-front-rear-starvis-2-imx675-wifi-6-dash-cam-120-free-s-h?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 13:09:10 +0000",
+      "title": "Bedsure Plush Bubble Blanket Throw (various) from $9.60 & More",
+      "url": "https://slickdeals.net/f/19518948-bedsure-plush-bubble-blanket-throw-pink-9-59-throw-various-colors-11-99-more-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 18:50:39 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "Marmot Memorial Day Sitewide Sale: Outdoor Clothing, Gear Equipment, Accessories 25% Off & More + Free S&H",
-      "url": "https://slickdeals.net/f/19523307-marmot-memorial-day-sitewide-sale-outdoor-clothing-gear-equipment-accessories-25-off-more-free-s-h?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 13:06:37 +0000",
+      "title": "Select Accts: 300-ct Amazon Basics Resealable Double Zipper Sandwich Storage Bags $4.45 w/ S&S",
+      "url": "https://slickdeals.net/f/19524615-select-accounts-300-count-amazon-basics-resealable-double-zipper-sandwich-storage-bags-5-32-w-s-s-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 18:38:36 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "1-gallon Spectracide Ready-to-Use Trigger Spray Weed & Grass Killer $5 + Free S&H",
-      "url": "https://slickdeals.net/f/19522638-4-98-1-gallon-spectracide-ready-to-use-weed-grass-killer-at-amazon?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 13:05:31 +0000",
+      "title": "Select Stores: Kwikset HomeConnect 620 Smart Keypad Deadbolt Lock (Satin Nickel) $59.55 + Free S&H",
+      "url": "https://slickdeals.net/f/19526307-kwikset-homeconnect-620-traditional-satin-nickel-smart-keypad-electronic-deadbolt-lock-ft-smartkey-security-one-size-98935-001-59-57-ymmv?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 18:37:58 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "Katerk 25-in-1 Precision Magnetic Screwdriver Set Kit $4.95",
-      "url": "https://slickdeals.net/f/19524528-katerk-25-in-1-precision-magnetic-screwdriver-set-kit-4-93-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 12:41:40 +0000",
+      "title": "Spigen Urban Fit Case for AirPods 4 (black) $3 + Free S&H",
+      "url": "https://slickdeals.net/f/19526127-3-spigen-urban-fit-case-for-airpods-4-free-shipping?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 18:28:44 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "27-Pc Milwaukee SHOCKWAVE Impact-Duty 1/2\" Drive Metric & SAE PACKOUT Socket Set $95.15 + Free S&H",
-      "url": "https://slickdeals.net/f/19525029-milwaukee-shockwave-impact-duty-1-2-in-drive-metric-and-sae-standard-impact-packout-socket-set-27-piece-95-13?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 12:38:39 +0000",
+      "title": "TINANA 7-Speed Electric Hand Mixer & 5-Pc Mixing Bowls Set w/ Accessories $26",
+      "url": "https://slickdeals.net/f/19518426-tinana-7-speed-electric-hand-mixer-w-5-piece-stainless-steel-mixing-bowl-set-and-accessories-25-99-free-s-h-w-walmart-or-on-35?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 18:20:53 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "DEWALT 20V MAX Lithium-Ion 6.0 Ah Battery & Charger $67.50 + Free S&H",
-      "url": "https://slickdeals.net/f/19525008-67-5-dewalt-20v-max-lithium-ion-6-0-ah-battery-and-charger-at-homedepot?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 12:24:56 +0000",
+      "title": "Select Locations: Husky 10\" 15-Pocket Open Top Tool Bag $20 +Store Pick Up",
+      "url": "https://slickdeals.net/f/19523394-husky-10-in-15-pocket-open-top-tool-bag-19-98?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 18:19:16 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "DEWALT Atomic 20V Max Brushless 1/4\" Impact Driver w/ 2.0Ah Battery & Charger $89 + $6.50 S&H",
-      "url": "https://slickdeals.net/f/19516995-dewalt-atomic-20v-max-brushless-cordless-1-4-compact-impact-driver-kit-w-2-0ah-battery-charger-99-free-shipping?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 12:24:41 +0000",
+      "title": "4-Pc GEARWRENCH Trap Mat Universal Tool Drawer Liners $28",
+      "url": "https://slickdeals.net/f/19523973-gearwrench-4-piece-trap-mat-universal-tool-drawer-liners-27-97-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 18:15:42 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "Intel Core Ultra 7 270K Plus 24-Core Processor $280 + Free S&H",
-      "url": "https://slickdeals.net/f/19524999-279-99-intel-core-ultra-7-processor-270k-plus-24-cores-8-p-cores-16-e-cores-up-to-5-5-ghz-at-amazon?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 11:51:47 +0000",
+      "title": "DEWALT 15 Amp Corded 12\" Compound Miter Saw w/ Blade, Wrench & Clamp $409 + Free S&H",
+      "url": "https://slickdeals.net/f/19525086-409-dewalt-15-amp-corded-12-in-double-bevel-sliding-compound-miter-saw-w-flexvolt-12-in-60t-carbide-tipped-blade-wrench-and-clamp-at-homedepot?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 18:09:14 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "4-Pk 14.9-Oz SodaStream Classics Zero Drink Mixes (Various) $8 + Free S&H",
-      "url": "https://slickdeals.net/f/19523805-sodastream-classics-zero-strawberry-watermelon-drink-mix-14-9fl-oz-4pk-8-at-sodastream-via-walmart?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 11:34:21 +0000",
+      "title": "New Verizon Customers: 4 Select Phones + 4 Lines Unlimited Welcome + $100 GC $100/mo for 36 mos after Bill Credits + Taxes & Fees + Free S&H",
+      "url": "https://slickdeals.net/f/19525506-new-verizon-customers-4-select-phones-4-lines-unlimited-welcome-100-gc-100-mo-for-36-mos-after-bill-credits-taxes-fees-free-s-h?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 18:01:49 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "$100 Lowe's eGift Card (Email Delivery) $90",
-      "url": "https://slickdeals.net/f/19525146-100-lowe-s-egift-card-email-delivery-90-via-newegg?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 11:02:18 +0000",
+      "title": "Select Accts: Basvacsh 45,000mg/h Ozone Generator (up to 2500sqft) $20 + Free S&H",
+      "url": "https://slickdeals.net/f/19513032-select-accts-basvacsh-45-000mg-h-ozone-generator-up-to-2500sqft-19-99-free-shipping?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 18:00:20 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "Teenage Mutant Ninja Turtles: Splintered Fate (Xbox 1/Series X|S Digital Game) $3 & More",
-      "url": "https://slickdeals.net/f/19521690-teenage-mutant-ninja-turtles-splintered-fate-xbox-one-series-x-s-digital-download-2-99-via-xbox-microsoft-store?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 09:44:25 +0000",
+      "title": "2-Pk 6Ah RIDGID 18V MAX Output Lithium-Ion Batteries $106 + Free S&H",
+      "url": "https://slickdeals.net/f/19525074-106-ridgid-18v-6-0-ah-max-output-lithium-ion-batteries-2-pack-at-homedepot?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 17:59:19 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "8-Pk 20-Oz POWERADE ZERO Sports Drink (Grape) $4.55 w/ S&S",
-      "url": "https://slickdeals.net/f/19523871-8-pack-20-oz-powerade-zero-sports-drink-grape-4-54-w-s-s-free-shipping-w-prime-or-on-orders-over-35?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 09:12:37 +0000",
+      "title": "(Used: Like New) AMD Ryzen 5 7600X 6-Core 12-Thread Unlocked Desktop Processor $114.80 + Free S&H",
+      "url": "https://slickdeals.net/f/19525656-resale-ac-114-80-amd-ryzen-5-7600x-6-core-12-thread-unlocked-desktop-processor-used-like-new-at-amazon?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 17:56:18 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "GKBK Women's Crew Neck Short Sleeve Oversized T-Shirts (Various Colors) From $5",
-      "url": "https://slickdeals.net/f/19506879-gkbk-women-s-crew-neck-short-sleeve-oversized-t-shirts-various-colors-from-5?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 08:33:45 +0000",
+      "title": "12-Pk 15.5-Oz Bush's Best Cannellini Beans Cans $11.30 or less w/ S&S",
+      "url": "https://slickdeals.net/f/19506813-bush-s-best-15-5-oz-canned-cannellini-beans-source-of-plant-based-protein-and-fiber-low-fat-gluten-free-pack-of-12-11-29-with-s-s-amazon?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 17:41:20 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "Costco Members: 74\" Monterey Bay Accent Console $450 + Free S&H",
-      "url": "https://slickdeals.net/f/19522701-costco-members-monterey-bay-74-accent-console-brown-item-1812802-model-d-a226cn-501-free-delivery-only-set-up-not-included-449-99?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 08:04:16 +0000",
+      "title": "Anker 15W 3-in-1 MagSafe Wireless Charging Cube $65 + Free S&H w/ Prime",
+      "url": "https://slickdeals.net/f/19523442-64-99-anker-15w-3-in-1-magsafe-wireless-charging-cube-at-woot?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 17:36:36 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "6-Game DOOM Anthology Bundle (PC Digital Download) $26.50",
-      "url": "https://slickdeals.net/f/19520112-doom-anthology-6-game-bundle-with-all-dlcs-steam-digital-download-26-50?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 07:59:10 +0000",
+      "title": "Justice League (4K Ultra HD) $8.55",
+      "url": "https://slickdeals.net/f/19525125-8-55-justice-league-4k-ultra-hd-blu-ray-at-amazon?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 17:06:00 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "2-Panel 52\" x 72\" Joydeco Insulated Thermal Blackout Curtains (Dark Grey) $10",
-      "url": "https://slickdeals.net/f/19519929-2-panel-joydeco-insulated-thermal-blackout-curtains-52-x-72-dark-grey-9-99-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 07:55:46 +0000",
+      "title": "Used/Like New: Apple Pencil Pro $47.20 + Free S&H",
+      "url": "https://slickdeals.net/f/19525785-resale-ac-47-18-apple-pencil-pro-used-like-new-at-amazon?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 16:50:03 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
     },
     {
       "source_id": "slickdeals-frontpage",
       "source_name": "Slickdeals Frontpage",
       "category": "deals",
-      "title": "Patagonia Women's Wind Shield Jacket (2 Colors) $98.85 + Free S&H",
-      "url": "https://slickdeals.net/f/19517235-patagonia-women-s-wind-shield-jacket-2-colors-98-83-free-shipping?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Fri, 15 May 26 07:42:39 +0000",
+      "title": "318-Pc LEGO Speed Champions Ferrari F40 Supercar Building Set $22",
+      "url": "https://slickdeals.net/f/19515507-318-pc-lego-speed-champions-ferrari-f40-supercar-building-set-21-99-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 16:37:22 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.413Z"
+      "fetched_at": "2026-05-15T20:09:41.765Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Your pantry, gas tank, and weekend BBQs will all benefit from this $20 BJ’s membership deal (Reg. $60)",
+      "url": "https://9to5toys.com/2026/05/15/your-pantry-gas-tank-and-weekend-bbqs-will-all-benefit-from-this-20-bjs-membership-deal-reg-60/",
+      "published_at": "Fri, 15 May 2026 20:08:37 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Friday&#8217;s Apple Books and audiobook deals from $1",
+      "url": "https://9to5toys.com/2026/05/15/todays-highlight-apple-books-price-drops-2/",
+      "published_at": "Fri, 15 May 2026 19:10:26 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Amazon Pet Days – Final Day: Up to 40% off Greenies, over 40% off ZIWI Peak, 45% off Blue Buffalo, more",
+      "url": "https://9to5toys.com/2026/05/15/amazon-pet-days-final-day-40-off-greenies-over-40-off-ziwi-peak-45-off-blue-buffalo-more/",
+      "published_at": "Fri, 15 May 2026 18:22:01 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Apple Pencil Pro at over 63% off the list price, now under $48 (Amazon Like New)",
+      "url": "https://9to5toys.com/2026/05/15/apple-pencil-pro-at-over-63-off-the-list-price-now-under-48-amazon-like-new/",
+      "published_at": "Fri, 15 May 2026 17:41:17 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Anker&#8217;s Travel Essentials sale now live at up to 38% off: Bundle deals, FREE gifts, more with deals from just $13",
+      "url": "https://9to5toys.com/2026/05/15/anker-travel-essentials-sale-now-live-at-up-to-38-off-bundle-deals-free-gifts-more/",
+      "published_at": "Fri, 15 May 2026 17:40:09 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Friday&#8217;s Android game and app deals: Undergrave, Red Ronin, What Lies Underground, more",
+      "url": "https://9to5toys.com/2026/05/15/todays-highlight-android-app-price-drops-2/",
+      "published_at": "Fri, 15 May 2026 17:25:19 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Heybike offers $857 weekend savings on its flagship Ranger 3.0 Pro e-bike + bundle at $1,399 low for first time in 2026",
+      "url": "https://9to5toys.com/2026/05/15/heybike-flagship-ranger-3-0-pro-e-bike-bundle-1399-low-first-time-2026/",
+      "published_at": "Fri, 15 May 2026 17:15:10 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Affordably start crafting your ergonomic office setup starting with this chair at $76.50 (Save 45%)",
+      "url": "https://9to5toys.com/2026/05/15/marsail-ergonomic-office-chair-9/",
+      "published_at": "Fri, 15 May 2026 17:07:31 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "This MagSafe wallet just hit $9.50 with stand functionality and easy ID access (Reg. $20)",
+      "url": "https://9to5toys.com/2026/05/15/omoton-magsafe-wallet-with-stand/",
+      "published_at": "Fri, 15 May 2026 17:00:20 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Add meross&#8217; Matter-certified thermostat to your Apple, Google, Samsung, or Alexa smart home for only $60",
+      "url": "https://9to5toys.com/2026/05/15/meross-matter-smart-thermostat-6/",
+      "published_at": "Fri, 15 May 2026 16:55:44 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Add Bandletic&#8217;s magnetic Apple Watch strap to your collection from $20 (Save 29%)",
+      "url": "https://9to5toys.com/2026/05/15/bandletic-magnetic-apple-watch-band/",
+      "published_at": "Fri, 15 May 2026 16:50:12 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "PUMA&#8217;s BMW M Drift Cat 11 Sneakers plunge to $38, training boxers $4.50 each, more from $12",
+      "url": "https://9to5toys.com/2026/05/15/puma-training-mens-boxers/",
+      "published_at": "Fri, 15 May 2026 16:48:50 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Bag a spare foldable LISEN Qi2 3-in-1 charging station for just $14.50 (Save 67%)",
+      "url": "https://9to5toys.com/2026/05/15/lisen-qi2-15w-foldable-3-in-1-charging-station/",
+      "published_at": "Fri, 15 May 2026 16:42:17 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Head into the weekend with discounted Nike gear on the way from $26 (Up to 49% off)",
+      "url": "https://9to5toys.com/2026/05/15/nike-sb-zoom-nyjah-4-skate-shoes/",
+      "published_at": "Fri, 15 May 2026 16:30:43 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "GaN design delivers 25W USB-C ports on this 8-in-1 power strip, now $14 (Reg. $20)",
+      "url": "https://9to5toys.com/2026/05/15/orico-25w-gan-8-in-1-usb-c-power-strip/",
+      "published_at": "Fri, 15 May 2026 16:23:09 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Skip the big brand tax and grab these wrinkle-free button-down shirts from $16 (Save 38%)",
+      "url": "https://9to5toys.com/2026/05/15/alex-vando-wrinkle-free-button-down-shirt-4/",
+      "published_at": "Fri, 15 May 2026 16:19:03 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Score a $110 price cut on the Greenworks 60V 8-inch cordless electric edger for a new $190 low",
+      "url": "https://9to5toys.com/2026/05/15/greenworks-60v-8-inch-cordless-electric-edger-new-190-low/",
+      "published_at": "Fri, 15 May 2026 16:15:51 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Clean vibes headline Bruno Marc&#8217;s casual all-white sneakers down at $23 Prime shipped",
+      "url": "https://9to5toys.com/2026/05/15/bruno-marc-slip-on-casual-white-sneakers/",
+      "published_at": "Fri, 15 May 2026 16:14:16 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Friday&#8217;s Apple TV deals up to 60% off: Taxi Driver, Office Space, Django Unchained, Joker, Pi, Tulsa King, more",
+      "url": "https://9to5toys.com/2026/05/15/todays-highlight-tv-show-price-drops-2/",
+      "published_at": "Fri, 15 May 2026 15:52:03 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Just $15 today gets you 8BitDo&#8217;s Ultimate 2C Hall effect gamepad (2026 low)",
+      "url": "https://9to5toys.com/2026/05/15/just-15-today-gets-you-8bitdos-ultimate-2c-hall-effect-gamepad-2026-low/",
+      "published_at": "Fri, 15 May 2026 15:30:37 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "The 3,840Wh Bluetti Elite 400 power station is a more mobile solution with bundle options at exclusive lows from $1,221",
+      "url": "https://9to5toys.com/2026/05/15/3840wh-bluetti-elite-400-power-station-exclusive-lows-from-1221/",
+      "published_at": "Fri, 15 May 2026 15:18:53 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Razer’s Kishi V3 iPhone/Android USB-C mobile controller just hit a new $61 all-time low, Phantom White version at $71",
+      "url": "https://9to5toys.com/2026/05/15/razer-kishi-v3-iphone-android-usb-c-mobile-controller-new-all-time-low-2/",
+      "published_at": "Fri, 15 May 2026 15:00:22 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Target 40-page Memorial Day Sale ad is here: Preview hundreds of deals going live this weekend",
+      "url": "https://9to5toys.com/2026/05/15/target-memorial-day-sale-ad-deals/",
+      "published_at": "Fri, 15 May 2026 14:44:13 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Save up to $512 on Velotric e-bikes through Memorial Day, like the T1 ST Plus e-bike bundle at $1,299, more",
+      "url": "https://9to5toys.com/2026/05/15/velotric-e-bikes-memorial-day-t1-st-plus-e-bike-bundle-1299-more/",
+      "published_at": "Fri, 15 May 2026 14:26:54 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "Belkin’s latest 9,300mAh wireless charging camera grip with MagSafe/Pixelsnap support is down to just $66 today",
+      "url": "https://9to5toys.com/2026/05/15/belkin-9300mah-wireless-charging-camera-grip-magsafe-pixelsnap/",
+      "published_at": "Fri, 15 May 2026 14:15:56 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
+    },
+    {
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "title": "SwitchBot debuts new Matter-over-WiFi smart locks with 3D facial recognition, palm scanning, and launch deals",
+      "url": "https://9to5toys.com/2026/05/15/switchbot-new-matter-wifi-locks-3d-facial-recognition-deals/",
+      "published_at": "Fri, 15 May 2026 14:15:55 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:41.863Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -995,7 +1463,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:41.863Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1008,7 +1476,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:41.863Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1021,7 +1489,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:41.863Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1034,345 +1502,449 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:41.863Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Still live: 512GB Galaxy Z Fold 7 at a giant $819 off today (Best Buy open-box), or $430 off new",
-      "url": "https://9to5toys.com/2026/05/15/unlocked-galaxy-z-fold-7-giant-price-drop/",
-      "published_at": "Fri, 15 May 2026 12:22:00 +0000",
+      "title": "3Pk Men's Performance Tops",
+      "url": "https://forums.woot.com/t/3pk-mens-performance-tops/2421551",
+      "published_at": "Thu, 14 May 2026 22:00:12 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Save $444 and get FREE 007 First Light game code with this Cooler Master NR2 Pro RTX 5070 Mini PC",
-      "url": "https://9to5toys.com/2026/05/15/save-444-free-007-first-light-game-code-with-cooler-master-nr2-pro/",
-      "published_at": "Fri, 15 May 2026 12:15:42 +0000",
+      "title": "DROP + Grell OAE1 Wired Open-Back Headphones",
+      "url": "https://forums.woot.com/t/drop-grell-oae1-wired-open-back-headphones/2421508",
+      "published_at": "Thu, 14 May 2026 15:20:13 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Twelve South&#8217;s PowerBug transforms any outlet into a MagSafe charging dock at $36",
-      "url": "https://9to5toys.com/2026/05/15/twelve-south-powerbug-outlet-magsafe-charging-dock/",
-      "published_at": "Fri, 15 May 2026 12:00:32 +0000",
+      "title": "Anker GaNPrime 65W 5-in-1 Charging Station Power Strip",
+      "url": "https://forums.woot.com/t/anker-ganprime-65w-5-in-1-charging-station-power-strip/2420609",
+      "published_at": "Wed, 13 May 2026 22:00:12 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Apple&#8217;s mid-range 512GB 13-inch M5 iPad Pro hits Amazon low at $150 off, or up to $300 off open-box",
-      "url": "https://9to5toys.com/2026/05/15/apple-512gb-m5-ipad-pro-best-deal/",
-      "published_at": "Fri, 15 May 2026 11:31:46 +0000",
+      "title": "FabTotes Storage Bags | 6 Pack-60L",
+      "url": "https://forums.woot.com/t/fabtotes-storage-bags-6-pack-60l/2419816",
+      "published_at": "Tue, 12 May 2026 22:00:12 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Score Samsung’s 27-inch Odyssey G50D QHD 180Hz gaming monitor for your battlestation while it&#8217;s down to $200 today ($150 off)",
-      "url": "https://9to5toys.com/2026/05/15/samsung-27-inch-odyssey-g50d-qhd-180hz-gaming-monitor-down-to-200/",
-      "published_at": "Fri, 15 May 2026 11:26:43 +0000",
+      "title": "Cherry MX-LP 2.1 Compact Wireless Gaming Keyboard",
+      "url": "https://forums.woot.com/t/cherry-mx-lp-2-1-compact-wireless-gaming-keyboard/2418697",
+      "published_at": "Mon, 11 May 2026 22:00:12 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Samsung now offering $350 off all Galaxy Tab S11 Ultra models",
-      "url": "https://9to5toys.com/2026/05/15/samsung-now-galaxy-tab-s11-ultra-models/",
-      "published_at": "Fri, 15 May 2026 11:06:47 +0000",
+      "title": "(4-Pack) resqme Keychain Car Escape Tool",
+      "url": "https://forums.woot.com/t/4-pack-resqme-keychain-car-escape-tool/2417701",
+      "published_at": "Sun, 10 May 2026 22:00:12 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Originally $150 Anker 3-in-1 Charging Cube for your entire Apple kit is now down to $65 (All-time low)",
-      "url": "https://9to5toys.com/2026/05/15/anker-3-in-1-charging-cube-now-down-to-65-all-time-low/",
-      "published_at": "Fri, 15 May 2026 10:47:27 +0000",
+      "title": "30000mAh Camping Fan with LED Lantern",
+      "url": "https://forums.woot.com/t/30000mah-camping-fan-with-led-lantern/2416983",
+      "published_at": "Sat, 09 May 2026 22:00:12 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Apple&#8217;s 20-Core 2TB M5 Pro MacBook Pro hits Amazon low at nearly $200 off, more from $1,500",
-      "url": "https://9to5toys.com/2026/05/15/apple-20-core-2tb-m5-pro-macbook-pro-best-price/",
-      "published_at": "Fri, 15 May 2026 10:44:01 +0000",
+      "title": "Energizer Ultimate Lithium Batteries (AAA)",
+      "url": "https://forums.woot.com/t/energizer-ultimate-lithium-batteries-aaa/2415517",
+      "published_at": "Fri, 08 May 2026 22:00:12 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Today is your last chance on these 15-inch M5 MacBook Air deals at $170 off (Undercutting Amazon lows)",
-      "url": "https://9to5toys.com/2026/05/15/last-chance-15-inch-m5-macbook-air-deals/",
-      "published_at": "Fri, 15 May 2026 10:20:15 +0000",
+      "title": "2 Pack Underbed Shoe Storage Organizer",
+      "url": "https://forums.woot.com/t/2-pack-underbed-shoe-storage-organizer/2414978",
+      "published_at": "Thu, 07 May 2026 22:00:13 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Amazon delivers MacBook Neo as early as tomorrow from $590, still 1 to 3 weeks from Apple",
-      "url": "https://9to5toys.com/2026/05/15/amazon-macbook-neo-delivery-tomorrow/",
-      "published_at": "Fri, 15 May 2026 10:04:00 +0000",
+      "title": "5Pk Asst Mens 2-in-1 Active Shorts",
+      "url": "https://forums.woot.com/t/5pk-asst-mens-2-in-1-active-shorts/2414948",
+      "published_at": "Thu, 07 May 2026 17:00:13 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Amazon 2026 Memorial Day sale now live at up to 50% off: Apple Watch, MacBook, Galaxy gear, home goods, more",
-      "url": "https://9to5toys.com/2026/05/15/amazon-2026-memorial-day-sale-live/",
-      "published_at": "Fri, 15 May 2026 09:57:14 +0000",
+      "title": "Lenox 898187 Holiday Tree Chip & Dip Set",
+      "url": "https://forums.woot.com/t/lenox-898187-holiday-tree-chip-dip-set/2414496",
+      "published_at": "Thu, 07 May 2026 05:00:59 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Microsoft&#8217;s next-generation Xbox Elite 3 gamepad leaks online [Images]",
-      "url": "https://9to5toys.com/2026/05/14/microsoft-next-generation-xbox-elite-3-gamepad-leak/",
-      "published_at": "Thu, 14 May 2026 21:31:22 +0000",
+      "title": "Lenox Holiday 65-Piece Flatware Set",
+      "url": "https://forums.woot.com/t/lenox-holiday-65-piece-flatware-set/2414495",
+      "published_at": "Thu, 07 May 2026 05:00:59 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Upgrade security to Anker&#8217;s solar-charging eufy SoloCam S220 cameras and get up to 43% savings starting from $60",
-      "url": "https://9to5toys.com/2026/05/14/anker-solar-charging-eufy-solocam-s220-cameras-starting-from-60/",
-      "published_at": "Thu, 14 May 2026 21:05:50 +0000",
+      "title": "Lenox Serveware, Disney Holiday Hors Doeuvres Tray",
+      "url": "https://forums.woot.com/t/lenox-serveware-disney-holiday-hors-doeuvres-tray/2414494",
+      "published_at": "Thu, 07 May 2026 05:00:56 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Next Switch 2 GameCube release: Star Fox, Mario Sunshine, Pokémon, more",
-      "url": "https://9to5toys.com/2026/05/14/next-switch-2-gamecube-release-star-fox/",
-      "published_at": "Thu, 14 May 2026 20:39:00 +0000",
+      "title": "Lenox 2024 Just Married Vintage Car Ornament",
+      "url": "https://forums.woot.com/t/lenox-2024-just-married-vintage-car-ornament/2414493",
+      "published_at": "Thu, 07 May 2026 05:00:56 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Want to try Costco? This $65 membership includes a $20 Digital Costco Shop Card",
-      "url": "https://9to5toys.com/2026/05/14/want-to-try-costco-this-65-membership-includes-a-20-digital-costco-shop-card/",
-      "published_at": "Thu, 14 May 2026 20:37:59 +0000",
+      "title": "Lenox Holiday 6-Piece Dinner Plates Dinnerware Set",
+      "url": "https://forums.woot.com/t/lenox-holiday-6-piece-dinner-plates-dinnerware-set/2414492",
+      "published_at": "Thu, 07 May 2026 05:00:55 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Get two Eve Aqua Apple Home smart water controllers to upgrade spigots with $110 savings at a new $190 low",
-      "url": "https://9to5toys.com/2026/05/14/two-eve-aqua-apple-home-smart-water-controllers-new-190-low/",
-      "published_at": "Thu, 14 May 2026 20:23:06 +0000",
+      "title": "Lenox Holiday Luna Nesting Dinnerware Set",
+      "url": "https://forums.woot.com/t/lenox-holiday-luna-nesting-dinnerware-set/2414491",
+      "published_at": "Thu, 07 May 2026 05:00:55 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Amazon just brought the price down on the Tesla Universal Wall Connector with J1772 + NACS connectors to $550",
-      "url": "https://9to5toys.com/2026/05/14/tesla-universal-wall-connector-with-j1772-nacs-connectors-550/",
-      "published_at": "Thu, 14 May 2026 19:51:07 +0000",
+      "title": "Lenox Serveware, The Great Pumpkin Hors D'Oeuvres Tray",
+      "url": "https://forums.woot.com/t/lenox-serveware-the-great-pumpkin-hors-doeuvres-tray/2414490",
+      "published_at": "Thu, 07 May 2026 05:00:55 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Serious about your AI workflow? This prompt workspace is on sale for just $80 (Up to $539 value)",
-      "url": "https://9to5toys.com/2026/05/14/serious-about-your-ai-workflow-this-prompt-workspace-is-on-sale-for-just-80-up-to-539-value/",
-      "published_at": "Thu, 14 May 2026 19:44:38 +0000",
+      "title": "Lenox French Perle Scalloped Turkey Platter",
+      "url": "https://forums.woot.com/t/lenox-french-perle-scalloped-turkey-platter/2414489",
+      "published_at": "Thu, 07 May 2026 05:00:55 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Today&#8217;s Apple Books and audiobook deals from $2",
-      "url": "https://9to5toys.com/2026/05/14/todays-highlight-apple-books-price-drops/",
-      "published_at": "Thu, 14 May 2026 19:43:08 +0000",
+      "title": "Lenox 878975 Holiday Jewel 3-Piece Serving Set",
+      "url": "https://forums.woot.com/t/lenox-878975-holiday-jewel-3-piece-serving-set/2414487",
+      "published_at": "Thu, 07 May 2026 05:00:54 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Amazon early Memorial Day deals from $15: Echo, Ring Pro, Blink, more",
-      "url": "https://9to5toys.com/2026/05/14/amazon-early-memorial-day-deals-echo-ring/",
-      "published_at": "Thu, 14 May 2026 19:24:25 +0000",
+      "title": "Lenox Trianna Salad Plates, Set of 4",
+      "url": "https://forums.woot.com/t/lenox-trianna-salad-plates-set-of-4/2414486",
+      "published_at": "Thu, 07 May 2026 05:00:54 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Amazon Pet Days – Day 4: Up to 30% off Bully sticks, 20% off Fera Pets, over 30% off Veterinary Formula, more",
-      "url": "https://9to5toys.com/2026/05/14/amazon-pet-days-day-4-up-to-30-off-bully-sticks-20-off-fera-pets-over-30-off-veterinary-formula-more/",
-      "published_at": "Thu, 14 May 2026 18:43:20 +0000",
+      "title": "Lenox Federal Gold Tree Accent Plates",
+      "url": "https://forums.woot.com/t/lenox-federal-gold-tree-accent-plates/2414485",
+      "published_at": "Thu, 07 May 2026 05:00:54 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Regularly $1,100 LG UltraGear 34-inch 240Hz OLED ultrawide monitor hits $658 all-time low (40% off)",
-      "url": "https://9to5toys.com/2026/05/14/lg-ultragear-34-inch-240hz-oled-ultrawide-monitor-hits-658-all-time-low/",
-      "published_at": "Thu, 14 May 2026 18:20:42 +0000",
+      "title": "Lenox Serveware, Nutcracker Ballet Hors Doeuvres Tray",
+      "url": "https://forums.woot.com/t/lenox-serveware-nutcracker-ballet-hors-doeuvres-tray/2414484",
+      "published_at": "Thu, 07 May 2026 05:00:54 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "This 48GB/2TB M5 Pro MacBook Pro is $400 off the list price right now (Best deal yet)",
-      "url": "https://9to5toys.com/2026/05/14/48gb-2tb-m5-pro-macbook-pro-deal/",
-      "published_at": "Thu, 14 May 2026 17:49:52 +0000",
+      "title": "Lenox Butterfly Meadow Bowl With Stand",
+      "url": "https://forums.woot.com/t/lenox-butterfly-meadow-bowl-with-stand/2414483",
+      "published_at": "Thu, 07 May 2026 05:00:53 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Microsoft&#8217;s upcoming compact cloud gaming controller with Wi-Fi 6 shows up in new leak",
-      "url": "https://9to5toys.com/2026/05/14/microsoft-cloud-gaming-controller-with-wi-fi-6-leak/",
-      "published_at": "Thu, 14 May 2026 17:25:09 +0000",
+      "title": "Lenox Floral Patina Butter Plate",
+      "url": "https://forums.woot.com/t/lenox-floral-patina-butter-plate/2414481",
+      "published_at": "Thu, 07 May 2026 05:00:53 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
       "category": "deals",
-      "title": "Gotrax&#8217;s R7 electric bike travels up to 50 miles + gets an in-frame basket and bag for a $765 low",
-      "url": "https://9to5toys.com/2026/05/14/gotrax-r7-electric-bike-in-frame-basket-and-bag-765-low/",
-      "published_at": "Thu, 14 May 2026 17:17:13 +0000",
+      "title": "Lenox Chef Snoopy Teapot 40oz",
+      "url": "https://forums.woot.com/t/lenox-chef-snoopy-teapot-40oz/2414480",
+      "published_at": "Thu, 07 May 2026 05:00:53 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.363Z"
     },
     {
-      "source_id": "nine-to-five-toys",
-      "source_name": "9to5Toys",
-      "category": "deals",
-      "title": "Today&#8217;s Android game and app deals: Subnautica Below Zero, Kingdom Rush 5, Iron Marines 2, more",
-      "url": "https://9to5toys.com/2026/05/14/todays-highlight-android-app-price-drops/",
-      "published_at": "Thu, 14 May 2026 17:10:58 +0000",
+      "source_id": "engadget",
+      "source_name": "Engadget",
+      "category": "tech",
+      "title": "California lawmakers are working on a bill to preserve access to online games",
+      "url": "https://www.engadget.com/2174011/california-lawmakers-are-working-on-a-bill-to-preserve-access-to-online-games/",
+      "published_at": "Fri, 15 May 2026 19:48:53 +0000",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.489Z"
+      "fetched_at": "2026-05-15T20:09:42.529Z"
+    },
+    {
+      "source_id": "engadget",
+      "source_name": "Engadget",
+      "category": "tech",
+      "title": "Summer Games Done Quick returns this July, schedule out now",
+      "url": "https://www.engadget.com/2173999/summer-games-done-quick-returns-this-july-schedule-out-now/",
+      "published_at": "Fri, 15 May 2026 19:41:13 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:42.529Z"
+    },
+    {
+      "source_id": "engadget",
+      "source_name": "Engadget",
+      "category": "tech",
+      "title": "Marathon's future includes duo queues, more PvE modes and better onboarding",
+      "url": "https://www.engadget.com/2173991/marathons-future-includes-duo-queues-more-pve-modes-and-better-onboarding/",
+      "published_at": "Fri, 15 May 2026 19:35:52 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:42.529Z"
+    },
+    {
+      "source_id": "engadget",
+      "source_name": "Engadget",
+      "category": "tech",
+      "title": "The cute VR platformer Moss and its sequel are heading to consoles",
+      "url": "https://www.engadget.com/2173842/cute-vr-platformer-moss-and-its-sequel-are-heading-to-consoles/",
+      "published_at": "Fri, 15 May 2026 17:03:13 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:42.529Z"
+    },
+    {
+      "source_id": "engadget",
+      "source_name": "Engadget",
+      "category": "tech",
+      "title": "ChatGPT will offer personalized financial advice (if you connect your bank account)",
+      "url": "https://www.engadget.com/2173768/chatgpt-will-offer-personalized-financial-advice-if-you-connect-your-bank-account/",
+      "published_at": "Fri, 15 May 2026 16:01:43 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:42.529Z"
+    },
+    {
+      "source_id": "engadget",
+      "source_name": "Engadget",
+      "category": "tech",
+      "title": "The Nest app is down for many users",
+      "url": "https://www.engadget.com/2173741/the-nest-app-is-down-for-many-users/",
+      "published_at": "Fri, 15 May 2026 15:44:11 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:42.529Z"
+    },
+    {
+      "source_id": "engadget",
+      "source_name": "Engadget",
+      "category": "tech",
+      "title": "Lego 2K Drive will vanish from digital storefronts on May 19",
+      "url": "https://www.engadget.com/2173738/lego-2k-drive-will-vanish-from-digital-storefronts-on-may-19/",
+      "published_at": "Fri, 15 May 2026 15:41:16 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:42.529Z"
+    },
+    {
+      "source_id": "engadget",
+      "source_name": "Engadget",
+      "category": "tech",
+      "title": "X, a bastion for hate, claims it will reduce hate content in the UK",
+      "url": "https://www.engadget.com/2173686/x-a-bastion-for-hate-claims-it-will-reduce-hate-content-in-the-uk/",
+      "published_at": "Fri, 15 May 2026 14:50:23 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:42.529Z"
+    },
+    {
+      "source_id": "engadget",
+      "source_name": "Engadget",
+      "category": "tech",
+      "title": "Engadget Podcast: Who needs Googlebooks?",
+      "url": "https://www.engadget.com/2173571/engadget-podcast-who-needs-googlebooks/",
+      "published_at": "Fri, 15 May 2026 14:00:00 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-15T20:09:42.529Z"
     },
     {
       "source_id": "engadget",
@@ -1385,7 +1957,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
+      "fetched_at": "2026-05-15T20:09:42.529Z"
     },
     {
       "source_id": "engadget",
@@ -1398,7 +1970,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
+      "fetched_at": "2026-05-15T20:09:42.529Z"
     },
     {
       "source_id": "engadget",
@@ -1411,7 +1983,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
+      "fetched_at": "2026-05-15T20:09:42.529Z"
     },
     {
       "source_id": "engadget",
@@ -1424,7 +1996,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
+      "fetched_at": "2026-05-15T20:09:42.529Z"
     },
     {
       "source_id": "engadget",
@@ -1437,7 +2009,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
+      "fetched_at": "2026-05-15T20:09:42.529Z"
     },
     {
       "source_id": "engadget",
@@ -1450,7 +2022,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
+      "fetched_at": "2026-05-15T20:09:42.529Z"
     },
     {
       "source_id": "engadget",
@@ -1463,7 +2035,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
+      "fetched_at": "2026-05-15T20:09:42.529Z"
     },
     {
       "source_id": "engadget",
@@ -1476,7 +2048,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
+      "fetched_at": "2026-05-15T20:09:42.529Z"
     },
     {
       "source_id": "engadget",
@@ -1489,7 +2061,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
+      "fetched_at": "2026-05-15T20:09:42.529Z"
     },
     {
       "source_id": "engadget",
@@ -1502,7 +2074,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
+      "fetched_at": "2026-05-15T20:09:42.529Z"
     },
     {
       "source_id": "engadget",
@@ -1515,124 +2087,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
-    },
-    {
-      "source_id": "engadget",
-      "source_name": "Engadget",
-      "category": "tech",
-      "title": "Amazon hurled its Lord of the Rings MMO back into the fires of Mount Doom",
-      "url": "https://www.engadget.com/2173272/amazon-has-hurled-its-lord-of-the-rings-mmo-back-into-the-fires-of-mount-doom/",
-      "published_at": "Thu, 14 May 2026 20:25:29 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
-    },
-    {
-      "source_id": "engadget",
-      "source_name": "Engadget",
-      "category": "tech",
-      "title": "OpenAI brings its Codex coding app to mobile",
-      "url": "https://www.engadget.com/2173235/openai-brings-its-codex-coding-app-to-mobile/",
-      "published_at": "Thu, 14 May 2026 20:00:00 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
-    },
-    {
-      "source_id": "engadget",
-      "source_name": "Engadget",
-      "category": "tech",
-      "title": "Netflix wants to use generative AI to make animated shorts",
-      "url": "https://www.engadget.com/2173239/netflix-wants-to-use-generative-ai-to-make-animated-shorts/",
-      "published_at": "Thu, 14 May 2026 19:53:11 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
-    },
-    {
-      "source_id": "engadget",
-      "source_name": "Engadget",
-      "category": "tech",
-      "title": "The VW ID.Buzz is returning for model year 2027 with a new trim for camping",
-      "url": "https://www.engadget.com/2173225/the-vw-idbuzz-is-returning-for-model-year-2027-with-a-new-trim-for-camping/",
-      "published_at": "Thu, 14 May 2026 19:34:39 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
-    },
-    {
-      "source_id": "engadget",
-      "source_name": "Engadget",
-      "category": "tech",
-      "title": "The HDMI ARC port on your TV has a very specific job",
-      "url": "https://www.engadget.com/2172906/hdmi-arc-port-tv-use-explained/",
-      "published_at": "Thu, 14 May 2026 19:30:00 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
-    },
-    {
-      "source_id": "engadget",
-      "source_name": "Engadget",
-      "category": "tech",
-      "title": "Microsoft's unreleased cloud controller has been spotted in the wild and it's teeny",
-      "url": "https://www.engadget.com/2173164/microsofts-unreleased-cloud-controller-has-been-spotted-in-the-wild-and-its-teeny/",
-      "published_at": "Thu, 14 May 2026 18:42:40 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
-    },
-    {
-      "source_id": "engadget",
-      "source_name": "Engadget",
-      "category": "tech",
-      "title": "Spotify and its hosting platforms are adopting Apple's tech for video podcasts",
-      "url": "https://www.engadget.com/2173148/spotify-and-its-hosting-platforms-are-adopting-apples-tech-for-video-podcasts/",
-      "published_at": "Thu, 14 May 2026 18:25:32 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
-    },
-    {
-      "source_id": "engadget",
-      "source_name": "Engadget",
-      "category": "tech",
-      "title": "Noble Audio to launch FoKus Apollo Pro headset for $699",
-      "url": "https://www.engadget.com/2173124/noble-audio-to-launch-fokus-apollo-pro-headset-for-dollar699/",
-      "published_at": "Thu, 14 May 2026 18:13:01 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
-    },
-    {
-      "source_id": "engadget",
-      "source_name": "Engadget",
-      "category": "tech",
-      "title": "The Esports World Cup will reportedly move to Paris from Riyadh",
-      "url": "https://www.engadget.com/2173107/the-esports-world-cup-will-reportedly-move-to-paris-from-riyadh/",
-      "published_at": "Thu, 14 May 2026 18:05:14 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.776Z"
+      "fetched_at": "2026-05-15T20:09:42.529Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1645,7 +2100,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1658,7 +2113,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1671,7 +2126,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1684,7 +2139,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1697,7 +2152,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1710,7 +2165,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1723,7 +2178,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1736,7 +2191,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1749,7 +2204,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1762,7 +2217,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1775,7 +2230,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1788,7 +2243,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1801,7 +2256,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1814,7 +2269,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1827,7 +2282,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1840,7 +2295,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1853,7 +2308,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1866,7 +2321,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1879,7 +2334,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1892,7 +2347,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1905,7 +2360,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1918,7 +2373,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1931,7 +2386,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1944,7 +2399,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1957,7 +2412,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1970,7 +2425,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1983,7 +2438,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -1996,7 +2451,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2009,7 +2464,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2022,17 +2477,8 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-15T13:59:09.877Z"
+      "fetched_at": "2026-05-15T20:09:42.612Z"
     }
   ],
-  "errors": [
-    {
-      "source_id": "google-trends-daily",
-      "message": "HTTP 404"
-    },
-    {
-      "source_id": "woot-blog",
-      "message": "HTTP 404"
-    }
-  ]
+  "errors": []
 }

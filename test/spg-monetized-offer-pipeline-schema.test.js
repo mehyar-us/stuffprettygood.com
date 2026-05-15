@@ -7,6 +7,7 @@ const migration = readFileSync(new URL('../db/003_spg_monetized_offer_pipeline_s
 const contract = readFileSync(new URL('../docs/spg-monetized-offer-pipeline-data-contract.md', import.meta.url), 'utf8');
 const crmOfferSeed = JSON.parse(readFileSync(new URL('../data/spg-crm-offer-model-seed.json', import.meta.url), 'utf8'));
 const accountTargets = JSON.parse(readFileSync(new URL('../data/spg-affiliate-account-targets.json', import.meta.url), 'utf8'));
+const dailyOfferFeed = JSON.parse(readFileSync(new URL('../data/spg-monetized-offer-sample-feed.json', import.meta.url), 'utf8'));
 
 test('SPG monetized offer pipeline migration contains required entities', () => {
   for (const table of [
@@ -108,4 +109,28 @@ test('SPG CRM offer seed maps every Amazon manual card into approved tracking an
   assert.match(migration, /insert into affiliate_tracking/i);
   assert.match(migration, /insert into publish_decisions/i);
   assert.match(contract, /62 Amazon manual cards/);
+});
+
+test('SPG daily monetized offer feed covers Amazon, Skimlinks, and Stay22 without raw secrets or direct public URLs', () => {
+  const sourceKeys = new Set(dailyOfferFeed.offers.map((offer) => offer.source_key));
+  assert.ok(sourceKeys.has('amazon-manual-links'));
+  assert.ok(sourceKeys.has('skimlinks-api-feed'));
+  assert.ok(sourceKeys.has('stay22-api-feed'));
+  assert.match(migration, /manual_amazon/);
+  assert.match(migration, /skimlinks_feed/);
+  assert.match(migration, /stay22_feed/);
+  assert.match(migration, /env:SPG_SKIMLINKS_API_ENDPOINT/);
+  assert.match(migration, /env:SPG_STAY22_API_ENDPOINT/);
+  assert.match(migration, /env:SPG_SKIMLINKS_API_KEY/);
+  assert.match(migration, /env:SPG_STAY22_API_KEY/);
+  assert.match(contract, /Skimlinks\/Stay22 API\/feed lanes/);
+
+  for (const offer of dailyOfferFeed.offers) {
+    assert.equal(offer.monetized, true);
+    assert.equal(offer.publish_decision, 'publish_monetized');
+    assert.ok(offer.slug);
+    assert.ok(offer.disclosure_text);
+    assert.equal(offer.image_rights_status, 'approved');
+    assert.doesNotMatch(JSON.stringify(offer), /(password|api[_-]?key=|secret=|token=|sk_live_|pk_live_|-----BEGIN)/i);
+  }
 });

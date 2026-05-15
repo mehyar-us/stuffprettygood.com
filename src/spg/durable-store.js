@@ -7,6 +7,7 @@ import { trendOfferLanes } from './trending-offers.js';
 import { getLaneTargets } from './trend-components.js';
 
 const DEFAULT_STORE_PATH = 'data/spg-durable-store.json';
+const DEFAULT_DAILY_OFFER_FEED_PATH = 'data/spg-monetized-offer-sample-feed.json';
 const SECRET_OR_PII = /(?:password|passwd|api[_-]?key|secret|token|bearer|authorization|email=|phone=|\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b)/i;
 const AMAZON_COPY_CLAIMS = /(?:amazon.*(?:price|rating|review|stars|availability|prime|free shipping)|\$\d[\d,.]*|\d+%\s*off|copied amazon|customer reviews?|in stock|out of stock)/i;
 const SAFE_TOPICS = new Set(['ai-tools', 'home', 'travel', 'wellness', 'pets', 'smart-home', 'software', 'deals', 'templates', 'unsubscribe-all']);
@@ -17,10 +18,15 @@ export class SpgDurableStore {
     this.auditLog = auditLog;
     this.now = now;
     this.state = existsSync(this.path) ? JSON.parse(readFileSync(this.path, 'utf8')) : seedState(now());
+    if (truthyEnv('SPG_ENABLE_RUNTIME_CREDENTIAL_STATE')) applyRuntimeCredentialState(this.state);
   }
 
   listSources(filters = {}) {
-    return filterRecords(this.state.sources, filters, ['source_type', 'enabled', 'approval_status', 'risk_tier', 'category_hint']);
+    return filterRecords(this.state.sources, filters, ['source_type', 'enabled', 'approval_status', 'risk_tier', 'category_hint', 'source_key']);
+  }
+
+  listOfferAccounts(filters = {}) {
+    return filterRecords(this.state.offer_accounts || [], filters, ['account_key', 'account_type', 'monetization_status', 'account_status', 'risk_tier']);
   }
 
   createSource(input, { actorId = 'system' } = {}) {
@@ -42,23 +48,27 @@ export class SpgDurableStore {
     return source;
   }
 
-  runIngestion({ source_keys = null, dry_run = false, max_items_per_source = 20 } = {}, { actorId = 'scheduled-job' } = {}) {
+  runIngestion({ source_keys = null, dry_run = false, max_items_per_source = 20, feed_path = DEFAULT_DAILY_OFFER_FEED_PATH } = {}, { actorId = 'scheduled-job' } = {}) {
     const startedAt = this.now().toISOString();
     const sourceSet = Array.isArray(source_keys) && source_keys.length ? new Set(source_keys) : null;
     const approvedSources = this.state.sources.filter((source) => source.enabled && source.approval_status === 'approved' && source.risk_tier !== 'blocked' && (!sourceSet || sourceSet.has(source.source_key)));
-    const items = this.readJsonIfExists('data/spg-rss-candidates.json')?.candidates || [];
+    const rssItems = this.readJsonIfExists('data/spg-rss-candidates.json')?.candidates || [];
+    const offerFeed = this.readJsonIfExists(feed_path) || {};
+    const items = [...rssItems, ...(offerFeed.offers || offerFeed.items || [])];
     const sourceItems = [];
     const candidates = [];
     const quarantined = [];
+    const publishableOffers = [];
     const countsBySource = new Map();
 
     for (const raw of items) {
-      const source = approvedSources.find((item) => item.source_key === raw.source_id || item.name === raw.source_name);
+      const source = approvedSources.find((item) => item.source_key === raw.source_key || item.source_key === raw.source_id || item.name === raw.source_name);
       if (!source) continue;
       const seenCount = countsBySource.get(source.source_key) || 0;
       if (seenCount >= max_items_per_source) continue;
       countsBySource.set(source.source_key, seenCount + 1);
-      const normalized = normalizeSourceItem(raw, source, this.now());
+      const account = (this.state.offer_accounts || []).find((item) => item.account_key === raw.account_key) || null;
+      const normalized = normalizeSourceItem(raw, source, this.now(), account);
       const existing = this.state.source_items.find((item) => item.dedupe_hash === normalized.dedupe_hash);
       if (existing) {
         existing.last_seen_at = startedAt;
@@ -75,7 +85,9 @@ export class SpgDurableStore {
         normalized.ingest_status = 'candidate_created';
         normalized.review_status = 'approved_for_candidate';
         sourceItems.push(normalized);
-        candidates.push(candidateFromSourceItem(normalized, this.now()));
+        const candidate = candidateFromSourceItem(normalized, this.now(), account);
+        candidates.push(candidate);
+        if (isPublishableCandidate(candidate, source, account)) publishableOffers.push(offerFromPublishableCandidate(candidate, this.now()));
       }
     }
 
@@ -86,21 +98,26 @@ export class SpgDurableStore {
       source_count: approvedSources.length,
       source_item_count: sourceItems.length,
       candidate_count: candidates.length,
+      offer_record_count: publishableOffers.length,
+      public_rows_published: publishableOffers.length,
       quarantined_count: quarantined.length,
       dry_run: Boolean(dry_run),
-      blocked_side_effects: ['email', 'sms', 'provider_push', 'public_publish_without_approval'],
+      source_keys: approvedSources.map((source) => source.source_key),
+      blocked_side_effects: ['email', 'sms', 'provider_push', 'frontend_direct_external_urls', 'public_publish_without_approval'],
     };
 
     if (!dry_run) {
       this.state.source_items.push(...sourceItems.filter((item) => !this.state.source_items.some((existing) => existing.dedupe_hash === item.dedupe_hash)));
       this.state.source_items.push(...quarantined.filter((item) => !this.state.source_items.some((existing) => existing.dedupe_hash === item.dedupe_hash)));
       this.state.offer_candidates.push(...candidates.filter((item) => !this.state.offer_candidates.some((existing) => existing.candidate_key === item.candidate_key)));
+      this.state.offers.push(...publishableOffers.filter((item) => !this.state.offers.some((existing) => existing.offer_key === item.offer_key)));
+      this.state.page_placements.push(...publishableOffers.filter((item) => !this.state.page_placements.some((existing) => existing.entity_key === item.offer_key)).map((offer, index) => ({ id: id('plc'), surface: 'home', entity_type: 'offer', entity_key: offer.offer_key, approval_status: 'approved', publish_state: 'published', display_order: this.state.page_placements.length + index + 1 })));
       this.state.ingestion_runs.push(metric);
       for (const source of approvedSources) source.last_fetched_at = metric.completed_at;
-      this.recordAudit(actorId, 'spg.ingest.completed', 'spg_ingestion_run', metric.id, { source_item_count: metric.source_item_count, candidate_count: metric.candidate_count, dry_run: metric.dry_run });
+      this.recordAudit(actorId, 'spg.ingest.completed', 'spg_ingestion_run', metric.id, { source_item_count: metric.source_item_count, candidate_count: metric.candidate_count, offer_record_count: metric.offer_record_count, dry_run: metric.dry_run });
       this.persist();
     }
-    return { ...metric, source_items: sourceItems, offer_candidates: candidates, quarantined };
+    return { ...metric, source_items: sourceItems, offer_candidates: candidates, offers: publishableOffers.map(publicOfferContract), quarantined };
   }
 
   listSourceItems(filters = {}) {
@@ -145,6 +162,40 @@ export class SpgDurableStore {
     return filterRecords(visible.map(publicOfferContract), filters, ['approval_status', 'publish_state', 'category_id', 'risk_tier', 'monetization_status', 'payout_model', 'account_status']);
   }
 
+  getPublicOffer(slug) {
+    const canonicalSlug = String(slug || '').replace(/\.html$/, '');
+    const offer = this.state.offers.find((item) => item.offer_key === canonicalSlug || item.canonical_slug === canonicalSlug);
+    return offer && isPublicOffer(offer) ? publicOfferContract(offer) : null;
+  }
+
+  resolveGoRedirect(slug, input = {}, { actorId = 'public-go' } = {}) {
+    const canonicalSlug = String(slug || '').replace(/\.html$/, '');
+    const offer = this.state.offers.find((item) => item.offer_key === canonicalSlug || item.canonical_slug === canonicalSlug);
+    if (!offer || !isPublicOffer(offer)) {
+      this.recordAudit(actorId, 'spg.go.redirect.blocked', 'spg_offer', canonicalSlug || 'unknown', { reason: offer ? 'not_publishable' : 'offer_not_found' });
+      throw statusError(404, 'offer redirect not found');
+    }
+    const event = this.recordPublicEvent({
+      event_type: 'go_click',
+      route_path: input.route_path || `/go/${canonicalSlug}`,
+      offer_slug: canonicalSlug,
+      surface: input.surface || 'go_route',
+      source_channel: input.source_channel || null,
+      attribution_ref: input.attribution_ref || null,
+      session_ref: input.session_ref || null,
+    }, { actorId });
+    if (event.status !== 'accepted') return event;
+    offer.click_count = (offer.click_count || 0) + 1;
+    this.recordAudit(actorId, 'spg.go.redirect.resolved', 'spg_offer', canonicalSlug, {
+      redirect_path: `/go/${canonicalSlug}`,
+      destination_mode: offer.destination_url_mode || 'sanitized',
+      raw_ip_stored: false,
+      raw_user_agent_stored: false,
+    });
+    this.persist();
+    return { status: 'redirect', destination_url: offer.destination_url, offer: publicOfferContract(offer) };
+  }
+
   listOfferWall(filters = {}, { publicOnly = false } = {}) {
     const { surface = 'home', limit = 48, ...recordFilters } = filters;
     const limitValue = Math.max(1, Math.min(Number.parseInt(limit, 10) || 48, 96));
@@ -186,14 +237,25 @@ export class SpgDurableStore {
     const eventType = input.event_type || input.eventType;
     const accepted = new Set(['page_view', 'offer_impression', 'disclosure_seen', 'go_click', 'signup_started', 'preference_saved', 'unsubscribe_requested']);
     if (!accepted.has(eventType)) blockers.push('unsupported_event_type');
+    const routePath = stripQuery(input.route_path || input.path || '/');
+    const canonicalSlug = String(input.offer_slug || input.offerSlug || routePath.match(/^https?:\/\/stuffprettygood\.com\/go\/([^/?#]+)/)?.[1] || routePath.match(/^\/go\/([^/?#]+)/)?.[1] || '').replace(/\.html$/, '');
     const event = {
       id: id('evt'),
       event_type: eventType || 'unknown',
       brand: 'stuffprettygood',
       event_date: this.now().toISOString().slice(0, 10),
       event_at: this.now().toISOString(),
-      route_path: stripQuery(input.route_path || input.path || '/'),
+      route_path: routePath,
+      canonical_slug: canonicalSlug || null,
+      attribution_contract_version: 'spg-route-attribution-v1',
+      landing_path: canonicalSlug ? `/offers/${canonicalSlug}` : null,
+      redirect_path: canonicalSlug ? `/go/${canonicalSlug}` : null,
+      surface: input.surface || input.referring_surface || input.source_channel || 'unknown',
+      attribution_ref_hash: input.attribution_ref ? `sha256:${hash(input.attribution_ref)}` : null,
+      session_ref_hash: input.session_ref ? `sha256:${hash(input.session_ref)}` : null,
       raw_pii_present: blockers.includes('raw_pii_or_secret_like_payload'),
+      raw_ip_stored: false,
+      raw_user_agent_stored: false,
       blocked_payload_stored: false,
       blocker_classes: blockers,
     };
@@ -202,7 +264,7 @@ export class SpgDurableStore {
       this.recordAudit(actorId, 'spg.public_event.accepted', 'spg_public_event', event.id, { event_type: event.event_type });
       this.persist();
     }
-    return { status: blockers.length ? 'blocked' : 'accepted', raw_pii_present: event.raw_pii_present, blocked_payload_stored: false, blocker_classes: blockers };
+    return { status: blockers.length ? 'blocked' : 'accepted', raw_pii_present: event.raw_pii_present, raw_ip_stored: false, raw_user_agent_stored: false, blocked_payload_stored: false, canonical_slug: event.canonical_slug, landing_path: event.landing_path, redirect_path: event.redirect_path, attribution_contract_version: event.attribution_contract_version, blocker_classes: blockers };
   }
 
   recordSignup(input, { actorId = 'public-signup' } = {}) {
@@ -235,10 +297,16 @@ export class SpgDurableStore {
     const topics = normalizeTopics(input.topics || []);
     const blockers = topics.length ? [] : ['topic_allowlist_required'];
     if ((input.topics || []).some((topic) => !SAFE_TOPICS.has(String(topic)))) blockers.push('unknown_topic');
+    const canonicalSlug = String(input.offer_slug || input.offerSlug || '').replace(/\.html$/, '') || null;
     const event = {
       id: id('pref'),
       topics,
       consent_state: input.consent_state || 'web_preference_only',
+      canonical_slug: canonicalSlug,
+      landing_path: canonicalSlug ? `/offers/${canonicalSlug}` : null,
+      redirect_path: canonicalSlug ? `/go/${canonicalSlug}` : null,
+      attribution_ref_hash: input.attribution_ref ? `sha256:${hash(input.attribution_ref)}` : null,
+      raw_pii_present: false,
       live_send_enabled: false,
       provider_push_enabled: false,
       created_at: this.now().toISOString(),
@@ -320,7 +388,14 @@ function seedState(now) {
     { source_key: 'google-trends-public', name: 'Google Trends daily public signals', source_type: 'google_trends', homepage_url: 'https://trends.google.com/', feed_url: null, terms_url: 'https://policies.google.com/terms', robots_or_terms_notes: 'Public trend metadata only; no scraping private/user data.', allowed_use: 'metadata_only', license_name: 'public trend metadata', category_hint: 'trends', risk_tier: 'low', enabled: true, approval_status: 'approved' },
     { source_key: 'spg-rss-registry', name: 'StuffPrettyGood reviewed RSS registry', source_type: 'rss', homepage_url: 'https://stuffprettygood.com/daily.html', feed_url: null, terms_url: 'https://stuffprettygood.com/terms.html', robots_or_terms_notes: 'Only reviewed source metadata/short excerpts according to registry allowed_use.', allowed_use: 'metadata_only', license_name: 'source terms vary; original SPG summaries only', category_hint: 'daily', risk_tier: 'low', enabled: true, approval_status: 'approved' },
     { source_key: 'amazon-manual-links', name: 'Amazon Associates manual link lane', source_type: 'manual_amazon', homepage_url: 'https://www.amazon.com/', feed_url: null, terms_url: 'https://affiliate-program.amazon.com/help/operating/policies', robots_or_terms_notes: 'Manual deep/search links only; no scraping, copied images, prices, ratings, reviews, or availability.', allowed_use: 'metadata_only', license_name: 'manual link only', category_hint: 'manual_amazon', risk_tier: 'medium', enabled: true, approval_status: 'approved' },
+    { source_key: 'skimlinks-api-feed', name: 'Skimlinks API/feed lane', source_type: 'skimlinks_feed', homepage_url: 'https://www.skimlinks.com/', feed_url: null, api_endpoint_label: 'env:SPG_SKIMLINKS_API_ENDPOINT', terms_url: 'https://www.skimlinks.com/terms/', robots_or_terms_notes: 'Server-side API/feed only after approved account; environment labels only, never raw keys.', allowed_use: 'merchant_creative_allowed', license_name: 'provider feed subject to account terms', category_hint: 'network_offers', risk_tier: 'medium', enabled: true, approval_status: 'approved' },
+    { source_key: 'stay22-api-feed', name: 'Stay22 API/feed lane', source_type: 'stay22_feed', homepage_url: 'https://www.stay22.com/', feed_url: null, api_endpoint_label: 'env:SPG_STAY22_API_ENDPOINT', terms_url: 'https://www.stay22.com/privacy', robots_or_terms_notes: 'Server-side API/feed only after approved account; environment labels only, never raw keys.', allowed_use: 'merchant_creative_allowed', license_name: 'provider feed subject to account terms', category_hint: 'travel', risk_tier: 'medium', enabled: true, approval_status: 'approved' },
   ].map((source) => ({ id: id('src'), source_quality_score: 70, reviewed_by: 'complyops-gate', last_reviewed_at: nowIso, created_at: nowIso, updated_at: nowIso, ...source }));
+  const offerAccounts = [
+    { account_key: 'amazon-associates-manual', account_name: 'Amazon Associates manual bridge account', merchant_or_network: 'Amazon Associates', account_type: 'amazon_associates', monetization_status: 'approved_monetized', payout_model: 'commission', account_status: 'active', credential_ref: 'env:SPG_AMAZON_ASSOCIATES_TAG', tracking_id_label: 'mehyarmedia-20', disclosure_required: true, risk_tier: 'medium', owner_role: 'Arman' },
+    { account_key: 'skimlinks', account_name: 'Skimlinks publisher', merchant_or_network: 'Skimlinks', account_type: 'affiliate_network', monetization_status: 'pending_application', payout_model: 'commission', account_status: 'application_ready', credential_ref: 'env:SPG_SKIMLINKS_ACCOUNT_REF', api_key_ref: 'env:SPG_SKIMLINKS_API_KEY', disclosure_required: true, risk_tier: 'medium', owner_role: 'Arman' },
+    { account_key: 'stay22-publisher', account_name: 'Stay22 publisher / creator account', merchant_or_network: 'Stay22', account_type: 'affiliate_network', monetization_status: 'pending_application', payout_model: 'commission', account_status: 'application_ready', credential_ref: 'env:SPG_STAY22_ACCOUNT_REF', api_key_ref: 'env:SPG_STAY22_API_KEY', disclosure_required: true, risk_tier: 'medium', owner_role: 'Arman' },
+  ].map((account) => ({ id: id('acct'), created_at: nowIso, updated_at: nowIso, ...account }));
   const accountTargetOffers = approvedOffers.map((offer, index) => validateOffer({
     offer_key: offer.slug,
     vendor_name: offer.name,
@@ -357,9 +432,14 @@ function seedState(now) {
       required_disclosure: claimSafeCopy.affiliateDisclosure,
       approval_status: 'approved',
       publish_state: 'published',
+      landing_approved_at: nowIso,
+      redirect_approved_at: nowIso,
+      redirect_health: 'ok',
       risk_tier: lane.risk === 'high' ? 'medium' : lane.risk,
       owner: 'leadfs',
       destination_url: `/go/${target.slug}.html`,
+      destination_host: 'stuffprettygood.com',
+      source_attribution_text: 'Amazon Associates manual search seed; original SPG copy and generated/owned art only.',
       image: placeholderImage(lane.seed, laneIndex + targetIndex),
       cta: 'Check current options',
       seo: { title: `${target.label} — StuffPrettyGood`, description: `Disclosure-visible Amazon Associates bridge for ${target.label}.` },
@@ -368,6 +448,7 @@ function seedState(now) {
   return {
     schema_version: 1,
     sources,
+    offer_accounts: offerAccounts,
     source_items: [],
     offer_candidates: [],
     offers,
@@ -380,6 +461,35 @@ function seedState(now) {
     unsubscribe_events: [],
     ingestion_runs: [],
   };
+}
+
+function truthyEnv(name) {
+  return ['1', 'true', 'yes', 'verified', 'active'].includes(String(process.env[name] || '').trim().toLowerCase());
+}
+
+function applyRuntimeCredentialState(state) {
+  const accounts = state.offer_accounts || [];
+  const amazon = accounts.find((account) => account.account_key === 'amazon-associates-manual');
+  if (amazon && (process.env.SPG_AMAZON_ASSOCIATES_TAG || process.env.CRM_AMAZON_ASSOCIATES_TAG || process.env.AMAZON_ASSOCIATES_TAG)) {
+    amazon.monetization_status = 'approved_monetized';
+    amazon.account_status = 'active';
+    amazon.credential_ref = 'env:SPG_AMAZON_ASSOCIATES_TAG';
+    amazon.tracking_id_label = 'mehyarmedia-20';
+  }
+  const skimlinks = accounts.find((account) => account.account_key === 'skimlinks');
+  if (skimlinks && (process.env.SPG_SKIMLINKS_API_KEY || process.env.SKIMLINKS_API_KEY || truthyEnv('SPG_SKIMLINKS_API_KEY_VERIFIED'))) {
+    skimlinks.monetization_status = 'approved_monetized';
+    skimlinks.account_status = 'active';
+    skimlinks.credential_ref = 'env:SPG_SKIMLINKS_API_KEY';
+    skimlinks.api_key_ref = 'env:SPG_SKIMLINKS_API_KEY';
+  }
+  const stay22 = accounts.find((account) => account.account_key === 'stay22-publisher');
+  if (stay22 && (process.env.SPG_STAY22_AID || process.env.STAY22_AID || process.env.SPG_STAY22_PARTNER_ID || process.env.STAY22_PARTNER_ID || truthyEnv('SPG_STAY22_AID_VERIFIED'))) {
+    stay22.monetization_status = 'approved_monetized';
+    stay22.account_status = 'active';
+    stay22.credential_ref = 'env:SPG_STAY22_AID';
+    stay22.api_key_ref = 'env:SPG_STAY22_API_KEY';
+  }
 }
 
 function validateSource(input, now) {
@@ -436,8 +546,21 @@ function validateOffer(input, now) {
     publish_state: input.publish_state || 'draft',
     risk_tier: input.risk_tier || 'medium',
     owner: input.owner || 'leadfs',
+    canonical_slug: slugify(input.canonical_slug || input.offer_key),
+    public_landing_path: input.public_landing_path || `/offers/${slugify(input.canonical_slug || input.offer_key)}`,
+    public_redirect_path: input.public_redirect_path || `/go/${slugify(input.canonical_slug || input.offer_key)}`,
+    landing_approved_at: input.landing_approved_at || null,
+    redirect_approved_at: input.redirect_approved_at || null,
+    redirect_health: input.redirect_health || 'unknown',
+    destination_url_mode: input.destination_url_mode || 'sanitized',
     destination_url: input.destination_url || null,
+    destination_host: input.destination_host || (input.destination_url ? domainOf(input.destination_url) : null),
+    source_attribution: input.source_attribution || { source: 'manual_spg_seed', allowed_use: 'metadata_only' },
+    source_attribution_text: input.source_attribution_text || 'Manual StuffPrettyGood seed; original SPG copy and generated/owned art only.',
+    click_count: Number.isFinite(input.click_count) ? input.click_count : 0,
+    signup_count: Number.isFinite(input.signup_count) ? input.signup_count : 0,
     allowed_surfaces: input.allowed_surfaces || ['home', 'category'],
+    blocked_reason: input.blocked_reason || null,
     price_claim_allowed: false,
     availability_claim_allowed: false,
     rating_review_claim_allowed: false,
@@ -449,32 +572,41 @@ function validateOffer(input, now) {
     updated_at: input.updated_at || now.toISOString(),
   };
   if (!offer.offer_key || !offer.vendor_name || !offer.offer_title || !offer.required_disclosure) throw statusError(422, 'offer_key, vendor_name, offer_title, and disclosure are required');
-  if (offer.approval_status === 'approved' && offer.publish_state === 'published' && !offer.destination_url) throw statusError(422, 'published approved offer requires destination_url');
+  if (!/^[a-z0-9][a-z0-9-]{2,120}$/.test(offer.canonical_slug)) throw statusError(422, 'canonical_slug must be a stable lowercase public slug');
+  if (offer.public_landing_path !== `/offers/${offer.canonical_slug}`) throw statusError(422, 'public_landing_path must equal /offers/<canonical_slug>');
+  if (offer.public_redirect_path !== `/go/${offer.canonical_slug}`) throw statusError(422, 'public_redirect_path must equal /go/<canonical_slug>');
+  if (offer.destination_url_mode === 'secret_ref' && offer.destination_url) throw statusError(422, 'secret_ref destination mode must not expose a raw destination_url');
+  if (offer.approval_status === 'approved' && offer.publish_state === 'published' && !offer.destination_url && offer.destination_url_mode !== 'secret_ref') throw statusError(422, 'published approved offer requires sanitized destination or server-side secret ref');
   if (offer.approval_status === 'approved' && ['published', 'scheduled'].includes(offer.publish_state)) {
     const monetized = offer.monetization_status === 'approved_monetized' && offer.payout_model !== 'none' && offer.account_status === 'active' && offer.tracking_status === 'active';
-    const leadMagnet = offer.monetization_status === 'approved_lead_magnet' && offer.payout_model === 'lead_magnet';
-    if (!monetized && !leadMagnet) throw statusError(422, 'public offer requires approved monetization or approved lead magnet status');
+    if (!offer.landing_approved_at || !offer.redirect_approved_at) throw statusError(422, 'public offer requires approved landing and redirect routes');
+    if (['broken', 'blocked'].includes(offer.redirect_health)) throw statusError(422, 'public offer requires healthy redirect status');
+    if (offer.blocked_reason) throw statusError(422, 'public offer cannot have blocked_reason');
+    if (!monetized) throw statusError(422, 'public offer requires approved monetized status');
   }
   return offer;
 }
 
-function normalizeSourceItem(raw, source, now) {
-  const canonicalUrl = stripQuery(raw.url || source.homepage_url || 'https://stuffprettygood.com/');
-  const title = sanitizeTitle(raw.safe_title || raw.title || 'Untitled source signal');
+function normalizeSourceItem(raw, source, now, account = null) {
+  const canonicalUrl = stripQuery(raw.url || raw.destination_url || source.homepage_url || 'https://stuffprettygood.com/');
+  const title = sanitizeTitle(raw.safe_title || raw.title || raw.offer_title || 'Untitled source signal');
   const riskFlags = [...(raw.risk_flags || [])];
   if (SECRET_OR_PII.test(JSON.stringify(raw))) riskFlags.push('blocked_secret_or_pii_like_payload');
   if (AMAZON_COPY_CLAIMS.test(title)) riskFlags.push('commerce_claim_rewrite_required');
-  const lane = raw.matched_lanes?.[0] || null;
+  if (!account) riskFlags.push('blocked_missing_approved_account_record');
+  const lane = raw.matched_lanes?.[0] || raw.trend_lane || null;
+  const slug = slugify(raw.slug || raw.go_slug || `${source.source_key}-${title}`);
   return {
     id: id('sit'),
     source_id: source.source_key,
-    source_item_key: slugify(`${source.source_key}-${title}`),
+    source_item_key: slugify(`${source.source_key}-${slug}`),
+    account_key: raw.account_key || account?.account_key || null,
     canonical_url: canonicalUrl,
-    canonical_domain: domainOf(canonicalUrl),
+    canonical_domain: domainOf(raw.destination_url || canonicalUrl),
     url_hash: hash(canonicalUrl),
-    dedupe_hash: hash(`${domainOf(canonicalUrl)}:${canonicalUrl}`),
+    dedupe_hash: hash(`${source.source_key}:${raw.account_key || 'no-account'}:${slug}:${canonicalUrl}`),
     title,
-    summary_excerpt: raw.summary_excerpt || '',
+    summary_excerpt: raw.summary_excerpt || raw.summary || '',
     published_at: raw.published_at || null,
     fetched_at: now.toISOString(),
     last_seen_at: now.toISOString(),
@@ -490,31 +622,109 @@ function normalizeSourceItem(raw, source, now) {
     quarantine_reason: null,
     ingest_status: 'new',
     review_status: 'unreviewed',
-    original_note: raw.original_note || 'Original SPG summary required before publishing.',
+    original_note: raw.original_note || raw.summary || 'Original SPG summary required before publishing.',
+    destination_url: raw.destination_url || null,
+    canonical_slug: slug,
+    public_landing_path: `/offers/${slug}`,
+    public_redirect_path: `/go/${slug}`,
+    image_rights_status: raw.image_rights_status || 'pending',
+    image: raw.image || null,
+    publish_decision: raw.publish_decision || 'hold_for_review',
+    approval_status: raw.approval_status || 'pending',
+    monetized: Boolean(raw.monetized),
+    payout_model: raw.payout_model || account?.payout_model || 'none',
+    disclosure_text: raw.disclosure_text || account?.default_disclosure_text || claimSafeCopy.affiliateDisclosure,
   };
 }
 
-function candidateFromSourceItem(item, now) {
+function candidateFromSourceItem(item, now, account = null) {
   return {
     id: id('cand'),
     candidate_key: slugify(`candidate-${item.source_item_key}`),
     candidate_type: item.matched_trend_lane ? 'editorial_recommendation' : 'network_application_target',
-    vendor_name: item.canonical_domain,
-    program_type: 'unknown',
+    account_key: item.account_key,
+    vendor_name: account?.merchant_or_network || item.canonical_domain,
+    program_type: account?.account_type || 'unknown',
     title: item.title,
     summary: item.original_note,
     category_id: item.category_key,
     trend_lane: item.matched_trend_lane,
     risk_tier: item.risk_tier,
-    approval_status: 'pending',
-    required_disclosure: claimSafeCopy.affiliateDisclosure,
-    candidate_score: 50,
-    candidate_confidence: 0.45,
-    missing_data: ['merchant approval', 'rights-cleared image', 'destination health check'],
-    false_positive_risks: ['trend/RSS signal may not indicate buyer intent'],
+    approval_status: item.approval_status,
+    image_rights_status: item.image_rights_status,
+    publish_decision: item.publish_decision,
+    monetized: item.monetized,
+    monetization_status: account?.monetization_status || 'not_monetized',
+    payout_model: item.payout_model,
+    account_status: account?.account_status || 'missing',
+    tracking_status: account?.account_status === 'active' ? 'active' : 'pending',
+    required_disclosure: item.disclosure_text,
+    destination_url: item.destination_url,
+    canonical_slug: item.canonical_slug,
+    public_landing_path: item.public_landing_path,
+    public_redirect_path: item.public_redirect_path,
+    image: item.image || placeholderImage(item.category_key, 0),
+    source_attribution_text: `${item.source_id} server-side/manual ingest; public output uses SPG landing and /go redirect only.`,
+    candidate_score: account?.account_status === 'active' ? 80 : 45,
+    candidate_confidence: account?.account_status === 'active' ? 0.78 : 0.42,
+    missing_data: account?.account_status === 'active' ? [] : ['approved active account', 'credential health check'],
+    false_positive_risks: ['provider terms/feed rights can change', 'merchant availability/details must stay off public cards unless licensed'],
     first_seen_at: now.toISOString(),
     last_seen_at: now.toISOString(),
   };
+}
+
+function isPublishableCandidate(candidate, source, account) {
+  return Boolean(
+    candidate.monetized === true &&
+    candidate.publish_decision === 'publish_monetized' &&
+    candidate.approval_status === 'approved' &&
+    candidate.image_rights_status === 'approved' &&
+    candidate.required_disclosure &&
+    candidate.destination_url &&
+    candidate.public_landing_path === `/offers/${candidate.canonical_slug}` &&
+    candidate.public_redirect_path === `/go/${candidate.canonical_slug}` &&
+    source?.approval_status === 'approved' &&
+    source?.risk_tier !== 'blocked' &&
+    account?.monetization_status === 'approved_monetized' &&
+    account?.account_status === 'active' &&
+    account?.risk_tier !== 'blocked' &&
+    account?.credential_ref
+  );
+}
+
+function offerFromPublishableCandidate(candidate, now) {
+  return validateOffer({
+    offer_key: candidate.canonical_slug,
+    canonical_slug: candidate.canonical_slug,
+    public_landing_path: candidate.public_landing_path,
+    public_redirect_path: candidate.public_redirect_path,
+    vendor_name: candidate.vendor_name,
+    offer_title: candidate.title,
+    offer_description: candidate.summary,
+    category_id: candidate.category_id,
+    program_type: candidate.program_type,
+    monetization_status: candidate.monetization_status,
+    payout_model: candidate.payout_model,
+    account_status: candidate.account_status,
+    tracking_status: 'active',
+    required_disclosure: candidate.required_disclosure,
+    approval_status: 'approved',
+    publish_state: 'published',
+    landing_approved_at: now.toISOString(),
+    redirect_approved_at: now.toISOString(),
+    redirect_health: 'ok',
+    risk_tier: candidate.risk_tier,
+    owner: 'leadfs',
+    destination_url_mode: 'server_side_redirect_only',
+    destination_url: candidate.destination_url,
+    destination_host: domainOf(candidate.destination_url),
+    source_attribution_text: candidate.source_attribution_text,
+    image_rights_status: candidate.image_rights_status,
+    image: candidate.image,
+    cta: 'See the SPG breakdown',
+    seo: { title: `${candidate.title} — StuffPrettyGood`, description: candidate.summary },
+  }, now);
 }
 
 function offerFromCandidate(candidate, now) {
@@ -534,14 +744,19 @@ function offerFromCandidate(candidate, now) {
 }
 
 function publicOfferContract(offer) {
+  const publicReady = isPublicOffer(offer);
+  const publicLandingUrl = `/offers/${offer.offer_key}`;
+  const redirectUrl = `/go/${offer.offer_key}`;
   return {
     id: offer.id,
     offer_key: offer.offer_key,
+    canonical_slug: offer.canonical_slug || offer.offer_key,
     category: offer.category_id,
     monetization_status: offer.monetization_status,
     payout_model: offer.payout_model,
     account_status: offer.account_status,
     tracking_status: offer.tracking_status,
+    redirect_health: offer.redirect_health,
     title: offer.offer_title,
     vendor_name: offer.vendor_name,
     summary: offer.summary || offer.offer_description,
@@ -549,9 +764,19 @@ function publicOfferContract(offer) {
     disclosure: offer.required_disclosure,
     approval_state: offer.approval_status,
     publish_state: offer.publish_state,
-    landing_url: isPublicOffer(offer) ? `/offers/${offer.offer_key}` : null,
-    go_link: isPublicOffer(offer) ? `/go/${offer.offer_key}` : null,
-    destination_url: isPublicOffer(offer) ? offer.destination_url : null,
+    landing_approved_at: offer.landing_approved_at || null,
+    redirect_approved_at: offer.redirect_approved_at || null,
+    public_landing_url: publicReady ? publicLandingUrl : null,
+    redirect_url: publicReady ? redirectUrl : null,
+    // Back-compat aliases for older WebDev surfaces. Both remain internal SPG routes only.
+    landing_url: publicReady ? publicLandingUrl : null,
+    go_link: publicReady ? redirectUrl : null,
+    destination_url_mode: offer.destination_url_mode,
+    destination_host: offer.destination_host,
+    source_attribution_text: offer.source_attribution_text,
+    blocked_reason: publicReady ? null : (offer.blocked_reason || null),
+    click_count: offer.click_count || 0,
+    signup_count: offer.signup_count || 0,
     image: offer.image,
     seo: offer.seo,
     claim_rules: { price_claim_allowed: false, availability_claim_allowed: false, rating_review_claim_allowed: false },
@@ -559,9 +784,16 @@ function publicOfferContract(offer) {
 }
 
 function isPublicOffer(offer) {
+  const slug = offer.canonical_slug || offer.offer_key;
+  const landingPath = offer.public_landing_path || `/offers/${slug}`;
+  const redirectPath = offer.public_redirect_path || `/go/${slug}`;
+  const routeApproved = landingPath === `/offers/${slug}` && redirectPath === `/go/${slug}` && Boolean(offer.landing_approved_at) && Boolean(offer.redirect_approved_at);
+  const healthOk = !['broken', 'blocked'].includes(offer.redirect_health || 'ok');
+  const sourceAttributed = Boolean(offer.source_attribution_text || offer.source_attribution?.source);
+  const imageRights = String(offer.image_rights_status || offer.image?.rights_status || offer.image?.license || 'owned/generated').toLowerCase();
+  const imageApproved = imageRights.includes('approved') || imageRights.includes('owned') || imageRights.includes('licensed');
   const monetized = offer.monetization_status === 'approved_monetized' && offer.payout_model !== 'none' && offer.account_status === 'active' && offer.tracking_status === 'active';
-  const leadMagnet = offer.monetization_status === 'approved_lead_magnet' && offer.payout_model === 'lead_magnet';
-  return offer.approval_status === 'approved' && ['published', 'scheduled'].includes(offer.publish_state) && offer.risk_tier !== 'blocked' && (monetized || leadMagnet);
+  return offer.approval_status === 'approved' && ['published', 'scheduled'].includes(offer.publish_state) && !offer.blocked_reason && offer.risk_tier !== 'blocked' && routeApproved && healthOk && sourceAttributed && imageApproved && monetized;
 }
 
 function publicPlacementContract(placement) {
@@ -583,7 +815,7 @@ function placeholderImage(category, index) {
 }
 
 function stripQuery(value) {
-  try { const url = new URL(value, 'https://stuffprettygood.com'); url.search = ''; url.hash = ''; return url.toString(); } catch { return '/'; }
+  try { const url = new URL(value, 'https://stuffprettygood.com'); return `${url.pathname}`.replace(/\.html$/, ''); } catch { return '/'; }
 }
 function domainOf(value) { try { return new URL(value).hostname; } catch { return 'stuffprettygood.com'; } }
 function sanitizeTitle(value) { return String(value || '').replace(/\$\d[\d,.]*/g, 'current offer').replace(/\d+%\s*off/ig, 'discounted').slice(0, 180); }

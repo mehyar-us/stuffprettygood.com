@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-05-15T18:39:27.815Z",
+  "status": "ok",
+  "source_families": [
+    "google_trends",
+    "spg_rss",
+    "spg_durable_offers",
+    "sam_gov",
+    "usaspending",
+    "grants_gov",
+    "postings",
+    "affiliate_source_signals"
+  ],
+  "counts": {
+    "opportunities": 183,
+    "opportunity_source_runs": 6,
+    "spg_rss_candidates": 40,
+    "spg_offer_records": 71,
+    "spg_offer_candidates": 3,
+    "spg_source_items": 3,
+    "spg_page_placements": 63,
+    "google_trend_seeds": 11,
+    "google_trend_related_queries": 120
+  },
+  "opportunity_source_health": {
+    "ok": 4,
+    "warning": 1,
+    "skipped": 1
+  },
+  "guardrails": [
+    "internal collection only",
+    "no bids/applications/outreach/spend/account KYC/provider push/email/SMS from this job",
+    "no raw secrets or PII in logs/docs/Kanban/frontend",
+    "SPG offer QA must pass before deploy"
+  ],
+  "deploy_status": "deployed",
+  "log_file": "/home/mehya/work/mehyarmedia/.ops-logs/daily-pull-everything-20260515T183904Z.log"
+}
