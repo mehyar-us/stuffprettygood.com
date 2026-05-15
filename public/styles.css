@@ -73,6 +73,9 @@ a{color:inherit;text-underline-offset:.22em}.skip-link{position:absolute;left:-9
 .shop-chip .art-tile { min-height:4.3rem; }
 .shop-chip .art-squiggle { max-width:82%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .hero-shop-wall .art-face { font-size:2.35rem; }
+.hero-amazon-links { display:flex; flex-wrap:wrap; gap:.45rem; align-items:center; margin-top:1rem; }
+.hero-amazon-links span { color:var(--color-muted); font-size:.82rem; font-weight:950; }
+.hero-amazon-links a { display:inline-flex; padding:.38rem .62rem; border:1.5px solid var(--cartoon-ink); border-radius:999px; background:var(--paper); color:var(--color-text); text-decoration:none; font-size:.78rem; font-weight:950; box-shadow:3px 3px 0 color-mix(in srgb,var(--cartoon-ink) 78%,transparent); }
 @media (min-width:981px){ .commerce-hero { align-items:center; } .hero-shop-wall { transform:scale(.96); transform-origin:center; } }
 
 .trust-strip strong { display:block; margin-bottom:.28rem; }
@@ -100,3 +103,13 @@ a{color:inherit;text-underline-offset:.22em}.skip-link{position:absolute;left:-9
 .quick-offer em { color:var(--color-muted); font-style:normal; font-size:.72rem; font-weight:800; margin-top:.15rem; }
 @media (max-width:1180px){ .cards.four{grid-template-columns:repeat(3,minmax(0,1fr));} .amazon-quick-rail{grid-template-columns:1fr}.quick-offers{grid-template-columns:repeat(2,minmax(0,1fr));} }
 @media (max-width:820px){ .cards.four,.signup-band{grid-template-columns:1fr;} .quick-offers{grid-template-columns:1fr;} }
+
+
+/* SPG shared offer landing component */
+.offer-landing { min-height:auto; }
+.offer-landing-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(18rem,.72fr); gap:clamp(1rem,4vw,2.4rem); align-items:center; }
+.offer-hero-image { width:100%; aspect-ratio:3/2; object-fit:cover; border:2px solid var(--cartoon-ink); border-radius:1.25rem; background:var(--paper); box-shadow:10px 12px 0 color-mix(in srgb,var(--cartoon-ink) 82%,transparent); transform:rotate(1.5deg); }
+.fact-list { list-style:none; padding:0; margin:.6rem 0 0; display:grid; gap:.5rem; }
+.fact-list li { border:1px solid var(--color-border); border-radius:.9rem; padding:.55rem .65rem; background:color-mix(in srgb,var(--color-surface-2) 56%,transparent); }
+.related-offer-card { text-decoration:none; display:grid; gap:.35rem; border:2px solid var(--cartoon-ink); box-shadow:5px 6px 0 color-mix(in srgb,var(--cartoon-ink) 76%,transparent); }
+@media (max-width:900px){ .offer-landing-grid{grid-template-columns:1fr}.offer-hero-image{transform:none} }

@@ -142,3 +142,23 @@ test('frontend app redacts raw PII-like keys before CRM event dispatch', () => {
   assert.doesNotMatch(app, /console\.log\(/, 'frontend must not log raw form data');
   assert.match(claimSafeCopy.privacyPromise, /Do not enter passwords, secrets/i);
 });
+
+
+test('homepage monetized offer cards route to shared /offers landing pages before /go', () => {
+  const index = html('index.html');
+  const cardBlocks = [...index.matchAll(/<article class="card offer-card product-card"[\s\S]*?<\/article>/g)].map((match) => match[0]);
+  assert.ok(cardBlocks.length >= 48, 'homepage should expose dense monetized offer cards');
+  for (const block of cardBlocks) {
+    const key = block.match(/data-offer-key="([^"]+)"/)?.[1];
+    assert.ok(key, 'offer card missing data-offer-key');
+    assert.doesNotMatch(block, /href="\/go\//, `${key} card links directly to /go`);
+    assert.match(block, new RegExp(`href="/offers/${key}\\.html"`), `${key} card missing /offers landing link`);
+    const landing = html(`offers/${key}.html`);
+    assert.match(landing, /One landing page before every outbound click/i);
+    assert.match(landing, new RegExp(`href="/go/${key}\\.html"`), `${key} landing missing tracked /go CTA`);
+    assert.match(landing, /Affiliate disclosure|may earn/i);
+    assert.match(landing, /href="\/preferences\.html"/);
+    assert.match(landing, /href="\/unsubscribe\.html"/);
+  }
+  assert.equal((index.match(/href="\/go\//g) || []).length, 0, 'homepage must not link directly to /go');
+});

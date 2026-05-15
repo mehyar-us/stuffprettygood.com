@@ -32,7 +32,7 @@ if ! run_daily >"${log_file}" 2>&1; then
   exit 1
 fi
 
-if git diff --quiet -- data/google-trends-snapshot.json data/spg-rss-snapshot.json data/spg-rss-candidates.json src/spg/trending-offers.js public/index.html public/today.html public/daily.html public/trends.html public/trends public/go public/assets public/robots.txt public/sitemap.xml src/spg/trend-components.js scripts/build-spg-trend-pages.mjs; then
+if git diff --quiet -- data/google-trends-snapshot.json data/spg-rss-snapshot.json data/spg-rss-candidates.json src/spg/trending-offers.js public/index.html public/today.html public/daily.html public/trends.html public/trends public/offers public/go public/assets public/robots.txt public/sitemap.xml src/spg/trend-components.js scripts/build-spg-trend-pages.mjs; then
   echo "SPG daily offer/media refresh checked: no content changes. Tests passed. No deploy attempted. Log: ${PWD}/${log_file}"
   exit 0
 fi

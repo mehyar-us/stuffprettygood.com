@@ -37,6 +37,7 @@ test('SPG public offer JSON contract exposes approved safe offers only', async (
       assert.notEqual(offer.payout_model, 'none');
       assert.equal(offer.account_status, 'active');
       assert.equal(offer.tracking_status, 'active');
+      assert.match(offer.landing_url, /^\/offers\//);
       assert.match(offer.go_link, /^\/go\//);
       assert.ok(offer.image.url);
       assert.ok(offer.image.license);
@@ -59,6 +60,7 @@ test('SPG public offer JSON contract exposes approved safe offers only', async (
     assert.equal(viewerOffers.status, 200);
     assert.ok(viewerOffers.body.offers.length >= 4);
     assert.ok(viewerOffers.body.offers.every((offer) => offer.approval_state === 'approved'));
+    assert.ok(viewerOffers.body.offers.every((offer) => offer.landing_url));
     assert.ok(viewerOffers.body.offers.every((offer) => offer.go_link));
     assert.equal(viewerOffers.body.offers.some((offer) => offer.approval_state === 'paused'), false);
 

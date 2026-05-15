@@ -119,11 +119,17 @@ function ensureOfferWallImage(offer, index = 0) {
   write(file, svgProductArt(offer.title || offer.offer_key, { slug: offer.category || 'home' }, index));
   return `/${file}`;
 }
+function offerLandingHref(offer) {
+  return `/offers/${offer.offer_key}.html`;
+}
+function offerGoHref(offer) {
+  return `${offer.go_link || `/go/${offer.offer_key}`}.html`.replace(/\.html\.html$/, '.html');
+}
 function homepageOfferCard(offer, index) {
   const image = ensureOfferWallImage(offer, index);
-  const href = `${offer.go_link || `/go/${offer.offer_key}`}.html`.replace(/\.html\.html$/, '.html');
+  const href = offerLandingHref(offer);
   const badge = offer.monetization_status === 'approved_lead_magnet' ? 'Approved lead magnet' : 'Approved monetized';
-  return `<article class="card offer-card product-card" data-filter-card data-offer-key="${esc(offer.offer_key)}" data-offer-type="${esc(offer.payout_model)}" data-filter-text="${esc(`${offer.title} ${offer.category} ${offer.vendor_name} ${offer.summary}`)}"><a class="product-image-link" href="${esc(href)}" aria-label="${esc(offer.title)}"><img class="product-image" src="${esc(image)}" alt="${esc(offer.image?.alt || `Original StuffPrettyGood cartoon image for ${offer.title}`)}" loading="lazy"></a><div class="tag-row"><span class="sticker">${badge}</span><span class="pill">${esc(offer.category)}</span></div><h3>${esc(offer.title)}</h3><p>${esc(offer.summary || 'Compare current merchant details before buying. We may earn from qualifying purchases.')}</p><a class="go-link" href="${esc(href)}" data-crm-event="trend_offer_clicked" data-go-slug="${esc(offer.offer_key)}">${esc(offer.cta || 'Check current options')} →</a></article>`;
+  return `<article class="card offer-card product-card" data-filter-card data-offer-key="${esc(offer.offer_key)}" data-offer-type="${esc(offer.payout_model)}" data-filter-text="${esc(`${offer.title} ${offer.category} ${offer.vendor_name} ${offer.summary}`)}"><a class="product-image-link" href="${esc(href)}" aria-label="Open ${esc(offer.title)} offer page"><img class="product-image" src="${esc(image)}" alt="${esc(offer.image?.alt || `Original StuffPrettyGood cartoon image for ${offer.title}`)}" loading="lazy"></a><div class="tag-row"><span class="sticker">${badge}</span><span class="pill">${esc(offer.category)}</span></div><h3>${esc(offer.title)}</h3><p>${esc(offer.summary || 'Compare current merchant details before buying. We may earn from qualifying purchases.')}</p><a class="go-link" href="${esc(href)}" data-crm-event="offer_landing_clicked" data-offer-slug="${esc(offer.offer_key)}">See offer page →</a></article>`;
 }
 function signupBand() {
   return `<section class="section signup-band" aria-label="StuffPrettyGood signup"><div><p class="eyebrow">Sign up</p><h2>Get the money links after we find them.</h2><p>Pick topics now. Mehyar Media records interest safely; no live sends happen until CRM gates approve.</p></div><div class="cta-row"><a class="button primary" href="#weekly-picks">Sign up for picks</a><a class="button ghost" href="/preferences.html">Preferences</a><a class="button ghost" href="/unsubscribe.html">Unsubscribe</a></div></section>`;
@@ -131,11 +137,19 @@ function signupBand() {
 function amazonQuickRail(limit = 6) {
   const offers = homepageOfferWall(48).filter((offer) => String(offer.offer_key || '').startsWith('amazon-')).slice(0, limit);
   if (!offers.length) return '';
-  return `<section class="section amazon-quick-rail" aria-label="Amazon quick links"><div><p class="eyebrow">Amazon-first</p><h2>Start with disclosed Amazon bridges.</h2><p>Direct /go/amazon links sit near the top before the full 48-card wall.</p></div><div class="quick-offers">${offers.map((offer, index) => {
-    const href = `${offer.go_link || `/go/${offer.offer_key}`}.html`.replace(/\.html\.html$/, '.html');
+  return `<section class="section amazon-quick-rail" aria-label="Amazon quick links"><div><p class="eyebrow">Amazon-first</p><h2>Start with disclosed Amazon bridges.</h2><p>Offer landing pages sit near the top before the full 48-card wall; outbound clicks still go through /go only.</p></div><div class="quick-offers">${offers.map((offer, index) => {
+    const href = offerLandingHref(offer);
     const image = ensureOfferWallImage(offer, index);
-    return `<a class="quick-offer" href="${esc(href)}" data-crm-event="trend_offer_clicked" data-go-slug="${esc(offer.offer_key)}"><img src="${esc(image)}" alt="${esc(offer.image?.alt || `Original StuffPrettyGood cartoon image for ${offer.title}`)}" loading="eager"><span><strong>${esc(offer.title)}</strong><em>Amazon Associates bridge</em></span></a>`;
+    return `<a class="quick-offer" href="${esc(href)}" data-crm-event="offer_landing_clicked" data-offer-slug="${esc(offer.offer_key)}"><img src="${esc(image)}" alt="${esc(offer.image?.alt || `Original StuffPrettyGood cartoon image for ${offer.title}`)}" loading="eager"><span><strong>${esc(offer.title)}</strong><em>Amazon Associates bridge</em></span></a>`;
   }).join('')}</div></section>`;
+}
+function heroAmazonLinks(limit = 3) {
+  const offers = homepageOfferWall(48).filter((offer) => String(offer.offer_key || '').startsWith('amazon-')).slice(0, limit);
+  if (!offers.length) return '';
+  return `<div class="hero-amazon-links" aria-label="Top Amazon offer bridges"><span>Amazon-first:</span>${offers.map((offer) => {
+    const href = offerLandingHref(offer);
+    return `<a href="${esc(href)}" data-crm-event="offer_landing_clicked" data-offer-slug="${esc(offer.offer_key)}">${esc(offer.title)}</a>`;
+  }).join('')}</div>`;
 }
 
 function categoryCard([title, href, copy, label, art], index) {
@@ -181,7 +195,7 @@ function rssMiniFeed(max = 5) {
 function homePage() {
   const description = 'StuffPrettyGood is a dense, image-led public offers and buyer-guide brand for useful tools, products, deals, and practical upgrades with clear affiliate disclosure.';
   const body = `<section class="hero commerce-hero surface" data-surface="home" data-crm-events="homepage_viewed,weekly_optin_started,trend_offer_clicked,disclosure_seen">
-    <div class="hero-copy"><p class="eyebrow">Useful finds, updated daily</p><h1>Useful stuff worth checking before the feeds get loud.</h1><p class="lede">Daily practical picks across AI tools, home upgrades, travel gear, wellness routines, desk helpers, gifts, and budget finds — with original notes, clear disclosure, and no fake proof.</p><div class="cta-row"><a class="button primary" href="/today.html">See today's picks</a><a class="button ghost" href="#weekly-picks">Get weekly picks</a><a class="button ghost" href="/preferences.html">Set preferences</a></div><p class="trust-note">No copied Amazon prices/images/reviews/ratings. No sensitive data required. No email/SMS sends from this public site.</p></div>
+    <div class="hero-copy"><p class="eyebrow">Useful finds, updated daily</p><h1>Useful stuff worth checking before the feeds get loud.</h1><p class="lede">Daily practical picks across AI tools, home upgrades, travel gear, wellness routines, desk helpers, gifts, and budget finds — with original notes, clear disclosure, and no fake proof.</p><div class="cta-row"><a class="button primary" href="/today.html">See today's picks</a><a class="button ghost" href="#weekly-picks">Get weekly picks</a><a class="button ghost" href="/preferences.html">Set preferences</a></div><p class="trust-note">No copied Amazon prices/images/reviews/ratings. No sensitive data required. No email/SMS sends from this public site.</p>${heroAmazonLinks(3)}</div>
     <aside class="hero-shop-wall" aria-label="Featured useful find collage">${trendOfferLanes.slice(0,6).map((lane, index)=>`<a class="shop-chip chip-${index}" href="/trends/${esc(lane.slug)}.html"><span>${artTile(lane.seed, lane.title)}</span><strong>${esc(lane.title.split(':')[0])}</strong><em>${esc(lane.momentumPct ?? 'watch')}% signal</em></a>`).join('')}<div class="mascot-card"><span class="mascot">ʕ•ᴥ•ʔ</span><strong>Pretty Good Finder</strong><small>original SPG art only</small></div></aside>
   </section>
   ${amazonQuickRail(6)}
@@ -238,6 +252,35 @@ function lanePage(lane) {
   write(`trends/${lane.slug}.html`, basePage({ title: seo.title, description: seo.description, path, body, jsonLd, type:'article' }));
 }
 
+
+function relatedOfferCards(currentOffer, limit = 3) {
+  return homepageOfferWall(96)
+    .filter((offer) => offer.offer_key !== currentOffer.offer_key && offer.category === currentOffer.category)
+    .slice(0, limit)
+    .map((offer, index) => `<a class="card related-offer-card" href="${esc(offerLandingHref(offer))}"><span class="eyebrow">Related</span><strong>${esc(offer.title)}</strong><span>${esc(offer.category)}</span></a>`)
+    .join('');
+}
+function offerLandingComponent(offer, index = 0) {
+  const image = ensureOfferWallImage(offer, index);
+  const goHref = offerGoHref(offer);
+  const related = relatedOfferCards(offer);
+  return `<section class="hero compact offer-landing surface" data-surface="offer-landing" data-offer-slug="${esc(offer.offer_key)}" data-crm-events="offer_landing_viewed,weekly_optin_started,disclosure_seen,trend_offer_clicked">
+    <div class="offer-landing-grid"><div><p class="eyebrow">${esc(offer.vendor_name)} · ${esc(offer.category)}</p><h1>${esc(offer.title)}</h1><p class="lede">${esc(offer.summary || 'Compare current merchant details before buying. We may earn from qualifying purchases.')}</p><div class="tag-row"><span class="sticker">${offer.monetization_status === 'approved_lead_magnet' ? 'Approved lead magnet' : 'Approved monetized'}</span><span class="pill">No copied prices/reviews</span><span class="pill">Original SPG art</span></div><div class="cta-row"><a class="button primary" href="${esc(goHref)}" rel="sponsored nofollow" data-crm-event="trend_offer_clicked" data-go-slug="${esc(offer.offer_key)}">${esc(offer.cta || 'Check current options')} →</a><a class="button ghost" href="#weekly-picks">Save this lane</a></div><p class="trust-note">${esc(offer.disclosure)} Amazon/manual links may use StoreID ${AMAZON_ASSOCIATES_TAG}. Check current details with the merchant.</p></div><img class="offer-hero-image" src="${esc(image)}" alt="${esc(offer.image?.alt || `Original StuffPrettyGood cartoon image for ${offer.title}`)}"></div>
+  </section>
+  <section class="section article-layout"><article class="article-card prose"><p class="eyebrow">Why this page exists</p><h2>One landing page before every outbound click.</h2><p>StuffPrettyGood routes offer cards here first so the visitor sees the disclosure, original notes, category context, and preference options before any merchant redirect.</p><h2>What to check before clicking out</h2><ol><li>Confirm current price, availability, warranty, and return policy on the merchant site.</li><li>Ignore hype, fake urgency, and claims that are not shown by the merchant.</li><li>Use preferences if you want us to watch this type of offer.</li></ol></article><aside class="aside-card"><h2>Offer facts</h2><ul class="fact-list"><li><strong>Network:</strong> ${esc(offer.vendor_name)}</li><li><strong>Monetization:</strong> ${esc(offer.payout_model)}</li><li><strong>Tracking:</strong> ${esc(offer.tracking_status)}</li><li><strong>Image rights:</strong> ${esc(offer.image?.license || 'owned/generated')}</li></ul></aside></section>
+  <section class="section signup-band"><div><p class="eyebrow">Want more like this?</p><h2>Save this category before we send anything.</h2><p>Preferences are recorded as web interest only. Live email/SMS stays gated in Mehyar Media.</p></div><div class="cta-row"><a class="button primary" href="/preferences.html">Set preferences</a><a class="button ghost" href="/unsubscribe.html">Unsubscribe</a></div></section>
+  ${related ? `<section class="section"><div class="section-header"><div><p class="eyebrow">Related offers</p><h2>More in ${esc(offer.category)}</h2></div></div><div class="cards three">${related}</div></section>` : ''}
+  ${weeklyForm('weekly-picks', `Get ${offer.category} picks`)}`;
+}
+function offerPages() {
+  const offers = homepageOfferWall(96);
+  for (const [index, offer] of offers.entries()) {
+    const path = `/offers/${offer.offer_key}.html`;
+    const jsonLd = { '@context':'https://schema.org', '@type':'Product', name: offer.title, description: offer.summary, image: absolute(ensureOfferWallImage(offer, index)), brand: { '@type':'Brand', name:'StuffPrettyGood' }, url: absolute(path) };
+    write(`offers/${offer.offer_key}.html`, basePage({ title: offer.seo?.title || offer.title, description: offer.seo?.description || offer.summary, path, body: offerLandingComponent(offer, index), jsonLd, type:'product' }));
+  }
+}
+
 function goPages() {
   for (const lane of trendOfferLanes) for (const target of getLaneTargets(lane)) {
     if (target.type !== 'amazon_search') continue;
@@ -247,10 +290,11 @@ function goPages() {
   }
 }
 function seoFiles() {
-  const pages = ['/index.html','/today.html','/trends.html','/daily.html','/deals.html','/ai-tool-stack-quiz.html','/preferences.html','/unsubscribe.html',...trendOfferLanes.map(l=>`/trends/${l.slug}.html`),...trendOfferLanes.flatMap(l=>getLaneTargets(l).filter(t=>t.type==='amazon_search').map(t=>`/go/${t.slug}.html`))];
+  const offerLandingPages = homepageOfferWall(96).map((offer)=>`/offers/${offer.offer_key}.html`);
+  const pages = ['/index.html','/today.html','/trends.html','/daily.html','/deals.html','/ai-tool-stack-quiz.html','/preferences.html','/unsubscribe.html',...trendOfferLanes.map(l=>`/trends/${l.slug}.html`),...offerLandingPages,...trendOfferLanes.flatMap(l=>getLaneTargets(l).filter(t=>t.type==='amazon_search').map(t=>`/go/${t.slug}.html`))];
   write('robots.txt', `User-agent: *\nAllow: /\nSitemap: https://stuffprettygood.com/sitemap.xml\n`);
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${pages.map((p)=>`\n  <url><loc>${absolute(p)}</loc><lastmod>${today}</lastmod></url>`).join('')}\n</urlset>\n`);
 }
 
-homePage(); todayPage(); hubPage(); dailyPage(); for (const lane of trendOfferLanes) lanePage(lane); goPages(); seoFiles();
+homePage(); todayPage(); hubPage(); dailyPage(); for (const lane of trendOfferLanes) lanePage(lane); offerPages(); goPages(); seoFiles();
 console.log(JSON.stringify({ status:'built', lanes:trendOfferLanes.length, rssCandidates:(rss.candidates||[]).length, homepageOfferWall:homepageOfferWall(48).length, amazonTag:AMAZON_ASSOCIATES_TAG }, null, 2));

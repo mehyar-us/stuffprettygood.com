@@ -549,6 +549,7 @@ function publicOfferContract(offer) {
     disclosure: offer.required_disclosure,
     approval_state: offer.approval_status,
     publish_state: offer.publish_state,
+    landing_url: isPublicOffer(offer) ? `/offers/${offer.offer_key}` : null,
     go_link: isPublicOffer(offer) ? `/go/${offer.offer_key}` : null,
     destination_url: isPublicOffer(offer) ? offer.destination_url : null,
     image: offer.image,
