@@ -15,7 +15,8 @@
     "spg:trends:daily": "npm run spg:trends:fetch && npm run spg:trends:update && npm run spg:trends:build && npm test",
     "spg:rss:fetch": "node scripts/fetch-spg-rss.mjs data/spg-rss-source-registry.json data/spg-rss-snapshot.json",
     "spg:rss:update": "node scripts/update-spg-rss-candidates.mjs data/spg-rss-snapshot.json data/spg-rss-candidates.json",
-    "spg:daily": "npm run spg:trends:fetch && npm run spg:trends:update && npm run spg:rss:fetch && npm run spg:rss:update && npm run spg:trends:build && npm test"
+    "spg:qa:offers": "node scripts/qa-spg-offers.mjs",
+    "spg:daily": "npm run spg:trends:fetch && npm run spg:trends:update && npm run spg:rss:fetch && npm run spg:rss:update && npm run spg:trends:build && npm run spg:qa:offers && npm test"
   },
   "engines": {
     "node": ">=20"
