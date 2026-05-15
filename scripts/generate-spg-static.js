@@ -332,7 +332,7 @@ write('crm-command-center-ux.html', `<!doctype html>
   <title>Mehyar Media CRM Login</title>
   <meta name="description" content="Private Mehyar Media CRM command center login.">
   <link rel="stylesheet" href="/styles.css">
-  <script type="module" src="/crm-login.js"></script>
+  <script type="module" src="/crm-login.js?v=crm-dashboard-20260515"></script>
 </head>
 <body class="crm-login-body">
   <main id="main" class="crm-login-shell" aria-label="Mehyar Media CRM login">

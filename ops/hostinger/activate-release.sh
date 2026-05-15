@@ -61,7 +61,7 @@ if [ -f package-lock.json ]; then
 else
   npm install --omit=dev --package-lock=false
 fi
-npm test
+env -u CRM_ADMIN_EMAIL -u CRM_ADMIN_PASSWORD npm test
 
 run_sudo ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 run_sudo chown -h "$APP_USER:$APP_USER" "$CURRENT_LINK"

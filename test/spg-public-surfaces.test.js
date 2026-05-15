@@ -140,7 +140,7 @@ test('CRM command center static page exposes only login shell before auth', () =
   const page = html('crm-command-center-ux.html');
   assert.match(page, /id="crm-login-form"/);
   assert.match(page, /type="password"/);
-  assert.match(page, /src="\/crm-login\.js"/);
+  assert.match(page, /src="\/crm-login\.js(?:\?v=[^"]+)?"/);
   assert.doesNotMatch(page, /Contact War Room|Sponsor pilot|Offer manager|Test simulator|Metrics dashboard|NO-SEND/i);
   assert.doesNotMatch(page, /<nav class="nav"|<footer class="footer"/i);
 });
