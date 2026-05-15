@@ -187,9 +187,11 @@ Public WebDev surfaces should consume:
 
 `public_approved_offer_feed`
 
-Do not consume raw `offer_candidates`, `offer_accounts`, or `affiliate_tracking` directly in public route builders.
+For the Node/static site bridge, public clients and the homepage builder consume `GET /api/spg/offer-wall/public?surface=home&limit=48` / `SpgDurableStore.listOfferWall({ surface, limit }, { publicOnly: true })`. The response contract is `{ brand, massSendingEnabled:false, providerPushEnabled:false, surface, offers:[publicOffer + placement] }`.
 
-The view only returns rows where:
+Do not consume raw `offer_candidates`, `offer_accounts`, `affiliate_tracking`, or hardcoded trend target lists directly in public route builders.
+
+The view/store contract only returns rows where:
 - candidate approval is approved
 - candidate risk is not blocked
 - image rights are approved
@@ -210,6 +212,29 @@ Migration includes safe seed records for:
 - Manual SPG editorial source.
 
 No seed row contains raw secrets or raw PII.
+
+## Durable account-target + Amazon manual-card mapping
+
+Task `t_74025f82` adds `data/spg-crm-offer-model-seed.json` and corresponding SQL seed rows in `db/003_spg_monetized_offer_pipeline_schema.sql`.
+
+Mapped sources:
+- `data/spg-affiliate-account-targets.json` -> `offer_accounts` and `offer_sources`.
+- `src/spg/trend-components.js` Amazon manual cards -> `offer_candidates`, `affiliate_tracking`, and `publish_decisions`.
+
+Coverage:
+- 11 account targets stored in the durable account model.
+- 62 Amazon manual cards stored as approved monetized manual-search bridge candidates.
+- Every Amazon card carries `monetization_status`, `approval_status`, `image_rights_status`, `publish_decision`, `account_status`, `tracking_status`, `disclosure_version`, and the approved tracking ID label `mehyarmedia-20`.
+
+Privacy/secret handling:
+- `credential_ref` stores only `env:SPG_AMAZON_ASSOCIATES_TAG` for the active Amazon account; the tag value is not stored as a plaintext secret.
+- Non-Amazon signup targets have `credential_ref: null` until DevOps/Arman completes approved account setup.
+- No row stores raw PII, passwords, API keys, copied Amazon prices, images, ratings, reviews, or availability.
+
+Scoring defaults:
+- Low-risk Amazon manual cards: score `84`, confidence `0.88`.
+- Medium-risk Amazon manual cards: score `72`, confidence `0.82`.
+- Inputs and weights remain visible in `scoring_inputs` / `scoring_weights`; false-positive risks include noisy trend demand, terms/tag drift, and manual re-review before scale.
 
 ## Acceptance queries
 
