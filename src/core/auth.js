@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 
 const PASSWORD_ALGORITHM = 'sha256';
-const DEFAULT_SESSION_TTL_MS = 1000 * 60 * 60 * 8;
+const DEFAULT_SESSION_TTL_MS = 1000 * 60 * 60 * 24;
 
 export const ROLES = Object.freeze({
   admin: Object.freeze([

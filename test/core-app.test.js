@@ -32,6 +32,18 @@ test('auth rejects invalid credentials and records failed login audit event', ()
   assert.equal(auditLog.list({ limit: 1 })[0].action, 'auth.login.failed');
 });
 
+test('auth keeps admin login sessions valid for 24 hours by default', () => {
+  const auditLog = new AuditLog();
+  const now = new Date('2026-05-15T12:00:00.000Z');
+  const auth = new AuthStore({ auditLog, now: () => now });
+  auth.createUser({ email: 'admin@mehyarmedia.local', password: 'safe-local-password', role: 'admin' });
+
+  const result = auth.login({ email: 'admin@mehyarmedia.local', password: 'safe-local-password' });
+
+  assert.equal(result.ok, true);
+  assert.equal(result.session.expiresAt, '2026-05-16T12:00:00.000Z');
+});
+
 test('dashboard reports healthy shell, disabled mass sending, and audit readiness', () => {
   const auditLog = new AuditLog();
   const auth = new AuthStore({ auditLog });
