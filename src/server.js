@@ -8,6 +8,7 @@ import { CommandCenterStore, routeEntityFromPath } from './core/command-center.j
 import { evaluateCampaignTransition } from './compliance/gates.js';
 import { SuppressionStore } from './compliance/suppression.js';
 import { evaluateSegmentPlan } from './segments/builder.js';
+import { SpgDurableStore } from './spg/durable-store.js';
 
 export function createApp({
   authStore = new AuthStore({ auditLog }),
@@ -15,6 +16,7 @@ export function createApp({
   commandCenter = new CommandCenterStore({ auditLog: audit }),
   databaseStatus = collectDatabaseStatus,
   suppressionStore = new SuppressionStore({ auditLog: audit }),
+  spgStore = new SpgDurableStore({ auditLog: audit }),
 } = {}) {
   seedAdmin(authStore);
   commandCenter.seedFirstBrand();
@@ -108,6 +110,136 @@ export function createApp({
           },
         });
         return sendJson(res, 403, { error: `${blockedExecutionAction.replace('_', ' ')} blocked in Phase 1`, massSendingEnabled: false });
+      }
+
+      if (method === 'GET' && pathname === '/api/spg/offers/public') {
+        return sendJson(res, 200, { brand: 'stuffprettygood', massSendingEnabled: false, offers: spgStore.listOffers(Object.fromEntries(url.searchParams), { publicOnly: true }) });
+      }
+
+      if (method === 'GET' && pathname === '/api/spg/page-placements/public') {
+        return sendJson(res, 200, { brand: 'stuffprettygood', placements: spgStore.listPagePlacements(Object.fromEntries(url.searchParams), { publicOnly: true }) });
+      }
+
+      if (method === 'GET' && pathname === '/api/spg/offer-wall/public') {
+        return sendJson(res, 200, {
+          brand: 'stuffprettygood',
+          massSendingEnabled: false,
+          providerPushEnabled: false,
+          surface: url.searchParams.get('surface') || 'home',
+          offers: spgStore.listOfferWall(Object.fromEntries(url.searchParams), { publicOnly: true }),
+        });
+      }
+
+      if (method === 'POST' && pathname === '/api/spg/events') {
+        const body = await readJson(req);
+        const result = spgStore.recordPublicEvent(body, { actorId: actorFromRequest(req) });
+        return sendJson(res, result.status === 'accepted' ? 202 : 422, result);
+      }
+
+      if (method === 'POST' && pathname === '/api/spg/signup') {
+        const body = await readJson(req);
+        const result = spgStore.recordSignup(body, { actorId: 'public-signup' });
+        return sendJson(res, result.status === 'accepted' ? 202 : 422, result);
+      }
+
+      if (method === 'POST' && pathname === '/api/spg/preferences') {
+        const body = await readJson(req);
+        const result = spgStore.recordPreferences(body, { actorId: 'public-preferences' });
+        return sendJson(res, result.status === 'accepted' ? 202 : 422, result);
+      }
+
+      if (method === 'POST' && pathname === '/api/spg/unsubscribe') {
+        const body = await readJson(req);
+        return sendJson(res, 202, spgStore.recordUnsubscribe(body, { actorId: 'public-unsubscribe' }));
+      }
+
+      if (method === 'GET' && pathname === '/api/spg/sources') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:read' });
+        if (!session) return null;
+        return sendJson(res, 200, { sources: spgStore.listSources(Object.fromEntries(url.searchParams)) });
+      }
+
+      if (method === 'POST' && pathname === '/api/spg/sources') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:write' });
+        if (!session) return null;
+        const body = await readJson(req);
+        return sendJson(res, 201, { source: spgStore.createSource(body, { actorId: session.userId }) });
+      }
+
+      const spgSourceMatch = pathname.match(/^\/api\/spg\/sources\/([^/]+)$/);
+      if (method === 'PATCH' && spgSourceMatch) {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:write' });
+        if (!session) return null;
+        const body = await readJson(req);
+        return sendJson(res, 200, { source: spgStore.updateSource(decodeURIComponent(spgSourceMatch[1]), body, { actorId: session.userId }) });
+      }
+
+      if (method === 'POST' && pathname === '/api/spg/ingest/run') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:write' });
+        if (!session) return null;
+        const body = await readJson(req);
+        const result = spgStore.runIngestion(body, { actorId: session.userId });
+        return sendJson(res, 202, { massSendingEnabled: false, providerPushEnabled: false, ...result });
+      }
+
+      if (method === 'GET' && pathname === '/api/spg/source-items') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:read' });
+        if (!session) return null;
+        return sendJson(res, 200, { source_items: spgStore.listSourceItems(Object.fromEntries(url.searchParams)) });
+      }
+
+      const spgSourceItemReviewMatch = pathname.match(/^\/api\/spg\/source-items\/([^/]+)\/review$/);
+      if (method === 'POST' && spgSourceItemReviewMatch) {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:write' });
+        if (!session) return null;
+        const body = await readJson(req);
+        return sendJson(res, 200, { source_item: spgStore.reviewSourceItem(decodeURIComponent(spgSourceItemReviewMatch[1]), body, { actorId: session.userId }) });
+      }
+
+      if (method === 'GET' && pathname === '/api/spg/offer-candidates') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:read' });
+        if (!session) return null;
+        return sendJson(res, 200, { offer_candidates: spgStore.listOfferCandidates(Object.fromEntries(url.searchParams)) });
+      }
+
+      const spgCandidatePromoteMatch = pathname.match(/^\/api\/spg\/offer-candidates\/([^/]+)\/promote$/);
+      if (method === 'POST' && spgCandidatePromoteMatch) {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:write' });
+        if (!session) return null;
+        return sendJson(res, 200, spgStore.promoteOfferCandidate(decodeURIComponent(spgCandidatePromoteMatch[1]), { actorId: session.userId }));
+      }
+
+      if (method === 'GET' && pathname === '/api/spg/offers') {
+        const session = authStore.getSession(bearerToken(req));
+        const canReadAdminInventory = Boolean(session?.permissions.includes('records:read'));
+        return sendJson(res, 200, { offers: spgStore.listOffers(Object.fromEntries(url.searchParams), { publicOnly: !canReadAdminInventory }) });
+      }
+
+      if (method === 'POST' && pathname === '/api/spg/offers') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:write' });
+        if (!session) return null;
+        const body = await readJson(req);
+        return sendJson(res, 201, { offer: spgStore.createOffer(body, { actorId: session.userId }) });
+      }
+
+      const spgOfferMatch = pathname.match(/^\/api\/spg\/offers\/([^/]+)$/);
+      if (method === 'PATCH' && spgOfferMatch) {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:write' });
+        if (!session) return null;
+        const body = await readJson(req);
+        return sendJson(res, 200, { offer: spgStore.updateOffer(decodeURIComponent(spgOfferMatch[1]), body, { actorId: session.userId }) });
+      }
+
+      if (method === 'GET' && pathname === '/api/spg/page-placements') {
+        const session = authStore.getSession(bearerToken(req));
+        const canReadAdminInventory = Boolean(session?.permissions.includes('records:read'));
+        return sendJson(res, 200, { placements: spgStore.listPagePlacements(Object.fromEntries(url.searchParams), { publicOnly: !canReadAdminInventory }) });
+      }
+
+      if (method === 'GET' && pathname === '/api/spg/proof/network-readiness') {
+        const session = requirePermission({ req, res, authStore, audit, pathname, permission: 'records:read' });
+        if (!session) return null;
+        return sendJson(res, 200, spgStore.networkReadiness());
       }
 
       if (method === 'GET' && pathname === '/api/dashboard') {

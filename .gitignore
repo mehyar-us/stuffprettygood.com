@@ -3,6 +3,7 @@ dist/
 build/
 coverage/
 npm-debug.log*
+.ops-logs/
 
 # Environment / secret material
 .env

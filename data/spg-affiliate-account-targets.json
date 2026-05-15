@@ -1,0 +1,108 @@
+{
+  "generated_at": "2026-05-15T00:00:00.000Z",
+  "brand": "stuffprettygood.com",
+  "doctrine": "Apply only to no-cost programs that can monetize StuffPrettyGood. No spend, no false audience claims, no tax/bank/SSN/EIN submission without Boss gate, no passwords or secrets in this file.",
+  "active_accounts": [
+    {
+      "program": "Amazon Associates",
+      "status": "active",
+      "tracking_id": "mehyarmedia-20",
+      "approval_difficulty": "active_now_review_after_qualifying_sales",
+      "audience_requirement": "No formal traffic minimum, but Amazon reviews the live site after qualifying sales.",
+      "use_now": true,
+      "notes": "Use manual search/deep links only. No PA-API, no scraping, no copied Amazon images/prices/ratings/reviews/availability."
+    }
+  ],
+  "signup_targets_now": [
+    {
+      "program": "Sovrn Commerce / VigLink",
+      "priority": 1,
+      "expected_approval": "easy_to_moderate",
+      "audience_requirement": "Usually no hard minimum; empty/thin sites can be rejected.",
+      "why": "Broad merchant monetization for editorial commerce links while SPG audience is still growing.",
+      "site_proof_needed": ["live offer-dense homepage", "affiliate disclosure", "privacy policy", "original category guides", "traffic source explanation"],
+      "status": "ready_to_apply_no_cost"
+    },
+    {
+      "program": "Skimlinks",
+      "priority": 2,
+      "expected_approval": "easy_to_moderate",
+      "audience_requirement": "Usually no hard minimum; site quality matters.",
+      "why": "Can monetize broad editorial commerce references without applying merchant-by-merchant first.",
+      "site_proof_needed": ["live editorial commerce site", "affiliate disclosure", "privacy policy", "non-spammy original pages"],
+      "status": "ready_to_apply_no_cost"
+    },
+    {
+      "program": "eBay Partner Network",
+      "priority": 3,
+      "expected_approval": "easy_to_moderate",
+      "audience_requirement": "Generally no formal minimum.",
+      "why": "Good fit for refurbished/open-box electronics, tools, collectibles, hobbies, and deal-alternative pages.",
+      "site_proof_needed": ["website URL", "promotion methods", "contact/business profile", "disclosure/privacy pages"],
+      "status": "ready_to_apply_no_cost"
+    },
+    {
+      "program": "ShareASale publisher",
+      "priority": 4,
+      "expected_approval": "network_easy_merchants_vary",
+      "audience_requirement": "Network signup is accessible; individual merchants may review site/audience.",
+      "why": "Large pool of smaller home, kitchen, gadget, pet, hobby, apparel and software merchants.",
+      "site_proof_needed": ["live site", "site description", "promotion methods", "affiliate disclosure", "contact/about page"],
+      "status": "ready_to_apply_no_cost"
+    },
+    {
+      "program": "FlexOffers publisher",
+      "priority": 5,
+      "expected_approval": "easy_to_moderate",
+      "audience_requirement": "Usually no hard minimum for publisher account; merchants vary.",
+      "why": "Broad retail/home/tech/lifestyle offer coverage.",
+      "site_proof_needed": ["live site", "content examples", "promotion methods", "privacy/disclosure pages"],
+      "status": "ready_to_apply_no_cost"
+    },
+    {
+      "program": "Impact.com publisher",
+      "priority": 6,
+      "expected_approval": "moderate",
+      "audience_requirement": "May ask for traffic/social details; individual brands vary.",
+      "why": "Useful for SaaS, travel, retail and direct brand relationships after SPG has polished pages.",
+      "site_proof_needed": ["polished category pages", "company/profile info", "traffic channels", "privacy/disclosure pages"],
+      "status": "apply_after_visual_refactor"
+    },
+    {
+      "program": "Walmart affiliate / Walmart Creator",
+      "priority": 7,
+      "expected_approval": "moderate",
+      "audience_requirement": "May ask for website/social presence.",
+      "why": "Home, household, seasonal, budget tech and kitchen categories.",
+      "site_proof_needed": ["live category pages", "audience/category description", "promotion methods", "disclosure/privacy pages"],
+      "status": "apply_after_visual_refactor"
+    },
+    {
+      "program": "Target Partners",
+      "priority": 8,
+      "expected_approval": "moderate",
+      "audience_requirement": "Website/social reach may matter.",
+      "why": "Home, kitchen, beauty, organization, gifts and seasonal picks.",
+      "site_proof_needed": ["visible content", "audience description", "promotion methods", "privacy/disclosure/contact pages"],
+      "status": "apply_after_visual_refactor"
+    },
+    {
+      "program": "Etsy affiliate program",
+      "priority": 9,
+      "expected_approval": "moderate",
+      "audience_requirement": "No strict minimum, but quality matters.",
+      "why": "Gifts, handmade goods, decor, printables, niche accessories, unique finds.",
+      "site_proof_needed": ["live editorial site", "promotion methods", "privacy/disclosure pages"],
+      "status": "apply_after_visual_refactor"
+    },
+    {
+      "program": "AliExpress affiliate",
+      "priority": 10,
+      "expected_approval": "easy",
+      "audience_requirement": "Generally low/no formal proof.",
+      "why": "Cheap accessories/gadgets/hobby items, but use carefully due shipping/quality risk.",
+      "site_proof_needed": ["site/channel URL", "promotion methods"],
+      "status": "watch_quality_risk_before_apply"
+    }
+  ]
+}

@@ -44,3 +44,17 @@ document.querySelectorAll('form').forEach((form) => {
 document.querySelectorAll('[data-go-slug]').forEach((link) => {
   link.addEventListener('click', () => safeEvent('go_link_clicked', { offer_slug: link.getAttribute('data-go-slug') }));
 });
+
+
+const homeFilter = document.querySelector('[data-home-filter]');
+if (homeFilter) {
+  const cards = Array.from(document.querySelectorAll('[data-filter-card]'));
+  const applyHomeFilter = () => {
+    const q = homeFilter.value.trim().toLowerCase();
+    cards.forEach((card) => {
+      const haystack = (card.getAttribute('data-filter-text') || card.textContent || '').toLowerCase();
+      card.hidden = Boolean(q) && !haystack.includes(q);
+    });
+  };
+  homeFilter.addEventListener('input', applyHomeFilter);
+}

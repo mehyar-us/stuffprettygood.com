@@ -17,16 +17,19 @@ function loadRssCandidates() {
 const rss = loadRssCandidates();
 
 const nav = `<nav class="nav" aria-label="Primary">
-  <a class="brand" href="/index.html">Stuff<span>Pretty</span>Good</a>
+  <a class="brand" href="/index.html" aria-label="StuffPrettyGood home"><span class="brand-mark">✦</span> Stuff<span>Pretty</span>Good</a>
   <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
   <div id="nav-links" class="nav-links">
     <a href="/today.html">Today</a>
-    <a href="/trends.html">Guides</a>
     <a href="/deals.html">Deals</a>
-    <a href="/ai-tool-stack-quiz.html">Tools</a>
-    <a href="/daily.html">Daily Signals</a>
+    <a href="/trends.html">Guides</a>
+    <a href="/ai-tool-stack-quiz.html">AI + Work</a>
+    <a href="/trends/robot-vacuums-smart-home.html">Home + Desk</a>
+    <a href="/daily.html">Signals</a>
+    <a href="/preferences.html">Preferences</a>
+    <a href="/unsubscribe.html">Unsubscribe</a>
     <button class="theme-toggle" type="button" data-theme-toggle>Theme</button>
-    <a class="nav-cta" href="#weekly-picks">Weekly Picks</a>
+    <a class="nav-cta" href="#weekly-picks">Sign up</a>
   </div>
 </nav>`;
 
@@ -73,24 +76,79 @@ ${metaTags({ title, description, path, type })}
 </html>`;
 }
 
+const categoryIntents = [
+  ['Work smarter', '/ai-tool-stack-quiz.html', 'AI tools, workflow software, stack quizzes, and practical operator shortcuts.', 'AI + Work', 'desk gremlin'],
+  ['Upgrade home', '/trends/robot-vacuums-smart-home.html', 'Robot vacuums, air quality, compact home office, and small daily upgrades.', 'Home + Desk', 'home goblin'],
+  ['Travel lighter', '/trends/travel-tech-esim.html', 'eSIMs, chargers, bags, adapters, and road-ready kits worth checking.', 'Travel', 'tiny suitcase'],
+  ['Spend less badly', '/savings-finder.html', 'Savings checks, software bloat, low-regret swaps, and useful budget finds.', 'Budget', 'coin wizard'],
+  ['Routine helpers', '/trends/home-wellness-gadgets.html', 'Claim-safe wellness gadgets and household routine helpers without miracle claims.', 'Wellness', 'sleepy star'],
+  ['Weekend projects', '/trends/weekend-hobby-kits.html', 'Hobby kits, gifts, starter packs, and low-friction things to try.', 'Gifts + Hobbies', 'paint blob'],
+];
+
+function artTile(label, seed = 'pretty good') {
+  const text = esc(label || seed);
+  return `<div class="art-tile" role="img" aria-label="Original StuffPrettyGood illustration for ${text}"><span class="art-orb"></span><span class="art-squiggle">${text.slice(0, 16)}</span><span class="art-face">•ᴗ•</span></div>`;
+}
+
+function safeAssetName(value) {
+  return String(value || 'offer').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 96);
+}
+function svgProductArt(label, lane, index = 0) {
+  const palette = [
+    ['#ffd166', '#ef476f', '#118ab2'], ['#a7f3d0', '#60a5fa', '#7c3aed'], ['#fca5a5', '#fde68a', '#34d399'],
+    ['#f9a8d4', '#93c5fd', '#fb923c'], ['#bef264', '#67e8f9', '#c084fc']
+  ][index % 5];
+  const title = esc(label).replaceAll('&quot;', '');
+  const face = ['•ᴗ•','^ᴗ^','ಠᴗಠ','◕‿◕','ᵔᴥᵔ'][index % 5];
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Original StuffPrettyGood cartoon image for ${title}"><rect width="1200" height="800" rx="54" fill="${palette[0]}"/><circle cx="930" cy="150" r="190" fill="${palette[1]}" opacity=".88"/><circle cx="250" cy="610" r="210" fill="${palette[2]}" opacity=".82"/><path d="M180 470 Q380 260 610 420 T1040 370" fill="none" stroke="#16120d" stroke-width="22" stroke-linecap="round"/><rect x="250" y="170" width="700" height="350" rx="44" fill="#fff8df" stroke="#16120d" stroke-width="18"/><text x="600" y="322" text-anchor="middle" font-size="82" font-family="Arial, sans-serif" font-weight="900" fill="#16120d">SPG</text><text x="600" y="430" text-anchor="middle" font-size="88" font-family="Arial, sans-serif" font-weight="900" fill="#16120d">${face}</text><rect x="210" y="575" width="780" height="96" rx="48" fill="#ffffff" stroke="#16120d" stroke-width="12"/><text x="600" y="637" text-anchor="middle" font-size="42" font-family="Arial, sans-serif" font-weight="900" fill="#16120d">${title.slice(0, 34)}</text></svg>`;
+}
+function ensureOfferImage(target, lane, index = 0) {
+  const name = safeAssetName(target.slug || target.label || lane.slug);
+  const file = `assets/offers/${name}.svg`;
+  write(file, svgProductArt(target.label || lane.title, lane, index));
+  return `/${file}`;
+}
+function homepageAmazonOffers(limit = 48) {
+  return trendOfferLanes.flatMap((lane) => getLaneTargets(lane).filter((target) => target.type === 'amazon_search').map((target) => ({ lane, target }))).slice(0, limit);
+}
+function homepageOfferCard(item, index) {
+  const { target, lane } = item;
+  const image = ensureOfferImage(target, lane, index);
+  return `<article class="card offer-card product-card" data-filter-card data-offer-type="amazon_associates_manual" data-filter-text="${esc(`${target.label} ${target.query} ${lane.title} ${lane.audience}`)}"><a class="product-image-link" href="/go/${esc(target.slug)}.html" aria-label="${esc(target.label)}"><img class="product-image" src="${esc(image)}" alt="Original StuffPrettyGood cartoon image for ${esc(target.label)}" loading="lazy"></a><div class="tag-row"><span class="sticker">Amazon Associates</span><span class="pill">${esc(lane.seed)}</span></div><h3>${esc(target.label)}</h3><p>${esc(target.note || `Compare current ${target.query || lane.seed} options on Amazon. We may earn from qualifying purchases.`)}</p><a class="go-link" href="/go/${esc(target.slug)}.html" data-crm-event="trend_offer_clicked" data-go-slug="${esc(target.slug)}">Check current options →</a></article>`;
+}
+function signupBand() {
+  return `<section class="section signup-band" aria-label="StuffPrettyGood signup"><div><p class="eyebrow">Sign up</p><h2>Get the money links after we find them.</h2><p>Pick topics now. Mehyar Media records interest safely; no live sends happen until CRM gates approve.</p></div><div class="cta-row"><a class="button primary" href="#weekly-picks">Sign up for picks</a><a class="button ghost" href="/preferences.html">Preferences</a><a class="button ghost" href="/unsubscribe.html">Unsubscribe</a></div></section>`;
+}
+
+function categoryCard([title, href, copy, label, art], index) {
+  return `<a class="card category-card" href="${href}" data-filter-card data-filter-text="${esc(`${title} ${copy} ${label}`)}"><div class="card-media mini">${artTile(art, title)}</div><p class="eyebrow">${esc(label)}</p><h3>${esc(title)}</h3><p>${esc(copy)}</p><span class="go-link">Open lane →</span></a>`;
+}
+
+function editorPickCard(lane, index) {
+  const stickers = ['Pretty Good', 'Low-Regret', 'Weirdly Useful', 'No-Hype Pick', 'Starter Kit'];
+  return `<article class="card offer-card visual-card" data-filter-card data-filter-text="${esc(`${lane.title} ${lane.seed} ${lane.audience} ${lane.offer}`)}"><div class="card-media">${artTile(lane.seed, lane.title)}</div><div class="tag-row"><span class="sticker">${stickers[index % stickers.length]}</span> <span class="pill">${esc(lane.risk)} risk</span></div><p class="eyebrow">Editor pick · source checked</p><h3>${esc(lane.title)}</h3><p>${esc(lane.offer)} for ${esc(lane.audience)}.</p><a class="go-link" href="/trends/${esc(lane.slug)}.html">Read guide</a></article>`;
+}
+
 function weeklyForm(id = 'weekly-picks', title = 'Get the weekly Pretty Good Picks') {
   return `<form id="${id}" class="intent-form" data-form="weekly-picks-optin">
     <p class="eyebrow">Weekly Picks</p><h2>${esc(title)}</h2>
     <label for="weekly_email_${id}">Email</label><input id="weekly_email_${id}" name="weekly_email" type="email" autocomplete="email"><input id="trend_email" name="trend_email_alias" type="hidden" value="weekly-picks"><input id="trend_lane_email" name="trend_lane_email_alias" type="hidden" value="topic-picks">
     <label for="weekly_topic_${id}">What should we watch for you?</label><select id="weekly_topic_${id}" name="weekly_topic"><option>Tech and AI tools</option><option>Home upgrades</option><option>Travel and everyday carry</option><option>Wellness and routines</option><option>Budget finds under $50</option></select>
     <label class="check"><input type="checkbox" required> I want StuffPrettyGood updates and understand I can unsubscribe anytime.</label>
-    <button type="submit">Save my picks</button><p class="hint">Preview mode: signup persistence must be handled by Mehyar Media CRM before any send.</p>
+    <button type="submit">Save my picks</button><p class="hint">Preview mode: Mehyar Media records interest before any send. <a href="/unsubscribe.html">Unsubscribe anytime</a>.</p>
   </form>`;
 }
 
 function signalCard(lane) {
-  return `<article class="card" data-trend-seed="${esc(lane.seed)}"><p class="eyebrow">Trending now</p><h3>${esc(lane.title)}</h3><p>${esc(lane.offer)}</p><div class="tag-row"><span class="status watch">${esc(lane.momentumPct ?? 'watch')}% momentum</span><span class="pill">${esc(lane.risk)} risk</span></div><a class="go-link" href="/trends/${esc(lane.slug)}.html">Read guide</a></article>`;
+  return `<article class="card signal-card" data-trend-seed="${esc(lane.seed)}" data-filter-card data-filter-text="${esc(`${lane.title} ${lane.seed} ${lane.audience} ${lane.offer}`)}"><div class="card-media mini">${artTile(lane.seed, lane.title)}</div><p class="eyebrow">Trending now</p><h3>${esc(lane.title)}</h3><p>${esc(lane.offer)}</p><div class="tag-row"><span class="status watch">${esc(lane.momentumPct ?? 'watch')}% momentum</span> <span class="pill">${esc(lane.risk)} risk</span></div><a class="go-link" href="/trends/${esc(lane.slug)}.html">Read guide</a></article>`;
 }
 function offerCard(target, lane) {
   const href = target.type === 'amazon_search' ? `/go/${target.slug}.html` : target.url;
   const label = target.type === 'amazon_search' ? 'Check current options' : 'Open option';
   const typeLabel = target.type === 'amazon_search' ? 'Amazon Associates' : target.type === 'service' ? 'Setup help' : 'Direct / referral';
+  const image = target.type === 'amazon_search' ? ensureOfferImage(target, lane, String(target.slug || '').length) : null;
   return `<article class="card offer-card" data-offer-type="${esc(target.type)}" data-trend-lane="${esc(lane.slug)}">
+    ${image ? `<a class="product-image-link" href="${esc(href)}"><img class="product-image" src="${esc(image)}" alt="Original StuffPrettyGood cartoon image for ${esc(target.label)}" loading="lazy"></a>` : ''}
     <p class="eyebrow">${typeLabel}</p><h3>${esc(target.label)}</h3>
     <p>${esc(target.note || 'A practical starting point. Check current merchant details before buying or signing up.')}</p>
     <a class="go-link" href="${esc(href)}" data-crm-event="trend_offer_clicked" data-go-slug="${esc(target.slug)}">${label}</a>
@@ -103,15 +161,20 @@ function rssMiniFeed(max = 5) {
 }
 
 function homePage() {
-  const description = 'StuffPrettyGood finds useful tools, products, guides, and practical upgrades across the web with clear affiliate disclosure and daily source signals.';
-  const body = `<section class="hero split surface" data-surface="home" data-crm-events="homepage_viewed,weekly_optin_started,trend_offer_clicked,disclosure_seen">
-    <div><p class="eyebrow">Useful finds, updated daily</p><h1>Find useful stuff before everyone is yelling about it.</h1><p class="lede">Daily practical picks across tools, gear, home, travel, wellness, and work — curated from trend signals, public sources, and common-sense usefulness.</p><div class="cta-row"><a class="button primary" href="/today.html">See today's picks</a><a class="button ghost" href="#weekly-picks">Get weekly picks</a></div><p class="trust-note">No fake reviews. Clear affiliate disclosure. No sensitive data required.</p></div>
-    <aside class="card"><p class="eyebrow">What this is</p><h2>A broad offer and guide brand.</h2><p>Amazon finds, direct programs, tools, articles, checklists, RSS signals, and trend-guided guides — built to prove audience before bigger offer-network applications.</p><div class="tag-row"><span class="pill">Dark/light</span><span class="pill">SEO-first</span><span class="pill">Daily feeds</span></div></aside>
+  const description = 'StuffPrettyGood is a dense, image-led public offers and buyer-guide brand for useful tools, products, deals, and practical upgrades with clear affiliate disclosure.';
+  const body = `<section class="hero commerce-hero surface" data-surface="home" data-crm-events="homepage_viewed,weekly_optin_started,trend_offer_clicked,disclosure_seen">
+    <div class="hero-copy"><p class="eyebrow">Useful finds, updated daily</p><h1>Useful stuff worth checking before the feeds get loud.</h1><p class="lede">Daily practical picks across AI tools, home upgrades, travel gear, wellness routines, desk helpers, gifts, and budget finds — with original notes, clear disclosure, and no fake proof.</p><div class="cta-row"><a class="button primary" href="/today.html">See today's picks</a><a class="button ghost" href="#weekly-picks">Get weekly picks</a><a class="button ghost" href="/preferences.html">Set preferences</a></div><p class="trust-note">No copied Amazon prices/images/reviews/ratings. No sensitive data required. No email/SMS sends from this public site.</p></div>
+    <aside class="hero-shop-wall" aria-label="Featured useful find collage">${trendOfferLanes.slice(0,6).map((lane, index)=>`<a class="shop-chip chip-${index}" href="/trends/${esc(lane.slug)}.html"><span>${artTile(lane.seed, lane.title)}</span><strong>${esc(lane.title.split(':')[0])}</strong><em>${esc(lane.momentumPct ?? 'watch')}% signal</em></a>`).join('')}<div class="mascot-card"><span class="mascot">ʕ•ᴥ•ʔ</span><strong>Pretty Good Finder</strong><small>original SPG art only</small></div></aside>
   </section>
-  <section class="section"><div class="section-header"><div><p class="eyebrow">Today's signal strip</p><h2>Momentum worth watching</h2></div><a href="/trends.html">Browse all guides</a></div><div class="signal-strip">${trendOfferLanes.slice(0,4).map(signalCard).join('')}</div></section>
-  <section class="section"><div class="section-header"><div><p class="eyebrow">Browse by intent</p><h2>Start with what you need</h2></div></div><div class="cards three"><a class="card" href="/ai-tool-stack-quiz.html"><h3>Work smarter</h3><p>AI tools, workflow software, and stack quizzes.</p></a><a class="card" href="/trends/robot-vacuums-smart-home.html"><h3>Upgrade home</h3><p>Home gear, air quality, automation, and practical daily upgrades.</p></a><a class="card" href="/trends/travel-tech-esim.html"><h3>Travel lighter</h3><p>Travel tech, eSIMs, bags, chargers, and road-ready kits.</p></a><a class="card" href="/savings-finder.html"><h3>Save money</h3><p>Cheaper alternatives, starter kits, and useful deal checks.</p></a><a class="card" href="/trends/home-wellness-gadgets.html"><h3>Wellness routines</h3><p>Claim-safe wellness gadgets and routine helpers.</p></a><a class="card" href="/trends/weekend-hobby-kits.html"><h3>Weekend projects</h3><p>Hobby kits, gifts, and low-friction things to try.</p></a></div></section>
-  <section class="section"><div class="section-header"><div><p class="eyebrow">Featured guides</p><h2>Useful, not noisy</h2></div></div><div class="cards three"><article class="card guide-card large"><p class="eyebrow">Guide · updated ${today}</p><h2>How to tell if a deal is actually pretty good.</h2><p>Start with use case, total cost, durability, privacy, return policy, and whether you would still want it without the hype.</p><a class="go-link" href="/deals.html">Open deal hub</a></article>${trendOfferLanes.slice(4,8).map(signalCard).join('')}</div></section>
-  <section class="section"><div class="section-header"><div><p class="eyebrow">Daily public sources</p><h2>RSS and trend signals</h2></div><a href="/daily.html">Open daily signals</a></div>${rssMiniFeed(3)}</section>
+  <section class="section search-band" aria-label="Search StuffPrettyGood"><div><p class="eyebrow">Find your lane</p><h2>Search/filter the homepage</h2><p>Filter visible rails by topic, use case, category, or trend seed.</p></div><label class="search-box" for="spg-home-filter"><span>Search</span><input id="spg-home-filter" type="search" placeholder="Try: air purifier, AI, travel, gifts, desk…" data-home-filter></label></section>
+  ${signupBand()}
+  <section class="section offer-wall"><div class="section-header"><div><p class="eyebrow">Monetized offer wall</p><h2>Amazon-first useful products to compare now</h2><p>Image-led cards use original StuffPrettyGood cartoon art and disclosed Amazon Associates bridges with StoreID ${AMAZON_ASSOCIATES_TAG}.</p></div><a href="/affiliate-disclosure.html">Affiliate disclosure</a></div><div class="cards four offer-grid">${homepageAmazonOffers(48).map(homepageOfferCard).join('')}</div></section>
+  <section class="section"><div class="section-header"><div><p class="eyebrow">Trending now</p><h2>Dense daily finds with safe source signals</h2><p>High-momentum lanes route to original guides and disclosed /go bridges only where approved.</p></div><a href="/trends.html">Browse all guides</a></div><div class="signal-strip">${trendOfferLanes.slice(0,6).map(signalCard).join('')}</div></section>
+  <section class="section"><div class="section-header"><div><p class="eyebrow">Category rails</p><h2>Start with what you need</h2></div><a href="/preferences.html">Tune preferences</a></div><div class="cards three category-grid">${categoryIntents.map(categoryCard).join('')}</div></section>
+  <section class="section"><div class="section-header"><div><p class="eyebrow">Editor picks</p><h2>Pretty good, not noisy</h2><p>Playful commerce cards with original illustrations, not scraped merchant assets.</p></div><a href="/today.html">Today</a></div><div class="cards three">${trendOfferLanes.slice(4,13).map(editorPickCard).join('')}</div></section>
+  <section class="section guide-rail"><div class="section-header"><div><p class="eyebrow">Buyer guides</p><h2>Useful checks before clicking buy</h2></div><a href="/deals.html">Open deal hub</a></div><div class="cards three"><article class="card guide-card large" data-filter-card data-filter-text="deal checklist total cost return policy privacy warranty"><div class="card-media wide">${artTile('deal checklist', 'pretty good deal')}</div><p class="eyebrow">Guide · updated ${today}</p><h2>How to tell if a deal is actually pretty good.</h2><p>Start with use case, total cost, durability, privacy, return policy, compatibility, and whether you would still want it without the hype.</p><a class="go-link" href="/deals.html">Open deal hub</a></article>${trendOfferLanes.slice(8,11).map(signalCard).join('')}</div></section>
+  <section class="section"><div class="section-header"><div><p class="eyebrow">Daily public sources</p><h2>RSS and trend inputs</h2><p>Discovery inputs become original editorial candidates — not copied claims.</p></div><a href="/daily.html">Open daily signals</a></div>${rssMiniFeed(6)}</section>
+  <section class="section trust-strip" aria-label="Trust and compliance"><article><strong>Affiliate disclosure visible.</strong> <span>Some links may earn commission/referral credit after approval.</span></article><article><strong>Preference control.</strong> <span><a href="/preferences.html">Preferences</a> and <a href="/unsubscribe.html">unsubscribe</a> stay prominent.</span></article><article><strong>No fake proof.</strong> <span>No copied reviews, ratings, prices, screenshots, or scarcity claims.</span></article></section>
   ${weeklyForm()}`;
   const jsonLd = { '@context':'https://schema.org', '@type':'WebSite', name:'StuffPrettyGood', url:absolute('/'), potentialAction:{ '@type':'SearchAction', target:absolute('/trends.html?q={search_term_string}'), 'query-input':'required name=search_term_string' } };
   write('index.html', basePage({ title:'Useful finds, guides, and offers', description, path:'/index.html', body, jsonLd }));
