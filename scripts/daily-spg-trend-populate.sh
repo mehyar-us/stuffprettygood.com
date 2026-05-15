@@ -13,15 +13,15 @@ if [[ -f /home/mehya/.hermes/.env ]]; then
 fi
 
 mkdir -p .ops-logs
-log_file=".ops-logs/spg-trends-daily-$(date -u +%Y%m%dT%H%M%SZ).log"
+log_file=".ops-logs/spg-daily-$(date -u +%Y%m%dT%H%M%SZ).log"
 
-if ! npm run spg:trends:daily >"${log_file}" 2>&1; then
-  echo "SPG daily trends failed: npm run spg:trends:daily exited non-zero. Review log ${PWD}/${log_file}. No deploy attempted."
+if ! npm run spg:daily >"${log_file}" 2>&1; then
+  echo "SPG daily offer/media refresh failed: npm run spg:daily exited non-zero. Review log ${PWD}/${log_file}. No deploy attempted."
   exit 1
 fi
 
-if git diff --quiet -- data/google-trends-snapshot.json src/spg/trending-offers.js public/trends.html public/trends public/go package.json src/spg/trend-components.js scripts/update-trend-offers.mjs scripts/build-spg-trend-pages.mjs; then
-  echo "SPG daily trends checked: no content changes. Tests passed. No deploy attempted. Log: ${PWD}/${log_file}"
+if git diff --quiet -- data/google-trends-snapshot.json data/spg-rss-snapshot.json data/spg-rss-candidates.json src/spg/trending-offers.js public/index.html public/today.html public/daily.html public/trends.html public/trends public/go public/robots.txt public/sitemap.xml package.json src/spg/trend-components.js scripts/fetch-spg-rss.mjs scripts/update-spg-rss-candidates.mjs scripts/build-spg-trend-pages.mjs; then
+  echo "SPG daily offer/media refresh checked: no content changes. Tests passed. No deploy attempted. Log: ${PWD}/${log_file}"
 else
-  echo "SPG daily trends updated: trend snapshot/pages changed and tests passed. Review git diff, then deploy only when release gate is open. Log: ${PWD}/${log_file}"
+  echo "SPG daily offer/media refresh updated pages/data and tests passed. Review git diff, then deploy only when release gate is open. Log: ${PWD}/${log_file}"
 fi

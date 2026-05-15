@@ -1,0 +1,612 @@
+{
+  "generated_at": "2026-05-15T13:59:09.959Z",
+  "guardrails": [
+    "metadata_only_or_original_summary",
+    "no_amazon_scraping",
+    "no_copied_prices_images_ratings_reviews_availability",
+    "no_email_sms_or_provider_push"
+  ],
+  "candidates": [
+    {
+      "id": "slickdeals-frontpage-costco-members-select-apparel-clothing-w-buy-more-save-more",
+      "source_id": "slickdeals-frontpage",
+      "source_name": "Slickdeals Frontpage",
+      "category": "deals",
+      "safe_title": "Costco Members: Select Apparel/Clothing w/ Buy More & Save More Discount Extra current offer Off 3+ Products + Free S&H",
+      "url": "https://slickdeals.net/f/19525122-costco-members-extra-10-off-3-select-appparel-free-shipping?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 13:24:11 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from Slickdeals Frontpage: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.954Z"
+    },
+    {
+      "id": "slickdeals-frontpage-costco-members-2-pk-3m-filtrete-4-mpr-1900-merv-13-air-filt",
+      "source_id": "slickdeals-frontpage",
+      "source_name": "Slickdeals Frontpage",
+      "category": "deals",
+      "safe_title": "Costco Members: 2-Pk 3M Filtrete 4\" MPR 1900 MERV 13 Air Filters From current offer & More + Free S&H",
+      "url": "https://slickdeals.net/f/19524309-filtrete-air-filter-4-mpr-1900-merv-13-premium-allergen-bacteria-and-virus-filter-electrostatic-air-cleaning-deep-pleat-filter-2-pack-39-99-various-sizes-free-shipping?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 13:23:24 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from Slickdeals Frontpage: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.954Z"
+    },
+    {
+      "id": "slickdeals-frontpage-anker-solix-c1000-1800w-1056wh-lifepo4-portable-solar-power",
+      "source_id": "slickdeals-frontpage",
+      "source_name": "Slickdeals Frontpage",
+      "category": "deals",
+      "safe_title": "Anker Solix C1000 1800W 1056Wh LiFePO4 Portable Solar Power Station current offer + Free S&H",
+      "url": "https://slickdeals.net/f/19511220-anker-solix-c1000-1056wh-2000w-lifepo4-solar-power-station-399-free-shipping?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 13:15:24 +0000",
+      "matched_lanes": [
+        "portable-power-stations"
+      ],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from Slickdeals Frontpage: worth reviewing for StuffPrettyGood coverage. It may connect to portable-power-stations coverage. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.954Z"
+    },
+    {
+      "id": "slickdeals-frontpage-tom-petty-the-heartbreakers-the-best-of-everything-2-cd-set",
+      "source_id": "slickdeals-frontpage",
+      "source_name": "Slickdeals Frontpage",
+      "category": "deals",
+      "safe_title": "Tom Petty & the Heartbreakers: The Best Of Everything (2 CD Set) current offer",
+      "url": "https://slickdeals.net/f/19524027-tom-petty-the-best-of-everything-the-definitive-career-spanning-hits-collection-2-cd-10-91?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 13:10:19 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from Slickdeals Frontpage: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.954Z"
+    },
+    {
+      "id": "slickdeals-frontpage-100-lowe-s-egift-card-email-delivery-90",
+      "source_id": "slickdeals-frontpage",
+      "source_name": "Slickdeals Frontpage",
+      "category": "deals",
+      "safe_title": "current offer Lowe's eGift Card (Email Delivery) current offer",
+      "url": "https://slickdeals.net/f/19525146-100-lowe-s-egift-card-email-delivery-90-via-newegg?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 11:02:18 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from Slickdeals Frontpage: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.955Z"
+    },
+    {
+      "id": "slickdeals-frontpage-2-panel-52-x-72-joydeco-insulated-thermal-blackout-curtains",
+      "source_id": "slickdeals-frontpage",
+      "source_name": "Slickdeals Frontpage",
+      "category": "deals",
+      "safe_title": "2-Panel 52\" x 72\" Joydeco Insulated Thermal Blackout Curtains (Dark Grey) current offer",
+      "url": "https://slickdeals.net/f/19519929-2-panel-joydeco-insulated-thermal-blackout-curtains-52-x-72-dark-grey-9-99-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Fri, 15 May 26 07:55:46 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from Slickdeals Frontpage: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.955Z"
+    },
+    {
+      "id": "nine-to-five-toys-friday-8217-s-best-ios-app-deals-and-freebies-nerd-survivors-c",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Friday&#8217;s best iOS app deals and freebies: Nerd Survivors, Control Ultimate Edition, more",
+      "url": "https://9to5toys.com/2026/05/15/todays-highlight-ios-app-price-drops/",
+      "published_at": "Fri, 15 May 2026 13:53:28 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.955Z"
+    },
+    {
+      "id": "nine-to-five-toys-score-your-copy-of-the-new-forza-horizon-6-at-up-to-15-off-mor",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Score your copy of the new Forza Horizon 6 at up to discounted, more",
+      "url": "https://9to5toys.com/2026/05/15/new-forza-horizon-6-deals/",
+      "published_at": "Fri, 15 May 2026 13:17:32 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.955Z"
+    },
+    {
+      "id": "nine-to-five-toys-today-only-this-13-inch-m5-macbook-air-24gb-1tb-drops-to-best-",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Today only: This 13-inch M5 MacBook Air 24GB/1TB drops to best price ever at current offer off",
+      "url": "https://9to5toys.com/2026/05/15/today-13-inch-m5-macbook-air-24gb-best-price/",
+      "published_at": "Fri, 15 May 2026 12:43:28 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.955Z"
+    },
+    {
+      "id": "nine-to-five-toys-still-live-512gb-galaxy-z-fold-7-at-a-giant-819-off-today-best",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Still live: 512GB Galaxy Z Fold 7 at a giant current offer off today (Best Buy open-box), or current offer off new",
+      "url": "https://9to5toys.com/2026/05/15/unlocked-galaxy-z-fold-7-giant-price-drop/",
+      "published_at": "Fri, 15 May 2026 12:22:00 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.955Z"
+    },
+    {
+      "id": "nine-to-five-toys-save-444-and-get-free-007-first-light-game-code-with-this-cool",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Save current offer and get FREE 007 First Light game code with this Cooler Master NR2 Pro RTX 5070 Mini PC",
+      "url": "https://9to5toys.com/2026/05/15/save-444-free-007-first-light-game-code-with-cooler-master-nr2-pro/",
+      "published_at": "Fri, 15 May 2026 12:15:42 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.955Z"
+    },
+    {
+      "id": "nine-to-five-toys-samsung-now-offering-350-off-all-galaxy-tab-s11-ultra-models",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Samsung now offering current offer off all Galaxy Tab S11 Ultra models",
+      "url": "https://9to5toys.com/2026/05/15/samsung-now-galaxy-tab-s11-ultra-models/",
+      "published_at": "Fri, 15 May 2026 11:06:47 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.956Z"
+    },
+    {
+      "id": "nine-to-five-toys-today-is-your-last-chance-on-these-15-inch-m5-macbook-air-deal",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Today is your last chance on these 15-inch M5 MacBook Air deals at current offer off (Undercutting Amazon lows)",
+      "url": "https://9to5toys.com/2026/05/15/last-chance-15-inch-m5-macbook-air-deals/",
+      "published_at": "Fri, 15 May 2026 10:20:15 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.956Z"
+    },
+    {
+      "id": "nine-to-five-toys-amazon-2026-memorial-day-sale-now-live-at-up-to-50-off-apple-w",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Amazon 2026 Memorial Day sale now live at up to discounted: Apple Watch, MacBook, Galaxy gear, home goods, more",
+      "url": "https://9to5toys.com/2026/05/15/amazon-2026-memorial-day-sale-live/",
+      "published_at": "Fri, 15 May 2026 09:57:14 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.956Z"
+    },
+    {
+      "id": "nine-to-five-toys-get-two-eve-aqua-apple-home-smart-water-controllers-to-upgrade",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Get two Eve Aqua Apple Home smart water controllers to upgrade spigots with current offer savings at a new current offer low",
+      "url": "https://9to5toys.com/2026/05/14/two-eve-aqua-apple-home-smart-water-controllers-new-190-low/",
+      "published_at": "Thu, 14 May 2026 20:23:06 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.956Z"
+    },
+    {
+      "id": "nine-to-five-toys-serious-about-your-ai-workflow-this-prompt-workspace-is-on-sal",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Serious about your AI workflow? This prompt workspace is on sale for just current offer (Up to current offer value)",
+      "url": "https://9to5toys.com/2026/05/14/serious-about-your-ai-workflow-this-prompt-workspace-is-on-sale-for-just-80-up-to-539-value/",
+      "published_at": "Thu, 14 May 2026 19:44:38 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.956Z"
+    },
+    {
+      "id": "nine-to-five-toys-today-8217-s-apple-books-and-audiobook-deals-from-2",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Today&#8217;s Apple Books and audiobook deals from current offer",
+      "url": "https://9to5toys.com/2026/05/14/todays-highlight-apple-books-price-drops/",
+      "published_at": "Thu, 14 May 2026 19:43:08 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.956Z"
+    },
+    {
+      "id": "nine-to-five-toys-amazon-early-memorial-day-deals-from-15-echo-ring-pro-blink-mo",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Amazon early Memorial Day deals from current offer: Echo, Ring Pro, Blink, more",
+      "url": "https://9to5toys.com/2026/05/14/amazon-early-memorial-day-deals-echo-ring/",
+      "published_at": "Thu, 14 May 2026 19:24:25 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.956Z"
+    },
+    {
+      "id": "nine-to-five-toys-this-48gb-2tb-m5-pro-macbook-pro-is-400-off-the-list-price-rig",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "This 48GB/2TB M5 Pro MacBook Pro is current offer off the list price right now (Best deal yet)",
+      "url": "https://9to5toys.com/2026/05/14/48gb-2tb-m5-pro-macbook-pro-deal/",
+      "published_at": "Thu, 14 May 2026 17:49:52 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.956Z"
+    },
+    {
+      "id": "nine-to-five-toys-microsoft-8217-s-upcoming-compact-cloud-gaming-controller-with",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Microsoft&#8217;s upcoming compact cloud gaming controller with Wi-Fi 6 shows up in new leak",
+      "url": "https://9to5toys.com/2026/05/14/microsoft-cloud-gaming-controller-with-wi-fi-6-leak/",
+      "published_at": "Thu, 14 May 2026 17:25:09 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.957Z"
+    },
+    {
+      "id": "nine-to-five-toys-gotrax-8217-s-r7-electric-bike-travels-up-to-50-miles-gets-an-",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Gotrax&#8217;s R7 electric bike travels up to 50 miles + gets an in-frame basket and bag for a current offer low",
+      "url": "https://9to5toys.com/2026/05/14/gotrax-r7-electric-bike-in-frame-basket-and-bag-765-low/",
+      "published_at": "Thu, 14 May 2026 17:17:13 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [
+        "commerce_claim_rewrite_required"
+      ],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.957Z"
+    },
+    {
+      "id": "nine-to-five-toys-today-8217-s-android-game-and-app-deals-subnautica-below-zero-",
+      "source_id": "nine-to-five-toys",
+      "source_name": "9to5Toys",
+      "category": "deals",
+      "safe_title": "Today&#8217;s Android game and app deals: Subnautica Below Zero, Kingdom Rush 5, Iron Marines 2, more",
+      "url": "https://9to5toys.com/2026/05/14/todays-highlight-android-app-price-drops/",
+      "published_at": "Thu, 14 May 2026 17:10:58 +0000",
+      "matched_lanes": [],
+      "score": 52,
+      "risk_flags": [],
+      "original_note": "Source signal from 9to5Toys: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.957Z"
+    },
+    {
+      "id": "cpsc-recalls-superbobi-pool-drain-covers-recalled-due-to-risk-of-serious-injury-",
+      "source_id": "cpsc-recalls",
+      "source_name": "CPSC Recalls",
+      "category": "safety",
+      "safe_title": "Superbobi Pool Drain Covers Recalled Due to Risk of Serious Injury or Death from Entrapment and Drowning Hazards; Violates Virginia Graeme Baker Pool &amp; Spa Safety Act; Manufactured by Remy&amp;shop",
+      "url": "https://www.cpsc.gov/Recalls/2026/Superbobi-Pool-Drain-Covers-Recalled-Due-to-Risk-of-Serious-Injury-or-Death-from-Entrapment-and-Drowning-Hazards-Violates-Virginia-Graeme-Baker-Pool-Spa-Safety-Act-Manufactured-by-Remy-shop",
+      "published_at": "May 14, 2026",
+      "matched_lanes": [],
+      "score": 48,
+      "risk_flags": [],
+      "original_note": "Source signal from CPSC Recalls: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.958Z"
+    },
+    {
+      "id": "cpsc-recalls-brp-recalls-can-am-all-terrain-vehicles-atvs-due-to-risk-of-serious",
+      "source_id": "cpsc-recalls",
+      "source_name": "CPSC Recalls",
+      "category": "safety",
+      "safe_title": "BRP Recalls Can-Am All-Terrain Vehicles (ATVs) Due to Risk of Serious Injury and Death from Crash Hazard",
+      "url": "https://www.cpsc.gov/Recalls/2026/BRP-Recalls-Can-Am-All-Terrain-Vehicles-ATVs-Due-to-Risk-of-Serious-Injury-and-Death-from-Crash-Hazard",
+      "published_at": "May 14, 2026",
+      "matched_lanes": [],
+      "score": 48,
+      "risk_flags": [],
+      "original_note": "Source signal from CPSC Recalls: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.958Z"
+    },
+    {
+      "id": "cpsc-recalls-petzl-america-recalls-astro-bod-fast-astro-sit-fast-and-canyon-guid",
+      "source_id": "cpsc-recalls",
+      "source_name": "CPSC Recalls",
+      "category": "safety",
+      "safe_title": "Petzl America Recalls ASTRO BOD FAST, ASTRO SIT FAST and CANYON GUIDE Harnesses Due to Risk of Serious Injury or Death from Fall Hazard",
+      "url": "https://www.cpsc.gov/Recalls/2026/Petzl-America-Recalls-ASTRO-BOD-FAST-ASTRO-SIT-FAST-and-CANYON-GUIDE-Harnesses-Due-to-Risk-of-Serious-Injury-or-Death-from-Fall-Hazard",
+      "published_at": "May 14, 2026",
+      "matched_lanes": [],
+      "score": 48,
+      "risk_flags": [],
+      "original_note": "Source signal from CPSC Recalls: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.958Z"
+    },
+    {
+      "id": "cpsc-recalls-guidecraft-children-s-standing-towers-recalled-due-to-risk-of-serio",
+      "source_id": "cpsc-recalls",
+      "source_name": "CPSC Recalls",
+      "category": "safety",
+      "safe_title": "Guidecraft Children’s Standing Towers Recalled Due to Risk of Serious Injury from Fall Hazard",
+      "url": "https://www.cpsc.gov/Recalls/2026/Guidecraft-Childrens-Standing-Towers-Recalled-Due-to-Risk-of-Serious-Injury-from-Fall-Hazard",
+      "published_at": "May 14, 2026",
+      "matched_lanes": [],
+      "score": 48,
+      "risk_flags": [],
+      "original_note": "Source signal from CPSC Recalls: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.958Z"
+    },
+    {
+      "id": "cpsc-recalls-cosyland-children-s-tower-stools-recalled-due-to-risk-of-serious-in",
+      "source_id": "cpsc-recalls",
+      "source_name": "CPSC Recalls",
+      "category": "safety",
+      "safe_title": "Cosyland Children’s Tower Stools Recalled Due to Risk of Serious Injury and Death from Entrapment and Fall Hazards; Imported by Cosyland Official",
+      "url": "https://www.cpsc.gov/Recalls/2026/Cosyland-Childrens-Tower-Stools-Recalled-Due-to-Risk-of-Serious-Injury-and-Death-from-Entrapment-and-Fall-Hazards-Imported-by-Cosyland-Official",
+      "published_at": "May 14, 2026",
+      "matched_lanes": [],
+      "score": 48,
+      "risk_flags": [],
+      "original_note": "Source signal from CPSC Recalls: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.958Z"
+    },
+    {
+      "id": "cpsc-recalls-svnntaa-bed-rails-recalled-due-to-risk-of-serious-injury-or-death-f",
+      "source_id": "cpsc-recalls",
+      "source_name": "CPSC Recalls",
+      "category": "safety",
+      "safe_title": "Svnntaa Bed Rails Recalled Due to Risk of Serious Injury or Death from Entrapment and Asphyxiation Hazards; Violates Mandatory Standard for Adult Portable Bed Rails; Sold on Amazon by Eokeanon",
+      "url": "https://www.cpsc.gov/Recalls/2026/Svnntaa-Bed-Rails-Recalled-Due-to-Risk-of-Serious-Injury-or-Death-from-Entrapment-and-Asphyxiation-Hazards-Violates-Mandatory-Standard-for-Adult-Portable-Bed-Rails-Sold-on-Amazon-by-Eokeanon",
+      "published_at": "May 07, 2026",
+      "matched_lanes": [],
+      "score": 48,
+      "risk_flags": [],
+      "original_note": "Source signal from CPSC Recalls: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.958Z"
+    },
+    {
+      "id": "cpsc-recalls-rainbow-wall-toys-recalled-due-to-risk-of-serious-injury-or-death-f",
+      "source_id": "cpsc-recalls",
+      "source_name": "CPSC Recalls",
+      "category": "safety",
+      "safe_title": "Rainbow Wall Toys Recalled Due to Risk of Serious Injury or Death from Choking Hazard; Violate Mandatory Standard for Children’s Toys; Sold on Amazon by Justforjoyful",
+      "url": "https://www.cpsc.gov/Recalls/2026/Rainbow-Wall-Toys-Recalled-Due-to-Risk-of-Serious-Injury-or-Death-from-Choking-Hazard-Violate-Mandatory-Standard-for-Childrens-Toys-Sold-on-Amazon-by-Justforjoyful",
+      "published_at": "May 07, 2026",
+      "matched_lanes": [],
+      "score": 48,
+      "risk_flags": [],
+      "original_note": "Source signal from CPSC Recalls: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.959Z"
+    },
+    {
+      "id": "cpsc-recalls-analemma-water-bottles-recalled-due-to-risk-of-serious-injury-or-de",
+      "source_id": "cpsc-recalls",
+      "source_name": "CPSC Recalls",
+      "category": "safety",
+      "safe_title": "Analemma Water Bottles Recalled Due to Risk of Serious Injury or Death from Laceration and Ingestion Hazards; Imported by New Earth Technologies d.o.o.",
+      "url": "https://www.cpsc.gov/Recalls/2026/Analemma-Water-Bottles-Recalled-Due-to-Risk-of-Serious-Injury-or-Death-from-Laceration-and-Ingestion-Hazards-Imported-by-New-Earth-Technologies-d-o-o",
+      "published_at": "May 07, 2026",
+      "matched_lanes": [],
+      "score": 48,
+      "risk_flags": [],
+      "original_note": "Source signal from CPSC Recalls: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.959Z"
+    },
+    {
+      "id": "cpsc-recalls-thermos-recalls-8-2-million-stainless-king-food-jars-and-bottles-du",
+      "source_id": "cpsc-recalls",
+      "source_name": "CPSC Recalls",
+      "category": "safety",
+      "safe_title": "Thermos Recalls 8.2 Million Stainless King Food Jars and Bottles Due to Serious Impact Injury and Laceration Hazards",
+      "url": "https://www.cpsc.gov/Recalls/2026/Thermos-Recalls-8-2-Million-Stainless-King-Food-Jars-and-Bottles-Due-to-Serious-Impact-Injury-and-Laceration-Hazards",
+      "published_at": "April 30, 2026",
+      "matched_lanes": [],
+      "score": 48,
+      "risk_flags": [],
+      "original_note": "Source signal from CPSC Recalls: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.959Z"
+    },
+    {
+      "id": "cpsc-recalls-alliance-chemical-recalls-1-k-kerosene-heater-fluid-containers-due-",
+      "source_id": "cpsc-recalls",
+      "source_name": "CPSC Recalls",
+      "category": "safety",
+      "safe_title": "Alliance Chemical Recalls 1-K Kerosene Heater Fluid Containers Due to Risk of Serious Injury or Death from Flash Fire, Burn and Child Poisoning; Violates Mandatory Standards for Portable Fuel Containers",
+      "url": "https://www.cpsc.gov/Recalls/2026/Alliance-Chemical-Recalls-1-K-Kerosene-Heater-Fluid-Containers-Due-to-Risk-of-Serious-Injury-or-Death-from-Flash-Fire-Burn-and-Child-Poisoning-Violates-Mandatory-Standards-for-Portable-Fuel-Containers",
+      "published_at": "April 30, 2026",
+      "matched_lanes": [],
+      "score": 48,
+      "risk_flags": [],
+      "original_note": "Source signal from CPSC Recalls: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.959Z"
+    },
+    {
+      "id": "cpsc-recalls-5-drawer-dressers-recalled-due-to-risk-of-serious-injury-or-death-f",
+      "source_id": "cpsc-recalls",
+      "source_name": "CPSC Recalls",
+      "category": "safety",
+      "safe_title": "5-Drawer Dressers Recalled Due to Risk of Serious Injury or Death from Tip-Over and Entrapment Hazards; Violates Mandatory Standard for Clothing Storage Units; Imported by UHOMEPRO",
+      "url": "https://www.cpsc.gov/Recalls/2026/5-Drawer-Dressers-Recalled-Due-to-Risk-of-Serious-Injury-or-Death-from-Tip-Over-and-Entrapment-Hazards-Violates-Mandatory-Standard-for-Clothing-Storage-Units-Imported-by-UHOMEPRO",
+      "published_at": "April 30, 2026",
+      "matched_lanes": [],
+      "score": 48,
+      "risk_flags": [],
+      "original_note": "Source signal from CPSC Recalls: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.959Z"
+    },
+    {
+      "id": "cpsc-recalls-adult-portable-bed-rails-recalled-due-to-risk-of-serious-injury-or-",
+      "source_id": "cpsc-recalls",
+      "source_name": "CPSC Recalls",
+      "category": "safety",
+      "safe_title": "Adult Portable Bed Rails Recalled Due to Risk of Serious Injury or Death from Entrapment and Asphyxiation; Violate Mandatory Standard for Adult Portable Bed Rails; Imported by Hepo Care Medical Equipment Online",
+      "url": "https://www.cpsc.gov/Recalls/2026/Adult-Portable-Bed-Rails-Recalled-Due-to-Risk-of-Serious-Injury-or-Death-from-Entrapment-and-Asphyxiation-Violate-Mandatory-Standard-for-Adult-Portable-Bed-Rails-Imported-by-Hepo-Care-Medical-Equipment-Online",
+      "published_at": "April 30, 2026",
+      "matched_lanes": [],
+      "score": 48,
+      "risk_flags": [],
+      "original_note": "Source signal from CPSC Recalls: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.959Z"
+    },
+    {
+      "id": "product-hunt-atter-ai",
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "safe_title": "Atter AI",
+      "url": "https://www.producthunt.com/products/atter-ai-ai-transcription-for-meetings",
+      "published_at": "2026-05-14T03:15:38-07:00",
+      "matched_lanes": [],
+      "score": 40,
+      "risk_flags": [],
+      "original_note": "Source signal from Product Hunt: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.949Z"
+    },
+    {
+      "id": "product-hunt-agentrail",
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "safe_title": "AgentRail",
+      "url": "https://www.producthunt.com/products/agentrail",
+      "published_at": "2026-05-14T07:51:39-07:00",
+      "matched_lanes": [],
+      "score": 40,
+      "risk_flags": [],
+      "original_note": "Source signal from Product Hunt: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.950Z"
+    },
+    {
+      "id": "product-hunt-cleo-ai",
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "safe_title": "Cleo AI",
+      "url": "https://www.producthunt.com/products/cleo-ai",
+      "published_at": "2026-05-14T11:03:05-07:00",
+      "matched_lanes": [],
+      "score": 40,
+      "risk_flags": [],
+      "original_note": "Source signal from Product Hunt: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.951Z"
+    },
+    {
+      "id": "product-hunt-repaint",
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "safe_title": "Repaint",
+      "url": "https://www.producthunt.com/products/repaint-ai-website-builder",
+      "published_at": "2026-04-23T19:44:57-07:00",
+      "matched_lanes": [],
+      "score": 40,
+      "risk_flags": [],
+      "original_note": "Source signal from Product Hunt: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.951Z"
+    },
+    {
+      "id": "hn-frontpage-ai-is-wiping-out-entry-level-jobs",
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "safe_title": "AI is wiping out entry-level jobs",
+      "url": "https://fortune.com/2026/05/15/ai-entry-level-jobs-higher-education-experience-gap/",
+      "published_at": "Fri, 15 May 2026 13:38:13 +0000",
+      "matched_lanes": [],
+      "score": 40,
+      "risk_flags": [],
+      "original_note": "Source signal from Hacker News: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.952Z"
+    },
+    {
+      "id": "hn-frontpage-the-wonders-of-ai-we-are-retiring-our-bug-bounty-program",
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "safe_title": "The Wonders of AI: We Are Retiring Our Bug Bounty Program",
+      "url": "https://turso.tech/blog/the-wonders-of-ai",
+      "published_at": "Fri, 15 May 2026 13:33:15 +0000",
+      "matched_lanes": [],
+      "score": 40,
+      "risk_flags": [],
+      "original_note": "Source signal from Hacker News: worth reviewing for StuffPrettyGood coverage. It may become a future guide or daily-picks item if it fits the audience. Check the original source; this is not a price, ranking, or endorsement claim.",
+      "generated_at": "2026-05-15T13:59:09.952Z"
+    }
+  ],
+  "quarantined": []
+}

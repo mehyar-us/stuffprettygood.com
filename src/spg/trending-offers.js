@@ -21,7 +21,7 @@ export const trendOfferLanes = [
       "bluedot ai",
       "plaud"
     ],
-    "trendUpdatedAt": "2026-05-15T13:29:48.840Z"
+    "trendUpdatedAt": "2026-05-15T13:59:05.237Z"
   },
   {
     "slug": "portable-power-stations",
@@ -45,7 +45,7 @@ export const trendOfferLanes = [
       "anker solix",
       "anker power station"
     ],
-    "trendUpdatedAt": "2026-05-15T13:29:48.840Z"
+    "trendUpdatedAt": "2026-05-15T13:59:05.237Z"
   },
   {
     "slug": "home-wellness-gadgets",
@@ -69,7 +69,7 @@ export const trendOfferLanes = [
       "red light therapy for body",
       "red light therapy face mask"
     ],
-    "trendUpdatedAt": "2026-05-15T13:29:48.840Z"
+    "trendUpdatedAt": "2026-05-15T13:59:05.237Z"
   },
   {
     "slug": "air-purifiers",
@@ -93,7 +93,7 @@ export const trendOfferLanes = [
       "blue air purifier",
       "air purifier with hepa filter"
     ],
-    "trendUpdatedAt": "2026-05-15T13:29:48.840Z"
+    "trendUpdatedAt": "2026-05-15T13:59:05.237Z"
   },
   {
     "slug": "walking-pad-desk",
@@ -117,7 +117,7 @@ export const trendOfferLanes = [
       "under desk treadmill",
       "apple walking pad"
     ],
-    "trendUpdatedAt": "2026-05-15T13:29:48.840Z"
+    "trendUpdatedAt": "2026-05-15T13:59:05.237Z"
   },
   {
     "slug": "meal-prep-starter-kit",
@@ -141,7 +141,7 @@ export const trendOfferLanes = [
       "meal prep glass containers",
       "glass containers"
     ],
-    "trendUpdatedAt": "2026-05-15T13:29:48.840Z"
+    "trendUpdatedAt": "2026-05-15T13:59:05.237Z"
   },
   {
     "slug": "pet-tech-safety",
@@ -165,7 +165,7 @@ export const trendOfferLanes = [
       "tractive dog tracker",
       "tractive gps"
     ],
-    "trendUpdatedAt": "2026-05-15T13:29:48.840Z"
+    "trendUpdatedAt": "2026-05-15T13:59:05.237Z"
   },
   {
     "slug": "robot-vacuums-smart-home",
@@ -189,7 +189,7 @@ export const trendOfferLanes = [
       "irobot",
       "top robot vacuum"
     ],
-    "trendUpdatedAt": "2026-05-15T13:29:48.840Z"
+    "trendUpdatedAt": "2026-05-15T13:59:05.237Z"
   },
   {
     "slug": "travel-tech-esim",
@@ -213,7 +213,7 @@ export const trendOfferLanes = [
       "holafly",
       "holafly esim"
     ],
-    "trendUpdatedAt": "2026-05-15T13:29:48.840Z"
+    "trendUpdatedAt": "2026-05-15T13:59:05.237Z"
   },
   {
     "slug": "sleep-beauty-microtrends",
@@ -237,7 +237,7 @@ export const trendOfferLanes = [
       "satin bonnet",
       "satin sleep bonnet"
     ],
-    "trendUpdatedAt": "2026-05-15T13:29:48.840Z"
+    "trendUpdatedAt": "2026-05-15T13:59:05.237Z"
   },
   {
     "slug": "weekend-hobby-kits",
@@ -261,6 +261,6 @@ export const trendOfferLanes = [
       "indoor hydroponic garden",
       "hydroponic garden"
     ],
-    "trendUpdatedAt": "2026-05-15T13:29:48.840Z"
+    "trendUpdatedAt": "2026-05-15T13:59:05.237Z"
   }
 ];

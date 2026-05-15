@@ -12,7 +12,10 @@
     "spg:trends:fetch": "node scripts/fetch-google-trends.mjs data/google-trends-snapshot.json",
     "spg:trends:update": "node scripts/update-trend-offers.mjs data/google-trends-snapshot.json src/spg/trending-offers.js",
     "spg:trends:build": "node scripts/build-spg-trend-pages.mjs",
-    "spg:trends:daily": "npm run spg:trends:fetch && npm run spg:trends:update && npm run spg:trends:build && npm test"
+    "spg:trends:daily": "npm run spg:trends:fetch && npm run spg:trends:update && npm run spg:trends:build && npm test",
+    "spg:rss:fetch": "node scripts/fetch-spg-rss.mjs data/spg-rss-source-registry.json data/spg-rss-snapshot.json",
+    "spg:rss:update": "node scripts/update-spg-rss-candidates.mjs data/spg-rss-snapshot.json data/spg-rss-candidates.json",
+    "spg:daily": "npm run spg:trends:fetch && npm run spg:trends:update && npm run spg:rss:fetch && npm run spg:rss:update && npm run spg:trends:build && npm test"
   },
   "engines": {
     "node": ">=20"
