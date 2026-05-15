@@ -57,6 +57,34 @@ test('audit log stores immutable append-only events with newest first listing', 
   assert.deepEqual(auditLog.list({ limit: 2 }).map((event) => event.action), ['second', 'first']);
 });
 
+test('HTTP app seeds admin credentials from environment when provided', async () => {
+  const previousEmail = process.env.CRM_ADMIN_EMAIL;
+  const previousPassword = process.env.CRM_ADMIN_PASSWORD;
+  process.env.CRM_ADMIN_EMAIL = 'owner@example.test';
+  process.env.CRM_ADMIN_PASSWORD = 'env-only-test-password';
+
+  const auditLog = new AuditLog();
+  const auth = new AuthStore({ auditLog });
+  const server = http.createServer(createApp({ authStore: auth, audit: auditLog }));
+  await listen(server);
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+
+  try {
+    const login = await requestJson(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      body: { email: 'owner@example.test', password: 'env-only-test-password' },
+    });
+    assert.equal(login.status, 200);
+    assert.equal(login.body.user.email, 'owner@example.test');
+  } finally {
+    if (previousEmail === undefined) delete process.env.CRM_ADMIN_EMAIL;
+    else process.env.CRM_ADMIN_EMAIL = previousEmail;
+    if (previousPassword === undefined) delete process.env.CRM_ADMIN_PASSWORD;
+    else process.env.CRM_ADMIN_PASSWORD = previousPassword;
+    await close(server);
+  }
+});
+
 test('HTTP app exposes health, dashboard, auth, session, audit, and compliance transition routes', async () => {
   const auditLog = new AuditLog();
   const auth = new AuthStore({ auditLog });

@@ -18,7 +18,10 @@ export function createApp({
   suppressionStore = new SuppressionStore({ auditLog: audit }),
   spgStore = new SpgDurableStore({ auditLog: audit }),
 } = {}) {
-  seedAdmin(authStore);
+  seedAdmin(authStore, {
+    email: process.env.CRM_ADMIN_EMAIL,
+    password: process.env.CRM_ADMIN_PASSWORD,
+  });
   commandCenter.seedFirstBrand();
 
   return async function app(req, res) {
