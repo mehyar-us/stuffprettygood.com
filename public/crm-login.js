@@ -1,4 +1,5 @@
 const TOKEN_KEY = 'mehyarmedia-crm-session-token';
+const CRM_API_BASE = '/crm-api';
 
 const form = document.getElementById('crm-login-form');
 const status = document.getElementById('crm-login-status');
@@ -73,10 +74,10 @@ async function loadSession() {
   const token = localStorage.getItem(TOKEN_KEY);
   if (!token) return showLogin();
   try {
-    const sessionResult = await requestJson('/api/auth/session', { headers: authHeaders() });
+    const sessionResult = await requestJson(`${CRM_API_BASE}/auth/session`, { headers: authHeaders() });
     const [dashboard, commandCenter] = await Promise.all([
-      requestJson('/api/dashboard', { headers: authHeaders() }),
-      requestJson('/api/command-center', { headers: authHeaders() }),
+      requestJson(`${CRM_API_BASE}/dashboard`, { headers: authHeaders() }),
+      requestJson(`${CRM_API_BASE}/command-center`, { headers: authHeaders() }),
     ]);
     showDashboard({ session: sessionResult.session, dashboard, commandCenter });
   } catch {
@@ -90,7 +91,7 @@ form?.addEventListener('submit', async (event) => {
   const formData = new FormData(form);
   setStatus('Checking credentials…');
   try {
-    const result = await requestJson('/api/auth/login', {
+    const result = await requestJson(`${CRM_API_BASE}/auth/login`, {
       method: 'POST',
       body: JSON.stringify({
         email: formData.get('email'),
