@@ -294,6 +294,91 @@ function opportunityIdentity(record = {}) {
   return record.opportunity_id || record.id || record.dedupe_key || record.notice_id || record.external_id || '';
 }
 
+function opportunityValue(record = {}) {
+  const value = record.expected_value_usd || record.value_usd || record.contract_value || record.award_ceiling || record.estimated_value_usd;
+  if (!value) return 'unknown';
+  const number = Number(value);
+  return Number.isFinite(number) ? `$${number.toLocaleString()}` : value;
+}
+
+function opportunityRail(records = [], key, title, empty) {
+  const matches = records.filter((record) => {
+    const status = String(record.status || opportunityRecommendation(record)).toLowerCase();
+    if (key === 'pursue') return ['pursue', 'pursuing', 'route_to_kanban', 'routed'].some((item) => status.includes(item));
+    if (key === 'watch') return ['watch', 'scored', 'new', 'needs_data', 'needs_partner', 'needs_approval'].some((item) => status.includes(item));
+    if (key === 'reject') return ['reject', 'lost', 'stale', 'duplicate', 'archived'].some((item) => status.includes(item));
+    return false;
+  }).slice(0, 6);
+  return `<section class="opportunity-queue-column card" data-opportunity-queue="${escapeHtml(key)}">
+    <div class="crm-module-head"><div><p class="eyebrow">${escapeHtml(key)} queue</p><h3>${escapeHtml(title)}</h3></div><span class="pill">${formatCount(matches.length)}</span></div>
+    ${matches.length ? matches.map((record) => `<a href="#opportunity-${escapeHtml(opportunityIdentity(record))}" class="queue-mini-card"><strong>${escapeHtml(record.title || 'Untitled')}</strong><span>${escapeHtml(record.source_family || record.source_id || 'source')} · ${escapeHtml(opportunityValue(record))}</span></a>`).join('') : `<p class="trust-note">${escapeHtml(empty)}</p>`}
+  </section>`;
+}
+
+function opportunityQueueBoard(records = []) {
+  return `<div class="opportunity-queue-board" aria-label="Pursue watch reject opportunity queues">
+    ${opportunityRail(records, 'pursue', 'Pursue now', 'No pursue-ready records in this view.')}
+    ${opportunityRail(records, 'watch', 'Watch / needs evidence', 'No watch records in this view.')}
+    ${opportunityRail(records, 'reject', 'Reject / stale / duplicate', 'No reject records in this view.')}
+  </div>`;
+}
+
+function memoPreview(record = {}) {
+  const missing = Array.isArray(record.missing_fields) ? record.missing_fields : [];
+  return [
+    'INTERNAL DECISION SUPPORT — NOT EXTERNAL COPY',
+    `Recommendation: ${opportunityRecommendation(record)}`,
+    `First-cash path: ${record.first_cash_path || record.next_best_action || 'Needs operator review.'}`,
+    `Evidence: ${compact(record.evidence_refs || record.artifact_path || record.source_url || record.external_url || record.source_id)}`,
+    `Kill criteria: ${record.kill_criteria || record.blocker || 'Kill if evidence weak, gate blocked, or no buyer path.'}`,
+    missing.length ? `Missing: ${missing.join(', ')}` : 'Missing: confirm proof, owner, and gate before external action.'
+  ].join('\n');
+}
+
+function kanbanProposalPreview(record = {}) {
+  return JSON.stringify({
+    title: `Opportunity Desk: ${record.title || 'Review opportunity'}`,
+    assignee_profile: record.route_owner_profile || record.owner_profile || 'productops',
+    route_type: 'sales_prep',
+    desired_outcome: record.first_cash_path || record.next_best_action || 'Decide pursue/watch/reject and prepare internal revenue path.',
+    evidence_refs: (record.evidence_refs || [record.artifact_path || record.source_url || record.external_url || record.source_id]).filter(Boolean).slice(0, 5),
+    acceptance_criteria: ['Source evidence reviewed', 'Decision logged in Opportunity Desk', 'No external outreach/submission/public claim without approval gate'],
+    no_external_action_statement: 'No external submissions, outreach, account creation, spend, raw PII export, or public publishing authorized by this draft.'
+  }, null, 2);
+}
+
+function decisionLogPreview(record = {}) {
+  const status = record.status || opportunityRecommendation(record);
+  const decisionRows = [
+    { label: 'Current decision', value: status },
+    { label: 'Decision owner', value: record.owner_profile || record.route_owner_profile || 'unassigned' },
+    { label: 'Confidence', value: record.confidence || record.confidence_score || record.latest_score?.confidence_score || 'review' },
+    { label: 'Next review', value: record.next_review_at || record.deadline || record.due_date || 'set after decision' },
+    { label: 'Gate snapshot', value: record.gate_status || 'not_required' },
+  ];
+  return `<dl class="opportunity-detail-list">${decisionRows.map(({ label, value }) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(compact(value))}</dd></div>`).join('')}</dl>`;
+}
+
+function opportunityDetailDrawer(record = {}) {
+  const id = opportunityIdentity(record);
+  const status = record.status || opportunityRecommendation(record);
+  return `<details id="opportunity-${escapeHtml(id)}" class="opportunity-detail-drawer card">
+    <summary><span><strong>${escapeHtml(record.title || 'Untitled opportunity')}</strong><em>${escapeHtml(record.source_family || record.source_id || 'source')} · ${escapeHtml(status)}</em></span><span class="pill">Open detail drawer</span></summary>
+    <div class="opportunity-detail-grid">
+      <section><p class="eyebrow">Opportunity detail</p><dl class="opportunity-detail-list">
+        <div><dt>Buyer/org</dt><dd>${escapeHtml(record.buyer_org_name || record.buyer || 'unknown')}</dd></div>
+        <div><dt>Expected value</dt><dd>${escapeHtml(opportunityValue(record))}</dd></div>
+        <div><dt>First cash window</dt><dd>${escapeHtml(record.first_cash_window_days ? `${record.first_cash_window_days} days` : record.firstCash || 'unknown')}</dd></div>
+        <div><dt>Gate</dt><dd>${escapeHtml(record.gate_status || record.gate || 'not_required')}</dd></div>
+        <div><dt>Proof required</dt><dd>${escapeHtml(compact(record.proof_required || record.evidence_refs || record.source_id))}</dd></div>
+      </dl></section>
+      <section><p class="eyebrow">AI go/no-go memo</p><pre class="job-log-output">${escapeHtml(memoPreview(record))}</pre></section>
+      <section><p class="eyebrow">Decision log</p>${decisionLogPreview(record)}</section>
+      <section><p class="eyebrow">Kanban route proposal</p><pre class="job-log-output">${escapeHtml(kanbanProposalPreview(record))}</pre></section>
+    </div>
+  </details>`;
+}
+
 function opportunityActionCards(records = []) {
   if (!records.length) return '<p class="trust-note">No artifact-backed opportunities yet. Run Opportunity Finder collect from Jobs Control.</p>';
   return `<div class="opportunity-action-list">${records.map((record) => {
@@ -310,6 +395,7 @@ function opportunityActionCards(records = []) {
         </div>
       </div>
       <div class="opportunity-actions" aria-label="One-click opportunity actions">
+        <a class="button ghost" href="#opportunity-${escapeHtml(id)}">Detail drawer</a>
         <button class="button primary opportunity-action-button" type="button" data-opportunity-id="${escapeHtml(id)}" data-opportunity-action="pursue">Pursue</button>
         <button class="button ghost opportunity-action-button" type="button" data-opportunity-id="${escapeHtml(id)}" data-opportunity-action="watch">Watch</button>
         <button class="button ghost opportunity-action-button" type="button" data-opportunity-id="${escapeHtml(id)}" data-opportunity-action="reject">Reject</button>
@@ -317,6 +403,7 @@ function opportunityActionCards(records = []) {
         <button class="button ghost opportunity-action-button" type="button" data-opportunity-id="${escapeHtml(id)}" data-opportunity-action="create_kanban_task">Create Kanban task</button>
         <button class="button ghost opportunity-action-button" type="button" data-opportunity-id="${escapeHtml(id)}" data-opportunity-action="draft_memo">Draft memo</button>
       </div>
+      <div class="opportunity-detail-slot">${opportunityDetailDrawer(record)}</div>
     </article>`;
   }).join('')}</div>`;
 }
@@ -539,6 +626,7 @@ function renderModules(data) {
         ${card('Source families', formatCount(oppOps?.counts?.sources || oppDash?.counts?.sources || oppSources.length), compact(oppOps?.source_health || dailyPull.opportunity_source_health || oppDash?.source_health_counts || {}))}
         ${card('External actions', oppDash?.externalActionsEnabled === false ? 'BLOCKED' : 'CHECK', 'AI drafts only; Boss approval required.', 'error')}
       </div>
+      ${opportunityQueueBoard(topOpportunities)}
       ${opportunityActionCards(topOpportunities)}
       <div id="opportunity-action-output" class="job-run-output" aria-live="polite"></div>
       ${rows((oppOps?.source_runs?.latest_runs || sourceRuns).slice(0, 8), [

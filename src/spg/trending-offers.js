@@ -9,19 +9,19 @@ export const trendOfferLanes = [
     "risk": "low",
     "cta": "Get the AI stack quiz",
     "href": "/ai-tool-stack-quiz.html",
-    "momentumPct": 67,
-    "latest": 60,
+    "momentumPct": 61,
+    "latest": 57,
     "queries": [
-      "pocket",
       "pocket ai",
-      "cluely",
-      "turboai",
-      "bluedot ai note taker",
-      "bluedot",
+      "plaud note pro",
+      "notee",
+      "cluely ai",
       "bluedot ai",
-      "plaud"
+      "pocket",
+      "bluedot ai note taker",
+      "bluedot"
     ],
-    "trendUpdatedAt": "2026-05-15T20:09:40.014Z"
+    "trendUpdatedAt": "2026-05-16T21:36:43.694Z"
   },
   {
     "slug": "portable-power-stations",
@@ -33,19 +33,19 @@ export const trendOfferLanes = [
     "risk": "medium",
     "cta": "Join the power-prep list",
     "href": "/trends/portable-power-stations.html",
-    "momentumPct": 403,
+    "momentumPct": 397,
     "latest": 27,
     "queries": [
-      "anker solix c1000 gen 2 portable power station",
       "anker solix c2000 gen 2 portable power station",
       "jackery explorer 1500 ultra portable power station",
       "ecoflow delta 3 portable power station",
       "anker solix",
       "portable power station reviews",
-      "bluetti portable power station",
-      "anker portable power station"
+      "anker portable power station",
+      "anker power station",
+      "anker"
     ],
-    "trendUpdatedAt": "2026-05-15T20:09:40.014Z"
+    "trendUpdatedAt": "2026-05-16T21:36:43.694Z"
   },
   {
     "slug": "home-wellness-gadgets",
@@ -57,19 +57,19 @@ export const trendOfferLanes = [
     "risk": "medium",
     "cta": "Get wellness picks",
     "href": "/trends/home-wellness-gadgets.html",
-    "momentumPct": 141,
+    "momentumPct": 123,
     "latest": 58,
     "queries": [
       "clara red light therapy mask",
       "ihome red light therapy mask",
+      "shark cryoglow mask",
+      "red light therapy for hearing loss",
       "inia red light mask",
       "red light therapy mask shark",
-      "shark red light mask",
-      "red light therapy panel",
-      "red light panel",
-      "red light therapy for body"
+      "red light panel therapy",
+      "red light panel"
     ],
-    "trendUpdatedAt": "2026-05-15T20:09:40.014Z"
+    "trendUpdatedAt": "2026-05-16T21:36:43.694Z"
   },
   {
     "slug": "air-purifiers",
@@ -81,19 +81,19 @@ export const trendOfferLanes = [
     "risk": "medium",
     "cta": "See air-quality picks",
     "href": "/trends/air-purifiers.html",
-    "momentumPct": 302,
-    "latest": 45,
+    "momentumPct": 283,
+    "latest": 40,
     "queries": [
       "dyson hushjet compact air purifier",
       "portable air purifier",
-      "car air purifier",
       "miko air purifier",
-      "ikea air purifier",
+      "car air purifier",
       "coway airmega",
+      "austin air purifier",
       "shark neverchange air purifier",
       "blue air purifier"
     ],
-    "trendUpdatedAt": "2026-05-15T20:09:40.014Z"
+    "trendUpdatedAt": "2026-05-16T21:36:43.694Z"
   },
   {
     "slug": "walking-pad-desk",
@@ -105,19 +105,19 @@ export const trendOfferLanes = [
     "risk": "low",
     "cta": "Get the home-office checklist",
     "href": "/trends/walking-pad-desk.html",
-    "momentumPct": 158,
-    "latest": 48,
+    "momentumPct": 149,
+    "latest": 42,
     "queries": [
       "overself walking pad",
+      "compact treadmill",
       "compact walking pad",
+      "mini treadmill",
       "portable walking pad",
       "walking pad for under desk",
-      "pink walking pad",
       "walking pad with desk",
-      "mini walking pad",
-      "walking pad for desk"
+      "under desk treadmill"
     ],
-    "trendUpdatedAt": "2026-05-15T20:09:40.014Z"
+    "trendUpdatedAt": "2026-05-16T21:36:43.694Z"
   },
   {
     "slug": "meal-prep-starter-kit",
@@ -129,19 +129,19 @@ export const trendOfferLanes = [
     "risk": "medium",
     "cta": "Get meal-prep picks",
     "href": "/trends/meal-prep-starter-kit.html",
-    "momentumPct": 193,
+    "momentumPct": 196,
     "latest": 34,
     "queries": [
       "cooking for gains",
+      "cooking for gains meal prep containers",
       "lidl near me",
       "best meal prep containers",
       "best containers for meal prep",
       "containers for meal prep",
-      "glass containers",
-      "food prep containers",
-      "meal prep food containers"
+      "meal prep containers glass",
+      "glass meal prep"
     ],
-    "trendUpdatedAt": "2026-05-15T20:09:40.014Z"
+    "trendUpdatedAt": "2026-05-16T21:36:43.694Z"
   },
   {
     "slug": "pet-tech-safety",
@@ -153,19 +153,19 @@ export const trendOfferLanes = [
     "risk": "medium",
     "cta": "Get pet-tech picks",
     "href": "/trends/pet-tech-safety.html",
-    "momentumPct": 338,
+    "momentumPct": 378,
     "latest": 28,
     "queries": [
+      "optimus gps tracker",
       "itagpro",
-      "optimus 3.0 gps tracker",
       "vyncs gps tracker",
       "mini gps tracker",
-      "gps tracker for car",
       "gps tracker for dog",
+      "gps for dog",
       "pet gps tracker",
-      "dog collar gps tracker"
+      "tractive gps"
     ],
-    "trendUpdatedAt": "2026-05-15T20:09:40.014Z"
+    "trendUpdatedAt": "2026-05-16T21:36:43.694Z"
   },
   {
     "slug": "robot-vacuums-smart-home",
@@ -177,8 +177,8 @@ export const trendOfferLanes = [
     "risk": "low",
     "cta": "See smart-home picks",
     "href": "/trends/robot-vacuums-smart-home.html",
-    "momentumPct": 339,
-    "latest": 37,
+    "momentumPct": 338,
+    "latest": 34,
     "queries": [
       "irobot roomba 104 robot vacuum & mop",
       "shark stratos 2-in-1 robot vacuum & mop",
@@ -189,7 +189,7 @@ export const trendOfferLanes = [
       "dreame robot vacuum",
       "roomba"
     ],
-    "trendUpdatedAt": "2026-05-15T20:09:40.014Z"
+    "trendUpdatedAt": "2026-05-16T21:36:43.694Z"
   },
   {
     "slug": "travel-tech-esim",
@@ -201,19 +201,19 @@ export const trendOfferLanes = [
     "risk": "low",
     "cta": "Get travel-tech picks",
     "href": "/trends/travel-tech-esim.html",
-    "momentumPct": 134,
+    "momentumPct": 132,
     "latest": 36,
     "queries": [
+      "travel news today",
       "ai news today",
       "openai news today",
       "journey japan esim",
       "what is esim",
+      "esim china",
       "holafly",
-      "holafly esim",
-      "uk esim",
-      "esim uk travel"
+      "holafly esim"
     ],
-    "trendUpdatedAt": "2026-05-15T20:09:40.014Z"
+    "trendUpdatedAt": "2026-05-16T21:36:43.694Z"
   },
   {
     "slug": "sleep-beauty-microtrends",
@@ -225,19 +225,19 @@ export const trendOfferLanes = [
     "risk": "medium",
     "cta": "Get sleep/beauty picks",
     "href": "/trends/sleep-beauty-microtrends.html",
-    "momentumPct": 70,
-    "latest": 47,
+    "momentumPct": 65,
+    "latest": 46,
     "queries": [
-      "mulberry silk",
       "mulberry silk bonnet",
       "satin sleep cap",
-      "satin sleep bonnet",
-      "satin bonnet",
+      "satin bonnet for sleep",
       "hair bonnet",
       "silk bonnet",
-      "bonnet for hair"
+      "bonnet for hair",
+      "satin sleep bonnet",
+      "satin bonnet"
     ],
-    "trendUpdatedAt": "2026-05-15T20:09:40.014Z"
+    "trendUpdatedAt": "2026-05-16T21:36:43.694Z"
   },
   {
     "slug": "weekend-hobby-kits",
@@ -249,18 +249,18 @@ export const trendOfferLanes = [
     "risk": "low",
     "cta": "Get hobby picks",
     "href": "/trends/weekend-hobby-kits.html",
-    "momentumPct": 1629,
-    "latest": 16,
+    "momentumPct": 2400,
+    "latest": 18,
     "queries": [
       "click & grow smart garden 3",
       "indoor smart herb garden kit",
-      "herb garden kit",
-      "indoor herb garden kit",
+      "herb indoor garden kit",
       "indoor herb garden",
+      "herb garden kit",
       "indoor garden kit with light",
       "indoor garden system",
       "hydroponic garden"
     ],
-    "trendUpdatedAt": "2026-05-15T20:09:40.014Z"
+    "trendUpdatedAt": "2026-05-16T21:36:43.694Z"
   }
 ];

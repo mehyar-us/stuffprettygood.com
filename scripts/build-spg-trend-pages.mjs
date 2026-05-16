@@ -137,14 +137,20 @@ function isApprovedOfferRoute(offer) {
   const healthy = !['broken', 'blocked'].includes(offer.redirect_health || 'ok');
   return Boolean(slug && (monetized || safeInternalPendingRoute) && landing === `/offers/${slug}` && redirect === `/go/${slug}` && healthy && routeApproved);
 }
+function offerPriceHint(offer) {
+  if (String(offer.vendor_name || '').toLowerCase().includes('amazon')) return 'Current price on Amazon';
+  if (String(offer.vendor_name || '').toLowerCase().includes('stay22')) return 'Current travel rate';
+  return 'Merchant updates live';
+}
 function homepageOfferCard(offer, index) {
   const image = ensureOfferWallImage(offer, index);
   const href = offerLandingHref(offer);
-  const badge = offer.monetization_status === 'approved_lead_magnet' ? 'Approved lead magnet' : 'Approved monetized';
-  return `<article class="card offer-card product-card" data-filter-card data-offer-key="${esc(offer.offer_key)}" data-offer-type="${esc(offer.payout_model)}" data-filter-text="${esc(`${offer.title} ${offer.category} ${offer.vendor_name} ${offer.summary}`)}"><a class="product-image-link" href="${esc(href)}" aria-label="Open ${esc(offer.title)} offer page"><img class="product-image" src="${esc(image)}" alt="${esc(offer.image?.alt || `Original StuffPrettyGood cartoon image for ${offer.title}`)}" loading="lazy"></a><div class="tag-row"><span class="sticker">${badge}</span><span class="pill">${esc(offer.category)}</span></div><h3>${esc(offer.title)}</h3><p>${esc(offer.summary || 'Compare current merchant details before buying. We may earn from qualifying purchases.')}</p><a class="go-link" href="${esc(href)}" data-crm-event="offer_landing_clicked" data-offer-slug="${esc(offer.offer_key)}">See offer page →</a></article>`;
+  const badge = offer.monetization_status === 'approved_lead_magnet' ? 'Lead capture' : 'Affiliate-ready';
+  const network = String(offer.vendor_name || '').includes('Amazon') ? 'Amazon' : String(offer.vendor_name || '').includes('Stay22') ? 'Travel' : 'SPG';
+  return `<article class="card offer-card product-card" data-filter-card data-offer-key="${esc(offer.offer_key)}" data-offer-type="${esc(offer.payout_model)}" data-filter-text="${esc(`${offer.title} ${offer.category} ${offer.vendor_name} ${offer.summary}`)}"><a class="product-image-link" href="${esc(href)}" aria-label="Open ${esc(offer.title)} offer page"><img class="product-image" src="${esc(image)}" alt="${esc(offer.image?.alt || `Original StuffPrettyGood cartoon image for ${offer.title}`)}" loading="lazy"></a><div class="commerce-card-body"><div class="deal-meta-row"><span class="deal-badge">${esc(badge)}</span><span>${esc(network)}</span></div><h3>${esc(offer.title)}</h3><p>${esc(offer.summary || 'Compare current merchant details before buying. We may earn from qualifying purchases.')}</p><div class="buy-row"><span>${esc(offerPriceHint(offer))}</span><a class="go-link" href="${esc(href)}" data-crm-event="offer_landing_clicked" data-offer-slug="${esc(offer.offer_key)}">Review →</a></div></div></article>`;
 }
 function signupBand() {
-  return `<section class="section signup-band" aria-label="StuffPrettyGood signup"><div><p class="eyebrow">Sign up</p><h2>Get the money links after we find them.</h2><p>Pick topics now. Mehyar Media records interest safely; no live sends happen until CRM gates approve.</p></div><div class="cta-row"><a class="button primary" href="#weekly-picks">Sign up for picks</a><a class="button ghost" href="/preferences.html">Preferences</a><a class="button ghost" href="/unsubscribe.html">Unsubscribe</a></div></section>`;
+  return `<section class="section signup-band" aria-label="StuffPrettyGood signup"><div><p class="eyebrow">Personal deal radar</p><h2>Tell us the categories worth watching.</h2><p>Save topic intent now; live sends stay gated until CRM/provider compliance is approved.</p></div><div class="cta-row"><a class="button primary" href="#weekly-picks">Build my radar</a><a class="button ghost" href="/preferences.html">Preferences</a><a class="button ghost" href="/unsubscribe.html">Unsubscribe</a></div></section>`;
 }
 function amazonTrendLabel(offer) {
   const text = `${offer.category || ''} ${offer.title || ''} ${offer.summary || ''}`.toLowerCase();
@@ -161,9 +167,9 @@ function amazonTrendWallCard(offer, index) {
   const image = ensureOfferWallImage(offer, index);
   const label = amazonTrendLabel(offer);
   const rank = String(index + 1).padStart(2, '0');
-  return `<article class="trend-wall-card" data-filter-card data-amazon-trend-card data-offer-key="${esc(offer.offer_key)}" data-filter-text="${esc(`${offer.title} ${offer.category} ${label} Amazon Associates ${offer.summary}`)}">
+  return `<article class="trend-wall-card commerce-card" data-filter-card data-amazon-trend-card data-offer-key="${esc(offer.offer_key)}" data-filter-text="${esc(`${offer.title} ${offer.category} ${label} Amazon Associates ${offer.summary}`)}">
     <a class="trend-wall-image" href="${esc(href)}" aria-label="Open ${esc(offer.title)} Amazon trend offer page"><img src="${esc(image)}" alt="${esc(offer.image?.alt || `Original StuffPrettyGood cartoon image for ${offer.title}`)}" loading="${index < 4 ? 'eager' : 'lazy'}"></a>
-    <div class="trend-wall-copy"><div class="tag-row"><span class="sticker">#${rank} Trend</span><span class="pill">${esc(label)}</span><span class="pill">Amazon</span></div><h3>${esc(offer.title)}</h3><p>${esc(offer.summary || 'Trend-picked Amazon Associates bridge. Check current merchant details before buying.')}</p><a class="go-link" href="${esc(href)}" data-crm-event="offer_landing_clicked" data-offer-slug="${esc(offer.offer_key)}">Open offer page →</a></div>
+    <div class="trend-wall-copy"><div class="deal-meta-row"><span class="deal-badge">#${rank} Trending</span><span>${esc(label)}</span></div><h3>${esc(offer.title)}</h3><p>${esc(offer.summary || 'Trend-picked Amazon Associates bridge. Check current merchant details before buying.')}</p><div class="buy-row"><span>Amazon Associates</span><a class="go-link" href="${esc(href)}" data-crm-event="offer_landing_clicked" data-offer-slug="${esc(offer.offer_key)}">Review →</a></div></div>
   </article>`;
 }
 function amazonTrendWall(limit = 12) {
@@ -171,7 +177,7 @@ function amazonTrendWall(limit = 12) {
   if (!offers.length) return '';
   const lanes = ['Power', 'Smart Home', 'Pets', 'Wellness', 'Hobby Kits', 'Travel'];
   return `<section class="section amazon-trend-wall" aria-label="Amazon Trend Wall" data-surface="amazon-trend-wall" data-crm-events="amazon_trend_wall_viewed,offer_landing_clicked,disclosure_seen">
-    <div class="trend-wall-head"><div><p class="eyebrow">Amazon Trend Wall</p><h2>Top trending Amazon bridges for today.</h2><p>Updated from daily trend/source signals. Every card routes to its own SPG offer page first, then /go handles the disclosed Amazon Associates outbound click.</p></div><a class="button ghost" href="/affiliate-disclosure.html">Disclosure</a></div>
+    <div class="trend-wall-head"><div><p class="eyebrow">Amazon Trend Wall</p><h2>What people are hunting for right now.</h2><p>2026-style trend shelf: image-first cards, buyer-friendly notes, and every click routed through an SPG landing page before Amazon.</p></div><div class="wall-kpis"><span><strong>${offers.length}</strong> live picks</span><span>Updated daily</span><a class="button ghost" href="/affiliate-disclosure.html">Disclosure</a></div></div>
     <div class="trend-wall-lanes" aria-label="Amazon trend categories">${lanes.map((lane) => `<a href="#amazon-trend-wall-grid">${esc(lane)}</a>`).join('')}</div>
     <div id="amazon-trend-wall-grid" class="trend-wall-grid">${offers.map(amazonTrendWallCard).join('')}</div>
   </section>`;
@@ -248,7 +254,7 @@ function rssMiniFeed(max = 5) {
 function homePage() {
   const description = 'StuffPrettyGood is a dense, image-led public offers and buyer-guide brand for useful tools, products, deals, and practical upgrades with clear affiliate disclosure.';
   const body = `<section class="hero commerce-hero surface" data-surface="home" data-crm-events="homepage_viewed,weekly_optin_started,trend_offer_clicked,disclosure_seen">
-    <div class="hero-copy"><p class="eyebrow">Useful finds, updated daily</p><h1>Useful stuff worth checking before the feeds get loud.</h1><p class="lede">Daily practical picks across AI tools, home upgrades, travel gear, wellness routines, desk helpers, gifts, and budget finds — with original notes, clear disclosure, and no fake proof.</p><div class="cta-row"><a class="button primary" href="/today.html">See today's picks</a><a class="button ghost" href="#weekly-picks">Get weekly picks</a><a class="button ghost" href="/preferences.html">Set preferences</a></div><p class="trust-note">No copied Amazon prices/images/reviews/ratings. No sensitive data required. No email/SMS sends from this public site.</p>${heroAmazonLinks(3)}</div>
+    <div class="hero-copy"><p class="eyebrow">Daily affiliate commerce desk</p><h1>Trend-first finds before everyone else ruins them.</h1><p class="lede">A sharp, image-led shopping desk for Amazon trends, travel deals, AI tools, home upgrades, and weirdly useful buys — built with disclosure-first affiliate routing.</p><div class="hero-metrics"><span><strong>120+</strong> Amazon picks/day</span><span><strong>24</strong> travel routes</span><span><strong>0</strong> scraped reviews/prices</span></div><div class="cta-row"><a class="button primary" href="#amazon-trend-wall-grid">Shop trend wall</a><a class="button ghost" href="/today.html">Today’s board</a><a class="button ghost" href="#weekly-picks">Get weekly picks</a></div><p class="trust-note">Affiliate links are disclosed. Cards use original SPG visuals and route through /offers before /go.</p>${heroAmazonLinks(3)}</div>
     <aside class="hero-shop-wall" aria-label="Featured useful find collage">${trendOfferLanes.slice(0,6).map((lane, index)=>`<a class="shop-chip chip-${index}" href="/trends/${esc(lane.slug)}.html"><span>${artTile(lane.seed, lane.title)}</span><strong>${esc(lane.title.split(':')[0])}</strong><em>${esc(lane.momentumPct ?? 'watch')}% signal</em></a>`).join('')}<div class="mascot-card"><span class="mascot">ʕ•ᴥ•ʔ</span><strong>Pretty Good Finder</strong><small>original SPG art only</small></div></aside>
   </section>
   ${amazonTrendWall(12)}
