@@ -100,8 +100,58 @@ for (const post of posts) {
   mkdirPage(`guides/${post.slug}`, layout(post.title, `<article class="post"><p class="eyebrow">Buying guide</p><h1>${esc(post.title)}</h1><p class="sub">${esc(post.intro)}</p><ol class="pick-list">${picks.map((p) => `<li><strong>${esc(p.title)}</strong><br>Why useful: ${esc(p.why_useful)}<br>Best for: ${esc(p.best_for)}<br>Avoid if: ${esc(p.avoid_if)}<br><a href="/products/${p.id}/">Read the pick</a></li>`).join('')}</ol></article>`));
 }
 
+function toolScript(seedProducts) {
+  const safeProducts = seedProducts.map((p) => ({ id: p.id, title: p.title, category: p.category, price_band: p.price_band, image_url: p.image_url, why_useful: p.why_useful, best_for: p.best_for, avoid_if: p.avoid_if }));
+  return `<script type="application/json" id="spg-catalog">${JSON.stringify(safeProducts).replace(/</g, '\\u003c')}</script><script>
+(function(){
+  const catalog = JSON.parse(document.getElementById('spg-catalog').textContent);
+  const form = document.querySelector('[data-finder-form]');
+  const results = document.querySelector('[data-finder-results]');
+  if (!form || !results) return;
+  const keywords = {
+    gift:['gift','birthday','mom','dad','friend','partner','holiday','present','safe'],
+    travel:['travel','trip','flight','hotel','carry','luggage','vacation'],
+    'home-office':['office','desk','work','computer','setup','productivity'],
+    kitchen:['kitchen','cook','meal','food','coffee'],
+    pets:['pet','dog','cat','puppy','kitten'],
+    tech:['tech','phone','charger','usb','gadget','computer'],
+    car:['car','auto','drive','vehicle'],
+    home:['home','apartment','room','organize','clean']
+  };
+  function score(p, q, budget){
+    const text = (p.title+' '+p.category+' '+p.why_useful+' '+p.best_for+' '+p.avoid_if).toLowerCase();
+    let score = 0;
+    for (const token of q.split(/[^a-z0-9]+/).filter(Boolean)) if (text.includes(token)) score += 3;
+    for (const [cat, words] of Object.entries(keywords)) if ((p.category === cat || words.some(w => q.includes(w)))) score += p.category === cat ? 5 : 1;
+    if (budget && p.price_band === budget) score += 6;
+    if (budget === 'under-50' && p.price_band === 'under-25') score += 3;
+    return score;
+  }
+  function htmlEscape(value){ return String(value).replace(/[&<>"']/g, function(ch){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]; }); }
+  function render(items){
+    results.innerHTML = items.map(function(p, idx){
+      return '<article class="recommendation"><img src="'+htmlEscape(p.image_url)+'" alt="'+htmlEscape(p.title)+'"><div><span class="rank">Pick '+(idx+1)+'</span><h3>'+htmlEscape(p.title)+'</h3><p>'+htmlEscape(p.why_useful)+'</p><p><strong>Best for:</strong> '+htmlEscape(p.best_for)+'</p><p><strong>Skip if:</strong> '+htmlEscape(p.avoid_if)+'</p><a class="btn small" href="/products/'+htmlEscape(p.id)+'/">Shop this pick</a></div></article>';
+    }).join('');
+  }
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const q = new FormData(form).get('intent').toLowerCase()+' '+new FormData(form).get('interests').toLowerCase();
+    const budget = new FormData(form).get('budget');
+    const ranked = catalog.map(p => ({...p, score: score(p, q, budget)})).sort((a,b) => b.score - a.score).slice(0,8);
+    render(ranked);
+    results.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+  render(catalog.slice(0,6));
+})();
+</script>`;
+}
+
 function toolPage(name, desc, mode = 'gift') {
-  return layout(name, `<section class="section tool"><div><p class="eyebrow">v0.1 catalog-safe tool</p><h1>${esc(name)}</h1><p class="sub">${esc(desc)}</p><form class="finder"><input class="input" name="intent" placeholder="Who / what for?"><input class="input" name="budget" placeholder="Budget"><input class="input" name="interests" placeholder="Interests"><button class="btn" type="button">Search approved catalog</button></form><p class="notice">Pick a use case and budget. We’ll narrow the shortlist to practical finds that match the job.</p></div><div class="tool-preview"><h2>Starter output</h2><p>We classify the intent, search approved catalog records, then explain why each item fits.</p></div></section><section class="section"><h2>Starter picks</h2><div class="grid">${products.slice(mode === 'kit' ? 8 : 0, mode === 'kit' ? 16 : 8).map(card).join('')}</div></section>`);
+  const seed = products.slice(mode === 'kit' ? 8 : 0, mode === 'kit' ? 24 : 24);
+  const examples = mode === 'kit'
+    ? ['home office under $250', 'travel kit under $150', 'first apartment essentials']
+    : ['gift for dad under $50', 'practical gift for coworker', 'pet owner gift'];
+  return layout(name, `<section class="section tool upgraded-tool"><div><p class="eyebrow">Catalog-powered shopping helper</p><h1>${esc(name)}</h1><p class="sub">${esc(desc)} No random AI products — just useful picks already in the Stuff Pretty Good catalog.</p><form class="finder" data-finder-form><label>What are you shopping for?<input class="input" name="intent" placeholder="${esc(examples[0])}" required></label><label>Budget<select class="input" name="budget"><option value="">Any budget</option><option value="under-25">Under $25</option><option value="under-50">Under $50</option><option value="under-100">Under $100</option></select></label><label>Interests / situation<input class="input" name="interests" placeholder="${esc(examples.slice(1).join(' · '))}"></label><button class="btn" type="submit">Find my shortlist</button></form><p class="notice">Tip: try “travel gift under $50,” “desk setup,” “pet problem,” or “kitchen time saver.”</p></div><div class="tool-preview"><h2>What you get</h2><ul><li>5–8 practical picks</li><li>why it helps</li><li>who it fits</li><li>when to skip it</li></ul></div></section><section class="section results-section"><div class="section-head"><div><p class="eyebrow">Live shortlist</p><h2>Recommended from the current catalog</h2></div></div><div class="recommendation-list" data-finder-results></div></section>${toolScript(seed)}`);
 }
 mkdirPage('gift-finder', toolPage('AI Gift Finder', 'Answer a few prompts and get gift ideas from the approved-offer catalog only.'));
 mkdirPage('starter-kits', toolPage('AI Starter Kit Builder', 'Build useful setups from approved affiliate products only.', 'kit'));
