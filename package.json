@@ -2,6 +2,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node scripts/validate.mjs",
+    "daily:check": "node scripts/daily-offer-check.mjs",
     "dev": "node scripts/build.mjs --watch",
     "smoke": "node scripts/smoke.mjs"
   },

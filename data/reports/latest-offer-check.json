@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-05-18T14:50:42.295Z",
+  "total_products": 40,
+  "approved_products": 40,
+  "hidden_pending_or_unavailable": 0,
+  "amazon_tag_present": "mehyarmedia-20",
+  "failures": [],
+  "next_sources_blocked_until_access": [
+    "eBay Partner Network",
+    "Sovrn Commerce",
+    "Skimlinks",
+    "Walmart Affiliates",
+    "Awin",
+    "Etsy Affiliates",
+    "FlexOffers",
+    "Impact.com"
+  ]
+}
