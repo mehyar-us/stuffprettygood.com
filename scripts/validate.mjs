@@ -20,6 +20,23 @@ if (fs.existsSync('dist/index.html')) {
 for (const page of ['signup', 'unsubscribe', 'preferences', 'privacy', 'terms', 'contact']) {
   if (!fs.existsSync(`dist/${page}/index.html`)) bad.push(`${page} page missing`);
 }
+
+const htmlPages = [];
+function collectHtml(dir) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const file = `${dir}/${entry.name}`;
+    if (entry.isDirectory()) collectHtml(file);
+    else if (entry.name === 'index.html') htmlPages.push(file);
+  }
+}
+if (fs.existsSync('dist')) collectHtml('dist');
+for (const page of htmlPages) {
+  const html = fs.readFileSync(page, 'utf8');
+  if (!html.includes('<img ')) bad.push(`${page}: missing visible image`);
+  const anchors = html.match(/<a\b[^>]*>/g) || [];
+  for (const a of anchors) if (!/target=["']_blank["']/.test(a)) bad.push(`${page}: anchor missing target _blank: ${a.slice(0, 100)}`);
+}
+
 const productPages = fs.existsSync('dist/products') ? fs.readdirSync('dist/products').length : 0;
 if (productPages < 20) bad.push('expected at least 20 product pages');
 if (bad.length) { console.error(bad.join('\n')); process.exit(1); }

@@ -8,6 +8,7 @@ const AMAZON_TAG = process.env.SPG_AMAZON_ASSOCIATES_TAG || process.env.AMAZON_A
 fs.rmSync(dist, { recursive: true, force: true });
 fs.mkdirSync(dist, { recursive: true });
 fs.mkdirSync(path.join(dist, 'assets/products'), { recursive: true });
+fs.mkdirSync(path.join(dist, 'assets/site'), { recursive: true });
 
 const data = JSON.parse(fs.readFileSync('data/products.json', 'utf8'));
 const posts = JSON.parse(fs.readFileSync('data/posts.json', 'utf8')).posts;
@@ -53,8 +54,22 @@ function productSvg(p) {
 
 for (const p of products) fs.writeFileSync(path.join(dist, p.image_url), productSvg(p));
 
+
+const siteArtSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-label="Stuff Pretty Good shopping guide visual">
+  <defs><linearGradient id="spg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#111827"/><stop offset=".42" stop-color="#0f766e"/><stop offset="1" stop-color="#fb923c"/></linearGradient><filter id="glow"><feDropShadow dx="0" dy="24" stdDeviation="28" flood-color="#0f172a" flood-opacity=".22"/></filter></defs>
+  <rect width="960" height="360" rx="44" fill="url(#spg)"/>
+  <circle cx="112" cy="92" r="58" fill="#fff7ed" opacity=".22"/><circle cx="828" cy="76" r="82" fill="#bfdbfe" opacity=".2"/>
+  <g filter="url(#glow)"><rect x="105" y="86" width="190" height="190" rx="34" fill="#ffffff"/><rect x="332" y="58" width="250" height="244" rx="38" fill="#ffffff"/><rect x="620" y="86" width="230" height="190" rx="34" fill="#ffffff"/></g>
+  <text x="200" y="190" text-anchor="middle" font-size="86">🎁</text><text x="457" y="180" text-anchor="middle" font-size="98">🛒</text><text x="735" y="190" text-anchor="middle" font-size="86">⚡</text>
+  <text x="480" y="330" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="900" fill="#fff7ed">useful finds · smarter gifts · practical upgrades</text>
+</svg>`;
+fs.writeFileSync(path.join(dist, 'assets/site/spg-shopping-guide.svg'), siteArtSvg);
+
+function newTabLinks(html) {
+  return String(html).replace(/<a\b(?![^>]*\btarget=)/g, '<a target="_blank"');
+}
 function layout(title, body, description = 'AI-assisted shopping guide for useful gifts, starter kits, and practical products.') {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | Stuff Pretty Good</title><meta name="description" content="${esc(description)}"><link rel="stylesheet" href="/styles.css"></head><body><div class="site-shell"><nav class="nav"><a class="logo" href="/"><span class="logo-mark">SPG</span><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/signup/">Sign up</a></div></nav>${body}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`;
+  return newTabLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | Stuff Pretty Good</title><meta name="description" content="${esc(description)}"><link rel="stylesheet" href="/styles.css"></head><body><div class="site-shell"><nav class="nav"><a class="logo" href="/"><span class="logo-mark">SPG</span><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/signup/">Sign up</a></div></nav><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
 }
 
 function card(p, i = 0) {
@@ -64,7 +79,7 @@ function card(p, i = 0) {
 function mkdirPage(route, html) {
   const dir = path.join(dist, route);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, 'index.html'), html);
+  fs.writeFileSync(path.join(dir, 'index.html'), newTabLinks(html));
 }
 
 const categories = ['gift-finder', 'starter-kits', 'under-25', 'under-50', 'travel', 'home-office', 'kitchen', 'pets', 'tech', 'useful-finds'];
@@ -93,7 +108,7 @@ for (const route of categories.filter((r) => !['gift-finder', 'starter-kits', 'u
 
 for (const p of products) {
   mkdirPage(`products/${p.id}`, layout(p.title, `<article class="post product-detail"><div class="detail-grid"><div>${amazonNativeAd(p)}<p class="micro">Product previews load above when available. Use the shop button to confirm current details with the merchant.</p></div><div><div class="card-meta"><span>${esc(p.category.replace('-', ' '))}</span><span>${esc(p.price_band.replace('-', ' $'))}</span></div><h1>${esc(p.title)}</h1><p class="sub">${esc(p.why_useful)}</p><p><strong>Best for:</strong> ${esc(p.best_for)}</p><p><strong>Avoid if:</strong> ${esc(p.avoid_if)}</p><a class="btn" href="/go/${p.id}/" rel="nofollow sponsored">Shop this pick</a></div></div></article>`));
-  mkdirPage(`go/${p.id}`, `<!doctype html><meta charset="utf-8"><title>Redirecting</title><meta name="robots" content="noindex"><link rel="canonical" href="${p.affiliate_url}"><p>Redirecting to approved merchant…</p><script>location.replace(${JSON.stringify(p.affiliate_url)})</script><p><a href="${p.affiliate_url}" rel="nofollow sponsored">Continue</a></p>`);
+  mkdirPage(`go/${p.id}`, `<!doctype html><meta charset="utf-8"><title>Redirecting</title><meta name="robots" content="noindex"><link rel="canonical" href="${p.affiliate_url}"><img src="${p.image_url}" alt="${esc(p.title)}" style="max-width:420px;width:100%;border-radius:20px"><p>Opening the merchant…</p><script>location.replace(${JSON.stringify(p.affiliate_url)})</script><p><a href="${p.affiliate_url}" rel="nofollow sponsored noopener">Continue to merchant</a></p>`);
 }
 
 for (const post of posts) {
