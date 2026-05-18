@@ -55,12 +55,32 @@ function productSvg(p) {
 for (const p of products) fs.writeFileSync(path.join(dist, p.image_url), productSvg(p));
 
 
+const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Stuff Pretty Good logo">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#111827"/><stop offset=".48" stop-color="#0f766e"/><stop offset="1" stop-color="#f97316"/></linearGradient>
+    <filter id="s"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#0f172a" flood-opacity=".24"/></filter>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#g)"/>
+  <circle cx="96" cy="92" r="54" fill="#fff7ed" opacity=".18"/>
+  <circle cx="430" cy="88" r="74" fill="#bfdbfe" opacity=".18"/>
+  <g filter="url(#s)">
+    <path d="M132 182h248l-26 146H168l-36-146Z" fill="#fffdf8"/>
+    <path d="M174 182c8-58 38-88 82-88s74 30 82 88" fill="none" stroke="#fffdf8" stroke-width="28" stroke-linecap="round"/>
+    <circle cx="198" cy="256" r="18" fill="#0f766e"/><circle cx="314" cy="256" r="18" fill="#f97316"/>
+  </g>
+  <text x="256" y="398" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="88" font-weight="950" letter-spacing="-8" fill="#fff7ed">SPG</text>
+</svg>`;
+fs.writeFileSync(path.join(dist, 'assets/site/spg-logo.svg'), logoSvg);
+fs.writeFileSync(path.join(dist, 'favicon.svg'), logoSvg);
+fs.writeFileSync(path.join(dist, 'site.webmanifest'), JSON.stringify({ name: 'Stuff Pretty Good', short_name: 'SPG', start_url: '/', display: 'standalone', background_color: '#f6f1e8', theme_color: '#111827', icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }] }, null, 2));
+
 const siteArtSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-label="Stuff Pretty Good shopping guide visual">
   <defs><linearGradient id="spg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#111827"/><stop offset=".42" stop-color="#0f766e"/><stop offset="1" stop-color="#fb923c"/></linearGradient><filter id="glow"><feDropShadow dx="0" dy="24" stdDeviation="28" flood-color="#0f172a" flood-opacity=".22"/></filter></defs>
   <rect width="960" height="360" rx="44" fill="url(#spg)"/>
   <circle cx="112" cy="92" r="58" fill="#fff7ed" opacity=".22"/><circle cx="828" cy="76" r="82" fill="#bfdbfe" opacity=".2"/>
   <g filter="url(#glow)"><rect x="105" y="86" width="190" height="190" rx="34" fill="#ffffff"/><rect x="332" y="58" width="250" height="244" rx="38" fill="#ffffff"/><rect x="620" y="86" width="230" height="190" rx="34" fill="#ffffff"/></g>
-  <text x="200" y="190" text-anchor="middle" font-size="86">🎁</text><text x="457" y="180" text-anchor="middle" font-size="98">🛒</text><text x="735" y="190" text-anchor="middle" font-size="86">⚡</text>
+  <image href="/assets/site/spg-logo.svg" x="380" y="72" width="160" height="160"/>
+  <text x="200" y="190" text-anchor="middle" font-size="86">🎁</text><text x="735" y="190" text-anchor="middle" font-size="86">⚡</text>
   <text x="480" y="330" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="900" fill="#fff7ed">useful finds · smarter gifts · practical upgrades</text>
 </svg>`;
 fs.writeFileSync(path.join(dist, 'assets/site/spg-shopping-guide.svg'), siteArtSvg);
@@ -68,8 +88,16 @@ fs.writeFileSync(path.join(dist, 'assets/site/spg-shopping-guide.svg'), siteArtS
 function newTabLinks(html) {
   return String(html).replace(/<a\b(?![^>]*\btarget=)/g, '<a target="_blank"');
 }
+const microsoftClaritySnippet = `<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wt52najgso");
+</script>`;
+
 function layout(title, body, description = 'AI-assisted shopping guide for useful gifts, starter kits, and practical products.') {
-  return newTabLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b"><title>${esc(title)} | Stuff Pretty Good</title><meta name="description" content="${esc(description)}"><link rel="stylesheet" href="/styles.css"></head><body><div class="site-shell"><nav class="nav"><a class="logo" href="/"><span class="logo-mark">SPG</span><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/signup/">Sign up</a></div></nav><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget()}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
+  return newTabLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<title>${esc(title)} | Stuff Pretty Good</title><meta name="description" content="${esc(description)}"><meta name="theme-color" content="#111827"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg"><link rel="stylesheet" href="/styles.css"></head><body><div class="site-shell"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/signup/">Sign up</a></div></nav><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget()}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
 }
 
 function card(p, i = 0) {
