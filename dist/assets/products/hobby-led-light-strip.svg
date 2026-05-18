@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-label="LED light strip kit illustration">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff7ed"/><stop offset="0.55" stop-color="#eefdf4"/><stop offset="1" stop-color="#eaf2ff"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#111827" flood-opacity=".16"/></filter>
+  </defs>
+  <rect width="640" height="420" rx="38" fill="url(#bg)"/>
+  <circle cx="96" cy="86" r="56" fill="#ffedd5"/>
+  <circle cx="538" cy="80" r="82" fill="#dbeafe" opacity=".75"/>
+  <rect x="116" y="96" width="408" height="220" rx="34" fill="#ffffff" filter="url(#shadow)"/>
+  <text x="320" y="196" text-anchor="middle" font-size="76">🏠</text>
+  <text x="320" y="250" text-anchor="middle" font-family="Inter,Arial" font-size="28" font-weight="900" fill="#111827">LED light strip</text>
+  <text x="320" y="286" text-anchor="middle" font-family="Inter,Arial" font-size="18" font-weight="700" fill="#64748b">approved Amazon find</text>
+  <path d="M94 350 C182 326 258 376 346 342 S512 326 562 362" fill="none" stroke="#fb923c" stroke-width="12" stroke-linecap="round" opacity=".75"/>
+</svg>
