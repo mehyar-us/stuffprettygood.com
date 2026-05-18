@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync, existsSync, readFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, existsSync, readFileSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { trendOfferLanes } from '../src/spg/trending-offers.js';
 import { amazonSearchUrl, AMAZON_ASSOCIATES_TAG, getLaneTargets, laneSeo, riskCopy } from '../src/spg/trend-components.js';
@@ -6,6 +6,9 @@ import { SpgDurableStore } from '../src/spg/durable-store.js';
 
 const outDir = new URL('../public', import.meta.url).pathname;
 const write = (file, html) => { mkdirSync(dirname(join(outDir, file)), { recursive: true }); writeFileSync(join(outDir, file), html, 'utf8'); };
+for (const generatedDir of ['offers', 'go']) {
+  rmSync(join(outDir, generatedDir), { recursive: true, force: true });
+}
 const esc = (value) => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 const absolute = (path) => `https://stuffprettygood.com${path}`;
 const today = new Date().toISOString().slice(0, 10);
@@ -115,6 +118,15 @@ function ensureOfferImage(target, lane, index = 0) {
 function homepageOfferWall(limit = 48) {
   return spgStore.listOfferWall({ surface: 'home', limit }, { publicOnly: true });
 }
+function isAmazonOffer(offer) {
+  return String(offer?.offer_key || '').startsWith('amazon-')
+    || /amazon/i.test(String(offer?.vendor_name || ''))
+    || /amazon/i.test(String(offer?.payout_model || ''))
+    || offer?.target?.type === 'amazon_search';
+}
+function amazonOfferWall(limit = 96) {
+  return homepageOfferWall(Math.max(limit, 120)).filter(isAmazonOffer).slice(0, limit);
+}
 function ensureOfferWallImage(offer, index = 0) {
   const name = safeAssetName(offer.offer_key || offer.title);
   const file = `assets/offers/${name}.svg`;
@@ -146,7 +158,7 @@ function homepageOfferCard(offer, index) {
   const image = ensureOfferWallImage(offer, index);
   const href = offerLandingHref(offer);
   const badge = offer.monetization_status === 'approved_lead_magnet' ? 'Lead capture' : 'Affiliate-ready';
-  const network = String(offer.vendor_name || '').includes('Amazon') ? 'Amazon' : String(offer.vendor_name || '').includes('Stay22') ? 'Travel' : 'SPG';
+  const network = 'Amazon Associates';
   return `<article class="card offer-card product-card" data-filter-card data-offer-key="${esc(offer.offer_key)}" data-offer-type="${esc(offer.payout_model)}" data-filter-text="${esc(`${offer.title} ${offer.category} ${offer.vendor_name} ${offer.summary}`)}"><a class="product-image-link" href="${esc(href)}" aria-label="Open ${esc(offer.title)} offer page"><img class="product-image" src="${esc(image)}" alt="${esc(offer.image?.alt || `Original StuffPrettyGood cartoon image for ${offer.title}`)}" loading="lazy"></a><div class="commerce-card-body"><div class="deal-meta-row"><span class="deal-badge">${esc(badge)}</span><span>${esc(network)}</span></div><h3>${esc(offer.title)}</h3><p>${esc(offer.summary || 'Compare current merchant details before buying. We may earn from qualifying purchases.')}</p><div class="buy-row"><span>${esc(offerPriceHint(offer))}</span><a class="go-link" href="${esc(href)}" data-crm-event="offer_landing_clicked" data-offer-slug="${esc(offer.offer_key)}">Review →</a></div></div></article>`;
 }
 function signupBand() {
@@ -173,17 +185,17 @@ function amazonTrendWallCard(offer, index) {
   </article>`;
 }
 function amazonTrendWall(limit = 12) {
-  const offers = homepageOfferWall(96).filter((offer) => String(offer.offer_key || '').startsWith('amazon-')).slice(0, limit);
+  const offers = amazonOfferWall(96).slice(0, limit);
   if (!offers.length) return '';
   const lanes = ['Power', 'Smart Home', 'Pets', 'Wellness', 'Hobby Kits', 'Travel'];
   return `<section class="section amazon-trend-wall" aria-label="Amazon Trend Wall" data-surface="amazon-trend-wall" data-crm-events="amazon_trend_wall_viewed,offer_landing_clicked,disclosure_seen">
-    <div class="trend-wall-head"><div><p class="eyebrow">Amazon Trend Wall</p><h2>What people are hunting for right now.</h2><p>2026-style trend shelf: image-first cards, buyer-friendly notes, and every click routed through an SPG landing page before Amazon.</p></div><div class="wall-kpis"><span><strong>${offers.length}</strong> live picks</span><span>Updated daily</span><a class="button ghost" href="/affiliate-disclosure.html">Disclosure</a></div></div>
+    <div class="trend-wall-head"><div><p class="eyebrow">Amazon Trend Wall</p><h2>Daily Amazon finds with an affiliate-first brain.</h2><p>2026-style trend shelf: image-first cards, buyer-friendly notes, and every click routed through an SPG landing page before Amazon.</p></div><div class="wall-kpis"><span><strong>${offers.length}</strong> live picks</span><span>Updated daily</span><a class="button ghost" href="/affiliate-disclosure.html">Disclosure</a></div></div>
     <div class="trend-wall-lanes" aria-label="Amazon trend categories">${lanes.map((lane) => `<a href="#amazon-trend-wall-grid">${esc(lane)}</a>`).join('')}</div>
     <div id="amazon-trend-wall-grid" class="trend-wall-grid">${offers.map(amazonTrendWallCard).join('')}</div>
   </section>`;
 }
 function heroAmazonLinks(limit = 3) {
-  const offers = homepageOfferWall(48).filter((offer) => String(offer.offer_key || '').startsWith('amazon-')).slice(0, limit);
+  const offers = amazonOfferWall(48).slice(0, limit);
   if (!offers.length) return '';
   return `<div class="hero-amazon-links" aria-label="Top Amazon offer bridges"><span>Amazon-first:</span>${offers.map((offer) => {
     const href = offerLandingHref(offer);
@@ -231,7 +243,7 @@ function signalCard(lane) {
   return `<article class="card signal-card" data-trend-seed="${esc(lane.seed)}" data-filter-card data-filter-text="${esc(`${lane.title} ${lane.seed} ${lane.audience} ${lane.offer}`)}"><div class="card-media mini">${artTile(lane.seed, lane.title)}</div><p class="eyebrow">Trending now</p><h3>${esc(lane.title)}</h3><p>${esc(lane.offer)}</p><div class="tag-row"><span class="status watch">${esc(lane.momentumPct ?? 'watch')}% momentum</span> <span class="pill">${esc(lane.risk)} risk</span></div><a class="go-link" href="/trends/${esc(lane.slug)}.html">Read guide</a></article>`;
 }
 function isApprovedTarget(target) {
-  return target.type === 'amazon_search' || target.type === 'service';
+  return target.type === 'amazon_search';
 }
 function offerCard(target, lane) {
   const href = `/offers/${target.slug}.html`;
@@ -252,16 +264,16 @@ function rssMiniFeed(max = 5) {
 }
 
 function homePage() {
-  const description = 'StuffPrettyGood is a dense, image-led public offers and buyer-guide brand for useful tools, products, deals, and practical upgrades with clear affiliate disclosure.';
+  const description = 'StuffPrettyGood is an affiliate-only Amazon-first deals site for daily useful finds, buyer guides, and disclosed offer routes.';
   const body = `<section class="hero commerce-hero surface" data-surface="home" data-crm-events="homepage_viewed,weekly_optin_started,trend_offer_clicked,disclosure_seen">
-    <div class="hero-copy"><p class="eyebrow">Daily affiliate commerce desk</p><h1>Trend-first finds before everyone else ruins them.</h1><p class="lede">A sharp, image-led shopping desk for Amazon trends, travel deals, AI tools, home upgrades, and weirdly useful buys — built with disclosure-first affiliate routing.</p><div class="hero-metrics"><span><strong>120+</strong> Amazon picks/day</span><span><strong>24</strong> travel routes</span><span><strong>0</strong> scraped reviews/prices</span></div><div class="cta-row"><a class="button primary" href="#amazon-trend-wall-grid">Shop trend wall</a><a class="button ghost" href="/today.html">Today’s board</a><a class="button ghost" href="#weekly-picks">Get weekly picks</a></div><p class="trust-note">Affiliate links are disclosed. Cards use original SPG visuals and route through /offers before /go.</p>${heroAmazonLinks(3)}</div>
+    <div class="hero-copy"><p class="eyebrow">Amazon affiliate commerce desk</p><h1>The Amazon trend wall for useful buys.</h1><p class="lede">StuffPrettyGood is now affiliate-only: daily Amazon trend picks, original buyer notes, clear disclosures, and no non-monetized filler.</p><div class="hero-metrics"><span><strong>120+</strong> Amazon picks/day</span><span><strong>100%</strong> affiliate-first</span><span><strong>0</strong> scraped reviews/prices</span></div><div class="cta-row"><a class="button primary" href="#amazon-trend-wall-grid">Shop trend wall</a><a class="button ghost" href="/today.html">Today’s board</a><a class="button ghost" href="#weekly-picks">Get weekly picks</a></div><p class="trust-note">Affiliate links are disclosed. Cards use original SPG visuals and route through /offers before /go.</p>${heroAmazonLinks(3)}</div>
     <aside class="hero-shop-wall" aria-label="Featured useful find collage">${trendOfferLanes.slice(0,6).map((lane, index)=>`<a class="shop-chip chip-${index}" href="/trends/${esc(lane.slug)}.html"><span>${artTile(lane.seed, lane.title)}</span><strong>${esc(lane.title.split(':')[0])}</strong><em>${esc(lane.momentumPct ?? 'watch')}% signal</em></a>`).join('')}<div class="mascot-card"><span class="mascot">ʕ•ᴥ•ʔ</span><strong>Pretty Good Finder</strong><small>original SPG art only</small></div></aside>
   </section>
   ${amazonTrendWall(12)}
   <section class="section search-band" aria-label="Search StuffPrettyGood"><div><p class="eyebrow">Find your lane</p><h2>Search/filter the homepage</h2><p>Filter visible rails by topic, use case, category, or trend seed.</p></div><label class="search-box" for="spg-home-filter"><span>Search</span><input id="spg-home-filter" type="search" placeholder="Try: air purifier, AI, travel, gifts, desk…" data-home-filter></label></section>
   ${signupBand()}
-  <section class="section offer-wall"><div class="section-header"><div><p class="eyebrow">Monetized offer wall</p><h2>Amazon-first useful products to compare now</h2><p>Image-led cards use original StuffPrettyGood cartoon art and disclosed Amazon Associates bridges with approved tracking.</p></div><a href="/affiliate-disclosure.html">Affiliate disclosure</a></div><div class="cards four offer-grid">${homepageOfferWall(48).map(homepageOfferCard).join('')}</div></section>
-  <section class="section"><div class="section-header"><div><p class="eyebrow">Trending now</p><h2>Dense daily finds with safe source signals</h2><p>High-momentum lanes route to original guides and disclosed /go bridges only where approved.</p></div><a href="/trends.html">Browse all guides</a></div><div class="signal-strip">${trendOfferLanes.slice(0,6).map(signalCard).join('')}</div></section>
+  <section class="section offer-wall"><div class="section-header"><div><p class="eyebrow">Affiliate-only offer wall</p><h2>Amazon products to compare now</h2><p>Every card is monetized through Amazon Associates, uses original StuffPrettyGood art, and routes through /offers before /go.</p></div><a href="/affiliate-disclosure.html">Affiliate disclosure</a></div><div class="cards four offer-grid">${amazonOfferWall(72).map(homepageOfferCard).join('')}</div></section>
+  <section class="section"><div class="section-header"><div><p class="eyebrow">Trending now</p><h2>Dense daily finds with safe source signals</h2><p>High-momentum lanes route to Amazon-first guides and disclosed /go bridges only where approved.</p></div><a href="/trends.html">Browse all guides</a></div><div class="signal-strip">${trendOfferLanes.slice(0,6).map(signalCard).join('')}</div></section>
   <section class="section"><div class="section-header"><div><p class="eyebrow">Category rails</p><h2>Start with what you need</h2></div><a href="/preferences.html">Tune preferences</a></div><div class="cards three category-grid">${categoryIntents.map(categoryCard).join('')}</div></section>
   <section class="section"><div class="section-header"><div><p class="eyebrow">Editor picks</p><h2>Pretty good, not noisy</h2><p>Playful commerce cards with original illustrations, not scraped merchant assets.</p></div><a href="/today.html">Today</a></div><div class="cards three">${trendOfferLanes.slice(4,13).map(editorPickCard).join('')}</div></section>
   <section class="section guide-rail"><div class="section-header"><div><p class="eyebrow">Buyer guides</p><h2>Useful checks before clicking buy</h2></div><a href="/deals.html">Open deal hub</a></div><div class="cards three"><article class="card guide-card large" data-filter-card data-filter-text="deal checklist total cost return policy privacy warranty"><div class="card-media wide">${artTile('deal checklist', 'pretty good deal')}</div><p class="eyebrow">Guide · updated ${today}</p><h2>How to tell if a deal is actually pretty good.</h2><p>Start with use case, total cost, durability, privacy, return policy, compatibility, and whether you would still want it without the hype.</p><a class="go-link" href="/deals.html">Open deal hub</a></article>${trendOfferLanes.slice(8,11).map(signalCard).join('')}</div></section>
@@ -359,7 +371,7 @@ function allOfferLandingRecords() {
   // placements. Provider-fed rows such as Stay22 can sit past the homepage-wall
   // limit but still need their own /offers/<slug> and /go/<slug> routes.
   const publicOffers = spgStore.listOffers({}, { publicOnly: true });
-  for (const offer of [...homepageOfferWall(96), ...publicOffers, ...laneTargetOffers()]) {
+  for (const offer of [...amazonOfferWall(120), ...publicOffers.filter(isAmazonOffer), ...laneTargetOffers().filter(isAmazonOffer)]) {
     const key = offer.offer_key;
     if (!key || seen.has(key) || !isApprovedOfferRoute(offer)) continue;
     seen.add(key);

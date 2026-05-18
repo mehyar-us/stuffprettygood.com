@@ -111,11 +111,10 @@ test('SPG CRM offer seed maps every Amazon manual card into approved tracking an
   assert.match(contract, /62 Amazon manual cards/);
 });
 
-test('SPG daily monetized offer feed covers Amazon, Skimlinks, and Stay22 without raw secrets or direct public URLs', () => {
+test('SPG daily monetized offer feed is Amazon-first without raw secrets or direct public URLs', () => {
   const sourceKeys = new Set(dailyOfferFeed.offers.map((offer) => offer.source_key));
   assert.ok(sourceKeys.has('amazon-manual-links'));
-  assert.ok(sourceKeys.has('skimlinks-api-feed'));
-  assert.ok(sourceKeys.has('stay22-api-feed'));
+  assert.equal([...sourceKeys].some((key) => key === 'skimlinks-api-feed' || key === 'stay22-api-feed'), false);
   assert.match(migration, /manual_amazon/);
   assert.match(migration, /skimlinks_feed/);
   assert.match(migration, /stay22_feed/);
@@ -124,6 +123,7 @@ test('SPG daily monetized offer feed covers Amazon, Skimlinks, and Stay22 withou
   assert.match(migration, /env:SPG_SKIMLINKS_API_KEY/);
   assert.match(migration, /env:SPG_STAY22_API_KEY/);
   assert.match(contract, /Skimlinks\/Stay22 API\/feed lanes/);
+  assert.ok(dailyOfferFeed.offers.every((offer) => String(offer.slug || '').startsWith('amazon-')));
 
   for (const offer of dailyOfferFeed.offers) {
     assert.equal(offer.monetized, true);

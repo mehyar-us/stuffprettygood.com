@@ -98,6 +98,73 @@ test('HTTP app seeds admin credentials from environment when provided', async ()
   }
 });
 
+test('HTTP app refuses production boot without explicit non-default CRM admin credentials', () => {
+  const previousNodeEnv = process.env.NODE_ENV;
+  const previousEmail = process.env.CRM_ADMIN_EMAIL;
+  const previousPassword = process.env.CRM_ADMIN_PASSWORD;
+
+  try {
+    process.env.NODE_ENV = 'production';
+    delete process.env.CRM_ADMIN_EMAIL;
+    delete process.env.CRM_ADMIN_PASSWORD;
+    assert.throws(() => createApp({ authStore: new AuthStore({ auditLog: new AuditLog() }) }), /CRM_ADMIN_EMAIL and CRM_ADMIN_PASSWORD/);
+
+    process.env.CRM_ADMIN_EMAIL = 'admin@mehyarmedia.local';
+    process.env.CRM_ADMIN_PASSWORD = 'production-test-password';
+    assert.throws(() => createApp({ authStore: new AuthStore({ auditLog: new AuditLog() }) }), /must not use the repo default admin identifier/);
+
+    process.env.CRM_ADMIN_EMAIL = 'owner@example.test';
+    process.env.CRM_ADMIN_PASSWORD = 'change-me-before-production';
+    assert.throws(() => createApp({ authStore: new AuthStore({ auditLog: new AuditLog() }) }), /must not use the repo default admin password/);
+  } finally {
+    if (previousNodeEnv === undefined) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = previousNodeEnv;
+    if (previousEmail === undefined) delete process.env.CRM_ADMIN_EMAIL;
+    else process.env.CRM_ADMIN_EMAIL = previousEmail;
+    if (previousPassword === undefined) delete process.env.CRM_ADMIN_PASSWORD;
+    else process.env.CRM_ADMIN_PASSWORD = previousPassword;
+  }
+});
+
+test('production HTTP app accepts configured credentials and rejects repo default credentials', async () => {
+  const previousNodeEnv = process.env.NODE_ENV;
+  const previousEmail = process.env.CRM_ADMIN_EMAIL;
+  const previousPassword = process.env.CRM_ADMIN_PASSWORD;
+
+  process.env.NODE_ENV = 'production';
+  process.env.CRM_ADMIN_EMAIL = 'owner@example.test';
+  process.env.CRM_ADMIN_PASSWORD = 'env-only-test-password';
+
+  const auditLog = new AuditLog();
+  const server = http.createServer(createApp({ authStore: new AuthStore({ auditLog }), audit: auditLog }));
+  await listen(server);
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+
+  try {
+    const configuredLogin = await requestJson(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      body: { email: 'owner@example.test', password: 'env-only-test-password' },
+    });
+    assert.equal(configuredLogin.status, 200);
+    assert.equal(configuredLogin.body.ok, true);
+
+    const defaultLogin = await requestJson(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      body: { email: 'admin@mehyarmedia.local', password: 'change-me-before-production' },
+    });
+    assert.equal(defaultLogin.status, 401);
+    assert.equal(defaultLogin.body.error, 'invalid credentials');
+  } finally {
+    if (previousNodeEnv === undefined) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = previousNodeEnv;
+    if (previousEmail === undefined) delete process.env.CRM_ADMIN_EMAIL;
+    else process.env.CRM_ADMIN_EMAIL = previousEmail;
+    if (previousPassword === undefined) delete process.env.CRM_ADMIN_PASSWORD;
+    else process.env.CRM_ADMIN_PASSWORD = previousPassword;
+    await close(server);
+  }
+});
+
 test('HTTP app exposes health, dashboard, auth, session, audit, and compliance transition routes', async () => {
   const auditLog = new AuditLog();
   const auth = new AuthStore({ auditLog });

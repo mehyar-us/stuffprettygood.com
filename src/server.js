@@ -1,7 +1,7 @@
 import http from 'node:http';
 
 import { auditLog } from './core/audit.js';
-import { AuthStore, seedAdmin } from './core/auth.js';
+import { AuthStore, DEFAULT_ADMIN_EMAIL, DEFAULT_ADMIN_PASSWORD, seedAdmin } from './core/auth.js';
 import { buildDashboard } from './core/dashboard.js';
 import { collectDatabaseStatus } from './core/database-status.js';
 import { loadDailyPullSummary } from './core/daily-pull-summary.js';
@@ -26,9 +26,7 @@ export function createApp({
   jobsStore = new JobsStore({ auditLog: audit }),
   opportunityArtifactPaths = defaultArtifactPaths(),
 } = {}) {
-  const configuredAdminCredentials = process.env.CRM_ADMIN_EMAIL || process.env.CRM_ADMIN_PASSWORD
-    ? { email: process.env.CRM_ADMIN_EMAIL, password: process.env.CRM_ADMIN_PASSWORD }
-    : undefined;
+  const configuredAdminCredentials = resolveAdminCredentials();
   seedAdmin(authStore, configuredAdminCredentials);
   commandCenter.seedFirstBrand();
 
@@ -36,7 +34,10 @@ export function createApp({
     try {
       const url = new URL(req.url, 'http://127.0.0.1');
       const method = req.method || 'GET';
-      const pathname = normalizePathname(url.pathname);
+      let pathname = normalizePathname(url.pathname);
+      if (pathname.startsWith('/crm/api/')) {
+        pathname = normalizePathname(pathname.slice(4));
+      }
 
       if (method === 'GET' && PUBLIC_HEALTH_PATHS.has(pathname)) {
         return sendJson(res, 200, { status: 'healthy', service: 'mehyarmedia-crm', massSendingEnabled: false });
@@ -647,6 +648,33 @@ export function startServer({ port = Number(process.env.PORT || 3000), host = pr
 }
 
 const PUBLIC_HEALTH_PATHS = new Set(['/health', '/crm/health', '/crm-health']);
+
+function resolveAdminCredentials({ env = process.env } = {}) {
+  const email = env.CRM_ADMIN_EMAIL;
+  const password = env.CRM_ADMIN_PASSWORD;
+  const hasEmail = Boolean(email);
+  const hasPassword = Boolean(password);
+  const isProduction = env.NODE_ENV === 'production';
+
+  if (hasEmail !== hasPassword) {
+    throw new Error('CRM_ADMIN_EMAIL and CRM_ADMIN_PASSWORD must be configured together');
+  }
+
+  if (!hasEmail && !hasPassword) {
+    if (isProduction) throw new Error('production CRM admin credentials must be set via CRM_ADMIN_EMAIL and CRM_ADMIN_PASSWORD');
+    return undefined;
+  }
+
+  if (isProduction && email === DEFAULT_ADMIN_EMAIL) {
+    throw new Error('production CRM_ADMIN_EMAIL must not use the repo default admin identifier');
+  }
+
+  if (isProduction && password === DEFAULT_ADMIN_PASSWORD) {
+    throw new Error('production CRM_ADMIN_PASSWORD must not use the repo default admin password');
+  }
+
+  return { email, password };
+}
 
 function normalizePathname(pathname) {
   if (pathname.startsWith('/crm-api/')) return pathname.replace('/crm-api/', '/api/');

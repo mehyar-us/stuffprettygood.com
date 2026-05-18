@@ -110,7 +110,7 @@ test('Grants.gov collector normalizes grant metadata and flags review-only statu
 });
 
 test('Posting collector imports demand signals from approved RSS only', async () => {
-  const source = registry.sources.find((item) => item.family === 'postings');
+  const source = registry.sources.find((item) => item.family === 'postings' && item.feeds);
   const result = await collectSource({ ...source, feeds: source.feeds.slice(0, 1) }, {
     fetchImpl: async () => textResponse('<rss><channel><item><title>AI automation consultant for CRM launch</title><link>https://example.com/job/1</link><description>Need software automation support</description><pubDate>Fri, 15 May 2026 12:00:00 GMT</pubDate></item></channel></rss>')
   });
@@ -120,6 +120,49 @@ test('Posting collector imports demand signals from approved RSS only', async ()
   assert.equal(opp.opportunity_type, 'service');
   assert.equal(opp.evidence.allowed_access_method, 'rss');
   assert.doesNotMatch(JSON.stringify(opp), /password=|token=|api_key=/i);
+});
+
+test('Remotive and Arbeitnow JSON collectors normalize public job demand without PII or secrets', async () => {
+  const remotive = registry.sources.find((item) => item.id === 'remotive_remote_jobs_api');
+  const arbeitnow = registry.sources.find((item) => item.id === 'arbeitnow_job_board_api');
+
+  const remotiveResult = await collectSource(remotive, {
+    fetchImpl: async (url, options) => {
+      assert.equal(url, remotive.endpoint);
+      assert.match(options.headers['user-agent'], /MehyarMediaOpportunityFinder/);
+      return jsonResponse({ jobs: [{ id: 42, title: 'AI CRM Automation Engineer', company_name: 'ExampleCo', url: 'https://remotive.com/remote-jobs/software-dev/example', category: 'Software Development', job_type: 'full_time', tags: ['automation', 'crm'], description: 'Build AI workflow automation for CRM operations.' }] });
+    }
+  });
+  const arbeitnowResult = await collectSource(arbeitnow, {
+    fetchImpl: async (url, options) => {
+      assert.equal(url, arbeitnow.endpoint);
+      assert.match(options.headers['user-agent'], /MehyarMediaOpportunityFinder/);
+      return jsonResponse({ data: [{ slug: 'data-automation-consultant', title: 'Data Automation Consultant', company_name: 'Builder GmbH', url: 'https://www.arbeitnow.com/jobs/companies/builder/data-automation-consultant', location: 'Remote', tags: ['data', 'automation'], description: 'Automation and analytics implementation role.' }] });
+    }
+  });
+
+  for (const result of [remotiveResult, arbeitnowResult]) {
+    assert.equal(result.opportunities.length, 1);
+    const opp = result.opportunities[0];
+    assert.equal(opp.source_family, 'postings');
+    assert.equal(opp.opportunity_type, 'service');
+    assert.equal(opp.external_action_type, 'none');
+    assert.equal(opp.gate_status, 'draft_only');
+    assert.equal(opp.evidence.pii_present, 'none');
+    assert.equal(opp.evidence.secret_present, false);
+    assert.doesNotMatch(JSON.stringify(opp), /password=|token=|api_key=|authorization=/i);
+  }
+});
+
+test('Gated public job collectors skip safely when prerequisites are missing or disabled', async () => {
+  const usajobs = registry.sources.find((item) => item.id === 'usajobs_public_search_api');
+  const greenhouse = registry.sources.find((item) => item.id === 'greenhouse_public_board_api_pattern');
+  const missingKey = await collectSource(usajobs, { env: {}, fetchImpl: async () => { throw new Error('fetch should not run without USAJOBS_API_KEY'); } });
+  assert.equal(missingKey.skipped, true);
+  assert.equal(missingKey.skip_reason, 'missing_env:USAJOBS_API_KEY');
+  assert.deepEqual(missingKey.opportunities, []);
+  assert.equal(greenhouse.enabled, false);
+  assert.equal(greenhouse.collector_status, 'schema_only');
 });
 
 test('Daily collector writes idempotent source-run status, errors, and deduped opportunities', async () => {

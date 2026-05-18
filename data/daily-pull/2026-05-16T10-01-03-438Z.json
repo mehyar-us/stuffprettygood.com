@@ -1,0 +1,35 @@
+{
+  "generated_at": "2026-05-16T10:01:03.438Z",
+  "status": "ok",
+  "source_families": [
+    "google_trends",
+    "spg_rss",
+    "spg_durable_offers",
+    "sam_gov",
+    "usaspending",
+    "grants_gov",
+    "postings",
+    "affiliate_source_signals"
+  ],
+  "counts": {
+    "opportunities": 287,
+    "opportunity_source_runs": 6,
+    "spg_rss_candidates": 40,
+    "spg_offer_records": 239,
+    "spg_offer_candidates": 211,
+    "spg_source_items": 211,
+    "spg_page_placements": 231,
+    "google_trend_seeds": 11,
+    "google_trend_related_queries": 129
+  },
+  "opportunity_source_health": {
+    "ok": 5,
+    "skipped": 1
+  },
+  "guardrails": [
+    "internal collection only",
+    "no bids/applications/outreach/spend/account KYC/provider push/email/SMS from this job",
+    "no raw secrets or PII in logs/docs/Kanban/frontend",
+    "SPG offer QA must pass before deploy"
+  ]
+}

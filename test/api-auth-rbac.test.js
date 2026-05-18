@@ -169,6 +169,44 @@ test('CRM jobs API exposes allowlisted reruns and executes only authenticated sa
   }
 });
 
+test('CRM jobs API refuses legacy shell command strings even for configured job definitions', async () => {
+  const auditLog = new AuditLog();
+  const auth = new AuthStore({ auditLog });
+  seedAdmin(auth);
+  const jobsStore = new JobsStore({
+    path: join(mkdtempSync(join(tmpdir(), 'crm-jobs-shell-test-')), 'runs.json'),
+    workdir: new URL('..', import.meta.url).pathname,
+    auditLog,
+    definitions: [{
+      job_id: 'unsafe-shell-string',
+      label: 'Unsafe shell string',
+      owner: 'devops',
+      command: 'echo should-not-run',
+      schedule: 'manual',
+      description: 'Legacy shell command strings must not execute.',
+      expected_artifact: 'none',
+      env_keys: [],
+      side_effects: ['none'],
+    }],
+  });
+  const server = http.createServer(createApp({ authStore: auth, audit: auditLog, jobsStore }));
+  await listen(server);
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+
+  try {
+    const login = await requestJson(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      body: { email: 'admin@mehyarmedia.local', password: 'change-me-before-production' },
+    });
+    const headers = { authorization: `Bearer ${login.body.session.id}` };
+    const run = await requestJson(`${baseUrl}/api/jobs/run`, { method: 'POST', headers, body: { job_id: 'unsafe-shell-string' } });
+    assert.equal(run.status, 500);
+    assert.match(run.body.error, /command_argv allowlist/);
+  } finally {
+    await close(server);
+  }
+});
+
 function listen(server) {
   return new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
 }

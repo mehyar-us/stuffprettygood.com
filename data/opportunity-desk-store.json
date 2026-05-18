@@ -11705,6 +11705,129 @@
       "generated_at": "2026-05-15T18:13:30.702Z",
       "massSendingEnabled": false,
       "externalActionsEnabled": false
+    },
+    {
+      "digest_id": "digest_c4756a8e1e7c97b9",
+      "digest_date": "2026-05-16",
+      "snapshot_scope": "default",
+      "top_opportunity_ids": [],
+      "counts_by_status": {
+        "routed": 1,
+        "watch": 31,
+        "reject": 118
+      },
+      "counts_by_source": {
+        "public_job_marketplace_demand_signals": 19,
+        "usaspending_recent_awards": 19,
+        "grants_gov_public_feed": 24,
+        "rss_public_opportunity_signals": 57,
+        "sam_gov_contract_opportunities": 31
+      },
+      "counts_by_type": {
+        "service": 19,
+        "government_award_intel": 19,
+        "grant": 24,
+        "government": 88
+      },
+      "source_performance_summary": [
+        {
+          "source_id": "src_manual_revenue_research",
+          "source_family": "manual",
+          "source_health": "ok",
+          "active": true,
+          "runs": 0,
+          "opportunities": 0
+        },
+        {
+          "source_id": "sam_gov_contract_opportunities",
+          "source_family": "sam_gov",
+          "source_health": "ok",
+          "active": true,
+          "runs": 1,
+          "opportunities": 31
+        },
+        {
+          "source_id": "usaspending_recent_awards",
+          "source_family": "usaspending",
+          "source_health": "ok",
+          "active": true,
+          "runs": 1,
+          "opportunities": 19
+        },
+        {
+          "source_id": "grants_gov_public_feed",
+          "source_family": "grants_gov",
+          "source_health": "ok",
+          "active": true,
+          "runs": 1,
+          "opportunities": 24
+        },
+        {
+          "source_id": "rss_public_opportunity_signals",
+          "source_family": "rss",
+          "source_health": "ok",
+          "active": true,
+          "runs": 1,
+          "opportunities": 57
+        },
+        {
+          "source_id": "public_job_marketplace_demand_signals",
+          "source_family": "postings",
+          "source_health": "ok",
+          "active": true,
+          "runs": 1,
+          "opportunities": 19
+        },
+        {
+          "source_id": "local_smb_public_web_leads",
+          "source_family": "local_smb",
+          "source_health": "needs_review",
+          "active": false,
+          "runs": 0,
+          "opportunities": 0
+        },
+        {
+          "source_id": "state_local_procurement_portals",
+          "source_family": "state_local",
+          "source_health": "needs_review",
+          "active": false,
+          "runs": 0,
+          "opportunities": 0
+        },
+        {
+          "source_id": "prime_subcontracting_portals",
+          "source_family": "prime_portal",
+          "source_health": "needs_review",
+          "active": false,
+          "runs": 0,
+          "opportunities": 0
+        },
+        {
+          "source_id": "affiliate_network_sponsor_watchlist",
+          "source_family": "affiliate",
+          "source_health": "needs_review",
+          "active": false,
+          "runs": 0,
+          "opportunities": 0
+        },
+        {
+          "source_id": "spg_public_proof_signals",
+          "source_family": "spg_proof",
+          "source_health": "ok",
+          "active": true,
+          "runs": 1,
+          "opportunities": 0
+        }
+      ],
+      "top_recommendations": [],
+      "stale_kill_list": [],
+      "fast_cash_pick": null,
+      "asset_building_pick": null,
+      "strategic_pick": null,
+      "generated_by_profile": "system",
+      "generated_at": "2026-05-16T22:12:09.860Z",
+      "massSendingEnabled": false,
+      "externalActionsEnabled": false
     }
   ],
   "source_health_logs": [],

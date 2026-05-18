@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-05-15T00:00:00.000Z",
-  "contract": "spg-daily-monetized-offer-ingestion-v1",
+  "contract": "spg-daily-monetized-offer-ingestion-v2-amazon-first",
   "safety": {
     "no_raw_pii": true,
     "no_raw_secret_values": true,
@@ -30,50 +30,24 @@
         "alt": "Cartoon standing desk cable organization kit"
       },
       "disclosure_text": "StuffPrettyGood may earn a commission if you use approved links."
-    },
-    {
-      "source_key": "skimlinks-api-feed",
-      "account_key": "skimlinks",
-      "slug": "skimlinks-sample-merchant-home-upgrade",
-      "title": "Sample merchant home upgrade",
-      "summary": "Server-side Skimlinks candidate record for a home upgrade merchant. Held until account approval and credential health are verified.",
-      "category": "home",
-      "destination_url": "https://merchant.example/home-upgrade",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://placehold.co/1200x800/06b6d4/ffffff?text=SPG+home",
-        "source": "generated_placeholder",
-        "license": "owned/generated placeholder",
-        "rights_status": "approved",
-        "alt": "Cartoon home upgrade offer card"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission if you use approved links."
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-sample-weekend-stay-map",
-      "title": "Sample weekend stay map",
-      "summary": "Server-side Stay22 travel candidate record. Held until account approval and credential health are verified.",
-      "category": "travel",
-      "destination_url": "https://travel.example/weekend-stay-map",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://placehold.co/1200x800/f97316/ffffff?text=SPG+travel",
-        "source": "generated_placeholder",
-        "license": "owned/generated placeholder",
-        "rights_status": "approved",
-        "alt": "Cartoon travel stay map offer card"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission if you use approved links."
     }
-  ]
+  ],
+  "source_status": {
+    "amazon_associates": {
+      "status": "ok",
+      "count": 1,
+      "store_id_ref": "env:SPG_AMAZON_ASSOCIATES_TAG"
+    },
+    "skimlinks": {
+      "status": "disabled_amazon_first",
+      "count": 0,
+      "credential_ref": "env:SPG_SKIMLINKS_API_KEY"
+    },
+    "stay22": {
+      "status": "disabled_amazon_first",
+      "count": 0,
+      "credential_ref": "env:SPG_STAY22_API_KEY",
+      "aid_ref": "env:SPG_STAY22_AID"
+    }
+  }
 }

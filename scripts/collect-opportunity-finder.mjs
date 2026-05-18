@@ -53,6 +53,11 @@ function safeText(value, limit = 240) {
   return String(value || '').replace(/\s+/g, ' ').trim().slice(0, limit);
 }
 
+function sourceLimit(source, fallback = 25) {
+  const q = source.query || {};
+  return Number(q.limit || source.max_items || fallback);
+}
+
 function gateEvidence(source, raw, extra = {}) {
   return {
     source_type: source.source_type,
@@ -244,6 +249,73 @@ export async function collectGrantsGov(source, options = {}) {
   })) };
 }
 
+export async function collectRemotive(source, options = {}) {
+  const limit = sourceLimit(source, 25);
+  const data = await fetchJson(source.endpoint, { headers: { 'user-agent': 'MehyarMediaOpportunityFinder/1.0' } }, options.fetchImpl || fetch);
+  const rows = data.jobs || data.data || [];
+  return { opportunities: rows.slice(0, limit).map((row) => normalizeOpportunity(source, row, {
+    title: row.title,
+    agency: row.company_name || row.company,
+    source_record_id: row.id || row.url,
+    source_url: row.url || source.endpoint,
+    due_date: null,
+    description: row.description || row.category || '',
+    tags: [row.category, row.job_type, ...(row.tags || [])].filter(Boolean)
+  })) };
+}
+
+export async function collectArbeitnow(source, options = {}) {
+  const limit = sourceLimit(source, 25);
+  const data = await fetchJson(source.endpoint, { headers: { 'user-agent': 'MehyarMediaOpportunityFinder/1.0' } }, options.fetchImpl || fetch);
+  const rows = data.data || data.jobs || [];
+  return { opportunities: rows.slice(0, limit).map((row) => normalizeOpportunity(source, row, {
+    title: row.title,
+    agency: row.company_name || row.company,
+    source_record_id: row.slug || row.id || row.url,
+    source_url: row.url || source.endpoint,
+    due_date: null,
+    description: row.description || '',
+    tags: [row.location, ...(row.tags || [])].filter(Boolean)
+  })) };
+}
+
+export async function collectUsaJobs(source, options = {}) {
+  const env = options.env ?? process.env;
+  const apiKey = env[source.credential_ref_env];
+  if (!apiKey) return { skipped: true, skip_reason: `missing_env:${source.credential_ref_env}`, opportunities: [] };
+  const q = source.query || {};
+  const params = new URLSearchParams({
+    Keyword: (q.keywords || ['artificial intelligence', 'data', 'web', 'automation', 'CRM', 'digital services']).join(' OR '),
+    ResultsPerPage: String(sourceLimit(source, 10))
+  });
+  const data = await fetchJson(`${source.endpoint}?${params}`, {
+    headers: {
+      'user-agent': 'MehyarMediaOpportunityFinder/1.0',
+      'host': 'data.usajobs.gov',
+      'authorization-key': apiKey
+    }
+  }, options.fetchImpl || fetch);
+  const rows = data.SearchResult?.SearchResultItems || data.SearchResultItems || [];
+  return { opportunities: rows.slice(0, sourceLimit(source, 10)).map((item) => {
+    const row = item.MatchedObjectDescriptor || item;
+    return normalizeOpportunity(source, row, {
+      title: row.PositionTitle || row.title,
+      agency: row.OrganizationName || row.DepartmentName || row.agency,
+      source_record_id: row.PositionID || row.id,
+      source_url: row.PositionURI || row.ApplyURI?.[0] || source.endpoint,
+      due_date: row.ApplicationCloseDate,
+      description: row.UserArea?.Details?.JobSummary || row.QualificationSummary || '',
+      tags: ['federal_hiring_demand', 'public_api']
+    });
+  }) };
+}
+
+export async function collectGreenhousePattern(source) {
+  const slugs = source.approved_board_slugs || source.query?.approved_board_slugs || [];
+  if (!slugs.length) return { skipped: true, skip_reason: 'missing_approved_board_slugs', opportunities: [] };
+  return { skipped: true, skip_reason: 'schema_only:greenhouse_requires_explicit_board_slug_gate', opportunities: [] };
+}
+
 function rssSourceFromRegistry(source, entry) {
   return {
     ...source,
@@ -282,6 +354,10 @@ export async function collectRssRegistry(source, options = {}) {
 }
 
 export async function collectPostings(source, options = {}) {
+  if (source.api_format === 'remotive') return collectRemotive(source, options);
+  if (source.api_format === 'arbeitnow') return collectArbeitnow(source, options);
+  if (source.api_format === 'usajobs') return collectUsaJobs(source, options);
+  if (source.api_format === 'greenhouse_pattern') return collectGreenhousePattern(source, options);
   const opportunities = [];
   for (const entry of (source.feeds || []).slice(0, 10)) {
     const rssSource = rssSourceFromRegistry(source, entry);

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16T21:38:06.443Z",
+  "generated_at": "2026-05-16T22:01:17.336Z",
   "contract": "spg-daily-monetized-offer-ingestion-v2",
   "safety": {
     "no_raw_pii": true,
@@ -14,19 +14,16 @@
       "store_id_ref": "env:SPG_AMAZON_ASSOCIATES_TAG"
     },
     "skimlinks": {
-      "status": "disabled_amazon_focus",
+      "status": "disabled_amazon_first",
       "count": 0,
       "credential_ref": "env:SPG_SKIMLINKS_API_KEY"
     },
     "stay22": {
-      "status": "ok",
-      "count": 24,
+      "status": "disabled_amazon_first",
+      "count": 0,
       "credential_ref": "env:SPG_STAY22_API_KEY",
       "aid_ref": "env:SPG_STAY22_AID",
-      "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-      "warnings": [
-        "api_key_rejected_fell_back_to_public_contract"
-      ]
+      "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT"
     }
   },
   "offers": [
@@ -59,7 +56,7 @@
         "trend_lane": "weekend-hobby-kits",
         "trend_momentum_pct": 2400,
         "trend_latest": 18,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -92,7 +89,7 @@
         "trend_lane": "weekend-hobby-kits",
         "trend_momentum_pct": 2400,
         "trend_latest": 18,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -125,7 +122,7 @@
         "trend_lane": "weekend-hobby-kits",
         "trend_momentum_pct": 2400,
         "trend_latest": 18,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -158,7 +155,7 @@
         "trend_lane": "weekend-hobby-kits",
         "trend_momentum_pct": 2400,
         "trend_latest": 18,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -191,7 +188,7 @@
         "trend_lane": "weekend-hobby-kits",
         "trend_momentum_pct": 2400,
         "trend_latest": 18,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -224,7 +221,7 @@
         "trend_lane": "weekend-hobby-kits",
         "trend_momentum_pct": 2400,
         "trend_latest": 18,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -257,7 +254,7 @@
         "trend_lane": "weekend-hobby-kits",
         "trend_momentum_pct": 2400,
         "trend_latest": 18,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 7
       }
     },
@@ -290,7 +287,7 @@
         "trend_lane": "weekend-hobby-kits",
         "trend_momentum_pct": 2400,
         "trend_latest": 18,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 8
       }
     },
@@ -323,7 +320,7 @@
         "trend_lane": "portable-power-stations",
         "trend_momentum_pct": 397,
         "trend_latest": 27,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -356,7 +353,7 @@
         "trend_lane": "portable-power-stations",
         "trend_momentum_pct": 397,
         "trend_latest": 27,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -389,7 +386,7 @@
         "trend_lane": "portable-power-stations",
         "trend_momentum_pct": 397,
         "trend_latest": 27,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -422,7 +419,7 @@
         "trend_lane": "portable-power-stations",
         "trend_momentum_pct": 397,
         "trend_latest": 27,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -455,7 +452,7 @@
         "trend_lane": "portable-power-stations",
         "trend_momentum_pct": 397,
         "trend_latest": 27,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -488,7 +485,7 @@
         "trend_lane": "portable-power-stations",
         "trend_momentum_pct": 397,
         "trend_latest": 27,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -521,7 +518,7 @@
         "trend_lane": "portable-power-stations",
         "trend_momentum_pct": 397,
         "trend_latest": 27,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 7
       }
     },
@@ -554,7 +551,7 @@
         "trend_lane": "pet-tech-safety",
         "trend_momentum_pct": 378,
         "trend_latest": 28,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -587,7 +584,7 @@
         "trend_lane": "pet-tech-safety",
         "trend_momentum_pct": 378,
         "trend_latest": 28,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -620,7 +617,7 @@
         "trend_lane": "pet-tech-safety",
         "trend_momentum_pct": 378,
         "trend_latest": 28,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -653,7 +650,7 @@
         "trend_lane": "pet-tech-safety",
         "trend_momentum_pct": 378,
         "trend_latest": 28,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -686,7 +683,7 @@
         "trend_lane": "pet-tech-safety",
         "trend_momentum_pct": 378,
         "trend_latest": 28,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -719,7 +716,7 @@
         "trend_lane": "pet-tech-safety",
         "trend_momentum_pct": 378,
         "trend_latest": 28,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -752,7 +749,7 @@
         "trend_lane": "pet-tech-safety",
         "trend_momentum_pct": 378,
         "trend_latest": 28,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 7
       }
     },
@@ -785,7 +782,7 @@
         "trend_lane": "pet-tech-safety",
         "trend_momentum_pct": 378,
         "trend_latest": 28,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 8
       }
     },
@@ -818,7 +815,7 @@
         "trend_lane": "robot-vacuums-smart-home",
         "trend_momentum_pct": 338,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -851,7 +848,7 @@
         "trend_lane": "robot-vacuums-smart-home",
         "trend_momentum_pct": 338,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -884,7 +881,7 @@
         "trend_lane": "robot-vacuums-smart-home",
         "trend_momentum_pct": 338,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -917,7 +914,7 @@
         "trend_lane": "robot-vacuums-smart-home",
         "trend_momentum_pct": 338,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -950,7 +947,7 @@
         "trend_lane": "robot-vacuums-smart-home",
         "trend_momentum_pct": 338,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -983,7 +980,7 @@
         "trend_lane": "robot-vacuums-smart-home",
         "trend_momentum_pct": 338,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -1016,7 +1013,7 @@
         "trend_lane": "robot-vacuums-smart-home",
         "trend_momentum_pct": 338,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 7
       }
     },
@@ -1049,7 +1046,7 @@
         "trend_lane": "robot-vacuums-smart-home",
         "trend_momentum_pct": 338,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 8
       }
     },
@@ -1082,7 +1079,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -1115,7 +1112,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -1148,7 +1145,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -1181,7 +1178,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -1214,7 +1211,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -1247,7 +1244,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -1280,7 +1277,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 7
       }
     },
@@ -1313,7 +1310,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 8
       }
     },
@@ -1346,7 +1343,7 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -1379,7 +1376,7 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -1412,7 +1409,7 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -1445,7 +1442,7 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -1478,7 +1475,7 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -1511,7 +1508,7 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -1544,7 +1541,7 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 7
       }
     },
@@ -1577,7 +1574,7 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 8
       }
     },
@@ -1610,7 +1607,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -1643,7 +1640,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -1676,7 +1673,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -1709,7 +1706,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -1742,7 +1739,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -1775,7 +1772,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -1808,7 +1805,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 7
       }
     },
@@ -1841,7 +1838,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 8
       }
     },
@@ -1874,7 +1871,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -1907,7 +1904,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -1940,7 +1937,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -1973,7 +1970,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -2006,7 +2003,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -2039,7 +2036,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -2072,7 +2069,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 7
       }
     },
@@ -2105,7 +2102,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 8
       }
     },
@@ -2138,7 +2135,7 @@
         "trend_lane": "travel-tech-esim",
         "trend_momentum_pct": 132,
         "trend_latest": 36,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -2171,7 +2168,7 @@
         "trend_lane": "travel-tech-esim",
         "trend_momentum_pct": 132,
         "trend_latest": 36,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -2204,7 +2201,7 @@
         "trend_lane": "travel-tech-esim",
         "trend_momentum_pct": 132,
         "trend_latest": 36,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -2237,7 +2234,7 @@
         "trend_lane": "travel-tech-esim",
         "trend_momentum_pct": 132,
         "trend_latest": 36,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -2270,7 +2267,7 @@
         "trend_lane": "travel-tech-esim",
         "trend_momentum_pct": 132,
         "trend_latest": 36,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -2303,7 +2300,7 @@
         "trend_lane": "travel-tech-esim",
         "trend_momentum_pct": 132,
         "trend_latest": 36,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -2336,7 +2333,7 @@
         "trend_lane": "travel-tech-esim",
         "trend_momentum_pct": 132,
         "trend_latest": 36,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 7
       }
     },
@@ -2369,7 +2366,7 @@
         "trend_lane": "travel-tech-esim",
         "trend_momentum_pct": 132,
         "trend_latest": 36,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 8
       }
     },
@@ -2402,7 +2399,7 @@
         "trend_lane": "ai-note-takers",
         "trend_momentum_pct": 61,
         "trend_latest": 57,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -2435,7 +2432,7 @@
         "trend_lane": "ai-note-takers",
         "trend_momentum_pct": 61,
         "trend_latest": 57,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -2468,7 +2465,7 @@
         "trend_lane": "ai-note-takers",
         "trend_momentum_pct": 61,
         "trend_latest": 57,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -2501,7 +2498,7 @@
         "trend_lane": "ai-note-takers",
         "trend_momentum_pct": 61,
         "trend_latest": 57,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -2534,7 +2531,7 @@
         "trend_lane": "ai-note-takers",
         "trend_momentum_pct": 61,
         "trend_latest": 57,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -2567,7 +2564,7 @@
         "trend_lane": "ai-note-takers",
         "trend_momentum_pct": 61,
         "trend_latest": 57,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -2600,7 +2597,7 @@
         "trend_lane": "ai-note-takers",
         "trend_momentum_pct": 61,
         "trend_latest": 57,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 7
       }
     },
@@ -2633,7 +2630,7 @@
         "trend_lane": "ai-note-takers",
         "trend_momentum_pct": 61,
         "trend_latest": 57,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 8
       }
     },
@@ -2666,7 +2663,7 @@
         "trend_lane": "sleep-beauty-microtrends",
         "trend_momentum_pct": 65,
         "trend_latest": 46,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -2699,7 +2696,7 @@
         "trend_lane": "sleep-beauty-microtrends",
         "trend_momentum_pct": 65,
         "trend_latest": 46,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -2732,7 +2729,7 @@
         "trend_lane": "sleep-beauty-microtrends",
         "trend_momentum_pct": 65,
         "trend_latest": 46,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -2765,7 +2762,7 @@
         "trend_lane": "sleep-beauty-microtrends",
         "trend_momentum_pct": 65,
         "trend_latest": 46,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -2798,7 +2795,7 @@
         "trend_lane": "sleep-beauty-microtrends",
         "trend_momentum_pct": 65,
         "trend_latest": 46,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -2831,7 +2828,7 @@
         "trend_lane": "sleep-beauty-microtrends",
         "trend_momentum_pct": 65,
         "trend_latest": 46,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -2864,7 +2861,7 @@
         "trend_lane": "sleep-beauty-microtrends",
         "trend_momentum_pct": 65,
         "trend_latest": 46,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 7
       }
     },
@@ -2897,7 +2894,7 @@
         "trend_lane": "sleep-beauty-microtrends",
         "trend_momentum_pct": 65,
         "trend_latest": 46,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 8
       }
     },
@@ -2930,7 +2927,7 @@
         "trend_lane": "ai-note-takers",
         "trend_momentum_pct": 61,
         "trend_latest": 57,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -2963,7 +2960,7 @@
         "trend_lane": "ai-note-takers",
         "trend_momentum_pct": 61,
         "trend_latest": 57,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -2996,7 +2993,7 @@
         "trend_lane": "ai-note-takers",
         "trend_momentum_pct": 61,
         "trend_latest": 57,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -3029,7 +3026,7 @@
         "trend_lane": "portable-power-stations",
         "trend_momentum_pct": 397,
         "trend_latest": 27,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -3062,7 +3059,7 @@
         "trend_lane": "portable-power-stations",
         "trend_momentum_pct": 397,
         "trend_latest": 27,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -3095,7 +3092,7 @@
         "trend_lane": "portable-power-stations",
         "trend_momentum_pct": 397,
         "trend_latest": 27,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -3128,7 +3125,7 @@
         "trend_lane": "portable-power-stations",
         "trend_momentum_pct": 397,
         "trend_latest": 27,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -3161,7 +3158,7 @@
         "trend_lane": "portable-power-stations",
         "trend_momentum_pct": 397,
         "trend_latest": 27,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -3194,7 +3191,7 @@
         "trend_lane": "portable-power-stations",
         "trend_momentum_pct": 397,
         "trend_latest": 27,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -3227,7 +3224,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -3260,7 +3257,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -3293,7 +3290,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -3326,7 +3323,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -3359,7 +3356,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -3392,7 +3389,7 @@
         "trend_lane": "home-wellness-gadgets",
         "trend_momentum_pct": 123,
         "trend_latest": 58,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -3425,7 +3422,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -3458,7 +3455,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -3491,7 +3488,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -3524,7 +3521,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -3557,7 +3554,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -3590,7 +3587,7 @@
         "trend_lane": "air-purifiers",
         "trend_momentum_pct": 283,
         "trend_latest": 40,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -3623,7 +3620,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -3656,7 +3653,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -3689,7 +3686,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -3722,7 +3719,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -3755,7 +3752,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -3788,7 +3785,7 @@
         "trend_lane": "walking-pad-desk",
         "trend_momentum_pct": 149,
         "trend_latest": 42,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
       }
     },
@@ -3821,7 +3818,7 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 1
       }
     },
@@ -3854,7 +3851,7 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 2
       }
     },
@@ -3887,7 +3884,7 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 3
       }
     },
@@ -3920,7 +3917,7 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 4
       }
     },
@@ -3953,7 +3950,7 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 5
       }
     },
@@ -3986,824 +3983,8 @@
         "trend_lane": "meal-prep-starter-kit",
         "trend_momentum_pct": 196,
         "trend_latest": 34,
-        "trend_updated_at": "2026-05-16T21:36:43.694Z",
+        "trend_updated_at": "2026-05-16T22:01:11.094Z",
         "priority": 6
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-nyc-weekend-1106729-west-side-ymca",
-      "title": "West Side YMCA",
-      "summary": "West Side YMCA around 5 West 63rd Street, New York. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/1106729?checkin=2026-06-15&checkout=2026-06-17&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-nyc-weekend&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/204079362.jpg?k=ad3e3b9e935728478fd7d2c0c871198135bb522158b35ed9f23cb312a067110d&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for West Side YMCA"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "1106729",
-        "address": "5 West 63rd Street, New York",
-        "campaign": "spg-nyc-weekend",
-        "checkin": "2026-06-15",
-        "checkout": "2026-06-17"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-nyc-weekend-56276-new-yorker-by-lotte-hotels",
-      "title": "New Yorker by Lotte Hotels",
-      "summary": "New Yorker by Lotte Hotels around 481 Eighth Avenue, New York. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/56276?checkin=2026-06-15&checkout=2026-06-17&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-nyc-weekend&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/693841507.jpg?k=26cf9d69f730f862699ac31adfbbc9fd8dce34d302ef4305cd323aa70dd55a31&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for New Yorker by Lotte Hotels"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "56276",
-        "address": "481 Eighth Avenue, New York",
-        "campaign": "spg-nyc-weekend",
-        "checkin": "2026-06-15",
-        "checkout": "2026-06-17"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-nyc-weekend-617923-hilton-garden-inn-new-york-central-park-south-midtown-west",
-      "title": "Hilton Garden Inn New York Central Park South-Midtown West",
-      "summary": "Hilton Garden Inn New York Central Park South-Midtown West around 237 West 54th Street, New York. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/617923?checkin=2026-06-15&checkout=2026-06-17&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-nyc-weekend&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/484619676.jpg?k=2f43f3d3b19f1ca7cc3f5daa1b608b6e2b6ad3507d78d66187beea03c78c7cca&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Hilton Garden Inn New York Central Park South-Midtown West"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "617923",
-        "address": "237 West 54th Street, New York",
-        "campaign": "spg-nyc-weekend",
-        "checkin": "2026-06-15",
-        "checkout": "2026-06-17"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-nyc-weekend-4700797-the-belvedere-hotel",
-      "title": "The Belvedere Hotel",
-      "summary": "The Belvedere Hotel around 319 West 48th Street, New York. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/4700797?checkin=2026-06-15&checkout=2026-06-17&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-nyc-weekend&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/303276079.jpg?k=7c641bb6a05b102ca99c07bf59d21a5c07eac5db177ac370139ca79ea1a4c348&o=",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for The Belvedere Hotel"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "4700797",
-        "address": "319 West 48th Street, New York",
-        "campaign": "spg-nyc-weekend",
-        "checkin": "2026-06-15",
-        "checkout": "2026-06-17"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-nyc-weekend-3174621-aliz-hotel-times-square",
-      "title": "Aliz Hotel Times Square",
-      "summary": "Aliz Hotel Times Square around 310 West 40th Street, New York. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/3174621?checkin=2026-06-15&checkout=2026-06-17&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-nyc-weekend&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/165926360.jpg?k=4e14213358d83e3ab5dacbcfad5965eb8312473e01ae05d2a008c4b03fc96e3c&o=",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Aliz Hotel Times Square"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "3174621",
-        "address": "310 West 40th Street, New York",
-        "campaign": "spg-nyc-weekend",
-        "checkin": "2026-06-15",
-        "checkout": "2026-06-17"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-nyc-weekend-2012829-doubletree-by-hilton-new-york-times-square-west",
-      "title": "Doubletree By Hilton New York Times Square West",
-      "summary": "Doubletree By Hilton New York Times Square West around 350 West 40th Street, New York. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/2012829?checkin=2026-06-15&checkout=2026-06-17&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-nyc-weekend&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/485684506.jpg?k=aa6b48a0a762d1d5265a42a24c9da901d9a85121968fbf151b46441078f3a5be&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Doubletree By Hilton New York Times Square West"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "2012829",
-        "address": "350 West 40th Street, New York",
-        "campaign": "spg-nyc-weekend",
-        "checkin": "2026-06-15",
-        "checkout": "2026-06-17"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-miami-beach-10219106-kenmore-village-hotel-south-beach",
-      "title": "Kenmore Village Hotel, South Beach",
-      "summary": "Kenmore Village Hotel, South Beach around 1050 Washington Avenue, Miami Beach. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/10219106?checkin=2026-06-20&checkout=2026-06-22&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-miami-beach&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/707452524.jpg?k=36b67a69a4a46365e704692ec41b3e0429a2d606413d9cb1927378c0f94870a3&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Kenmore Village Hotel, South Beach"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "10219106",
-        "address": "1050 Washington Avenue, Miami Beach",
-        "campaign": "spg-miami-beach",
-        "checkin": "2026-06-20",
-        "checkout": "2026-06-22"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-miami-beach-11030212-tropics-hotel-miami-beach",
-      "title": "Tropics Hotel Miami Beach",
-      "summary": "Tropics Hotel Miami Beach around 1550 Collins Avenue, Miami Beach. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/11030212?checkin=2026-06-20&checkout=2026-06-22&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-miami-beach&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/529843873.jpg?k=56fa41248673f82cf74b21531fdf83e444c760cb517d6bc7918a975292107de8&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Tropics Hotel Miami Beach"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "11030212",
-        "address": "1550 Collins Avenue, Miami Beach",
-        "campaign": "spg-miami-beach",
-        "checkin": "2026-06-20",
-        "checkout": "2026-06-22"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-miami-beach-6801646-esme-miami-beach",
-      "title": "Esme Miami Beach",
-      "summary": "Esme Miami Beach around 1438 Washington Avenue, Miami Beach. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/6801646?checkin=2026-06-20&checkout=2026-06-22&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-miami-beach&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/333202343.jpg?k=fb43d23895250aec4aa0cac7195c5cc0ba92ddf5362d351737fbb5462ea3f954&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Esme Miami Beach"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "6801646",
-        "address": "1438 Washington Avenue, Miami Beach",
-        "campaign": "spg-miami-beach",
-        "checkin": "2026-06-20",
-        "checkout": "2026-06-22"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-miami-beach-418143-james-hotel",
-      "title": "James Hotel",
-      "summary": "James Hotel around 1680 James Avenue, Miami Beach. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/418143?checkin=2026-06-20&checkout=2026-06-22&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-miami-beach&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/567296821.jpg?k=1d850468f2dffe005c4a8418b24fff57e6556e6c7a589ac5a674667e21ccf2db&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for James Hotel"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "418143",
-        "address": "1680 James Avenue, Miami Beach",
-        "campaign": "spg-miami-beach",
-        "checkin": "2026-06-20",
-        "checkout": "2026-06-22"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-miami-beach-1159212-hotel-belleza",
-      "title": "Hotel Belleza",
-      "summary": "Hotel Belleza around 2115 Washington Avenue, Miami Beach. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/1159212?checkin=2026-06-20&checkout=2026-06-22&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-miami-beach&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/581012902.jpg?k=5546bb2338a3a26bf780594c5ccaa0db4d6a61447fb295a41bc9ab815406126f&o=",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Hotel Belleza"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "1159212",
-        "address": "2115 Washington Avenue, Miami Beach",
-        "campaign": "spg-miami-beach",
-        "checkin": "2026-06-20",
-        "checkout": "2026-06-22"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-miami-beach-1498290-henrosa-hotel",
-      "title": "Henrosa Hotel",
-      "summary": "Henrosa Hotel around 1435 Collins Ave , Miami Beach. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/1498290?checkin=2026-06-20&checkout=2026-06-22&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-miami-beach&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/279497636.jpg?k=47c6c70ad38a183979a921e547fdff315e63d14abcefbfde0f776f86a80914ea&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Henrosa Hotel"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "1498290",
-        "address": "1435 Collins Ave , Miami Beach",
-        "campaign": "spg-miami-beach",
-        "checkin": "2026-06-20",
-        "checkout": "2026-06-22"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-vegas-weekend-59452-oyo-hotel-and-casino-las-vegas",
-      "title": "OYO Hotel and Casino Las Vegas",
-      "summary": "OYO Hotel and Casino Las Vegas around 115 East Tropicana Avenue, Las Vegas. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/59452?checkin=2026-06-25&checkout=2026-06-27&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-vegas-weekend&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/763967969.jpg?k=f140a24ad3c7e442e239c816c2464c68726c44e7e5daf0c26e4f15e1ea9a144f&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for OYO Hotel and Casino Las Vegas"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "59452",
-        "address": "115 East Tropicana Avenue, Las Vegas",
-        "campaign": "spg-vegas-weekend",
-        "checkin": "2026-06-25",
-        "checkout": "2026-06-27"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-vegas-weekend-469788-motel-6-las-vegas-nv-strip",
-      "title": "Motel 6 Las Vegas, NV - Strip",
-      "summary": "Motel 6 Las Vegas, NV - Strip around 165 East Tropicana Avenue, Las Vegas. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/469788?checkin=2026-06-25&checkout=2026-06-27&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-vegas-weekend&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/783442916.jpg?k=85a1b20a124f062776f4332441f3cc8242686cabd74ec6c22a90f058d7feaaae&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Motel 6 Las Vegas, NV - Strip"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "469788",
-        "address": "165 East Tropicana Avenue, Las Vegas",
-        "campaign": "spg-vegas-weekend",
-        "checkin": "2026-06-25",
-        "checkout": "2026-06-27"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-vegas-weekend-56732-ellis-island-hotel-casino-brewery",
-      "title": "Ellis Island Hotel Casino & Brewery",
-      "summary": "Ellis Island Hotel Casino & Brewery around 4250 Koval Lane, Las Vegas. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/56732?checkin=2026-06-25&checkout=2026-06-27&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-vegas-weekend&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/604966717.jpg?k=911ee49fd670d1c4dff42126e2f97002edaa537d0246aabee22df1e4c66a027a&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Ellis Island Hotel Casino & Brewery"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "56732",
-        "address": "4250 Koval Lane, Las Vegas",
-        "campaign": "spg-vegas-weekend",
-        "checkin": "2026-06-25",
-        "checkout": "2026-06-27"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-vegas-weekend-56743-days-inn-by-wyndham-las-vegas-airport-near-the-strip",
-      "title": "Days Inn by Wyndham Las Vegas Airport Near the Strip",
-      "summary": "Days Inn by Wyndham Las Vegas Airport Near the Strip around 5075 Koval Lane, Las Vegas. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/56743?checkin=2026-06-25&checkout=2026-06-27&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-vegas-weekend&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/543467608.jpg?k=0673d364445b5e822266f2246e00c26a7b9bb2200bb7c5d0bce45a19c2ab88fa&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Days Inn by Wyndham Las Vegas Airport Near the Strip"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "56743",
-        "address": "5075 Koval Lane, Las Vegas",
-        "campaign": "spg-vegas-weekend",
-        "checkin": "2026-06-25",
-        "checkout": "2026-06-27"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-vegas-weekend-59454-tuscany-suites-casino",
-      "title": "Tuscany Suites & Casino",
-      "summary": "Tuscany Suites & Casino around 255 East Flamingo Road, Las Vegas. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/59454?checkin=2026-06-25&checkout=2026-06-27&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-vegas-weekend&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/680378250.jpg?k=45c6abecba69ad6951f19354fde28246da04013f4dd64d33e7b799d7f6a07872&o=",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Tuscany Suites & Casino"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "59454",
-        "address": "255 East Flamingo Road, Las Vegas",
-        "campaign": "spg-vegas-weekend",
-        "checkin": "2026-06-25",
-        "checkout": "2026-06-27"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-vegas-weekend-186112-excalibur",
-      "title": "Excalibur",
-      "summary": "Excalibur around 3850 Las Vegas Boulevard South, Las Vegas. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "travel",
-      "trend_lane": "travel",
-      "destination_url": "https://www.stay22.com/allez/booking/186112?checkin=2026-06-25&checkout=2026-06-27&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-vegas-weekend&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/757342237.jpg?k=37fc519b19b2ad70d3a351b6f31bf780bd8a5f7e01b12073732dc4b052edd1ec&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Excalibur"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "186112",
-        "address": "3850 Las Vegas Boulevard South, Las Vegas",
-        "campaign": "spg-vegas-weekend",
-        "checkin": "2026-06-25",
-        "checkout": "2026-06-27"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-msg-events-2377260-pod-times-square",
-      "title": "Pod Times Square",
-      "summary": "Pod Times Square around 400 West 42nd Street, New York. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "events",
-      "trend_lane": "events",
-      "destination_url": "https://www.stay22.com/allez/booking/2377260?checkin=2026-06-30&checkout=2026-07-02&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-msg-events&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/327103801.jpg?k=072b93fcdb6bbad7764fc2fa8130490e00b4719398dbf6060874a2840ac5e0b2&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Pod Times Square"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "2377260",
-        "address": "400 West 42nd Street, New York",
-        "campaign": "spg-msg-events",
-        "checkin": "2026-06-30",
-        "checkout": "2026-07-02"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-msg-events-56276-new-yorker-by-lotte-hotels",
-      "title": "New Yorker by Lotte Hotels",
-      "summary": "New Yorker by Lotte Hotels around 481 Eighth Avenue, New York. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "events",
-      "trend_lane": "events",
-      "destination_url": "https://www.stay22.com/allez/booking/56276?checkin=2026-06-30&checkout=2026-07-02&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-msg-events&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/693841507.jpg?k=26cf9d69f730f862699ac31adfbbc9fd8dce34d302ef4305cd323aa70dd55a31&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for New Yorker by Lotte Hotels"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "56276",
-        "address": "481 Eighth Avenue, New York",
-        "campaign": "spg-msg-events",
-        "checkin": "2026-06-30",
-        "checkout": "2026-07-02"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-msg-events-522337-pod-39",
-      "title": "Pod 39",
-      "summary": "Pod 39 around 145 East 39th Street, New York. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "events",
-      "trend_lane": "events",
-      "destination_url": "https://www.stay22.com/allez/booking/522337?checkin=2026-06-30&checkout=2026-07-02&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-msg-events&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/227628314.jpg?k=97943a69cdb871b4a0063770f6dc9119c953dbddc663830f94f09e786d4bb54f&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Pod 39"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "522337",
-        "address": "145 East 39th Street, New York",
-        "campaign": "spg-msg-events",
-        "checkin": "2026-06-30",
-        "checkout": "2026-07-02"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-msg-events-4125132-springhill-suites-by-marriott-new-york-manhattan-times-square-sout",
-      "title": "SpringHill Suites by Marriott New York Manhattan/Times Square South",
-      "summary": "SpringHill Suites by Marriott New York Manhattan/Times Square South around 338 West 36th Street, New York. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "events",
-      "trend_lane": "events",
-      "destination_url": "https://www.stay22.com/allez/booking/4125132?checkin=2026-06-30&checkout=2026-07-02&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-msg-events&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/500172226.jpg?k=73ddaf2aac236b53ff67e540ab6cf49b88d5720b4a0f0f38c140468b0c34733b&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for SpringHill Suites by Marriott New York Manhattan/Times Square South"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "4125132",
-        "address": "338 West 36th Street, New York",
-        "campaign": "spg-msg-events",
-        "checkin": "2026-06-30",
-        "checkout": "2026-07-02"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-msg-events-436827-the-manhattan-at-times-square-hotel",
-      "title": "The Manhattan at Times Square Hotel",
-      "summary": "The Manhattan at Times Square Hotel around 790 7th Avenue, New York. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "events",
-      "trend_lane": "events",
-      "destination_url": "https://www.stay22.com/allez/booking/436827?checkin=2026-06-30&checkout=2026-07-02&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-msg-events&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/524489007.jpg?k=01c5dc6fd2f06c64eb77b591b05199107565815851e4c6f0a9e61e99e93129e1&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for The Manhattan at Times Square Hotel"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "436827",
-        "address": "790 7th Avenue, New York",
-        "campaign": "spg-msg-events",
-        "checkin": "2026-06-30",
-        "checkout": "2026-07-02"
-      }
-    },
-    {
-      "source_key": "stay22-api-feed",
-      "account_key": "stay22-publisher",
-      "slug": "stay22-spg-msg-events-4125131-fairfield-inn-suites-by-marriott-new-york-manhattan-times-square-s",
-      "title": "Fairfield Inn & Suites by Marriott New York Manhattan/Times Square South",
-      "summary": "Fairfield Inn & Suites by Marriott New York Manhattan/Times Square South around 338 West 36th Street, New York. SPG routes this through Stay22 for travel booking options; compare current dates, fees, cancellation terms, and room fit before booking.",
-      "category": "events",
-      "trend_lane": "events",
-      "destination_url": "https://www.stay22.com/allez/booking/4125131?checkin=2026-06-30&checkout=2026-07-02&aid=mehyar&adults=2&children=0&rooms=1&campaign=spg-msg-events&source=direct&medium=api",
-      "monetized": true,
-      "payout_model": "commission",
-      "approval_status": "approved",
-      "publish_decision": "publish_monetized",
-      "image_rights_status": "approved",
-      "image": {
-        "url": "https://q-xx.bstatic.com/xdata/images/hotel/max500/461629300.jpg?k=e9ff14ac9f2424a8de2b90bb99f073ebf04387099430181f67bac5d7b7d4ea4c&o=&a=1607597",
-        "source": "stay22_provider_feed",
-        "license": "provider feed subject to Stay22 account terms",
-        "rights_status": "approved",
-        "alt": "Stay22 provider image for Fairfield Inn & Suites by Marriott New York Manhattan/Times Square South"
-      },
-      "disclosure_text": "StuffPrettyGood may earn a commission from Stay22 travel booking links.",
-      "metadata": {
-        "source_family": "stay22_direct_travel_api",
-        "endpoint_ref": "env:SPG_STAY22_API_ENDPOINT",
-        "aid_ref": "env:SPG_STAY22_AID",
-        "provider": "booking",
-        "stay22_id": "4125131",
-        "address": "338 West 36th Street, New York",
-        "campaign": "spg-msg-events",
-        "checkin": "2026-06-30",
-        "checkout": "2026-07-02"
       }
     }
   ]

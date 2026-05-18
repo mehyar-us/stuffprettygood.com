@@ -2,7 +2,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 BASE_URL = 'http://127.0.0.1:3008/crm/opportunity-desk'
-OUT_DIR = Path('qa/screenshots/opportunity-desk-t_a601f108')
+OUT_DIR = Path('qa/screenshots/opportunity-desk-t_ca09b85d')
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 viewports = [
@@ -43,6 +43,7 @@ with sync_playwright() as p:
             # Basic DOM assertions for required CRM surfaces.
             visible = page.locator('body').inner_text()
             required = [
+                'Daily Digest', 'Source health', 'env names only',
                 'Pursue now', 'Watch', 'Reject', 'Needs partner', 'Needs Boss approval',
                 'Buyer intelligence', 'Source evidence', 'Scoring breakdown',
                 'AI go/no-go memo', 'Kanban route proposal', 'External action blocker',

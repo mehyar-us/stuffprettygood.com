@@ -96,11 +96,18 @@ export function renderOpportunityDeskHtml() {
     .metric { padding: 16px; }
     .metric strong { display: block; font-size: 2rem; letter-spacing: -0.05em; }
     .metric span { color: var(--muted); font-weight: 800; font-size: 0.82rem; }
-    .filters { position: sticky; top: 0; z-index: 4; margin: 18px 0; display: grid; grid-template-columns: 1.3fr repeat(4, minmax(130px, 1fr)) auto; gap: 10px; padding: 12px; background: color-mix(in srgb, var(--bg) 72%, transparent); backdrop-filter: blur(18px); border: 1px solid var(--line); border-radius: 18px; }
+    .filters { position: sticky; top: 0; z-index: 4; margin: 18px 0; display: grid; grid-template-columns: 1.3fr repeat(5, minmax(130px, 1fr)) auto; gap: 10px; padding: 12px; background: color-mix(in srgb, var(--bg) 72%, transparent); backdrop-filter: blur(18px); border: 1px solid var(--line); border-radius: 18px; }
+    .digest { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr); gap: 14px; margin: 18px 0; align-items: start; }
+    .digest-list, .source-health { display: grid; gap: 10px; padding: 14px; }
+    .digest-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 16px; background: color-mix(in srgb, var(--panel-strong) 74%, transparent); }
+    .rank { width: 2rem; height: 2rem; display: grid; place-items: center; border-radius: 999px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #061018; font-weight: 950; }
+    .source-row { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 16px; background: color-mix(in srgb, var(--panel-strong) 72%, transparent); }
+    .source-row[data-health*="warning"], .source-row[data-health*="needs_review"] { border-color: rgba(255, 209, 102, 0.48); }
+    .source-row[data-health*="blocked"], .source-row[data-health*="disabled"] { border-color: rgba(255, 138, 138, 0.48); }
     .workspace { display: grid; grid-template-columns: minmax(360px, 0.88fr) minmax(0, 1.12fr); gap: 16px; align-items: start; }
     .rails { display: grid; gap: 14px; }
     .queue { overflow: hidden; }
-    .queue header, .detail header, .memo-card header { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 15px 16px; border-bottom: 1px solid var(--line); }
+    .queue header, .detail header, .memo-card header, .panel header { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 15px 16px; border-bottom: 1px solid var(--line); }
     .queue-list { display: grid; gap: 8px; padding: 12px; max-height: 360px; overflow: auto; }
     .opp-card { text-align: left; width: 100%; border-radius: 16px; padding: 12px; background: color-mix(in srgb, var(--panel-strong) 74%, transparent); border: 1px solid var(--line); color: var(--ink); }
     .opp-card.active { outline: 2px solid var(--accent); }
@@ -123,7 +130,7 @@ export function renderOpportunityDeskHtml() {
     .empty { color: var(--muted); padding: 18px; text-align: center; }
     .blocked-banner { border: 1px solid rgba(255, 209, 102, 0.36); background: rgba(255, 209, 102, 0.1); color: var(--warn); border-radius: 16px; padding: 12px; font-weight: 800; }
     @media (max-width: 1050px) {
-      .hero, .workspace { grid-template-columns: 1fr; }
+      .hero, .workspace, .digest { grid-template-columns: 1fr; }
       .metrics { grid-template-columns: repeat(3, 1fr); }
       .filters { grid-template-columns: 1fr 1fr; }
       .auth-grid, .split { grid-template-columns: 1fr; }
@@ -166,9 +173,21 @@ export function renderOpportunityDeskHtml() {
 
     <section class="metrics" id="metrics" aria-label="Opportunity Desk metrics"></section>
 
+    <section class="digest" aria-label="Daily Digest and source health">
+      <article class="panel">
+        <header><div><h2>Daily Digest</h2><p style="margin:4px 0 0">Top internal money moves ranked for first-cash path and evidence.</p></div><span class="pill warn">No external action</span></header>
+        <div class="digest-list" id="dailyDigest"></div>
+      </article>
+      <article class="panel">
+        <header><div><h2>Source health</h2><p style="margin:4px 0 0">Collector status and credential readiness by env-name only.</p></div><span class="pill">env names only</span></header>
+        <div class="source-health" id="sourceHealth"></div>
+      </article>
+    </section>
+
     <section class="filters" aria-label="Opportunity filters">
       <input id="search" placeholder="Search buyer, title, owner, evidence…" />
       <select id="typeFilter" aria-label="Type filter"><option value="">All types</option></select>
+      <select id="sourceFilter" aria-label="Specific source filter"><option value="">All sources</option></select>
       <select id="familyFilter" aria-label="Source family filter">
         <option value="">All families</option><option value="sam_gov">SAM</option><option value="grants_gov">Grants</option><option value="state_local">State/local</option><option value="affiliate">Affiliate</option><option value="sponsor">Sponsor</option><option value="job_board">Job</option><option value="postings">Postings</option><option value="marketplace">Marketplace</option>
       </select>
@@ -184,6 +203,7 @@ export function renderOpportunityDeskHtml() {
   </main>
 
 <script>
+const API_BASE = '/crm/api';
 const state = { token: '', dashboard: null, opportunities: [], sources: [], selectedId: null, latestScore: null, latestMemo: null, latestRoute: null };
 const qs = (id) => document.getElementById(id);
 const rails = [
@@ -201,6 +221,8 @@ function money(value) { return value == null || value === '' ? 'Unknown' : new I
 function short(value, n = 96) { const text = String(value || ''); return text.length > n ? text.slice(0, n - 1) + '…' : text; }
 function sourceFor(opp) { return state.sources.find((source) => source.source_id === opp.source_id) || {}; }
 function sourceFamily(opp) { return sourceFor(opp).source_family || opp.source_family || ''; }
+function sourceLabel(opp) { const source = sourceFor(opp); return source.source_name || source.name || opp.source_id || opp.source_family || 'Unknown source'; }
+function sourceKey(opp) { return opp.source_id || sourceFor(opp).source_id || sourceLabel(opp); }
 function badge(value, kind = '') {
   const display = value === 0 || value === '0' ? 0 : (value || 'unknown');
   return '<span class="pill ' + kind + '">' + escapeHtml(display) + '</span>';
@@ -209,7 +231,8 @@ function setStatus(text, kind = '') { qs('authStatus').className = 'pill ' + kin
 function authHeaders() { return state.token ? { authorization: 'Bearer ' + state.token } : {}; }
 
 async function api(path, options = {}) {
-  const response = await fetch(path, {
+  const url = path.startsWith('/api/') ? API_BASE + path.slice(4) : path;
+  const response = await fetch(url, {
     ...options,
     headers: { 'content-type': 'application/json', ...authHeaders(), ...(options.headers || {}) },
     body: options.body && typeof options.body !== 'string' ? JSON.stringify(options.body) : options.body
@@ -268,6 +291,7 @@ function hydrateFilters() {
     el.value = current;
   };
   fill('typeFilter', state.opportunities.map((o) => o.opportunity_type));
+  fill('sourceFilter', state.opportunities.map((o) => sourceKey(o) + ' · ' + sourceLabel(o)));
   fill('statusFilter', state.opportunities.map((o) => o.status));
   fill('gateFilter', state.opportunities.map((o) => o.gate_status));
 }
@@ -275,17 +299,21 @@ function hydrateFilters() {
 function filteredOpps() {
   const search = qs('search').value.trim().toLowerCase();
   const type = qs('typeFilter').value;
+  const source = qs('sourceFilter').value;
   const family = qs('familyFilter').value;
   const status = qs('statusFilter').value;
   const gate = qs('gateFilter').value;
   return state.opportunities.filter((opp) => {
-    const haystack = JSON.stringify({ ...opp, source_family: sourceFamily(opp), source_name: sourceFor(opp).source_name }).toLowerCase();
-    return (!search || haystack.includes(search)) && (!type || opp.opportunity_type === type) && (!family || sourceFamily(opp) === family) && (!status || opp.status === status) && (!gate || opp.gate_status === gate);
+    const sourceChoice = sourceKey(opp) + ' · ' + sourceLabel(opp);
+    const haystack = JSON.stringify({ ...opp, source_family: sourceFamily(opp), source_name: sourceLabel(opp) }).toLowerCase();
+    return (!search || haystack.includes(search)) && (!type || opp.opportunity_type === type) && (!source || sourceChoice === source) && (!family || sourceFamily(opp) === family) && (!status || opp.status === status) && (!gate || opp.gate_status === gate);
   });
 }
 
 function render() {
   renderMetrics();
+  renderDigest();
+  renderSourceHealth();
   renderRails();
   renderDetail();
 }
@@ -301,6 +329,19 @@ function renderMetrics() {
     ['Sources', counts.sources ?? state.sources.length],
     ['Kanban drafts', counts.kanban_routes ?? 0]
   ].map(([label, value]) => '<div class="metric"><strong>' + escapeHtml(value) + '</strong><span>' + escapeHtml(label) + '</span></div>').join('');
+}
+function digestScore(opp) { return Number(opp.score || opp.weighted_score || opp.priority_score || 0); }
+function renderDigest() {
+  const top = [...state.opportunities].sort((a, b) => digestScore(b) - digestScore(a)).slice(0, 3);
+  qs('dailyDigest').innerHTML = top.length ? top.map((opp, index) => '<button class="digest-card" type="button" data-select="' + escapeHtml(opp.opportunity_id) + '"><span class="rank">' + (index + 1) + '</span><span><strong>' + escapeHtml(short(opp.title, 88)) + '</strong><p style="margin:4px 0">' + escapeHtml(short(opp.first_cash_path || opp.next_best_action || opp.summary || 'Review source evidence and decide pursue/watch/reject.', 140)) + '</p><span class="status-line">' + badge(sourceFamily(opp) || opp.source_id) + badge('score ' + (digestScore(opp) || 'review')) + badge(opp.status || 'new') + '</span></span></button>').join('') : '<div class="empty">Login to load the daily digest.</div>';
+}
+function renderSourceHealth() {
+  const rows = state.sources.slice(0, 8);
+  qs('sourceHealth').innerHTML = rows.length ? rows.map((source) => {
+    const envName = source.credential_ref_env || source.required_key_name || source.env_key_name || 'not_required';
+    const health = source.source_health || source.health || 'needs_review';
+    return '<div class="source-row" data-health="' + escapeHtml(health) + '"><strong>' + escapeHtml(source.source_name || source.source_id || 'Source') + '</strong><div class="status-line">' + badge(source.source_family || 'source') + badge(health, health === 'ok' ? 'ok' : health === 'blocked' ? 'danger' : 'warn') + badge('Key: ' + envName) + '</div><p style="margin:0">Access: ' + escapeHtml(source.access_method || source.allowed_access_method || 'unknown') + ' · Cadence: ' + escapeHtml(source.refresh_cadence || 'manual') + ' · Last run: ' + escapeHtml(source.last_run_at || 'missing') + '</p></div>';
+  }).join('') : '<div class="empty">No source health records loaded yet.</div>';
 }
 function renderRails() {
   const opps = filteredOpps();
@@ -319,15 +360,33 @@ function renderDetail() {
   const source = sourceFor(opp);
   const evidence = [...(opp.evidence_refs || []), opp.external_url].filter(Boolean);
   qs('detail').innerHTML = '<header><div><h2>' + escapeHtml(opp.title) + '</h2><p style="margin:4px 0 0">' + escapeHtml(opp.summary || 'No summary attached yet.') + '</p></div><div class="status-line">' + badge(opp.status) + badge(opp.gate_status, !['not_required','approved'].includes(opp.gate_status) ? 'warn' : 'ok') + '</div></header>' +
-  '<div class="detail-body"><div class="blocked-banner">External action blocker: this UI only creates internal decisions, scores, memos, and sanitized Kanban route proposals. Approval gates are required before outreach/submission/account/spend actions.</div>' +
-  '<div class="actions"><button data-action="score">Generate / refresh score</button><button data-action="memo" class="secondary">Create AI go/no-go memo</button><button data-action="route" class="secondary">Draft Kanban route</button><button data-action="pursue" class="secondary">Pursue now</button><button data-action="watch" class="secondary">Mark watch</button><button data-action="needs_partner" class="secondary">Needs partner</button><button data-action="needs_approval" class="secondary">Needs Boss approval</button><button data-action="reject" class="danger">Mark reject</button></div>' +
-  '<div class="split"><section class="subpanel"><h3>Buyer intelligence</h3>' + kv('Buyer/org', opp.buyer_org_name) + kv('Domain', opp.buyer_domain || 'Unknown') + kv('Geography', opp.geography || opp.jurisdiction || 'Unknown') + kv('Revenue model', opp.revenue_model || 'Unknown') + kv('Expected value', money(opp.expected_value_usd)) + kv('First cash window', opp.first_cash_window_days ? opp.first_cash_window_days + ' days' : 'Unknown') + kv('Owner', opp.route_owner_profile || opp.owner_profile) + '</section>' +
-  '<section class="subpanel"><h3>Source evidence</h3>' + kv('Source', source.source_name || opp.source_id) + kv('Family', source.source_family || opp.opportunity_type) + kv('Health', source.source_health || 'unknown') + kv('Access', source.access_method || source.allowed_access_method || 'unknown') + kv('Privacy', opp.privacy_pii_handling || 'public_org_only') + '<div style="margin-top:10px">' + (evidence.length ? evidence.map((ref) => '<div class="pill" style="margin:3px 4px 3px 0; max-width:100%; overflow:hidden">' + escapeHtml(short(ref, 82)) + '</div>').join('') : '<p>No source evidence attached.</p>') + '</div></section></div>' +
-  '<div class="split"><section class="subpanel"><h3>Scoring breakdown</h3>' + renderScore() + '</section><section class="subpanel"><h3>Fit, proof, and gates</h3>' + kv('Fit tags', (opp.fit_tags || []).join(', ') || 'Missing') + kv('Required proof', (opp.proof_required || []).join(', ') || 'Missing') + kv('Suppression', opp.suppression_status) + kv('External action', opp.external_action_type || 'none') + kv('Approval ref', opp.approval_ref || 'none') + '</section></div>' +
+  '<div class="detail-body"><div class="blocked-banner">External action blocker: this UI only creates internal decisions, scores, memos, AI application prep, and sanitized Kanban route proposals. Approval gates are required before outreach/submission/account/spend actions.</div>' +
+  '<div class="actions"><button data-action="score">Generate / refresh score</button><button data-action="memo" class="secondary">Create AI go/no-go memo</button><button data-action="application_plan" class="secondary">AI application helper</button><button data-action="route" class="secondary">Draft Kanban route</button><button data-action="pursue" class="secondary">Pursue now</button><button data-action="watch" class="secondary">Mark watch</button><button data-action="needs_partner" class="secondary">Needs partner</button><button data-action="needs_approval" class="secondary">Needs Boss approval</button><button data-action="reject" class="danger">Mark reject</button></div>' +
+  '<div class="split"><section class="subpanel"><h3>Buyer intelligence</h3>' + kv('Buyer/org', opp.buyer_org_name) + kv('Domain', opp.buyer_domain || 'Unknown') + kv('Geography', opp.geography || opp.jurisdiction || 'Unknown') + kv('Revenue model', opp.revenue_model || 'Unknown') + kv('Expected value', money(opp.expected_value_usd)) + kv('Value basis', opp.expected_value_basis || 'Unknown') + kv('First cash window', opp.first_cash_window_days ? opp.first_cash_window_days + ' days' : 'Unknown') + kv('Due/deadline', opp.due_at || opp.due_date || 'Unknown') + kv('Owner', opp.route_owner_profile || opp.owner_profile) + '</section>' +
+  '<section class="subpanel"><h3>Source evidence</h3>' + kv('Source name', sourceLabel(opp)) + kv('Source ID', opp.source_id) + kv('Source family', source.source_family || opp.source_family || opp.opportunity_type) + kv('Health', source.source_health || 'unknown') + kv('Access', source.access_method || source.allowed_access_method || 'unknown') + kv('Privacy', opp.privacy_pii_handling || 'public_org_only') + '<div style="margin-top:10px">' + (evidence.length ? evidence.map((ref) => '<div class="pill" style="margin:3px 4px 3px 0; max-width:100%; overflow:hidden">' + escapeHtml(short(ref, 82)) + '</div>').join('') : '<p>No source evidence attached.</p>') + '</div></section></div>' +
+  '<div class="split"><section class="subpanel"><h3>Scoring breakdown</h3>' + renderScore() + '</section><section class="subpanel"><h3>Fit, proof, and gates</h3>' + kv('Fit tags', (opp.fit_tags || []).join(', ') || 'Missing') + kv('Required proof', (opp.proof_required || []).join(', ') || 'Missing') + kv('Required docs', (opp.required_docs || []).join(', ') || 'Missing') + kv('Eligibility', opp.eligibility || 'Unknown') + kv('Suppression', opp.suppression_status) + kv('External action', opp.external_action_type || 'none') + kv('Approval ref', opp.approval_ref || 'none') + '</section></div>' +
+  '<section class="memo-card"><header><h3>How to apply / pursue safely</h3>' + badge('AI prep only') + '</header><div style="padding:14px"><pre>' + escapeHtml(applicationGuide(opp, evidence)) + '</pre></div></section>' +
   '<section class="memo-card"><header><h3>AI go/no-go memo</h3>' + badge(state.latestMemo?.human_review_status || 'not generated') + '</header><div style="padding:14px"><pre>' + escapeHtml(state.latestMemo?.memo_markdown || 'Generate an AI memo to see Reality, Fit, Buyer pain, First-cash path, Required proof, Missing fields, Compliance gates, Evidence refs, Recommendation, Next action, and Kill criteria.') + '</pre></div></section>' +
   '<section class="memo-card"><header><h3>Kanban route proposal</h3>' + badge(state.latestRoute?.route_status || 'not drafted') + '</header><div style="padding:14px"><pre>' + escapeHtml(state.latestRoute ? JSON.stringify(state.latestRoute.sanitized_kanban_draft, null, 2) : 'Route action creates a sanitized internal task draft only; it does not create a Kanban card or external side effect.') + '</pre></div></section></div>';
 }
 function kv(label, value) { return '<div class="kv"><span>' + escapeHtml(label) + '</span><span>' + escapeHtml(value ?? 'Unknown') + '</span></div>'; }
+function applicationGuide(opp, evidence = []) {
+  const missing = [];
+  if (!evidence.length) missing.push('official source/evidence URL');
+  if (!opp.eligibility) missing.push('eligibility');
+  if (!opp.required_docs?.length) missing.push('required docs');
+  if (!opp.due_at && !opp.due_date) missing.push('deadline');
+  if (!opp.expected_value_usd) missing.push('value/commission basis');
+  return [
+    'Internal AI helper — not an application/submission.',
+    '1. Verify source: open official source refs only; confirm terms, deadline, eligibility, and allowed channel.',
+    '2. Collect missing info: ' + (missing.join(', ') || 'none detected; still human-review source before external action.'),
+    '3. Package angle: ' + (opp.first_cash_path || opp.summary || 'Draft internal value proposition from evidence.'),
+    '4. Draft assets: requirements checklist, proof packet, claim-safe response outline, pricing/value assumptions, risk notes.',
+    '5. Approval gate: Boss/ComplyOps must approve before outreach, account creation, application, proposal, spend, KYC/tax/bank, or public claim.',
+    '6. AI role: prepare checklist and draft text; operator verifies facts against evidence before any route.'
+  ].join('\n');
+}
 function renderScore() {
   const score = state.latestScore;
   const opp = state.opportunities.find((item) => item.opportunity_id === state.selectedId) || {};
@@ -349,8 +408,8 @@ async function runAction(action) {
       await loadDesk();
       state.latestScore = body.score;
     }
-    if (action === 'memo') {
-      const body = await api('/api/opportunity-desk/opportunities/' + encodeURIComponent(id) + '/memos', { method: 'POST', body: {} });
+    if (action === 'memo' || action === 'application_plan') {
+      const body = await api('/api/opportunity-desk/opportunities/' + encodeURIComponent(id) + '/memos', { method: 'POST', body: action === 'application_plan' ? { memo_type: 'application_plan' } : {} });
       state.latestMemo = body.memo;
     }
     if (action === 'route') {
@@ -374,8 +433,8 @@ document.addEventListener('click', (event) => {
   const action = event.target.closest('[data-action]');
   if (action) runAction(action.dataset.action);
 });
-['search','typeFilter','familyFilter','statusFilter','gateFilter'].forEach((id) => qs(id).addEventListener('input', render));
-qs('clearFilters').addEventListener('click', () => { ['search','typeFilter','familyFilter','statusFilter','gateFilter'].forEach((id) => qs(id).value = ''); render(); });
+['search','typeFilter','sourceFilter','familyFilter','statusFilter','gateFilter'].forEach((id) => qs(id).addEventListener('input', render));
+qs('clearFilters').addEventListener('click', () => { ['search','typeFilter','sourceFilter','familyFilter','statusFilter','gateFilter'].forEach((id) => qs(id).value = ''); render(); });
 qs('authForm').addEventListener('submit', login);
 qs('loginBtn').addEventListener('click', login);
 qs('refreshBtn').addEventListener('click', loadDesk);

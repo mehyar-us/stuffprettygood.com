@@ -36,7 +36,6 @@ function assert(condition, message) {
 const feed = readJson(feedPath, {});
 const offers = Array.isArray(feed.offers) ? feed.offers : Array.isArray(feed.items) ? feed.items : [];
 const amazon = pickOffer(offers, 'amazon') || offers.find((offer) => String(offer.slug || '').startsWith('amazon-'));
-const stay22 = pickOffer(offers, 'stay22') || offers.find((offer) => String(offer.slug || '').startsWith('stay22-'));
 
 const home = await fetchRoute('/');
 assert(home.response.status === 200, `homepage expected 200 got ${home.response.status}`);
@@ -45,7 +44,7 @@ assert(/href="\/offers\//i.test(home.body), 'homepage missing offer links');
 const wall = home.body.match(/<section[^>]+amazon-trend-wall[\s\S]*?<\/section>/i)?.[0] || '';
 assert(wall && !/href="\/go\//i.test(wall), 'Amazon Trend Wall should link to offer pages, not direct /go routes');
 
-for (const [label, offer] of [['amazon', amazon], ['stay22', stay22]]) {
+for (const [label, offer] of [['amazon', amazon]]) {
   if (!offer?.slug) {
     failures.push(`missing local ${label} offer slug in daily feed`);
     continue;

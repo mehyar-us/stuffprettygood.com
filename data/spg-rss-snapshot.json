@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16T21:38:02.799Z",
+  "generated_at": "2026-05-16T22:01:17.162Z",
   "source_count": 8,
   "item_count": 190,
   "guardrails": [
@@ -13,170 +13,131 @@
       "source_id": "google-trends-daily",
       "source_name": "Google Trends Daily",
       "category": "trends",
-      "title": "st. louis cardinals",
+      "title": "river plate - rosario central",
       "url": "https://trends.google.com/trending/rss?geo=US",
-      "published_at": "Sat, 16 May 2026 14:20:00 -0700",
+      "published_at": "Sat, 16 May 2026 14:40:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.545Z"
+      "fetched_at": "2026-05-16T22:01:11.936Z"
     },
     {
       "source_id": "google-trends-daily",
       "source_name": "Google Trends Daily",
       "category": "trends",
-      "title": "ncaa lacrosse bracket",
+      "title": "ufl",
       "url": "https://trends.google.com/trending/rss?geo=US",
-      "published_at": "Sat, 16 May 2026 14:20:00 -0700",
+      "published_at": "Sat, 16 May 2026 14:40:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.545Z"
+      "fetched_at": "2026-05-16T22:01:11.936Z"
     },
     {
       "source_id": "google-trends-daily",
       "source_name": "Google Trends Daily",
       "category": "trends",
-      "title": "internacional x vasco da gama",
+      "title": "sec baseball tournament 2026",
       "url": "https://trends.google.com/trending/rss?geo=US",
-      "published_at": "Sat, 16 May 2026 14:20:00 -0700",
+      "published_at": "Sat, 16 May 2026 14:40:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.545Z"
+      "fetched_at": "2026-05-16T22:01:11.936Z"
     },
     {
       "source_id": "google-trends-daily",
       "source_name": "Google Trends Daily",
       "category": "trends",
-      "title": "choi doo-ho",
+      "title": "sal da vinci",
       "url": "https://trends.google.com/trending/rss?geo=US",
-      "published_at": "Sat, 16 May 2026 14:20:00 -0700",
+      "published_at": "Sat, 16 May 2026 14:40:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.545Z"
+      "fetched_at": "2026-05-16T22:01:11.936Z"
     },
     {
       "source_id": "google-trends-daily",
       "source_name": "Google Trends Daily",
       "category": "trends",
-      "title": "fluminense vs são paulo",
+      "title": "charlie webber return b&b",
       "url": "https://trends.google.com/trending/rss?geo=US",
-      "published_at": "Sat, 16 May 2026 14:20:00 -0700",
+      "published_at": "Sat, 16 May 2026 14:40:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.545Z"
+      "fetched_at": "2026-05-16T22:01:11.936Z"
     },
     {
       "source_id": "google-trends-daily",
       "source_name": "Google Trends Daily",
       "category": "trends",
-      "title": "tormenta",
+      "title": "eurovision vote",
       "url": "https://trends.google.com/trending/rss?geo=US",
-      "published_at": "Sat, 16 May 2026 14:10:00 -0700",
+      "published_at": "Sat, 16 May 2026 14:30:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.545Z"
+      "fetched_at": "2026-05-16T22:01:11.936Z"
     },
     {
       "source_id": "google-trends-daily",
       "source_name": "Google Trends Daily",
       "category": "trends",
-      "title": "internacional vs vasco",
+      "title": "cristopher sanchez",
       "url": "https://trends.google.com/trending/rss?geo=US",
-      "published_at": "Sat, 16 May 2026 14:10:00 -0700",
+      "published_at": "Sat, 16 May 2026 14:30:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.545Z"
+      "fetched_at": "2026-05-16T22:01:11.936Z"
     },
     {
       "source_id": "google-trends-daily",
       "source_name": "Google Trends Daily",
       "category": "trends",
-      "title": "finland eurovision 2026",
+      "title": "aline pereira",
       "url": "https://trends.google.com/trending/rss?geo=US",
-      "published_at": "Sat, 16 May 2026 14:10:00 -0700",
+      "published_at": "Sat, 16 May 2026 14:30:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.545Z"
+      "fetched_at": "2026-05-16T22:01:11.936Z"
     },
     {
       "source_id": "google-trends-daily",
       "source_name": "Google Trends Daily",
       "category": "trends",
-      "title": "tudum",
+      "title": "vince mcmahon",
       "url": "https://trends.google.com/trending/rss?geo=US",
-      "published_at": "Sat, 16 May 2026 14:10:00 -0700",
+      "published_at": "Sat, 16 May 2026 14:30:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.545Z"
+      "fetched_at": "2026-05-16T22:01:11.936Z"
     },
     {
       "source_id": "google-trends-daily",
       "source_name": "Google Trends Daily",
       "category": "trends",
-      "title": "atlético-mg x mirassol",
+      "title": "rockies game",
       "url": "https://trends.google.com/trending/rss?geo=US",
-      "published_at": "Sat, 16 May 2026 14:00:00 -0700",
+      "published_at": "Sat, 16 May 2026 14:30:00 -0700",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.545Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Raybeam",
-      "url": "https://www.producthunt.com/products/raybeam",
-      "published_at": "2026-05-15T21:29:06-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "ChatGPT for Personal Finance",
-      "url": "https://www.producthunt.com/products/openai",
-      "published_at": "2026-05-15T12:16:51-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Loova Agents",
-      "url": "https://www.producthunt.com/products/loova-agents",
-      "published_at": "2026-05-09T23:39:10-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:11.936Z"
     },
     {
       "source_id": "product-hunt",
@@ -189,20 +150,33 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
       "source_name": "Product Hunt",
       "category": "tools",
-      "title": "Agentmemory",
-      "url": "https://www.producthunt.com/products/agent-memory-dev",
-      "published_at": "2026-05-11T02:53:56-07:00",
+      "title": "Loova Agents",
+      "url": "https://www.producthunt.com/products/loova-agents",
+      "published_at": "2026-05-09T23:39:10-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Raybeam",
+      "url": "https://www.producthunt.com/products/raybeam",
+      "published_at": "2026-05-15T21:29:06-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
@@ -215,7 +189,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
@@ -228,7 +202,33 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Agentmemory",
+      "url": "https://www.producthunt.com/products/agent-memory-dev",
+      "published_at": "2026-05-11T02:53:56-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:12.059Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "ChatGPT for Personal Finance",
+      "url": "https://www.producthunt.com/products/openai",
+      "published_at": "2026-05-15T12:16:51-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
@@ -241,7 +241,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
@@ -254,124 +254,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Sleek Analytics v3",
-      "url": "https://www.producthunt.com/products/sleek-analytics",
-      "published_at": "2026-05-14T20:17:45-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Wowable",
-      "url": "https://www.producthunt.com/products/wowable",
-      "published_at": "2026-04-24T03:30:55-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Glance",
-      "url": "https://www.producthunt.com/products/glance-native-macos-markdown-viewer",
-      "published_at": "2026-05-14T07:10:53-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Tiny World Builder",
-      "url": "https://www.producthunt.com/products/tiny-world-builder",
-      "published_at": "2026-05-15T05:33:27-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Agentic Website Builder 2.0 by Lokuma",
-      "url": "https://www.producthunt.com/products/agentic-website-builder-2-0-by-lokuma",
-      "published_at": "2026-05-13T19:51:00-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Gradient Bang",
-      "url": "https://www.producthunt.com/products/gradient-bang",
-      "published_at": "2026-05-13T16:38:02-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "Crustimate",
-      "url": "https://www.producthunt.com/products/findable-4",
-      "published_at": "2026-05-13T07:11:17-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "TrustClaw by Composio",
-      "url": "https://www.producthunt.com/products/composio",
-      "published_at": "2026-05-13T13:37:54-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
-    },
-    {
-      "source_id": "product-hunt",
-      "source_name": "Product Hunt",
-      "category": "tools",
-      "title": "mia",
-      "url": "https://www.producthunt.com/products/mia-8",
-      "published_at": "2026-05-14T22:29:32-07:00",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
@@ -384,137 +267,137 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
       "source_name": "Product Hunt",
       "category": "tools",
-      "title": "Atlas Navigation",
-      "url": "https://www.producthunt.com/products/atlas-navigation",
-      "published_at": "2026-05-11T15:24:50-07:00",
+      "title": "Gradient Bang",
+      "url": "https://www.producthunt.com/products/gradient-bang",
+      "published_at": "2026-05-13T16:38:02-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
       "source_name": "Product Hunt",
       "category": "tools",
-      "title": "Agent-Sin",
-      "url": "https://www.producthunt.com/products/agent-sin",
-      "published_at": "2026-05-14T19:36:56-07:00",
+      "title": "PHBench",
+      "url": "https://www.producthunt.com/products/vela-terminal",
+      "published_at": "2026-05-11T11:22:01-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
       "source_name": "Product Hunt",
       "category": "tools",
-      "title": "DramaBox by Resemble AI",
-      "url": "https://www.producthunt.com/products/resemble-clone",
-      "published_at": "2026-05-14T12:55:25-07:00",
+      "title": "Lensmor",
+      "url": "https://www.producthunt.com/products/lensmor-2",
+      "published_at": "2026-05-09T01:19:13-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
       "source_name": "Product Hunt",
       "category": "tools",
-      "title": "AgentRail",
-      "url": "https://www.producthunt.com/products/agentrail",
-      "published_at": "2026-05-14T07:51:39-07:00",
+      "title": "Agentic Website Builder 2.0 by Lokuma",
+      "url": "https://www.producthunt.com/products/agentic-website-builder-2-0-by-lokuma",
+      "published_at": "2026-05-13T19:51:00-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
       "source_name": "Product Hunt",
       "category": "tools",
-      "title": "Relay",
-      "url": "https://www.producthunt.com/products/relay-15",
-      "published_at": "2026-04-18T05:32:01-07:00",
+      "title": "Atter AI",
+      "url": "https://www.producthunt.com/products/atter-ai-ai-transcription-for-meetings",
+      "published_at": "2026-05-14T03:15:38-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
       "source_name": "Product Hunt",
       "category": "tools",
-      "title": "Nimbus",
-      "url": "https://www.producthunt.com/products/nimbus-10",
-      "published_at": "2026-05-14T21:58:07-07:00",
+      "title": "Noeth",
+      "url": "https://www.producthunt.com/products/noeth",
+      "published_at": "2026-05-14T01:31:20-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
       "source_name": "Product Hunt",
       "category": "tools",
-      "title": "Planora",
-      "url": "https://www.producthunt.com/products/planora-3",
-      "published_at": "2026-05-14T14:33:41-07:00",
+      "title": "Picsart MCP",
+      "url": "https://www.producthunt.com/products/picsart",
+      "published_at": "2026-05-14T01:53:53-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
       "source_name": "Product Hunt",
       "category": "tools",
-      "title": "Cats Lock",
-      "url": "https://www.producthunt.com/products/cats-lock-keyboard-lock-for-cat-people",
-      "published_at": "2026-05-08T17:29:06-07:00",
+      "title": "Basedash MCP Connectors",
+      "url": "https://www.producthunt.com/products/basedash",
+      "published_at": "2026-05-14T14:09:07-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
       "source_name": "Product Hunt",
       "category": "tools",
-      "title": "Cleo AI",
-      "url": "https://www.producthunt.com/products/cleo-ai",
-      "published_at": "2026-05-14T11:03:05-07:00",
+      "title": "Riffly",
+      "url": "https://www.producthunt.com/products/riffly",
+      "published_at": "2026-05-07T11:37:20-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
       "source_name": "Product Hunt",
       "category": "tools",
-      "title": "Mantel",
-      "url": "https://www.producthunt.com/products/mantel-color-coded-macos-terminal",
-      "published_at": "2026-05-14T11:46:16-07:00",
+      "title": "HasData",
+      "url": "https://www.producthunt.com/products/hasdata",
+      "published_at": "2026-05-07T02:34:26-07:00",
       "summary_excerpt": "",
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "product-hunt",
@@ -527,7 +410,124 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.674Z"
+      "fetched_at": "2026-05-16T22:01:12.059Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Mantel",
+      "url": "https://www.producthunt.com/products/mantel-color-coded-macos-terminal",
+      "published_at": "2026-05-14T11:46:16-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:12.059Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Cats Lock",
+      "url": "https://www.producthunt.com/products/cats-lock-keyboard-lock-for-cat-people",
+      "published_at": "2026-05-08T17:29:06-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:12.059Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Relay",
+      "url": "https://www.producthunt.com/products/relay-15",
+      "published_at": "2026-04-18T05:32:01-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:12.059Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Crustimate",
+      "url": "https://www.producthunt.com/products/findable-4",
+      "published_at": "2026-05-13T07:11:17-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:12.059Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "TrustClaw by Composio",
+      "url": "https://www.producthunt.com/products/composio",
+      "published_at": "2026-05-13T13:37:54-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:12.059Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "mia",
+      "url": "https://www.producthunt.com/products/mia-8",
+      "published_at": "2026-05-14T22:29:32-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:12.059Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Planora",
+      "url": "https://www.producthunt.com/products/planora-3",
+      "published_at": "2026-05-14T14:33:41-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:12.059Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "Nimbus",
+      "url": "https://www.producthunt.com/products/nimbus-10",
+      "published_at": "2026-05-14T21:58:07-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:12.059Z"
+    },
+    {
+      "source_id": "product-hunt",
+      "source_name": "Product Hunt",
+      "category": "tools",
+      "title": "AgentRail",
+      "url": "https://www.producthunt.com/products/agentrail",
+      "published_at": "2026-05-14T07:51:39-07:00",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:12.059Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -540,7 +540,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -553,7 +553,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -566,7 +566,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -579,7 +579,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -592,7 +592,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -605,7 +605,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -618,7 +618,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -631,7 +631,20 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
+    },
+    {
+      "source_id": "hn-frontpage",
+      "source_name": "Hacker News",
+      "category": "tech",
+      "title": "My Favorite Bugs: Invalid Surrogate Pairs",
+      "url": "https://george.mand.is/2026/05/my-favorite-bugs-invalid-surrogate-pairs/",
+      "published_at": "Sat, 16 May 2026 12:49:07 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -644,7 +657,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -657,7 +670,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -670,7 +683,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -683,7 +696,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -696,7 +709,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -709,7 +722,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -722,7 +735,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -735,7 +748,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -748,7 +761,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -761,20 +774,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
-    },
-    {
-      "source_id": "hn-frontpage",
-      "source_name": "Hacker News",
-      "category": "tech",
-      "title": "Orthrus-Qwen3: up to 7.8×tokens/forward on Qwen3, identical output distribution",
-      "url": "https://github.com/chiennv2000/orthrus",
-      "published_at": "Fri, 15 May 2026 22:38:58 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "hn-frontpage",
@@ -787,7 +787,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:00.820Z"
+      "fetched_at": "2026-05-16T22:01:15.286Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -800,7 +800,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -813,7 +813,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -826,7 +826,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -839,7 +839,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -852,7 +852,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -865,7 +865,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -878,20 +878,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
-    },
-    {
-      "source_id": "slickdeals-frontpage",
-      "source_name": "Slickdeals Frontpage",
-      "category": "deals",
-      "title": "44mm Kenneth Cole Men's Classic Stainless Quartz Watch w/ Brown Leather Strap $21 + Free S&H",
-      "url": "https://slickdeals.net/f/19529382-kenneth-cole-men-s-classic-quartz-grey-dial-watch-29-99?utm_source=rss&utm_content=fp&utm_medium=RSS2",
-      "published_at": "Sat, 16 May 26 19:48:32 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -904,7 +891,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -917,7 +904,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -930,7 +917,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -943,7 +930,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -956,7 +943,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -969,7 +956,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -982,7 +969,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -995,7 +982,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -1008,7 +995,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -1021,7 +1008,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -1034,7 +1021,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -1047,7 +1034,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -1060,7 +1047,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -1073,7 +1060,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -1086,7 +1073,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -1099,7 +1086,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "slickdeals-frontpage",
@@ -1112,7 +1099,20 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.672Z"
+      "fetched_at": "2026-05-16T22:01:15.923Z"
+    },
+    {
+      "source_id": "slickdeals-frontpage",
+      "source_name": "Slickdeals Frontpage",
+      "category": "deals",
+      "title": "Costco Members: 44mm Samsung Galaxy Watch8 Smartwatch w/ 2x Wireless Chargers $260 + Free S&H",
+      "url": "https://slickdeals.net/f/19527996-costco-members-44mm-samsung-galaxy-watch8-smartwatch-w-2x-wireless-chargers-260-free-s-h?utm_source=rss&utm_content=fp&utm_medium=RSS2",
+      "published_at": "Sat, 16 May 26 15:40:19 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:15.923Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1125,7 +1125,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1138,7 +1138,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1151,7 +1151,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1164,7 +1164,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1177,7 +1177,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1190,7 +1190,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1203,7 +1203,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1216,7 +1216,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1229,7 +1229,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1242,7 +1242,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1255,7 +1255,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1268,7 +1268,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1281,7 +1281,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1294,7 +1294,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1307,7 +1307,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1320,7 +1320,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1333,7 +1333,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1346,7 +1346,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1359,7 +1359,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1372,7 +1372,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1385,7 +1385,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1398,7 +1398,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1411,7 +1411,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1424,7 +1424,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1437,7 +1437,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1450,7 +1450,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1463,7 +1463,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1476,7 +1476,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1489,7 +1489,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
     },
     {
       "source_id": "nine-to-five-toys",
@@ -1502,7 +1502,20 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:01.829Z"
+      "fetched_at": "2026-05-16T22:01:16.127Z"
+    },
+    {
+      "source_id": "woot-blog",
+      "source_name": "Woot Forums Daily Deal",
+      "category": "deals",
+      "title": "Freyars 4-in-1 Electric Trimmer",
+      "url": "https://forums.woot.com/t/freyars-4-in-1-electric-trimmer/2423702",
+      "published_at": "Sat, 16 May 2026 22:00:12 +0000",
+      "summary_excerpt": "",
+      "terms_allowed_use": "metadata_only",
+      "matched_lanes": [],
+      "risk_flags": [],
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1515,7 +1528,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1528,7 +1541,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1541,7 +1554,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1554,7 +1567,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1567,7 +1580,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1580,7 +1593,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1593,7 +1606,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1606,7 +1619,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1619,7 +1632,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1632,7 +1645,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1645,7 +1658,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1658,7 +1671,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1671,7 +1684,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1684,7 +1697,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1697,7 +1710,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1710,7 +1723,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1723,7 +1736,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1736,7 +1749,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1749,7 +1762,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1762,7 +1775,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1775,7 +1788,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1788,7 +1801,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1801,7 +1814,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "woot-blog",
@@ -1814,20 +1827,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
-    },
-    {
-      "source_id": "woot-blog",
-      "source_name": "Woot Forums Daily Deal",
-      "category": "deals",
-      "title": "Lenox Floral Patina Butter Plate",
-      "url": "https://forums.woot.com/t/lenox-floral-patina-butter-plate/2414481",
-      "published_at": "Thu, 07 May 2026 05:00:53 +0000",
-      "summary_excerpt": "",
-      "terms_allowed_use": "metadata_only",
-      "matched_lanes": [],
-      "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.478Z"
+      "fetched_at": "2026-05-16T22:01:16.791Z"
     },
     {
       "source_id": "engadget",
@@ -1840,7 +1840,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -1853,7 +1853,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -1866,7 +1866,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -1879,7 +1879,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -1892,7 +1892,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -1905,7 +1905,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -1918,7 +1918,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -1931,7 +1931,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -1944,7 +1944,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -1957,7 +1957,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -1970,7 +1970,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -1983,7 +1983,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -1996,7 +1996,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -2009,7 +2009,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -2022,7 +2022,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -2035,7 +2035,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -2048,7 +2048,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -2061,7 +2061,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -2074,7 +2074,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "engadget",
@@ -2087,7 +2087,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.682Z"
+      "fetched_at": "2026-05-16T22:01:17.017Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2100,7 +2100,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2113,7 +2113,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2126,7 +2126,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2139,7 +2139,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2152,7 +2152,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2165,7 +2165,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2178,7 +2178,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2191,7 +2191,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2204,7 +2204,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2217,7 +2217,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2230,7 +2230,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2243,7 +2243,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2256,7 +2256,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2269,7 +2269,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2282,7 +2282,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2295,7 +2295,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2308,7 +2308,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2321,7 +2321,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2334,7 +2334,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2347,7 +2347,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2360,7 +2360,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2373,7 +2373,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2386,7 +2386,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2399,7 +2399,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2412,7 +2412,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2425,7 +2425,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2438,7 +2438,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.798Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2451,7 +2451,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.799Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2464,7 +2464,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.799Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     },
     {
       "source_id": "cpsc-recalls",
@@ -2477,7 +2477,7 @@
       "terms_allowed_use": "metadata_only",
       "matched_lanes": [],
       "risk_flags": [],
-      "fetched_at": "2026-05-16T21:38:02.799Z"
+      "fetched_at": "2026-05-16T22:01:17.162Z"
     }
   ],
   "errors": []

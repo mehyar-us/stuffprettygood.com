@@ -22,6 +22,7 @@
     "spg:qa:offers": "node scripts/qa-spg-offers.mjs",
     "opportunities:collect": "node scripts/collect-opportunity-finder.mjs data/opportunity-source-registry.json data/opportunity-desk/opportunity-source-runs.json data/opportunity-desk/opportunities.json",
     "spg:smoke": "node scripts/smoke-spg-routes.mjs",
+    "spg:build-offer-qa": "npm run spg:trends:build && npm run spg:qa:offers",
     "spg:daily": "npm run spg:ingest:daily && npm run spg:trends:build && npm run spg:qa:offers && npm test",
     "spg:deploy:gate": "npm run spg:daily && npm run spg:smoke",
     "daily:pull:everything": "bash scripts/daily-pull-everything.sh",

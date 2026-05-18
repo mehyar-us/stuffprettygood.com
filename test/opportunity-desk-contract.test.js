@@ -147,6 +147,13 @@ test('Opportunity Desk ingests normalized opportunities, scores, memoizes, and r
     assert.equal(memo.body.memo.model_name, 'no-external-call');
     assert.doesNotMatch(JSON.stringify(memo.body), /jane@example\.com|sk_live/i);
 
+    const applicationPlan = await requestJson(`${baseUrl}/api/opportunity-desk/opportunities/${opportunityId}/memos`, { method: 'POST', headers, body: { memo_type: 'application_plan' } });
+    assert.equal(applicationPlan.status, 201);
+    assert.equal(applicationPlan.body.memo.memo_type, 'application_plan');
+    assert.match(applicationPlan.body.memo.memo_markdown, /AI application helper/);
+    assert.match(applicationPlan.body.memo.memo_markdown, /Apply path/);
+    assert.match(applicationPlan.body.memo.memo_markdown, /cannot submit\/apply\/contact\/publish/);
+
     const route = await requestJson(`${baseUrl}/api/opportunity-desk/opportunities/${opportunityId}/route-kanban`, {
       method: 'POST',
       headers,
@@ -407,6 +414,70 @@ test('Opportunity Desk operations endpoint is authenticated, artifact-backed, an
   }
 });
 
+test('Opportunity Desk source-level filters enrich opportunity detail from source registry', async () => {
+  const auditLog = new AuditLog();
+  const auth = new AuthStore({ auditLog });
+  seedAdmin(auth);
+  const opportunityDesk = tempOpportunityDesk(auditLog);
+  const server = http.createServer(createApp({ authStore: auth, audit: auditLog, opportunityDesk }));
+  await listen(server);
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+
+  try {
+    const login = await requestJson(`${baseUrl}/api/auth/login`, { method: 'POST', body: { email: 'admin@mehyarmedia.local', password: 'change-me-before-production' } });
+    const headers = { authorization: `Bearer ${login.body.session.id}` };
+
+    await requestJson(`${baseUrl}/api/opportunity-desk/sources`, {
+      method: 'POST',
+      headers,
+      body: { source_id: 'src_filter_rss', source_family: 'rss', source_name: 'Public revenue RSS', source_url: 'https://example.com/rss', access_method: 'rss', source_health: 'ok', active: true, route_owner_profile: 'scout' },
+    });
+    await requestJson(`${baseUrl}/api/opportunity-desk/sources`, {
+      method: 'POST',
+      headers,
+      body: { source_id: 'src_filter_affiliate', source_family: 'affiliate', source_name: 'Affiliate watchlist', source_url: 'https://example.com/affiliate', access_method: 'public_page', source_health: 'ok', active: true, route_owner_profile: 'productops' },
+    });
+    await requestJson(`${baseUrl}/api/opportunity-desk/opportunities`, {
+      method: 'POST',
+      headers,
+      body: { opportunity_id: 'opp_filter_rss', source_id: 'src_filter_rss', external_id: 'rss-filter-001', opportunity_type: 'sponsorship', title: 'RSS sponsor signal', buyer_org_name: 'RSS Buyer', expected_value_usd: 1200, expected_value_basis: 'public sponsorship estimate', evidence_refs: ['https://example.com/rss-signal'], required_docs: ['media kit'], eligibility: 'public program fit', due_at: '2026-06-01T00:00:00.000Z' },
+    });
+    await requestJson(`${baseUrl}/api/opportunity-desk/opportunities`, {
+      method: 'POST',
+      headers,
+      body: { opportunity_id: 'opp_filter_affiliate', source_id: 'src_filter_affiliate', external_id: 'affiliate-filter-001', opportunity_type: 'affiliate_program', title: 'Affiliate program signal', buyer_org_name: 'Affiliate Buyer', expected_value_usd: 800, expected_value_basis: 'commission basis', evidence_refs: ['https://example.com/affiliate-program'], required_docs: ['terms review'], eligibility: 'publisher account required' },
+    });
+
+    const byFamily = await requestJson(`${baseUrl}/api/opportunity-desk/opportunities?source_family=rss`, { headers });
+    assert.equal(byFamily.status, 200);
+    assert.equal(byFamily.body.opportunities.length, 1);
+    assert.equal(byFamily.body.opportunities[0].opportunity_id, 'opp_filter_rss');
+    assert.equal(byFamily.body.opportunities[0].source_name, 'Public revenue RSS');
+    assert.equal(byFamily.body.opportunities[0].source_family, 'rss');
+    assert.equal(byFamily.body.opportunities[0].buyer_org_name, 'RSS Buyer');
+    assert.equal(byFamily.body.opportunities[0].expected_value_basis, 'public sponsorship estimate');
+    assert.equal(byFamily.body.opportunities[0].due_at, '2026-06-01T00:00:00.000Z');
+    assert.deepEqual(byFamily.body.opportunities[0].required_docs, ['media kit']);
+    assert.equal(byFamily.body.opportunities[0].eligibility, 'public program fit');
+    assert.deepEqual(byFamily.body.opportunities[0].evidence_refs, ['https://example.com/rss-signal']);
+    assert.equal(byFamily.body.externalActionsEnabled, false);
+
+    const byName = await requestJson(`${baseUrl}/api/opportunity-desk/opportunities?source_name=Affiliate%20watchlist`, { headers });
+    assert.equal(byName.status, 200);
+    assert.equal(byName.body.opportunities.length, 1);
+    assert.equal(byName.body.opportunities[0].opportunity_id, 'opp_filter_affiliate');
+
+    const run = await requestJson(`${baseUrl}/api/opportunity-desk/source-runs`, { method: 'POST', headers, body: { source_id: 'src_filter_rss', status: 'completed', records: [] } });
+    assert.equal(run.status, 202);
+    const runs = await requestJson(`${baseUrl}/api/opportunity-desk/source-runs?source_family=rss`, { headers });
+    assert.equal(runs.status, 200);
+    assert.equal(runs.body.source_runs.length, 1);
+    assert.equal(runs.body.source_runs[0].source_id, 'src_filter_rss');
+  } finally {
+    await close(server);
+  }
+});
+
 test('Opportunity Desk one-click actions persist safe decisions, owner assignment, Kanban draft, and memo', async () => {
   const auditLog = new AuditLog();
   const auth = new AuthStore({ auditLog });
@@ -491,11 +562,57 @@ test('Opportunity Desk one-click actions persist safe decisions, owner assignmen
 
 test('CRM Opportunity Desk UI exposes one-click safe action controls', () => {
   const app = readFileSync(new URL('../public/crm-login.js', import.meta.url), 'utf8');
-  for (const marker of ['data-opportunity-action="pursue"', 'data-opportunity-action="watch"', 'data-opportunity-action="reject"', 'data-opportunity-action="assign_owner"', 'data-opportunity-action="create_kanban_task"', 'data-opportunity-action="draft_memo"']) {
+  for (const marker of ['data-opportunity-action="pursue"', 'data-opportunity-action="watch"', 'data-opportunity-action="reject"', 'data-opportunity-action="assign_owner"', 'data-opportunity-action="create_kanban_task"', 'data-opportunity-action="draft_memo"', 'opportunity-detail-drawer', 'opportunityQueueBoard', 'opportunitySourceFilterBar', 'data-source-filter', 'Source ID', 'Source name', 'Source family', 'AI go/no-go memo', 'Decision log', 'Kanban route proposal']) {
     assert.match(app, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
   assert.match(app, /\/opportunity-desk\/opportunities\/\$\{encodeURIComponent\(opportunityId\)\}\/action/);
   assert.match(app, /opportunity-action-output/);
+
+  const loggedInDesk = readFileSync(new URL('../src/opportunity-desk/ui.js', import.meta.url), 'utf8');
+  for (const marker of ['Daily Digest', 'Source health', 'env-name only', 'data-action="score"', 'data-action="memo"', 'data-action="route"', 'data-action="needs_approval"', 'Source ID', 'Source name', 'Source family', 'Value basis', 'Required docs', 'Eligibility', 'AI go/no-go memo', 'Kanban route proposal', 'External action blocker']) {
+    assert.match(loggedInDesk, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  }
+  assert.match(loggedInDesk, /const API_BASE = '\/crm\/api'/);
+  assert.match(loggedInDesk, /API_BASE \+ path\.slice\(4\)/);
+  assert.match(loggedInDesk, /credential_ref_env \|\| source\.required_key_name \|\| source\.env_key_name/);
+  assert.doesNotMatch(loggedInDesk, /credential_value|api_key_value|secret_value/i);
+});
+
+test('CRM namespace aliases authenticated API routes for production-mounted Opportunity Desk', async () => {
+  const auditLog = new AuditLog();
+  const auth = new AuthStore({ auditLog });
+  seedAdmin(auth, { email: 'admin@example.com', password: 'safe-password' });
+  const opportunityDesk = tempOpportunityDesk(auditLog);
+  const server = http.createServer(createApp({ authStore: auth, audit: auditLog, opportunityDesk }));
+  await listen(server);
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const denied = await requestJson(`${baseUrl}/crm/api/opportunity-desk/opportunities`);
+    assert.equal(denied.status, 401);
+    assert.notEqual(denied.body.error, 'not found');
+
+    const login = await requestJson(`${baseUrl}/crm/api/auth/login`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: { email: 'admin@example.com', password: 'safe-password' },
+    });
+    assert.equal(login.status, 200);
+    assert.ok(login.body.session.id);
+
+    const headers = { authorization: `Bearer ${login.body.session.id}` };
+    const [dashboard, opportunities, sources] = await Promise.all([
+      requestJson(`${baseUrl}/crm/api/opportunity-desk/dashboard`, { headers }),
+      requestJson(`${baseUrl}/crm/api/opportunity-desk/opportunities`, { headers }),
+      requestJson(`${baseUrl}/crm/api/opportunity-desk/sources`, { headers }),
+    ]);
+    assert.equal(dashboard.status, 200);
+    assert.equal(opportunities.status, 200);
+    assert.equal(sources.status, 200);
+    assert.ok(Array.isArray(opportunities.body.opportunities));
+    assert.ok(Array.isArray(sources.body.sources));
+  } finally {
+    await close(server);
+  }
 });
 
 test('Opportunity Desk migration is additive and defines lifecycle tables', () => {

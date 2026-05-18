@@ -2,6 +2,8 @@ import crypto from 'node:crypto';
 
 const PASSWORD_ALGORITHM = 'sha256';
 const DEFAULT_SESSION_TTL_MS = 1000 * 60 * 60 * 24;
+export const DEFAULT_ADMIN_EMAIL = 'admin@mehyarmedia.local';
+export const DEFAULT_ADMIN_PASSWORD = 'change-me-before-production';
 
 export const ROLES = Object.freeze({
   admin: Object.freeze([
@@ -94,7 +96,7 @@ export class AuthStore {
   }
 }
 
-export function seedAdmin(authStore, { email = 'admin@mehyarmedia.local', password = 'change-me-before-production' } = {}) {
+export function seedAdmin(authStore, { email = DEFAULT_ADMIN_EMAIL, password = DEFAULT_ADMIN_PASSWORD } = {}) {
   if (authStore.listUsers().some((user) => user.email === email)) return null;
   return authStore.createUser({ email, password, role: 'admin', actorId: 'bootstrap' });
 }

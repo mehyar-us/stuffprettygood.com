@@ -67,7 +67,8 @@ test('quiz captures required fields and result taxonomy with claim-safe copy', (
     const resultPage = html(`ai-tool-stack-quiz/results/${result.slug}.html`);
     assert.match(resultPage, /data-result-variant=/);
     assert.match(resultPage, /not proof|not guaranteed|starting points/i);
-    assert.ok((resultPage.match(/href="\/go\//g) || []).length >= 5, `${result.slug} missing /go links`);
+    assert.ok((resultPage.match(/href="\/offers\//g) || []).length >= 5, `${result.slug} missing /offers links`);
+    assert.equal((resultPage.match(/href="\/go\//g) || []).length, 0, `${result.slug} must route cards through /offers before /go`);
   }
 });
 
@@ -84,7 +85,8 @@ test('tools-by-job backlog generates 20 claim-safe page specs with CRM maps', ()
     const page = html(`tools-by-job/${job.slug}.html`);
     assert.match(page, /CRM event map/i);
     assert.match(page, /Take the quiz/i);
-    assert.match(page, /href="\/go\//);
+    assert.match(page, /href="\/offers\//);
+    assert.doesNotMatch(page, /href="\/go\//, `${job.slug} must route cards through /offers before /go`);
     assert.doesNotMatch(page, /proven best|#1|make money fast|guaranteed (income|revenue|savings|sales|leads)/i);
   }
 });
@@ -126,12 +128,15 @@ test('starter, savings, readiness, weekly, template, preference and unsubscribe 
   }
 });
 
-test('/go pages are disclosure-visible placeholders for every approved offer', () => {
-  for (const offer of approvedOffers) {
-    const page = html(`go/${offer.slug}.html`);
-    assert.match(page, new RegExp(offer.name));
-    assert.match(page, /affiliate disclosure/i);
-    assert.match(page, /Production redirect must record/i);
+test('/go pages are disclosure-visible Amazon affiliate bridges for generated Amazon offers', () => {
+  const index = html('index.html');
+  const slugs = [...index.matchAll(/href="\/offers\/(amazon-[^"]+)\.html"/g)].map((match) => match[1]);
+  assert.ok(slugs.length >= 12, 'homepage should expose Amazon offer slugs');
+  for (const slug of [...new Set(slugs)].slice(0, 24)) {
+    const page = html(`go/${slug}.html`);
+    assert.match(page, /Disclosure bridge/i);
+    assert.match(page, /Amazon|amazon\.com/i);
+    assert.match(page, /may earn|sponsored|commission/i);
     assert.match(page, /disclosure_seen/i);
   }
 });

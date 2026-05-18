@@ -45,7 +45,7 @@ export const DEFAULT_JOB_DEFINITIONS = Object.freeze([
     job_id: 'spg-build-offer-qa',
     label: 'SPG build + offer QA',
     owner: 'webdev/leadfs',
-    command_argv: ['bash', '-lc', 'npm run spg:trends:build && npm run spg:qa:offers'],
+    command_argv: ['npm', 'run', 'spg:build-offer-qa'],
     schedule: 'manual / daily bundle',
     description: 'Regenerates public offer/SEO pages and enforces card → /offers → disclosure → /go flow.',
     expected_artifact: 'public/sitemap.xml',
@@ -188,7 +188,9 @@ function commandArgv(definition) {
     return definition.command_argv.map((part) => String(part));
   }
   if (typeof definition.command === 'string' && definition.command.trim()) {
-    return ['bash', '-lc', definition.command];
+    const error = new Error(`job ${definition.job_id} must use command_argv allowlist; shell command strings are disabled`);
+    error.statusCode = 500;
+    throw error;
   }
   throw new Error(`job ${definition.job_id} has no allowlisted command argv`);
 }

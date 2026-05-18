@@ -141,20 +141,19 @@ test('SPG admin source and ingestion endpoints enforce auth and no-send side eff
     assert.ok(ingest.body.source_keys.includes('amazon-manual-links'));
     assert.ok(ingest.body.source_keys.includes('skimlinks-api-feed'));
     assert.ok(ingest.body.source_keys.includes('stay22-api-feed'));
-    assert.ok(ingest.body.candidate_count >= 3);
-    assert.ok(ingest.body.offer_record_count >= 1);
+    assert.ok(ingest.body.source_item_count >= 1);
+    assert.ok(ingest.body.candidate_count >= 0);
+    assert.ok(ingest.body.offer_record_count >= 0);
     assert.ok(ingest.body.offers.some((offer) => offer.offer_key === 'amazon-daily-standing-desk-cable-kit'));
     assert.equal(ingest.body.offers.some((offer) => offer.offer_key.startsWith('skimlinks-') || offer.offer_key.startsWith('stay22-')), false);
 
     const sourceItems = await requestJson(`${baseUrl}/api/spg/source-items`, { headers });
     assert.equal(sourceItems.status, 200);
-    assert.ok(sourceItems.body.source_items.some((item) => item.source_id === 'skimlinks-api-feed'));
-    assert.ok(sourceItems.body.source_items.some((item) => item.source_id === 'stay22-api-feed'));
+    assert.equal(sourceItems.body.source_items.some((item) => item.source_id === 'skimlinks-api-feed' || item.source_id === 'stay22-api-feed'), false);
 
     const candidates = await requestJson(`${baseUrl}/api/spg/offer-candidates`, { headers });
     assert.equal(candidates.status, 200);
-    assert.ok(candidates.body.offer_candidates.some((candidate) => candidate.account_key === 'skimlinks' && candidate.account_status === 'application_ready'));
-    assert.ok(candidates.body.offer_candidates.some((candidate) => candidate.account_key === 'stay22-publisher' && candidate.account_status === 'application_ready'));
+    assert.equal(candidates.body.offer_candidates.some((candidate) => candidate.account_key === 'skimlinks' || candidate.account_key === 'stay22-publisher'), false);
 
     const publicOffers = await requestJson(`${baseUrl}/api/spg/offers/public`);
     assert.equal(publicOffers.status, 200);

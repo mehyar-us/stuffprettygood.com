@@ -8,7 +8,8 @@ const OUT = process.env.SPG_DAILY_OFFER_FEED_PATH || 'data/spg-daily-offer-feed.
 const AMAZON_TAG = process.env.SPG_AMAZON_ASSOCIATES_TAG || process.env.CRM_AMAZON_ASSOCIATES_TAG || process.env.AMAZON_ASSOCIATES_TAG || 'mehyarmedia-20';
 const MAX_AMAZON = Number.parseInt(process.env.SPG_DAILY_AMAZON_OFFER_LIMIT || '120', 10) || 120;
 const MAX_SKIMLINKS = Number.parseInt(process.env.SPG_DAILY_SKIMLINKS_OFFER_LIMIT || '0', 10) || 0;
-const MAX_STAY22 = Number.parseInt(process.env.SPG_DAILY_STAY22_OFFER_LIMIT || '24', 10) || 24;
+const AMAZON_FIRST_ONLY = process.env.SPG_AFFILIATE_ONLY_AMAZON_FIRST !== '0';
+const MAX_STAY22 = AMAZON_FIRST_ONLY ? 0 : (Number.parseInt(process.env.SPG_DAILY_STAY22_OFFER_LIMIT || '24', 10) || 24);
 const STAY22_ENDPOINT = process.env.SPG_STAY22_API_ENDPOINT || 'https://api.stay22.com/v1/accommodations';
 const SECRETISH = /(api[_-]?key|access[_-]?token|secret|password|bearer|authorization|sk_live_|pk_live_|stay22_[a-f0-9-]{32,})/i;
 const CLAIMISH = /(\$\d|\d+%\s*off|\bstars?\b|rating|reviews?|in stock|out of stock|prime|free shipping)/i;
@@ -168,7 +169,7 @@ function normalizeSkimlinksOffer(raw, idx) {
   };
 }
 async function skimlinksOffers() {
-  if (MAX_SKIMLINKS <= 0) return { offers: [], status: 'disabled_amazon_focus' };
+  if (AMAZON_FIRST_ONLY || MAX_SKIMLINKS <= 0) return { offers: [], status: 'disabled_amazon_first' };
   const auth = skimlinksAuthParams();
   if (!auth) return { offers: [], status: 'skipped_missing_publisher_id_or_api_key' };
   const url = new URL(`https://merchants.skimapis.com/v3/offers`);
@@ -245,7 +246,7 @@ function normalizeStay22Offer(raw, search, idx) {
   };
 }
 async function stay22Offers() {
-  if (MAX_STAY22 <= 0) return { offers: [], status: 'disabled' };
+  if (AMAZON_FIRST_ONLY || MAX_STAY22 <= 0) return { offers: [], status: 'disabled_amazon_first' };
   const auth = stay22AuthParams();
   if (!auth) return { offers: [], status: 'skipped_missing_aid', contract: 'GET https://api.stay22.com/v1/accommodations?provider&address&checkin&checkout&aid&campaign' };
   const rows = [];
@@ -295,7 +296,7 @@ const feed = {
     skimlinks: { status: skim.status, count: skim.offers.length, credential_ref: 'env:SPG_SKIMLINKS_API_KEY', ...(skim.error_class ? { error_class: skim.error_class, error_message: skim.error_message } : {}) },
     stay22: { status: stay22.status, count: stay22.offers.length, credential_ref: 'env:SPG_STAY22_API_KEY', aid_ref: 'env:SPG_STAY22_AID', endpoint_ref: 'env:SPG_STAY22_API_ENDPOINT', ...(stay22.contract ? { contract: stay22.contract } : {}), ...(stay22.warnings ? { warnings: stay22.warnings } : {}) },
   },
-  offers: [...amazon, ...skim.offers, ...stay22.offers],
+  offers: AMAZON_FIRST_ONLY ? amazon : [...amazon, ...skim.offers, ...stay22.offers],
 };
 
 const outPath = OUT.startsWith('/') ? OUT : new URL(`../${OUT}`, import.meta.url).pathname;

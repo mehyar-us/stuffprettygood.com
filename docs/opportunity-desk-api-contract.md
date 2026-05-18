@@ -53,6 +53,8 @@ Daily money engine source rows also expose `source_type`, `business_line`, `rout
 
 Normalized opportunity records include source/run refs, external/source refs, opportunity type, buyer/org-level metadata, fit tags, fit score dimensions, revenue model, expected value (`expected_value_usd`, basis, confidence), first-cash path/window, SPG proof signals, proof requirements, suppression status, gate status, route owner, and route state.
 
+`GET /opportunities` supports local/internal filtering by `source_id`, source registry-derived `source_family`, source registry-derived `source_name`, `status`, `opportunity_type`, `buyer_domain`, `gate_status`, `suppression_status`, `owner_profile`, and `route_owner_profile`. Public opportunity responses must retain the rich detail fields needed by the CRM drawer: `source_id`, `source_name`, `source_family`, `buyer_org_name`, `expected_value_usd`, `expected_value_basis`, `due_at`/deadline, `eligibility`, `required_docs`, `evidence_refs`, and `blocked_external_actions`. Filters are read-only; they must not trigger outreach, applications, submissions, account creation, public publishing, raw PII export, spend, or provider-side actions.
+
 ### Scoring
 
 - `POST /opportunities/:id/score`
@@ -90,6 +92,11 @@ This is a memo generation/storage interface, not an external model dependency. D
 - Recommendation
 - Next action
 - Kill criteria
+
+Supported memo types:
+
+- `triage` / `go_no_go`: internal decision-support memo for pursue/watch/reject routing.
+- `application_plan`: internal AI application helper memo. It explains how to apply/pursue safely, the missing-info checklist, official source evidence requirements, package angle, required approval gates, and kill criteria. It must include `AI application helper`, `Apply path`, and explicit copy that AI cannot submit/apply/contact/publish. ProductOps source spec: `docs/opportunity-desk-application-helper-memos-product-spec.md`.
 
 Every memo includes the label `INTERNAL DECISION SUPPORT — NOT EXTERNAL COPY`, model/provider metadata, prompt version, evidence refs, confidence, hallucination risk, and human review status. Memo generation is blocked if raw PII/secrets are detected.
 

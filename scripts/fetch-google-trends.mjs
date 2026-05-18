@@ -67,12 +67,26 @@ const snapshot = {
   ],
 };
 
+async function safeSerp(seed, params) {
+  try {
+    return { ok: true, json: await serp(params) };
+  } catch (error) {
+    return { ok: false, error: String(error.message || error), seed };
+  }
+}
+
 for (const seed of seeds) {
   const [related, timeseries] = await Promise.all([
-    serp({ engine: 'google_trends', q: seed, geo: 'US', date: 'today 12-m', data_type: 'RELATED_QUERIES' }),
-    serp({ engine: 'google_trends', q: seed, geo: 'US', date: 'today 12-m', data_type: 'TIMESERIES' }),
+    safeSerp(seed, { engine: 'google_trends', q: seed, geo: 'US', date: 'today 12-m', data_type: 'RELATED_QUERIES' }),
+    safeSerp(seed, { engine: 'google_trends', q: seed, geo: 'US', date: 'today 12-m', data_type: 'TIMESERIES' }),
   ]);
-  snapshot.seeds.push({ seed, related: summarizeRelated(related), momentum: summarizeTimeline(timeseries) });
+  snapshot.seeds.push({
+    seed,
+    related: related.ok ? summarizeRelated(related.json) : [],
+    momentum: timeseries.ok ? summarizeTimeline(timeseries.json) : { points: 0, latest: null, first4Avg: null, last4Avg: null, momentumPct: null },
+    source_health: related.ok || timeseries.ok ? 'partial_or_ok' : 'skipped',
+    errors: [related, timeseries].filter((result) => !result.ok).map((result) => result.error).slice(0, 2),
+  });
 }
 
 mkdirSync(dirname(outPath), { recursive: true });

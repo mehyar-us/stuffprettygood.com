@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const publicDir = new URL('../public', import.meta.url).pathname;
+const amazonFirstOnly = process.env.SPG_AFFILIATE_ONLY_AMAZON_FIRST !== '0';
 
 const fail = (message) => {
   throw new Error(message);
@@ -41,7 +42,7 @@ const externalOfferHosts = [
   'aliexpress.com',
 ];
 
-const offerCardPattern = /<article\b[^>]*class="[^"]*(?:offer-card|product-card)[^"]*"[\s\S]*?<\/article>/g;
+const cardPattern = /<article\b[^>]*class="[^"]*\bcard\b[^"]*"[\s\S]*?<\/article>/g;
 const hrefPattern = /href="([^"]+)"/g;
 
 const allHtmlFiles = walkHtml(publicDir);
@@ -52,15 +53,18 @@ let checkedOfferPages = 0;
 for (const file of allHtmlFiles) {
   const page = read(file);
   const route = normalizeRoute(file);
-  const cardBlocks = [...page.matchAll(offerCardPattern)].map((match) => match[0]);
+  if (route.startsWith('/go/')) continue;
+
+  const cardBlocks = [...page.matchAll(cardPattern)].map((match) => match[0]);
 
   for (const block of cardBlocks) {
     checkedCards += 1;
     const key = block.match(/data-offer-key="([^"]+)"/)?.[1] || block.match(/href="\/offers\/([^"/]+)\.html"/)?.[1];
     const hrefs = [...block.matchAll(hrefPattern)].map((match) => match[1]);
     const offerLinks = hrefs.filter((href) => href.startsWith('/offers/'));
+    const requiresOfferLanding = /\b(?:offer-card|product-card)\b/.test(block) || hrefs.some((href) => href.startsWith('/offers/') || href.startsWith('/go/'));
 
-    if (offerLinks.length === 0) {
+    if (requiresOfferLanding && offerLinks.length === 0) {
       failures.push(`${route}: offer card ${key || '(unknown)'} has no /offers/<slug>.html link`);
     }
 
@@ -91,6 +95,7 @@ for (const file of offerPages) {
   const goFile = join(publicDir, 'go', `${slug}.html`);
 
   if (!slug) failures.push(`${route}: could not infer slug`);
+  if (amazonFirstOnly && slug && !slug.startsWith('amazon-')) failures.push(`${route}: non-Amazon offer page generated during Amazon-first mode`);
   if (!existsSync(goFile)) failures.push(`${route}: missing paired ${goRoute}`);
   if (!page.includes(goRoute)) failures.push(`${route}: missing outbound CTA to ${goRoute}`);
   if (!/Affiliate disclosure|may earn|sponsored|commission/i.test(page)) failures.push(`${route}: missing affiliate/sponsor disclosure copy`);

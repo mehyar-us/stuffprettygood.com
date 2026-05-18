@@ -301,6 +301,34 @@ function opportunityValue(record = {}) {
   return Number.isFinite(number) ? `$${number.toLocaleString()}` : value;
 }
 
+function opportunitySourceId(record = {}) {
+  return record.source_id || record.source_ref || record.source || 'unknown_source';
+}
+
+function opportunitySourceName(record = {}) {
+  return record.source_name || record.source_title || record.source || opportunitySourceId(record);
+}
+
+function opportunitySourceFamily(record = {}) {
+  return record.source_family || record.family || record.source_type || 'source';
+}
+
+function opportunitySourceFilterBar(records = [], sources = []) {
+  const bySource = new Map();
+  for (const record of records) {
+    const id = opportunitySourceId(record);
+    const source = sources.find((item) => (item.source_id || item.id || item.name) === id) || {};
+    bySource.set(id, {
+      id,
+      name: source.source_name || source.name || opportunitySourceName(record),
+      family: source.source_family || source.family || opportunitySourceFamily(record),
+      count: (bySource.get(id)?.count || 0) + 1,
+    });
+  }
+  const buttons = [...bySource.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)).map((source) => `<button class="button ghost opportunity-source-filter" type="button" data-source-filter="${escapeHtml(source.id)}" title="Filter opportunities to ${escapeHtml(source.name)}"><strong>${escapeHtml(source.name)}</strong><span>${escapeHtml(source.id)} · ${escapeHtml(source.family)} · ${formatCount(source.count)}</span></button>`).join('');
+  return `<div class="opportunity-source-filter-bar" aria-label="Source-specific opportunity filters"><button class="button primary opportunity-source-filter" type="button" data-source-filter="__all">All sources</button>${buttons}</div>`;
+}
+
 function opportunityRail(records = [], key, title, empty) {
   const matches = records.filter((record) => {
     const status = String(record.status || opportunityRecommendation(record)).toLowerCase();
@@ -311,7 +339,7 @@ function opportunityRail(records = [], key, title, empty) {
   }).slice(0, 6);
   return `<section class="opportunity-queue-column card" data-opportunity-queue="${escapeHtml(key)}">
     <div class="crm-module-head"><div><p class="eyebrow">${escapeHtml(key)} queue</p><h3>${escapeHtml(title)}</h3></div><span class="pill">${formatCount(matches.length)}</span></div>
-    ${matches.length ? matches.map((record) => `<a href="#opportunity-${escapeHtml(opportunityIdentity(record))}" class="queue-mini-card"><strong>${escapeHtml(record.title || 'Untitled')}</strong><span>${escapeHtml(record.source_family || record.source_id || 'source')} · ${escapeHtml(opportunityValue(record))}</span></a>`).join('') : `<p class="trust-note">${escapeHtml(empty)}</p>`}
+    ${matches.length ? matches.map((record) => `<a href="#opportunity-${escapeHtml(opportunityIdentity(record))}" class="queue-mini-card" data-opportunity-source="${escapeHtml(opportunitySourceId(record))}"><strong>${escapeHtml(record.title || 'Untitled')}</strong><span>${escapeHtml(opportunitySourceFamily(record))} · ${escapeHtml(opportunitySourceId(record))} · ${escapeHtml(opportunityValue(record))}</span></a>`).join('') : `<p class="trust-note">${escapeHtml(empty)}</p>`}
   </section>`;
 }
 
@@ -321,6 +349,41 @@ function opportunityQueueBoard(records = []) {
     ${opportunityRail(records, 'watch', 'Watch / needs evidence', 'No watch records in this view.')}
     ${opportunityRail(records, 'reject', 'Reject / stale / duplicate', 'No reject records in this view.')}
   </div>`;
+}
+
+function sourceFilteredOpportunityBoard(records = [], sources = []) {
+  const sourceNames = new Map(sources.map((source) => [source.source_id || source.id || source.name, source.source_name || source.name || source.source_id]));
+  const groups = new Map();
+  for (const record of records) {
+    const key = opportunitySourceId(record);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(record);
+  }
+  if (!groups.size) return '<p class="trust-note">No source-filtered opportunities yet. Run collectors, then filter by source.</p>';
+  return `<div class="source-filter-board" aria-label="Opportunities filtered by source">${[...groups.entries()].map(([sourceId, items]) => `
+    <details class="card source-filter-group" data-source-group="${escapeHtml(sourceId)}" ${items.some((item) => ['pursue','needs_approval','watch'].includes(String(item.status))) ? 'open' : ''}>
+      <summary><span><strong>${escapeHtml(sourceNames.get(sourceId) || sourceId)}</strong><em>${escapeHtml(opportunitySourceFamily(items[0]) || 'source')} · ${formatCount(items.length)} opportunities</em></span><span class="pill">Filter source</span></summary>
+      <div class="opportunity-action-list">${items.slice(0, 8).map((record) => `<a class="queue-mini-card" data-opportunity-source="${escapeHtml(opportunitySourceId(record))}" href="#opportunity-${escapeHtml(opportunityIdentity(record))}"><strong>${escapeHtml(record.title || 'Untitled')}</strong><span>${escapeHtml(opportunityRecommendation(record))} · ${escapeHtml(opportunityValue(record))} · ${escapeHtml(record.due_at || record.due_date || 'no deadline')}</span></a>`).join('')}</div>
+    </details>`).join('')}</div>`;
+}
+
+function applicationHelperPreview(record = {}) {
+  const evidence = record.evidence_refs || [record.artifact_path || record.source_url || record.external_url || record.source_id].filter(Boolean);
+  const missing = [];
+  if (!evidence.length) missing.push('official source URL/evidence');
+  if (!record.eligibility) missing.push('eligibility');
+  if (!record.required_docs?.length) missing.push('required docs');
+  if (!record.due_at && !record.due_date && !record.deadline) missing.push('deadline');
+  if (!record.expected_value_usd && !record.value_estimate) missing.push('value/commission basis');
+  return [
+    'AI APPLICATION HELPER — INTERNAL PREP ONLY',
+    `Source: ${record.source_id || record.source_family || 'unknown'}`,
+    `Official evidence: ${compact(evidence)}`,
+    `What to collect next: ${missing.length ? missing.join(', ') : 'source verification and human review'}`,
+    `Package angle: ${record.first_cash_path || record.next_best_action || record.summary || 'draft value proposition from evidence'}`,
+    'Apply path: verify source → build checklist → draft claim-safe response/proposal → route Boss/ComplyOps approval → only then external action.',
+    'Blocked: no outreach, application, bid/proposal, account creation, spend, KYC/tax/bank, public claim, or raw PII export from this dashboard.'
+  ].join('\n');
 }
 
 function memoPreview(record = {}) {
@@ -362,16 +425,24 @@ function decisionLogPreview(record = {}) {
 function opportunityDetailDrawer(record = {}) {
   const id = opportunityIdentity(record);
   const status = record.status || opportunityRecommendation(record);
-  return `<details id="opportunity-${escapeHtml(id)}" class="opportunity-detail-drawer card">
-    <summary><span><strong>${escapeHtml(record.title || 'Untitled opportunity')}</strong><em>${escapeHtml(record.source_family || record.source_id || 'source')} · ${escapeHtml(status)}</em></span><span class="pill">Open detail drawer</span></summary>
+  return `<details id="opportunity-${escapeHtml(id)}" class="opportunity-detail-drawer card" data-opportunity-source="${escapeHtml(opportunitySourceId(record))}">
+    <summary><span><strong>${escapeHtml(record.title || 'Untitled opportunity')}</strong><em>${escapeHtml(opportunitySourceName(record))} · ${escapeHtml(opportunitySourceFamily(record))} · ${escapeHtml(status)}</em></span><span class="pill">Open detail drawer</span></summary>
     <div class="opportunity-detail-grid">
       <section><p class="eyebrow">Opportunity detail</p><dl class="opportunity-detail-list">
         <div><dt>Buyer/org</dt><dd>${escapeHtml(record.buyer_org_name || record.buyer || 'unknown')}</dd></div>
+        <div><dt>Source ID</dt><dd>${escapeHtml(opportunitySourceId(record))}</dd></div>
+        <div><dt>Source name</dt><dd>${escapeHtml(opportunitySourceName(record))}</dd></div>
+        <div><dt>Source family</dt><dd>${escapeHtml(opportunitySourceFamily(record))}</dd></div>
         <div><dt>Expected value</dt><dd>${escapeHtml(opportunityValue(record))}</dd></div>
+        <div><dt>Value basis</dt><dd>${escapeHtml(record.expected_value_basis || record.value_basis || 'unknown')}</dd></div>
         <div><dt>First cash window</dt><dd>${escapeHtml(record.first_cash_window_days ? `${record.first_cash_window_days} days` : record.firstCash || 'unknown')}</dd></div>
+        <div><dt>Deadline</dt><dd>${escapeHtml(record.due_at || record.due_date || record.deadline || record.close_date || 'unknown')}</dd></div>
+        <div><dt>Eligibility</dt><dd>${escapeHtml(record.eligibility || 'unknown')}</dd></div>
+        <div><dt>Required docs</dt><dd>${escapeHtml(compact(record.required_docs || record.required_assets || 'missing'))}</dd></div>
         <div><dt>Gate</dt><dd>${escapeHtml(record.gate_status || record.gate || 'not_required')}</dd></div>
         <div><dt>Proof required</dt><dd>${escapeHtml(compact(record.proof_required || record.evidence_refs || record.source_id))}</dd></div>
       </dl></section>
+      <section><p class="eyebrow">AI application helper</p><pre class="job-log-output">${escapeHtml(applicationHelperPreview(record))}</pre></section>
       <section><p class="eyebrow">AI go/no-go memo</p><pre class="job-log-output">${escapeHtml(memoPreview(record))}</pre></section>
       <section><p class="eyebrow">Decision log</p>${decisionLogPreview(record)}</section>
       <section><p class="eyebrow">Kanban route proposal</p><pre class="job-log-output">${escapeHtml(kanbanProposalPreview(record))}</pre></section>
@@ -383,9 +454,9 @@ function opportunityActionCards(records = []) {
   if (!records.length) return '<p class="trust-note">No artifact-backed opportunities yet. Run Opportunity Finder collect from Jobs Control.</p>';
   return `<div class="opportunity-action-list">${records.map((record) => {
     const id = opportunityIdentity(record);
-    return `<article class="card opportunity-action-card" data-opportunity-id="${escapeHtml(id)}">
+    return `<article class="card opportunity-action-card" data-opportunity-id="${escapeHtml(id)}" data-opportunity-source="${escapeHtml(opportunitySourceId(record))}" data-opportunity-family="${escapeHtml(opportunitySourceFamily(record))}">
       <div class="opportunity-card-main">
-        <p class="eyebrow">${escapeHtml(record.source_family || record.source_id || 'opportunity')} · score ${escapeHtml(opportunityScore(record) || '—')} · ${escapeHtml(opportunityRecommendation(record))}</p>
+        <p class="eyebrow">${escapeHtml(opportunitySourceName(record))} · ${escapeHtml(opportunitySourceId(record))} · ${escapeHtml(opportunitySourceFamily(record))} · score ${escapeHtml(opportunityScore(record) || '—')} · ${escapeHtml(opportunityRecommendation(record))}</p>
         <h3>${escapeHtml(record.title || 'Untitled opportunity')}</h3>
         <p>${escapeHtml(record.summary || record.company_fit || record.first_cash_path || record.next_best_action || 'Needs internal review.')}</p>
         <div class="tag-row">
@@ -401,7 +472,7 @@ function opportunityActionCards(records = []) {
         <button class="button ghost opportunity-action-button" type="button" data-opportunity-id="${escapeHtml(id)}" data-opportunity-action="reject">Reject</button>
         <button class="button ghost opportunity-action-button" type="button" data-opportunity-id="${escapeHtml(id)}" data-opportunity-action="assign_owner">Assign owner</button>
         <button class="button ghost opportunity-action-button" type="button" data-opportunity-id="${escapeHtml(id)}" data-opportunity-action="create_kanban_task">Create Kanban task</button>
-        <button class="button ghost opportunity-action-button" type="button" data-opportunity-id="${escapeHtml(id)}" data-opportunity-action="draft_memo">Draft memo</button>
+        <button class="button ghost opportunity-action-button" type="button" data-opportunity-id="${escapeHtml(id)}" data-opportunity-action="draft_memo">AI apply helper</button>
       </div>
       <div class="opportunity-detail-slot">${opportunityDetailDrawer(record)}</div>
     </article>`;
@@ -626,6 +697,9 @@ function renderModules(data) {
         ${card('Source families', formatCount(oppOps?.counts?.sources || oppDash?.counts?.sources || oppSources.length), compact(oppOps?.source_health || dailyPull.opportunity_source_health || oppDash?.source_health_counts || {}))}
         ${card('External actions', oppDash?.externalActionsEnabled === false ? 'BLOCKED' : 'CHECK', 'AI drafts only; Boss approval required.', 'error')}
       </div>
+      <p class="lede">Filter by source first, then open a drawer for richer buyer/source data, AI application prep, decision logging, and sanitized Kanban routing.</p>
+      ${opportunitySourceFilterBar(topOpportunities, oppSources)}
+      ${sourceFilteredOpportunityBoard(topOpportunities, oppSources)}
       ${opportunityQueueBoard(topOpportunities)}
       ${opportunityActionCards(topOpportunities)}
       <div id="opportunity-action-output" class="job-run-output" aria-live="polite"></div>
@@ -697,7 +771,25 @@ async function showDashboard({ session }) {
   });
   document.getElementById('crm-refresh')?.addEventListener('click', () => loadSession());
   bindJobControls();
+  bindOpportunitySourceFilters();
   bindOpportunityActions();
+}
+
+function bindOpportunitySourceFilters() {
+  for (const button of document.querySelectorAll('.opportunity-source-filter')) {
+    button.addEventListener('click', () => {
+      const selected = button.getAttribute('data-source-filter') || '__all';
+      const showAll = selected === '__all';
+      for (const element of document.querySelectorAll('[data-opportunity-source], [data-source-group]')) {
+        const source = element.getAttribute('data-opportunity-source') || element.getAttribute('data-source-group');
+        element.hidden = !showAll && source !== selected;
+      }
+      for (const control of document.querySelectorAll('.opportunity-source-filter')) {
+        control.setAttribute('aria-pressed', String(control === button));
+      }
+      setOpportunityOutput(`<div class="card"><p class="eyebrow">Source filter</p><h3>${escapeHtml(showAll ? 'All sources' : selected)}</h3><p class="trust-note">Filtered locally; no outreach, application, publish, spend, or raw data export action was triggered.</p></div>`);
+    });
+  }
 }
 
 function setOpportunityOutput(html) {
@@ -725,7 +817,7 @@ async function bindOpportunityActions() {
         const result = await requestJson(`${CRM_API_BASE}/opportunity-desk/opportunities/${encodeURIComponent(opportunityId)}/action`, {
           method: 'POST',
           headers: authHeaders(),
-          body: JSON.stringify({ action, owner_profile: owner, assignee_profile: owner }),
+          body: JSON.stringify({ action, owner_profile: owner, assignee_profile: owner, memo_type: action === 'draft_memo' ? 'application_plan' : undefined }),
         });
         setOpportunityOutput(renderActionResult(result));
         if (['pursue', 'watch', 'reject', 'assign_owner', 'create_kanban_task'].includes(action)) {

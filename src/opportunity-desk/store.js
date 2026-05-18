@@ -49,7 +49,7 @@ export class OpportunityDeskStore {
   }
 
   listSources(filters = {}) {
-    return filterRecords(this.state.source_registry, filters, ['source_family', 'active', 'source_health', 'owner_department', 'access_method']);
+    return filterRecords(this.state.source_registry, filters, ['source_id', 'source_name', 'source_family', 'active', 'source_health', 'owner_department', 'route_owner_profile', 'business_line', 'access_method']);
   }
 
   createSource(input, { actorId = 'system' } = {}) {
@@ -72,7 +72,7 @@ export class OpportunityDeskStore {
   }
 
   listSourceRuns(filters = {}) {
-    return filterRecords(this.state.source_runs, filters, ['source_id', 'status', 'privacy_review_required']);
+    return filterRecords(this.state.source_runs, filters, ['source_id', 'source_family', 'status', 'privacy_review_required']);
   }
 
   recordSourceRun(input, { actorId = 'system' } = {}) {
@@ -84,6 +84,7 @@ export class OpportunityDeskStore {
     const run = {
       run_id: input.run_id || id('run'),
       source_id: source.source_id,
+      source_family: source.source_family,
       started_at: startedAt,
       finished_at: input.finished_at || input.finishedAt || this.now().toISOString(),
       status: input.status || 'completed',
@@ -149,7 +150,9 @@ export class OpportunityDeskStore {
   }
 
   listOpportunities(filters = {}) {
-    return filterRecords(this.state.opportunities, filters, ['source_id', 'status', 'opportunity_type', 'buyer_domain', 'gate_status', 'suppression_status', 'owner_profile']);
+    return this.state.opportunities
+      .filter((opportunity) => opportunityMatchesFilters(opportunity, filters, this.sourceById(opportunity.source_id)))
+      .map((opportunity) => publicOpportunity(opportunity, this.sourceById(opportunity.source_id)));
   }
 
   upsertOpportunity(input, { actorId = 'system', persist = true } = {}) {
@@ -234,7 +237,7 @@ export class OpportunityDeskStore {
       model_name: input.model_name || 'no-external-call',
       prompt_version: input.prompt_version || MEMO_PROMPT_VERSION,
       input_evidence_refs: evidenceRefs,
-      memo_markdown: sanitizeMemo(input.memo_markdown || buildMemoMarkdown(opportunity, latestScore, evidenceRefs, missing)),
+      memo_markdown: sanitizeMemo(input.memo_markdown || buildMemoMarkdown(opportunity, latestScore, evidenceRefs, missing, input.memo_type || 'triage')),
       confidence_score: clamp(number(input.confidence_score, latestScore?.confidence_score || 60)),
       hallucination_risk: input.hallucination_risk || (!evidenceRefs.length || missing.length >= 3 ? 'needs_review' : 'low'),
       human_review_status: input.human_review_status || 'pending',
@@ -652,9 +655,14 @@ function recommendationBand(score, confidence, risk, gateStatus) {
   return { status: 'reject', band: 'reject_or_kill', reason: '<50 reject unless strategic exception' };
 }
 
-function buildMemoMarkdown(opportunity, score, evidenceRefs, missing) {
+function buildMemoMarkdown(opportunity, score, evidenceRefs, missing, memoType = 'triage') {
   const scoreLine = score ? `${score.weighted_score}/100 confidence ${score.confidence_score}/100` : 'not scored yet';
-  return `${INTERNAL_MEMO_BANNER}\n\nReality: ${opportunity.title} from ${opportunity.buyer_org_name}; score ${scoreLine}.\n\nFit: ${normalizeArray(opportunity.fit_tags).join(', ') || 'Fit tags missing.'}\n\nBuyer pain: ${opportunity.summary || 'Needs source-backed buyer pain.'}\n\nFirst-cash path: ${opportunity.first_cash_path || 'Missing first-cash path.'}\n\nRequired proof: ${normalizeArray(opportunity.proof_required).join(', ') || 'Proof requirements missing.'}\n\nMissing fields: ${missing.join(', ') || 'None detected.'}\n\nCompliance gates: gate_status=${opportunity.gate_status}; suppression_status=${opportunity.suppression_status}; external_action_type=${opportunity.external_action_type}.\n\nEvidence refs: ${evidenceRefs.join(', ') || 'No evidence refs attached.'}\n\nRecommendation: ${score?.recommendation_band?.status || 'request_more_data'} — keep all outputs internal until ComplyOps/Boss approval.\n\nNext action: Route safe internal prep only or request missing evidence.\n\nKill criteria: Missing source evidence, unsupported claims, blocked suppression/source terms, or expired/unapproved gate.`;
+  const sourceProof = evidenceRefs.join(', ') || 'No evidence refs attached.';
+  const gates = `gate_status=${opportunity.gate_status}; suppression_status=${opportunity.suppression_status}; external_action_type=${opportunity.external_action_type}`;
+  if (memoType === 'application_plan') {
+    return `${INTERNAL_MEMO_BANNER}\n\nAI application helper: ${opportunity.title} from ${opportunity.buyer_org_name}; score ${scoreLine}.\n\nApply path: 1) verify source evidence, terms, deadline, and eligibility; 2) identify the official application/bid/contact surface from source refs only; 3) build an internal requirements checklist; 4) draft a claim-safe response/proposal outline; 5) request Boss/ComplyOps approval before any external submission, outreach, account creation, spend, KYC/tax/bank step, or public claim.\n\nLikely package angle: ${opportunity.first_cash_path || opportunity.summary || 'Needs first-cash/service angle from source evidence.'}\n\nRequired info to collect: buyer/org details, official URL, deadline, eligibility, required docs/assets, price/value basis, decision maker role if public org-only, submission format, account/registration requirements, and disallowed traffic/claim terms.\n\nDraft response outline: Problem observed → Mehyar capability fit → proof/assets available → low-risk pilot path → compliance/approval caveats → next internal milestone.\n\nMissing fields: ${missing.join(', ') || 'None detected.'}\n\nCompliance gates: ${gates}.\n\nEvidence refs: ${sourceProof}\n\nRecommendation: ${score?.recommendation_band?.status || 'request_more_data'} — AI can prepare the internal checklist and draft, but cannot submit/apply/contact/publish.\n\nNext action: Create a sanitized Kanban prep task with evidence, required docs, and approval gate.\n\nKill criteria: No official source URL, unsupported eligibility, false capability/past-performance claim needed, terms prohibit channel/use, raw PII required, or approval gate cannot clear.`;
+  }
+  return `${INTERNAL_MEMO_BANNER}\n\nReality: ${opportunity.title} from ${opportunity.buyer_org_name}; score ${scoreLine}.\n\nFit: ${normalizeArray(opportunity.fit_tags).join(', ') || 'Fit tags missing.'}\n\nBuyer pain: ${opportunity.summary || 'Needs source-backed buyer pain.'}\n\nFirst-cash path: ${opportunity.first_cash_path || 'Missing first-cash path.'}\n\nRequired proof: ${normalizeArray(opportunity.proof_required).join(', ') || 'Proof requirements missing.'}\n\nMissing fields: ${missing.join(', ') || 'None detected.'}\n\nCompliance gates: ${gates}.\n\nEvidence refs: ${sourceProof}\n\nRecommendation: ${score?.recommendation_band?.status || 'request_more_data'} — keep all outputs internal until ComplyOps/Boss approval.\n\nNext action: Route safe internal prep only or request missing evidence.\n\nKill criteria: Missing source evidence, unsupported claims, blocked suppression/source terms, or expired/unapproved gate.`;
 }
 
 function sanitizeMemo(value) {
@@ -670,9 +678,28 @@ function sanitizeKanbanDraft(draft) {
 }
 
 function publicSource(source) { return { ...source, credential_ref_env: source.credential_ref_env || null }; }
-function publicOpportunity(opportunity) { return { ...opportunity, blocked_external_actions: blockedSideEffects() }; }
-function compactOpportunity(opportunity) { return { opportunity_id: opportunity.opportunity_id, title: opportunity.title, buyer_org_name: opportunity.buyer_org_name, opportunity_type: opportunity.opportunity_type, status: opportunity.status, gate_status: opportunity.gate_status, suppression_status: opportunity.suppression_status, expected_value_usd: opportunity.expected_value_usd, first_cash_window_days: opportunity.first_cash_window_days, first_cash_path: opportunity.first_cash_path, route_owner_profile: opportunity.route_owner_profile, owner_profile: opportunity.owner_profile, due_at: opportunity.due_at, partner_needed: opportunity.partner_needed, source_id: opportunity.source_id }; }
+function publicOpportunity(opportunity, source = null) {
+  return {
+    ...opportunity,
+    source_name: source?.source_name || opportunity.source_name || null,
+    source_family: source?.source_family || opportunity.source_family || null,
+    source_business_line: source?.business_line || null,
+    source_route_owner_profile: source?.route_owner_profile || null,
+    blocked_external_actions: blockedSideEffects(),
+  };
+}
+function compactOpportunity(opportunity) { return { opportunity_id: opportunity.opportunity_id, title: opportunity.title, buyer_org_name: opportunity.buyer_org_name, opportunity_type: opportunity.opportunity_type, status: opportunity.status, gate_status: opportunity.gate_status, suppression_status: opportunity.suppression_status, expected_value_usd: opportunity.expected_value_usd, first_cash_window_days: opportunity.first_cash_window_days, first_cash_path: opportunity.first_cash_path, route_owner_profile: opportunity.route_owner_profile, owner_profile: opportunity.owner_profile, due_at: opportunity.due_at, partner_needed: opportunity.partner_needed, source_id: opportunity.source_id, source_family: opportunity.source_family, source_name: opportunity.source_name }; }
 function filterRecords(records, filters, allowedKeys) { return records.filter((record) => allowedKeys.every((key) => filters[key] == null || String(record[key]) === String(filters[key]))); }
+function opportunityMatchesFilters(opportunity, filters = {}, source = null) {
+  const allowedKeys = ['source_id', 'source_family', 'source_name', 'status', 'opportunity_type', 'buyer_domain', 'gate_status', 'suppression_status', 'owner_profile', 'route_owner_profile'];
+  return allowedKeys.every((key) => {
+    if (filters[key] == null || filters[key] === '') return true;
+    const value = key === 'source_family' ? (source?.source_family || opportunity.source_family)
+      : key === 'source_name' ? (source?.source_name || opportunity.source_name)
+      : opportunity[key];
+    return String(value) === String(filters[key]);
+  });
+}
 function normalizeArray(value) { return [...new Set((Array.isArray(value) ? value : value ? [value] : []).map((item) => sanitizeText(item, 500)).filter(Boolean))]; }
 function sanitizeText(value, max = 1200) { return String(value || '').replace(/[\u0000-\u001f\u007f]/g, ' ').replace(SECRET_PATTERN, '[redacted_secret_like]').replace(RAW_PII_PATTERN, '[redacted_pii_like]').trim().slice(0, max); }
 function safeUri(value) { if (!value) return null; const text = String(value); if (SECRET_PATTERN.test(text) || RAW_PII_PATTERN.test(text)) throw statusError(422, 'unsafe URI contains secret/PII-like content'); return text.slice(0, 500); }
