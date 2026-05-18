@@ -18,16 +18,23 @@
       const products = (data.products || []).filter(function(p){ return p.image_url; }).slice(0, displayLimit);
       if (!products.length) return;
       mount.innerHTML = products.map(function(p){
+        const id = encodeURIComponent(p.id);
         const source = "walmart" === 'walmart' ? '<div class="value-chip">Walmart · Impact approved</div>' : '<div class="value-chip">Approved live catalog</div>';
-        return '<article class="card"><a target="_blank" class="thumb" href="https://stuffprettygood-api.mehyar.workers.dev/products/'+encodeURIComponent(p.id)+'"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'" loading="lazy"></a>'+source+'<div class="card-meta"><span>'+esc(String(p.price_band).replace('-', ' $'))+'</span><span>'+esc(String(p.category).replace('-', ' '))+'</span></div><h3>'+esc(p.title)+'</h3><p>'+esc(p.why_useful)+'</p><p class="best"><strong>Best for:</strong> '+esc(p.best_for)+'</p><a target="_blank" class="btn small" href="https://stuffprettygood-api.mehyar.workers.dev/products/'+encodeURIComponent(p.id)+'">Get</a></article>';
+        const fallback = 'https://stuffprettygood-api.mehyar.workers.dev/api/images/'+id+'.svg';
+        return '<article class="card"><a target="_blank" class="thumb" href="https://stuffprettygood-api.mehyar.workers.dev/products/'+id+'"><img src="'+esc(p.image_url)+'" data-fallback="'+fallback+'" alt="'+esc(p.title)+'" loading="lazy"></a>'+source+'<div class="card-meta"><span>'+esc(String(p.price_band).replace('-', ' $'))+'</span><span>'+esc(String(p.category).replace('-', ' '))+'</span></div><h3>'+esc(p.title)+'</h3><p>'+esc(p.why_useful)+'</p><p class="best"><strong>Best for:</strong> '+esc(p.best_for)+'</p><a target="_blank" class="btn small" href="https://stuffprettygood-api.mehyar.workers.dev/products/'+id+'">Get</a></article>';
       }).join('');
+      mount.querySelectorAll('img[data-fallback]').forEach(function(img){
+        function useFallback(){ if (img.dataset.fallback && img.src !== img.dataset.fallback) img.src = img.dataset.fallback; }
+        img.addEventListener('error', useFallback, { once: true });
+        setTimeout(function(){ if (!img.complete || img.naturalWidth === 0) useFallback(); }, 1200);
+      });
     })
     .catch(function(){ mount.innerHTML = '<p class="micro">Daily picks are refreshing. Try the static catalog below.</p>'; });
 })();
 </script>
-<section class="section"><div class="section-head"><div><p class="eyebrow">Fresh daily picks</p><h2>New useful finds from the live catalog</h2></div><a target="_blank" class="pill" href="/useful-finds/">See more</a></div><div class="grid product-wall" data-live-picks><p class="micro">Loading today’s fresh picks…</p></div></section><script>
+<section class="section"><div class="section-head"><div><p class="eyebrow">Fresh daily picks</p><h2>New useful finds from the live catalog</h2></div><a target="_blank" class="pill" href="/useful-finds/">See more</a></div><div class="grid product-wall" data-live-picks="fresh"><p class="micro">Loading today’s fresh picks…</p></div></section><script>
 (function(){
-  const mount = document.querySelector("[data-live-picks]");
+  const mount = document.querySelector("[data-live-picks=\"fresh\"]");
   if (!mount) return;
   const displayLimit = 48;
   function esc(value){ return String(value || '').replace(/[&<>"']/g, function(ch){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]; }); }
@@ -37,9 +44,16 @@
       const products = (data.products || []).filter(function(p){ return p.image_url; }).slice(0, displayLimit);
       if (!products.length) return;
       mount.innerHTML = products.map(function(p){
+        const id = encodeURIComponent(p.id);
         const source = "" === 'walmart' ? '<div class="value-chip">Walmart · Impact approved</div>' : '<div class="value-chip">Approved live catalog</div>';
-        return '<article class="card"><a target="_blank" class="thumb" href="https://stuffprettygood-api.mehyar.workers.dev/products/'+encodeURIComponent(p.id)+'"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'" loading="lazy"></a>'+source+'<div class="card-meta"><span>'+esc(String(p.price_band).replace('-', ' $'))+'</span><span>'+esc(String(p.category).replace('-', ' '))+'</span></div><h3>'+esc(p.title)+'</h3><p>'+esc(p.why_useful)+'</p><p class="best"><strong>Best for:</strong> '+esc(p.best_for)+'</p><a target="_blank" class="btn small" href="https://stuffprettygood-api.mehyar.workers.dev/products/'+encodeURIComponent(p.id)+'">Get</a></article>';
+        const fallback = 'https://stuffprettygood-api.mehyar.workers.dev/api/images/'+id+'.svg';
+        return '<article class="card"><a target="_blank" class="thumb" href="https://stuffprettygood-api.mehyar.workers.dev/products/'+id+'"><img src="'+esc(p.image_url)+'" data-fallback="'+fallback+'" alt="'+esc(p.title)+'" loading="lazy"></a>'+source+'<div class="card-meta"><span>'+esc(String(p.price_band).replace('-', ' $'))+'</span><span>'+esc(String(p.category).replace('-', ' '))+'</span></div><h3>'+esc(p.title)+'</h3><p>'+esc(p.why_useful)+'</p><p class="best"><strong>Best for:</strong> '+esc(p.best_for)+'</p><a target="_blank" class="btn small" href="https://stuffprettygood-api.mehyar.workers.dev/products/'+id+'">Get</a></article>';
       }).join('');
+      mount.querySelectorAll('img[data-fallback]').forEach(function(img){
+        function useFallback(){ if (img.dataset.fallback && img.src !== img.dataset.fallback) img.src = img.dataset.fallback; }
+        img.addEventListener('error', useFallback, { once: true });
+        setTimeout(function(){ if (!img.complete || img.naturalWidth === 0) useFallback(); }, 1200);
+      });
     })
     .catch(function(){ mount.innerHTML = '<p class="micro">Daily picks are refreshing. Try the static catalog below.</p>'; });
 })();
