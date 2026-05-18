@@ -73,6 +73,7 @@ const featured = products.slice(0, 12);
 const home = `<section class="hero"><div class="hero-copy"><div class="eyebrow">Practical shopping guide</div><h1>Useful stuff worth buying. Less noise, better picks.</h1><p class="sub">Find gifts, starter kits, travel gear, kitchen helpers, home-office upgrades, and budget-friendly everyday fixes. Each pick is curated for a real use case, with a simple path to shop when it fits.</p><div class="actions"><a class="btn" href="/gift-finder/">Find a Gift</a><a class="btn ghost" href="/starter-kits/">Build a Starter Kit</a><a class="btn ghost" href="/under-50/">Find Stuff Under $50</a></div></div><div class="hero-card commerce-card"><div class="mini-label">Buy smarter today</div><h2>Fast picks for gifts, setups, travel, pets, kitchens, and the tiny upgrades that make life easier.</h2><div class="hero-stack"><span>🎁 Gift-ready</span><span>🖥️ Desk upgrades</span><span>✈️ Travel helpers</span><span>🍳 Kitchen fixes</span><span>🐾 Pet problem-solvers</span></div><p class="micro trust-line">Curated first. Shoppable when it makes sense.</p></div></section>
 <section class="section split sales-strip"><div><p class="eyebrow">How it works</p><h2>Tell us the job. We show the stuff worth considering.</h2></div><p class="sub">Stuff Pretty Good is built around useful outcomes: better gifts, cleaner desks, smarter travel, faster kitchens, calmer pet care, and budget-friendly upgrades. No endless marketplace scrolling — just practical shortlists with clear why-to-buy and avoid-if notes.</p></section>
 <section class="section"><div class="section-head"><div><p class="eyebrow">Featured finds</p><h2>Small upgrades with high everyday payoff</h2></div><a class="pill" href="/useful-finds/">Browse all</a></div><div class="grid">${featured.map(card).join('')}</div></section>
+<section class="section"><div class="section-head"><div><p class="eyebrow">Fresh daily picks</p><h2>New useful finds from the live catalog</h2></div><a class="pill" href="/useful-finds/">See more</a></div><div class="grid" data-live-picks><p class="micro">Loading today’s fresh picks…</p></div></section>${liveDailyPicksScript()}
 <section class="section lanes"><a href="/under-25/"><strong>Under $25</strong><span>cheap useful wins</span></a><a href="/under-50/"><strong>Under $50</strong><span>gift-safe picks</span></a><a href="/travel/"><strong>Travel</strong><span>stuff people actually use</span></a><a href="/home-office/"><strong>Home office</strong><span>cleaner desk setups</span></a></section>
 <section class="section panel"><div class="section-head"><div><p class="eyebrow">Buying guides</p><h2>Start with the problem. Leave with a shortlist.</h2></div></div><div class="guide-list">${posts.map((p) => `<a href="/guides/${p.slug}/">${esc(p.title)}<span>Read guide →</span></a>`).join('')}</div></section>
 <section class="signup-band"><div><p class="eyebrow">Email list</p><h2>Get useful finds without doom-scrolling.</h2><p>Join for useful finds, gift ideas, and starter kits. Email is required; everything else is optional.</p></div>${signupForm('homepage')}</section>`;
@@ -155,10 +156,31 @@ function toolPage(name, desc, mode = 'gift') {
 }
 mkdirPage('gift-finder', toolPage('AI Gift Finder', 'Answer a few prompts and get gift ideas from the approved-offer catalog only.'));
 mkdirPage('starter-kits', toolPage('AI Starter Kit Builder', 'Build useful setups from approved affiliate products only.', 'kit'));
-mkdirPage('useful-finds', layout('Useful Finds', `<section class="section"><p class="eyebrow">Approved catalog</p><h1>Useful Finds</h1><p class="sub">Browse useful upgrades for gifts, home, kitchen, travel, tech, pets, and everyday problems.</p><div class="grid">${products.map(card).join('')}</div></section>`));
+mkdirPage('useful-finds', layout('Useful Finds', `<section class="section"><p class="eyebrow">Approved catalog</p><h1>Useful Finds</h1><p class="sub">Browse useful upgrades for gifts, home, kitchen, travel, tech, pets, and everyday problems.</p><div class="section-head"><div><p class="eyebrow">Fresh daily picks</p><h2>Newest from the live catalog</h2></div></div><div class="grid" data-live-picks><p class="micro">Loading daily picks…</p></div>${liveDailyPicksScript()}<h2>Full launch catalog</h2><div class="grid">${products.map(card).join('')}</div></section>`));
 
 function signupForm(source = 'site') {
   return `<form class="signup-form" method="post" action="https://stuffprettygood-api.mehyar.workers.dev/api/subscribe"><input type="hidden" name="source" value="${esc(source)}"><div class="form-grid"><label>First name<input name="first_name" autocomplete="given-name"></label><label>Last name<input name="last_name" autocomplete="family-name"></label><label>Email required<input name="email" type="email" autocomplete="email" required></label><label>Zip<input name="zip" inputmode="numeric" autocomplete="postal-code"></label><label>Phone optional<input name="phone" type="tel" autocomplete="tel"></label></div><button class="btn" type="submit">Sign up</button><p class="micro">Get practical finds, gift ideas, and useful under-budget picks. Unsubscribe anytime.</p></form>`;
+}
+
+
+function liveDailyPicksScript() {
+  return `<script>
+(function(){
+  const mount = document.querySelector('[data-live-picks]');
+  if (!mount) return;
+  function esc(value){ return String(value || '').replace(/[&<>"']/g, function(ch){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]; }); }
+  fetch('https://stuffprettygood-api.mehyar.workers.dev/api/catalog?limit=12')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      const products = (data.products || []).slice(0, 12);
+      if (!products.length) return;
+      mount.innerHTML = products.map(function(p){
+        return '<article class="card"><a class="thumb" href="https://stuffprettygood-api.mehyar.workers.dev/products/'+encodeURIComponent(p.id)+'"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'"></a><div class="card-meta"><span>'+esc(String(p.price_band).replace('-', ' $'))+'</span><span>'+esc(String(p.category).replace('-', ' '))+'</span></div><h3>'+esc(p.title)+'</h3><p>'+esc(p.why_useful)+'</p><p class="best"><strong>Best for:</strong> '+esc(p.best_for)+'</p><a class="btn small" href="https://stuffprettygood-api.mehyar.workers.dev/products/'+encodeURIComponent(p.id)+'">Shop this pick</a></article>';
+      }).join('');
+    })
+    .catch(function(){ mount.innerHTML = '<p class="micro">Daily picks are refreshing. Try the static catalog below.</p>'; });
+})();
+</script>`;
 }
 
 const policyPages = {
