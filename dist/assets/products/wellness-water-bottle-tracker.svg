@@ -9,6 +9,6 @@
   <rect x="116" y="96" width="408" height="220" rx="34" fill="#ffffff" filter="url(#shadow)"/>
   <text x="320" y="196" text-anchor="middle" font-size="76">🌿</text>
   <text x="320" y="250" text-anchor="middle" font-family="Inter,Arial" font-size="28" font-weight="900" fill="#111827">Water bottle with</text>
-  <text x="320" y="286" text-anchor="middle" font-family="Inter,Arial" font-size="18" font-weight="700" fill="#64748b">approved Amazon find</text>
+  <text x="320" y="286" text-anchor="middle" font-family="Inter,Arial" font-size="18" font-weight="700" fill="#64748b">useful shopping pick</text>
   <path d="M94 350 C182 326 258 376 346 342 S512 326 562 362" fill="none" stroke="#fb923c" stroke-width="12" stroke-linecap="round" opacity=".75"/>
 </svg>
