@@ -34,7 +34,14 @@ for (const page of htmlPages) {
   const html = fs.readFileSync(page, 'utf8');
   if (!html.includes('<img ')) bad.push(`${page}: missing visible image`);
   const anchors = html.match(/<a\b[^>]*>/g) || [];
-  for (const a of anchors) if (!/target=["']_blank["']/.test(a)) bad.push(`${page}: anchor missing target _blank: ${a.slice(0, 100)}`);
+  for (const a of anchors) {
+    const href = (a.match(/\shref=["']([^"']+)["']/) || [])[1] || '';
+    const outboundIntent = /^(?:https?:\/\/(?:www\.)?stuffprettygood\.com)?\/go\//i.test(href) || /^https?:\/\/stuffprettygood-api\.mehyar\.workers\.dev\/go\//i.test(href);
+    const isExternal = outboundIntent || (/^https?:\/\//i.test(href) && !/^https?:\/\/(www\.)?stuffprettygood\.com\b/i.test(href) && !/^https?:\/\/stuffprettygood-api\.mehyar\.workers\.dev\b/i.test(href));
+    if (isExternal && !/target=["']_blank["']/.test(a)) bad.push(`${page}: outbound/external anchor missing target _blank: ${a.slice(0, 100)}`);
+    if (!isExternal && /target=["']_blank["']/.test(a)) bad.push(`${page}: internal anchor should navigate in-page: ${a.slice(0, 100)}`);
+  }
+  if (!html.includes('class="back-top"')) bad.push(`${page}: missing floating back-to-top link`);
 }
 
 const productPages = fs.existsSync('dist/products') ? fs.readdirSync('dist/products').length : 0;

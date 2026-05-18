@@ -118,8 +118,33 @@ const siteArtSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360
 </svg>`
 fs.writeFileSync(path.join(dist, 'assets/site/spg-shopping-guide.svg'), siteArtSvg);
 
-function newTabLinks(html) {
-  return String(html).replace(/<a\b(?![^>]*\btarget=)/g, '<a target="_blank"');
+function isExternalHref(href) {
+  if (/^(?:https?:\/\/(?:www\.)?stuffprettygood\.com)?\/go\//i.test(href) || /^https?:\/\/stuffprettygood-api\.mehyar\.workers\.dev\/go\//i.test(href)) return true;
+  return /^https?:\/\//i.test(href) && !/^https?:\/\/(www\.)?stuffprettygood\.com\b/i.test(href) && !/^https?:\/\/stuffprettygood-api\.mehyar\.workers\.dev\b/i.test(href);
+}
+
+function normalizeLinks(html) {
+  return String(html).replace(/<a\b([^>]*)>/g, (tag, attrs) => {
+    const hrefMatch = attrs.match(/\shref=(['"])(.*?)\1/i);
+    if (!hrefMatch) return tag;
+    const href = hrefMatch[2];
+    const external = isExternalHref(href);
+    let next = attrs.replace(/\s+target=(['"]).*?\1/ig, '').replace(/\s+rel=(['"])(.*?)\1/ig, (_m, q, rel) => {
+      const safeRel = rel.split(/\s+/).filter((item) => item && item !== 'noopener' && item !== 'noreferrer').join(' ');
+      return safeRel ? ` rel=${q}${safeRel}${q}` : '';
+    });
+    if (!external) return `<a${next}>`;
+    if (/\srel=(['"])(.*?)\1/i.test(next)) {
+      next = next.replace(/\srel=(['"])(.*?)\1/i, (_m, q, rel) => ` rel=${q}${Array.from(new Set(`${rel} noopener noreferrer`.split(/\s+/).filter(Boolean))).join(' ')}${q}`);
+    } else {
+      next += ' rel="noopener noreferrer"';
+    }
+    return `<a target="_blank"${next}>`;
+  });
+}
+
+function backToTop() {
+  return '<a class="back-top" href="#top" aria-label="Back to top"><span>↑</span><strong>Top</strong></a><script>(function(){function internalHost(host){return host===location.host||host==="stuffprettygood.com"||host==="www.stuffprettygood.com"||host==="stuffprettygood-api.mehyar.workers.dev";}function tuneLinks(root){(root||document).querySelectorAll("a[href]").forEach(function(a){var raw=a.getAttribute("href")||"";if(!raw||raw.startsWith("#")||raw.startsWith("mailto:")||raw.startsWith("tel:")){a.removeAttribute("target");return;}try{var u=new URL(raw,location.href);if((u.pathname.startsWith("/go/")&&internalHost(u.host))||(/^https?:$/.test(u.protocol)&&!internalHost(u.host))){a.target="_blank";var rel=(a.getAttribute("rel")||"").trim().split(" ").filter(Boolean);["noopener","noreferrer"].forEach(function(v){if(!rel.includes(v))rel.push(v);});a.setAttribute("rel",rel.join(" "));}else{a.removeAttribute("target");}}catch(e){a.removeAttribute("target");}})}tuneLinks(document);new MutationObserver(function(){tuneLinks(document);}).observe(document.documentElement,{childList:true,subtree:true});})();</script>';
 }
 const microsoftClaritySnippet = `<script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -132,7 +157,7 @@ const impactSiteVerification = 'Impact-Site-Verification: c6f92ec5-b2a3-4bf2-8e8
 
 function layout(title, body, description = 'AI-assisted shopping guide for useful gifts, starter kits, and practical products.') {
   const shellClass = body.includes('compact-hero') ? 'site-shell home-shell' : 'site-shell';
-  return newTabLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<title>${esc(title)} | Stuff Pretty Good</title><meta name="description" content="${esc(description)}"><meta name="theme-color" content="#111827"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg"><link rel="stylesheet" href="/styles.css"></head><body><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget()}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
+  return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<title>${esc(title)} | Stuff Pretty Good</title><meta name="description" content="${esc(description)}"><meta name="theme-color" content="#111827"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg"><link rel="stylesheet" href="/styles.css"></head><body id="top"><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget()}${backToTop()}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
 }
 
 function card(p, i = 0) {
@@ -192,12 +217,12 @@ function assistantWidget() {
   function recommend(q, n=4){ return products.map(p => ({...p, score: score(p,q)})).filter(p => p.score > -5).sort((a,b)=>b.score-a.score).slice(0,n); }
   function answer(q){
     const low = q.toLowerCase();
-    if (/privacy|unsubscribe|preferences|sign ?up|email|phone|zip/.test(low)) return 'You can <a target="_blank" href="/signup/">sign up here</a>, <a target="_blank" href="/preferences/">set preferences here</a>, or <a target="_blank" href="/unsubscribe/">unsubscribe here</a>. Email is required; first name, last name, zip, and phone are optional.';
+    if (/privacy|unsubscribe|preferences|sign ?up|email|phone|zip/.test(low)) return 'You can <a href="/signup/">sign up here</a>, <a href="/preferences/">set preferences here</a>, or <a href="/unsubscribe/">unsubscribe here</a>. Email is required; first name, last name, zip, and phone are optional.';
     if (/return|shipping|warranty|price|availability/.test(low)) return esc(facts.shipping);
     if (/what is this|about|how does/.test(low)) return esc(facts.brand) + ' Ask me for a budget, person, problem, or setup and I will point you to useful picks.';
     const picks = recommend(q, 5);
     if (!picks.length) return 'I did not find a tight match yet. Try a clearer need like “travel gift under $50,” “desk setup,” “kitchen time saver,” or “pet cleanup.”';
-    return '<strong>Good shortlist:</strong>' + picks.map(p => '<a target="_blank" class="ai-pick" href="/products/'+esc(p.id)+'/"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'"><span><b>'+esc(p.title)+'</b><em>'+esc(p.why_useful)+'</em><small>Best for: '+esc(p.best_for)+'</small><strong>Get</strong></span></a>').join('') + '<p class="micro">Tip: ask “what should I avoid?” or “show cheaper picks” to narrow it.</p>';
+    return '<strong>Good shortlist:</strong>' + picks.map(p => '<a class="ai-pick" href="/products/'+esc(p.id)+'/"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'"><span><b>'+esc(p.title)+'</b><em>'+esc(p.why_useful)+'</em><small>Best for: '+esc(p.best_for)+'</small><strong>Get</strong></span></a>').join('') + '<p class="micro">Tip: ask “what should I avoid?” or “show cheaper picks” to narrow it.</p>';
   }
   launch.addEventListener('click', function(){ panel.hidden = false; root.classList.add('open'); renderHistory(); });
   close.addEventListener('click', function(){ panel.hidden = true; root.classList.remove('open'); });
@@ -216,7 +241,7 @@ function assistantWidget() {
 function mkdirPage(route, html) {
   const dir = path.join(dist, route);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, 'index.html'), newTabLinks(html));
+  fs.writeFileSync(path.join(dir, 'index.html'), normalizeLinks(html));
 }
 
 const categories = ['gift-finder', 'starter-kits', 'under-25', 'under-50', 'travel', 'home-office', 'kitchen', 'pets', 'tech', 'walmart', 'useful-finds'];
@@ -260,7 +285,7 @@ for (const route of categories.filter((r) => !['gift-finder', 'starter-kits', 'u
 
 for (const p of products) {
   mkdirPage(`products/${p.id}`, layout(p.title, `<article class="post product-detail"><div class="detail-grid"><div>${amazonNativeAd(p)}<div class="visual-proof"><span>Original SPG visual</span><strong>Built for fast shopping decisions</strong></div></div><div><div class="card-meta"><span>${esc(p.category.replace('-', ' '))}</span><span>${esc(p.price_band.replace('-', ' $'))}</span></div><h1>${esc(p.title)}</h1><p class="sub">${esc(p.why_useful)}</p><div class="decision-boxes"><div><span>Best for</span><strong>${esc(p.best_for)}</strong></div><div><span>Skip if</span><strong>${esc(p.avoid_if)}</strong></div><div><span>Good fit when</span><strong>You want a practical upgrade without overthinking it.</strong></div></div><a class="btn" href="/go/${p.id}/" rel="nofollow sponsored">Get</a><p class="micro">Confirm current product details with the merchant before buying.</p></div></div></article>`));
-  mkdirPage(`go/${p.id}`, `<!doctype html><meta charset="utf-8"><title>Redirecting</title><meta name="robots" content="noindex"><link rel="canonical" href="${p.affiliate_url}"><img src="${p.image_url}" alt="${esc(p.title)}" style="max-width:420px;width:100%;border-radius:20px"><p>Opening the pick…</p><script>location.replace(${JSON.stringify(p.affiliate_url)})</script><p><a href="${p.affiliate_url}" rel="nofollow sponsored noopener">Continue</a></p>`);
+  mkdirPage(`go/${p.id}`, `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Redirecting</title><meta name="robots" content="noindex"><link rel="canonical" href="${p.affiliate_url}"><body id="top"><img src="${p.image_url}" alt="${esc(p.title)}" style="max-width:420px;width:100%;border-radius:20px"><p>Opening the pick…</p><script>location.replace(${JSON.stringify(p.affiliate_url)})</script><p><a href="${p.affiliate_url}" rel="nofollow sponsored noopener">Continue</a></p>${backToTop()}</body></html>`);
 }
 
 for (const post of posts) {
