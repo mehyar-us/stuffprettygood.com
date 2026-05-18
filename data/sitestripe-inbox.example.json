@@ -1,0 +1,11 @@
+{
+  "entries": [
+    {
+      "product_id": "gift-usb-c-charging-station",
+      "amazon_title": "Example Amazon product title",
+      "asin": "B0EXAMPLE00",
+      "sitestripe_text_link": "https://www.amazon.com/dp/B0EXAMPLE00?linkCode=ll1&tag=mehyarmedia-20&linkId=example&language=en_US&ref_=as_li_ss_tl",
+      "sitestripe_embed_html": ""
+    }
+  ]
+}

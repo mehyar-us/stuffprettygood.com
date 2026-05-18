@@ -31,7 +31,12 @@ const searchTerm = (p) => {
   const url = new URL(p.affiliate_url);
   return url.searchParams.get('k') || p.title;
 };
-const amazonNativeAd = (p, compact = false) => `<div class="amazon-native ${compact ? 'compact' : ''}" aria-label="Live Amazon product preview for ${esc(p.title)}"><div class="native-fallback"><img src="${p.image_url}" alt="${esc(p.title)} illustrated fallback"><span>Loading Amazon product images…</span></div><script>amzn_assoc_placement="adunit0";amzn_assoc_search_bar="false";amzn_assoc_tracking_id="${AMAZON_TAG}";amzn_assoc_ad_mode="search";amzn_assoc_ad_type="smart";amzn_assoc_marketplace="amazon";amzn_assoc_region="US";amzn_assoc_title="Shop related picks";amzn_assoc_default_search_phrase=${JSON.stringify(searchTerm(p))};amzn_assoc_default_category="All";</script><script src="https://z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US"></script></div>`;
+const amazonNativeAd = (p, compact = false) => {
+  if (p.sitestripe_embed_html) {
+    return `<div class="amazon-native sitestripe ${compact ? 'compact' : ''}" aria-label="Amazon SiteStripe preview for ${esc(p.title)}">${p.sitestripe_embed_html}<div class="native-fallback"><img src="${p.image_url}" alt="${esc(p.title)} illustrated fallback"><span>Amazon preview may be blocked by privacy tools.</span></div></div>`;
+  }
+  return `<div class="amazon-native ${compact ? 'compact' : ''}" aria-label="Live Amazon product preview for ${esc(p.title)}"><div class="native-fallback"><img src="${p.image_url}" alt="${esc(p.title)} illustrated fallback"><span>Loading Amazon product images…</span></div><script>amzn_assoc_placement="adunit0";amzn_assoc_search_bar="false";amzn_assoc_tracking_id="${AMAZON_TAG}";amzn_assoc_ad_mode="search";amzn_assoc_ad_type="smart";amzn_assoc_marketplace="amazon";amzn_assoc_region="US";amzn_assoc_title="Shop related picks";amzn_assoc_default_search_phrase=${JSON.stringify(searchTerm(p))};amzn_assoc_default_category="All";</script><script src="https://z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US"></script></div>`;
+};
 
 function productSvg(p) {
   const emoji = categoryEmoji[p.category] || '✨';
