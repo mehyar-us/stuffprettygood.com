@@ -26,6 +26,11 @@ const slugUrl = (route = '') => `/${route}${route && !route.endsWith('/') ? '/' 
 const categoryEmoji = {
   tech: '⚡', kitchen: '🍳', 'home-office': '🖥️', travel: '✈️', pets: '🐾', car: '🚗', home: '🏠', wellness: '🌿', organization: '📦'
 };
+const searchTerm = (p) => {
+  const url = new URL(p.affiliate_url);
+  return url.searchParams.get('k') || p.title;
+};
+const amazonNativeAd = (p, compact = false) => `<div class="amazon-native ${compact ? 'compact' : ''}" aria-label="Live Amazon product preview for ${esc(p.title)}"><div class="native-fallback"><img src="${p.image_url}" alt="${esc(p.title)} illustrated fallback"><span>Loading Amazon product images…</span></div><script>amzn_assoc_placement="adunit0";amzn_assoc_search_bar="false";amzn_assoc_tracking_id="${AMAZON_TAG}";amzn_assoc_ad_mode="search";amzn_assoc_ad_type="smart";amzn_assoc_marketplace="amazon";amzn_assoc_region="US";amzn_assoc_title="Shop related picks";amzn_assoc_default_search_phrase=${JSON.stringify(searchTerm(p))};amzn_assoc_default_category="All";</script><script src="https://z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US"></script></div>`;
 
 function productSvg(p) {
   const emoji = categoryEmoji[p.category] || '✨';
@@ -53,7 +58,7 @@ function layout(title, body, description = 'AI-assisted shopping guide using aff
 }
 
 function card(p, i = 0) {
-  return `<article class="card" style="--delay:${i % 6}"><a class="thumb" href="/products/${p.id}/"><img src="${p.image_url}" alt="${esc(p.title)} illustrated card"></a><div class="card-meta"><span>${esc(p.price_band.replace('-', ' $'))}</span><span>${esc(p.category.replace('-', ' '))}</span></div><h3>${esc(p.title)}</h3><p>${esc(p.why_useful)}</p><p class="best"><strong>Best for:</strong> ${esc(p.best_for)}</p><a class="btn small" href="/products/${p.id}/">See the pick</a></article>`;
+  return `<article class="card" style="--delay:${i % 6}"><a class="thumb" href="/products/${p.id}/"><img src="${p.image_url}" alt="${esc(p.title)} illustrated fallback"></a><div class="real-photo-note">Actual Amazon product photos load on the pick page.</div><div class="card-meta"><span>${esc(p.price_band.replace('-', ' $'))}</span><span>${esc(p.category.replace('-', ' '))}</span></div><h3>${esc(p.title)}</h3><p>${esc(p.why_useful)}</p><p class="best"><strong>Best for:</strong> ${esc(p.best_for)}</p><a class="btn small" href="/products/${p.id}/">See product photos</a></article>`;
 }
 
 function mkdirPage(route, html) {
@@ -86,7 +91,7 @@ for (const route of categories.filter((r) => !['gift-finder', 'starter-kits', 'u
 }
 
 for (const p of products) {
-  mkdirPage(`products/${p.id}`, layout(p.title, `<article class="post product-detail"><div class="detail-grid"><img class="detail-img" src="${p.image_url}" alt="${esc(p.title)} illustrated card"><div><div class="card-meta"><span>${esc(p.category.replace('-', ' '))}</span><span>${esc(p.price_band.replace('-', ' $'))}</span></div><h1>${esc(p.title)}</h1><p class="sub">${esc(p.why_useful)}</p><p><strong>Best for:</strong> ${esc(p.best_for)}</p><p><strong>Avoid if:</strong> ${esc(p.avoid_if)}</p><a class="btn" href="/go/${p.id}/" rel="nofollow sponsored">View approved Amazon link</a><p class="notice">As an Amazon Associate, Stuff Pretty Good earns from qualifying purchases.</p></div></div></article>`));
+  mkdirPage(`products/${p.id}`, layout(p.title, `<article class="post product-detail"><div class="detail-grid"><div>${amazonNativeAd(p)}<p class="micro">Photos and listing previews above are served by Amazon's approved ad widget. The illustration is only a fallback if Amazon's widget is blocked.</p></div><div><div class="card-meta"><span>${esc(p.category.replace('-', ' '))}</span><span>${esc(p.price_band.replace('-', ' $'))}</span></div><h1>${esc(p.title)}</h1><p class="sub">${esc(p.why_useful)}</p><p><strong>Best for:</strong> ${esc(p.best_for)}</p><p><strong>Avoid if:</strong> ${esc(p.avoid_if)}</p><a class="btn" href="/go/${p.id}/" rel="nofollow sponsored">View approved Amazon link</a><p class="notice">As an Amazon Associate, Stuff Pretty Good earns from qualifying purchases.</p></div></div></article>`));
   mkdirPage(`go/${p.id}`, `<!doctype html><meta charset="utf-8"><title>Redirecting</title><meta name="robots" content="noindex"><link rel="canonical" href="${p.affiliate_url}"><p>Redirecting to approved merchant…</p><script>location.replace(${JSON.stringify(p.affiliate_url)})</script><p><a href="${p.affiliate_url}" rel="nofollow sponsored">Continue</a></p>`);
 }
 
