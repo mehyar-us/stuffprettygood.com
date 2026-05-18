@@ -10,10 +10,10 @@ for (const p of data) {
 if (!fs.existsSync('dist/index.html')) bad.push('dist missing; run build first');
 if (fs.existsSync('dist/index.html')) {
   const html = fs.readFileSync('dist/index.html', 'utf8');
-  for (const must of ['Useful stuff worth buying', 'Approved links only, explained plainly', 'As an Amazon Associate', '/signup/']) {
+  for (const must of ['Useful stuff worth buying', 'Buy smarter today', 'Small upgrades with high everyday payoff', '/signup/']) {
     if (!html.includes(must)) bad.push('homepage missing ' + must);
   }
-  for (const ugly of ['affiliate_status=approvedtag=mehyarmedia-20', 'no scraped Amazon metadata????']) {
+  for (const ugly of ['affiliate_status=approvedtag=mehyarmedia-20', 'no scraped Amazon metadata????', 'Disclosure: paid links may earn us a commission at no extra cost to you', 'Some links are paid links. If you buy through them', 'Approved links only, explained plainly', 'As an Amazon Associate']) {
     if (html.includes(ugly)) bad.push('homepage still has ugly implementation text: ' + ugly);
   }
 }
