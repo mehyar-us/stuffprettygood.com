@@ -1,0 +1,19 @@
+{
+  "ran_at": "2026-05-18T16:14:11.101Z",
+  "mode": "write",
+  "requested_count": 5,
+  "added_count": 5,
+  "previous_total": 150,
+  "next_total": 155,
+  "amazon_tag_key": "SPG_AMAZON_ASSOCIATES_TAG|AMAZON_ASSOCIATES_TAG",
+  "image_policy": "generated_original_placeholder until approved PA-API/SiteStripe/feed assets exist",
+  "added_ids": [
+    "home-office-silicone-cable-passthrough-grommets",
+    "kitchen-magnetic-weekly-meal-planner",
+    "home-collapsible-grocery-crate",
+    "travel-packing-checklist-notepad",
+    "pets-adjustable-pet-car-barrier"
+  ],
+  "skipped_reason_if_zero": null,
+  "failures": []
+}

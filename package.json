@@ -2,7 +2,10 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node scripts/validate.mjs",
+    "curate:daily": "node scripts/daily-curate.mjs",
+    "curate:dry": "node scripts/daily-curate.mjs --dry-run",
     "daily:check": "node scripts/daily-offer-check.mjs",
+    "seed:export": "node scripts/export-d1-seed.mjs",
     "dev": "node scripts/build.mjs --watch",
     "smoke": "node scripts/smoke.mjs"
   },
