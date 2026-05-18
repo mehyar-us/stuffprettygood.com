@@ -1,0 +1,7 @@
+name = "stuffprettygood"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-05-16"
+
+[vars]
+SPG_ALLOWED_OUTBOUND_RULE = "approved-affiliate-links-only"
+SPG_AMAZON_ASSOCIATES_TAG = "mehyarmedia-20"

@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/validate.mjs",
+    "dev": "node scripts/build.mjs --watch",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "devDependencies": {}
+}
