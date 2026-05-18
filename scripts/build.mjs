@@ -238,7 +238,12 @@ function filtered(route) {
 
 for (const route of categories.filter((r) => !['gift-finder', 'starter-kits', 'useful-finds'].includes(r))) {
   const picks = filtered(route).slice(0, 12);
-  mkdirPage(route, layout(titleCase(route), `<section class="section"><p class="eyebrow">Useful picks</p><h1>${titleCase(route)}</h1><p class="sub">Practical Amazon picks organized by budget, job, and real-life usefulness.</p><div class="grid">${picks.map(card).join('')}</div></section>`));
+  const isTravel = route === 'travel';
+  const intro = isTravel
+    ? 'Practical travel helpers plus fresh hotel-finder routes powered by the live SPG catalog.'
+    : 'Practical picks organized by budget, job, and real-life usefulness.';
+  const liveSection = isTravel ? `<section class="section"><div class="section-head"><div><p class="eyebrow">Live travel</p><h2>Fresh hotel and trip finders</h2></div></div><div class="grid" data-live-picks><p class="micro">Loading fresh travel picks…</p></div>${liveDailyPicksScript('travel')}</section>` : '';
+  mkdirPage(route, layout(titleCase(route), `<section class="section"><p class="eyebrow">Useful picks</p><h1>${titleCase(route)}</h1><p class="sub">${intro}</p><div class="grid">${picks.map(card).join('')}</div></section>${liveSection}`));
 }
 
 for (const p of products) {
@@ -313,13 +318,14 @@ function signupForm(source = 'site') {
 }
 
 
-function liveDailyPicksScript() {
+function liveDailyPicksScript(category = '') {
+  const query = category === 'travel' ? '?category=travel&merchant=stay22&limit=12' : (category ? `?category=${encodeURIComponent(category)}&limit=12` : '?limit=12');
   return `<script>
 (function(){
   const mount = document.querySelector('[data-live-picks]');
   if (!mount) return;
   function esc(value){ return String(value || '').replace(/[&<>"']/g, function(ch){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]; }); }
-  fetch('https://stuffprettygood-api.mehyar.workers.dev/api/catalog?limit=12')
+  fetch('https://stuffprettygood-api.mehyar.workers.dev/api/catalog${query}')
     .then(function(r){ return r.json(); })
     .then(function(data){
       const products = (data.products || []).slice(0, 12);
@@ -347,7 +353,7 @@ const policyPages = {
 for (const [slug, html] of Object.entries(policyPages)) mkdirPage(slug, layout(titleCase(slug), `<section class="section post">${html}</section>`));
 
 fs.writeFileSync(path.join(dist, 'robots.txt'), 'User-agent: *\nAllow: /\nSitemap: https://stuffprettygood.com/sitemap.xml\n');
-const urls = ['', 'gift-finder', 'starter-kits', 'under-25', 'under-50', 'useful-finds', 'signup', 'about', 'advertise', 'affiliate-disclosure', 'privacy', 'terms', 'contact', 'unsubscribe', 'preferences', ...posts.map((p) => 'guides/' + p.slug), ...products.map((p) => 'products/' + p.id)];
+const urls = ['', 'gift-finder', 'starter-kits', 'under-25', 'under-50', 'useful-finds', 'travel', 'home-office', 'kitchen', 'pets', 'tech', 'signup', 'about', 'advertise', 'affiliate-disclosure', 'privacy', 'terms', 'contact', 'unsubscribe', 'preferences', ...posts.map((p) => 'guides/' + p.slug), ...products.map((p) => 'products/' + p.id)];
 fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map((u) => `<url><loc>https://stuffprettygood.com${slugUrl(u)}</loc></url>`).join('')}</urlset>`);
 
 console.log(`built ${products.length} approved products, ${posts.length} guides`);
