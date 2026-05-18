@@ -39,24 +39,51 @@ const amazonNativeAd = (p, compact = false) => {
 };
 
 function productSvg(p) {
-  const emoji = categoryEmoji[p.category] || '✨';
-  const label = p.title.split(' ').slice(0, 3).join(' ');
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-label="${esc(p.title)} illustration">
+  const themeMap = {
+    tech: { emoji: '⚡', a: '#0f172a', b: '#2563eb', c: '#67e8f9', shape: 'device' },
+    kitchen: { emoji: '🍳', a: '#7c2d12', b: '#f97316', c: '#fde68a', shape: 'kitchen' },
+    'home-office': { emoji: '🖥️', a: '#111827', b: '#0f766e', c: '#ccfbf1', shape: 'desk' },
+    travel: { emoji: '✈️', a: '#1e3a8a', b: '#38bdf8', c: '#dbeafe', shape: 'travel' },
+    pets: { emoji: '🐾', a: '#78350f', b: '#f59e0b', c: '#fef3c7', shape: 'pet' },
+    car: { emoji: '🚗', a: '#374151', b: '#ef4444', c: '#fee2e2', shape: 'car' },
+    home: { emoji: '🏠', a: '#064e3b', b: '#22c55e', c: '#dcfce7', shape: 'home' },
+    wellness: { emoji: '🌿', a: '#14532d', b: '#84cc16', c: '#ecfccb', shape: 'wellness' },
+    organization: { emoji: '📦', a: '#4338ca', b: '#a855f7', c: '#f3e8ff', shape: 'organize' },
+    gift: { emoji: '🎁', a: '#9f1239', b: '#f43f5e', c: '#ffe4e6', shape: 'gift' }
+  };
+  const theme = themeMap[p.category] || themeMap.gift;
+  const words = p.title.split(' ').filter(Boolean);
+  const headline = words.slice(0, 4).join(' ');
+  const sub = p.category.replace('-', ' ');
+  const shape = {
+    device: '<rect x="222" y="122" width="196" height="150" rx="22" fill="#ffffff"/><rect x="242" y="146" width="156" height="86" rx="14" fill="#dbeafe"/><rect x="276" y="292" width="88" height="16" rx="8" fill="#ffffff"/><path d="M420 210h72M420 238h48M182 208h-64M182 236h-42" stroke="#ffffff" stroke-width="16" stroke-linecap="round"/>',
+    kitchen: '<rect x="214" y="152" width="230" height="132" rx="34" fill="#ffffff"/><circle cx="290" cy="218" r="48" fill="#fde68a"/><circle cx="290" cy="218" r="24" fill="#f97316"/><path d="M448 182h90M448 222h70" stroke="#ffffff" stroke-width="18" stroke-linecap="round"/><rect x="154" y="284" width="332" height="28" rx="14" fill="#ffffff"/>',
+    desk: '<rect x="182" y="136" width="276" height="152" rx="24" fill="#ffffff"/><rect x="212" y="164" width="216" height="86" rx="14" fill="#ccfbf1"/><path d="M132 310h376M220 310v58M420 310v58" stroke="#ffffff" stroke-width="18" stroke-linecap="round"/>',
+    travel: '<rect x="230" y="126" width="190" height="210" rx="34" fill="#ffffff"/><path d="M282 126v-30h86v30" stroke="#ffffff" stroke-width="18" stroke-linecap="round"/><path d="M178 226l310-84-128 214-42-92-92 4z" fill="#dbeafe" opacity=".95"/>',
+    pet: '<circle cx="284" cy="218" r="52" fill="#ffffff"/><circle cx="216" cy="170" r="26" fill="#ffffff"/><circle cx="352" cy="170" r="26" fill="#ffffff"/><circle cx="222" cy="278" r="26" fill="#ffffff"/><circle cx="346" cy="278" r="26" fill="#ffffff"/><path d="M436 182c60 30 66 110 0 140" stroke="#ffffff" stroke-width="20" fill="none" stroke-linecap="round"/>',
+    car: '<path d="M154 260l48-88h236l60 88v62H154z" fill="#ffffff"/><circle cx="224" cy="328" r="30" fill="#111827"/><circle cx="432" cy="328" r="30" fill="#111827"/><rect x="236" y="194" width="82" height="46" rx="10" fill="#fee2e2"/><rect x="334" y="194" width="76" height="46" rx="10" fill="#fee2e2"/>',
+    home: '<path d="M152 236l168-132 168 132" fill="none" stroke="#ffffff" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><rect x="202" y="226" width="236" height="138" rx="28" fill="#ffffff"/><rect x="292" y="280" width="58" height="84" rx="14" fill="#dcfce7"/>',
+    wellness: '<path d="M320 346c-70-84-52-174 8-242 72 86 54 166-8 242z" fill="#ffffff"/><path d="M250 304c-86-28-112-98-90-170 88 28 112 102 90 170zM390 304c86-28 112-98 90-170-88 28-112 102-90 170z" fill="#ecfccb"/>',
+    organize: '<rect x="166" y="150" width="126" height="126" rx="26" fill="#ffffff"/><rect x="322" y="150" width="126" height="126" rx="26" fill="#ffffff"/><rect x="244" y="296" width="126" height="86" rx="22" fill="#ffffff"/><path d="M194 212h70M350 212h70M272 340h70" stroke="#a855f7" stroke-width="14" stroke-linecap="round"/>',
+    gift: '<rect x="190" y="190" width="260" height="170" rx="28" fill="#ffffff"/><rect x="302" y="190" width="36" height="170" fill="#fecdd3"/><rect x="168" y="156" width="304" height="62" rx="22" fill="#ffffff"/><path d="M320 154c-52-70-122-44-86 12 28 44 86-12 86-12zm0 0c52-70 122-44 86 12-28 44-86-12-86-12z" fill="none" stroke="#ffffff" stroke-width="18" stroke-linecap="round"/>'
+  }[theme.shape];
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-label="${esc(p.title)} original shopping illustration">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff7ed"/><stop offset="0.55" stop-color="#eefdf4"/><stop offset="1" stop-color="#eaf2ff"/></linearGradient>
-    <filter id="shadow"><feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#111827" flood-opacity=".16"/></filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${theme.a}"/><stop offset="0.54" stop-color="${theme.b}"/><stop offset="1" stop-color="${theme.c}"/></linearGradient>
+    <radialGradient id="spot" cx="50%" cy="45%" r="70%"><stop stop-color="#ffffff" stop-opacity=".38"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="24" stdDeviation="26" flood-color="#020617" flood-opacity=".24"/></filter>
   </defs>
-  <rect width="640" height="420" rx="38" fill="url(#bg)"/>
-  <circle cx="96" cy="86" r="56" fill="#ffedd5"/>
-  <circle cx="538" cy="80" r="82" fill="#dbeafe" opacity=".75"/>
-  <rect x="116" y="96" width="408" height="220" rx="34" fill="#ffffff" filter="url(#shadow)"/>
-  <text x="320" y="196" text-anchor="middle" font-size="76">${emoji}</text>
-  <text x="320" y="250" text-anchor="middle" font-family="Inter,Arial" font-size="28" font-weight="900" fill="#111827">${esc(label)}</text>
-  <text x="320" y="286" text-anchor="middle" font-family="Inter,Arial" font-size="18" font-weight="700" fill="#64748b">useful shopping pick</text>
-  <path d="M94 350 C182 326 258 376 346 342 S512 326 562 362" fill="none" stroke="#fb923c" stroke-width="12" stroke-linecap="round" opacity=".75"/>
+  <rect width="640" height="420" rx="40" fill="url(#bg)"/>
+  <rect width="640" height="420" rx="40" fill="url(#spot)"/>
+  <circle cx="92" cy="74" r="58" fill="#fff" opacity=".18"/>
+  <circle cx="560" cy="66" r="94" fill="#fff" opacity=".16"/>
+  <g filter="url(#shadow)">${shape}</g>
+  <rect x="38" y="320" width="564" height="66" rx="26" fill="#fff" opacity=".94"/>
+  <text x="64" y="350" font-family="Inter,Arial,sans-serif" font-size="23" font-weight="950" fill="#111827">${esc(headline)}</text>
+  <text x="64" y="374" font-family="Inter,Arial,sans-serif" font-size="14" font-weight="850" fill="#64748b">${esc(sub)} · useful find</text>
+  <text x="572" y="362" text-anchor="end" font-size="34">${theme.emoji}</text>
 </svg>`;
 }
-
 for (const p of products) fs.writeFileSync(path.join(dist, p.image_url), productSvg(p));
 
 
@@ -79,15 +106,16 @@ fs.writeFileSync(path.join(dist, 'assets/site/spg-logo.svg'), logoSvg);
 fs.writeFileSync(path.join(dist, 'favicon.svg'), logoSvg);
 fs.writeFileSync(path.join(dist, 'site.webmanifest'), JSON.stringify({ name: 'Stuff Pretty Good', short_name: 'SPG', start_url: '/', display: 'standalone', background_color: '#f6f1e8', theme_color: '#111827', icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }] }, null, 2));
 
-const siteArtSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-label="Stuff Pretty Good shopping guide visual">
-  <defs><linearGradient id="spg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#111827"/><stop offset=".42" stop-color="#0f766e"/><stop offset="1" stop-color="#fb923c"/></linearGradient><filter id="glow"><feDropShadow dx="0" dy="24" stdDeviation="28" flood-color="#0f172a" flood-opacity=".22"/></filter></defs>
+const siteArtSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-label="Stuff Pretty Good AI shopping guide visual">
+  <defs><linearGradient id="spg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#080f1f"/><stop offset=".38" stop-color="#0f766e"/><stop offset=".72" stop-color="#f97316"/><stop offset="1" stop-color="#fde68a"/></linearGradient><filter id="glow"><feDropShadow dx="0" dy="26" stdDeviation="26" flood-color="#020617" flood-opacity=".28"/></filter></defs>
   <rect width="960" height="360" rx="44" fill="url(#spg)"/>
-  <circle cx="112" cy="92" r="58" fill="#fff7ed" opacity=".22"/><circle cx="828" cy="76" r="82" fill="#bfdbfe" opacity=".2"/>
-  <g filter="url(#glow)"><rect x="105" y="86" width="190" height="190" rx="34" fill="#ffffff"/><rect x="332" y="58" width="250" height="244" rx="38" fill="#ffffff"/><rect x="620" y="86" width="230" height="190" rx="34" fill="#ffffff"/></g>
-  <image href="/assets/site/spg-logo.svg" x="380" y="72" width="160" height="160"/>
-  <text x="200" y="190" text-anchor="middle" font-size="86">🎁</text><text x="735" y="190" text-anchor="middle" font-size="86">⚡</text>
-  <text x="480" y="330" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="900" fill="#fff7ed">useful finds · smarter gifts · practical upgrades</text>
-</svg>`;
+  <circle cx="106" cy="92" r="58" fill="#fff7ed" opacity=".22"/><circle cx="848" cy="78" r="92" fill="#bfdbfe" opacity=".18"/><path d="M64 292C190 242 278 330 402 278s192-74 320 8 184 8 216-22" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" opacity=".22"/>
+  <g filter="url(#glow)"><rect x="92" y="78" width="188" height="202" rx="34" fill="#fff"/><rect x="334" y="54" width="292" height="248" rx="40" fill="#fff"/><rect x="682" y="78" width="190" height="202" rx="34" fill="#fff"/></g>
+  <image href="/assets/site/spg-logo.svg" x="400" y="82" width="160" height="160"/>
+  <text x="186" y="178" text-anchor="middle" font-size="84">🎁</text><text x="186" y="238" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="900" fill="#111827">gift ideas</text>
+  <text x="777" y="178" text-anchor="middle" font-size="84">⚡</text><text x="777" y="238" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="900" fill="#111827">useful upgrades</text>
+  <text x="480" y="328" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="31" font-weight="950" fill="#fff7ed">AI shortlists · better gifts · practical products</text>
+</svg>`
 fs.writeFileSync(path.join(dist, 'assets/site/spg-shopping-guide.svg'), siteArtSvg);
 
 function newTabLinks(html) {
@@ -106,7 +134,7 @@ function layout(title, body, description = 'AI-assisted shopping guide for usefu
 }
 
 function card(p, i = 0) {
-  return `<article class="card" style="--delay:${i % 6}"><a class="thumb" href="/products/${p.id}/"><img src="${p.image_url}" alt="${esc(p.title)} illustrated fallback"></a><div class="real-photo-note">Open the pick for photos and details.</div><div class="card-meta"><span>${esc(p.price_band.replace('-', ' $'))}</span><span>${esc(p.category.replace('-', ' '))}</span></div><h3>${esc(p.title)}</h3><p>${esc(p.why_useful)}</p><p class="best"><strong>Best for:</strong> ${esc(p.best_for)}</p><a class="btn small" href="/products/${p.id}/">Get</a></article>`;
+  return `<article class="card" style="--delay:${i % 6}"><a class="thumb" href="/products/${p.id}/"><img src="${p.image_url}" alt="${esc(p.title)} illustrated fallback"></a><div class="value-chip">Useful pick · quick decision notes</div><div class="card-meta"><span>${esc(p.price_band.replace('-', ' $'))}</span><span>${esc(p.category.replace('-', ' '))}</span></div><h3>${esc(p.title)}</h3><p>${esc(p.why_useful)}</p><p class="best"><strong>Best for:</strong> ${esc(p.best_for)}</p><a class="btn small" href="/products/${p.id}/">Get</a></article>`;
 }
 
 
@@ -214,7 +242,7 @@ for (const route of categories.filter((r) => !['gift-finder', 'starter-kits', 'u
 }
 
 for (const p of products) {
-  mkdirPage(`products/${p.id}`, layout(p.title, `<article class="post product-detail"><div class="detail-grid"><div>${amazonNativeAd(p)}<p class="micro">Preview the pick, then confirm current details with the merchant before buying.</p></div><div><div class="card-meta"><span>${esc(p.category.replace('-', ' '))}</span><span>${esc(p.price_band.replace('-', ' $'))}</span></div><h1>${esc(p.title)}</h1><p class="sub">${esc(p.why_useful)}</p><p><strong>Best for:</strong> ${esc(p.best_for)}</p><p><strong>Avoid if:</strong> ${esc(p.avoid_if)}</p><a class="btn" href="/go/${p.id}/" rel="nofollow sponsored">Get</a></div></div></article>`));
+  mkdirPage(`products/${p.id}`, layout(p.title, `<article class="post product-detail"><div class="detail-grid"><div>${amazonNativeAd(p)}<div class="visual-proof"><span>Original SPG visual</span><strong>Built for fast shopping decisions</strong></div></div><div><div class="card-meta"><span>${esc(p.category.replace('-', ' '))}</span><span>${esc(p.price_band.replace('-', ' $'))}</span></div><h1>${esc(p.title)}</h1><p class="sub">${esc(p.why_useful)}</p><div class="decision-boxes"><div><span>Best for</span><strong>${esc(p.best_for)}</strong></div><div><span>Skip if</span><strong>${esc(p.avoid_if)}</strong></div><div><span>Good fit when</span><strong>You want a practical upgrade without overthinking it.</strong></div></div><a class="btn" href="/go/${p.id}/" rel="nofollow sponsored">Get</a><p class="micro">Confirm current product details with the merchant before buying.</p></div></div></article>`));
   mkdirPage(`go/${p.id}`, `<!doctype html><meta charset="utf-8"><title>Redirecting</title><meta name="robots" content="noindex"><link rel="canonical" href="${p.affiliate_url}"><img src="${p.image_url}" alt="${esc(p.title)}" style="max-width:420px;width:100%;border-radius:20px"><p>Opening the pick…</p><script>location.replace(${JSON.stringify(p.affiliate_url)})</script><p><a href="${p.affiliate_url}" rel="nofollow sponsored noopener">Continue</a></p>`);
 }
 
