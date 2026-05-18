@@ -54,11 +54,17 @@
     .then(function(data){
       const stories = (data.stories || []).slice(0, 3);
       if (!stories.length) return;
-      mount.innerHTML = stories.map(function(story){
-        const items = (story.checklist || []).slice(0, 7).map(function(item){
-          return '<a target="_blank" class="story-item" href="'+esc(item.product_url)+'"><img src="'+esc(item.image_url)+'" alt="'+esc(item.title)+'" loading="lazy"><span><b>'+esc(item.title)+'</b><small>'+esc(item.category || '')+' · Get</small></span></a>';
+      mount.innerHTML = stories.map(function(story, storyIndex){
+        const checklist = (story.checklist || []).filter(function(item){ return item && item.image_url; }).slice(0, 9);
+        const lead = checklist[0] || {};
+        const collage = checklist.slice(0, 4).map(function(item){
+          return '<img src="'+esc(item.image_url)+'" alt="'+esc(item.title)+'" loading="lazy">';
         }).join('');
-        return '<article class="story-card"><div class="story-kicker">'+esc(story.theme).replace(/-/g,' ')+'</div><h2>'+esc(story.title)+'</h2><p>'+esc(story.story_text || story.situation)+'</p><div class="story-items">'+items+'</div></article>';
+        const items = checklist.map(function(item, idx){
+          return '<a target="_blank" class="story-item" href="'+esc(item.product_url)+'"><img src="'+esc(item.image_url)+'" alt="'+esc(item.title)+'" loading="lazy"><span><em>Pick '+(idx+1)+'</em><b>'+esc(item.title)+'</b><small>'+esc(item.category || '')+' · View product</small></span></a>';
+        }).join('');
+        const leadCta = lead.product_url ? '<a target="_blank" class="btn small story-shop-now" href="'+esc(lead.product_url)+'">Shop the lead pick</a>' : '';
+        return '<article class="story-card magazine-card '+(storyIndex === 0 ? 'lead-story' : '')+'"><div class="story-visual"><div class="story-collage">'+collage+'</div><div class="story-label"><span>'+esc(story.theme).replace(/-/g,' ')+'</span><strong>'+checklist.length+' picks</strong></div></div><div class="story-copy"><div class="story-kicker">Scenario '+(storyIndex+1)+'</div><h2>'+esc(story.title)+'</h2><p>'+esc(story.story_text || story.situation)+'</p>'+leadCta+'</div><div class="story-items">'+items+'</div></article>';
       }).join('');
     })
     .catch(function(){ mount.innerHTML = '<p class="micro">Story lists are refreshing. Try again shortly.</p>'; });
