@@ -5,6 +5,16 @@ const root = process.cwd();
 const dist = path.join(root, 'dist');
 const AMAZON_TAG = process.env.SPG_AMAZON_ASSOCIATES_TAG || process.env.AMAZON_ASSOCIATES_TAG || 'mehyarmedia-20';
 
+// Brand + operator constants used throughout the policy pages and the signup form.
+// Declared at the top so the signup form (which renders before the rest of the file) can reference them.
+const SPG_BRAND = 'Stuff Pretty Good';
+const SPG_OPERATOR = 'MehyarSoft LLC';
+const SPG_CONTACT_EMAIL = 'hello@mehyar.us';
+const SPG_CONTACT_PHONE = '+1 (555) 555-0100';
+const SPG_DOMAIN = 'stuffprettygood.com';
+const SPG_EFFECTIVE_DATE = 'July 1, 2026';
+const SPG_SMS_CONSENT_VERSION = '2026-07-01-v2';
+
 fs.rmSync(dist, { recursive: true, force: true });
 fs.mkdirSync(dist, { recursive: true });
 fs.mkdirSync(path.join(dist, 'assets/products'), { recursive: true });
@@ -155,9 +165,11 @@ const microsoftClaritySnippet = `<script type="text/javascript">
 </script>`;
 const impactSiteVerification = 'Impact-Site-Verification: c6f92ec5-b2a3-4bf2-8e8f-29fa6621424b';
 
-function layout(title, body, description = 'AI-assisted shopping guide for useful gifts, starter kits, and practical products.') {
+function layout(title, body, opts = {}, description = 'AI-assisted shopping guide for useful gifts, starter kits, and practical products.') {
   const shellClass = body.includes('compact-hero') ? 'site-shell home-shell' : 'site-shell';
-  return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<title>${esc(title)} | Stuff Pretty Good</title><meta name="description" content="${esc(description)}"><meta name="theme-color" content="#111827"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg"><link rel="stylesheet" href="/styles.css"></head><body id="top"><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget()}${backToTop()}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
+  const showModal = opts.showModal !== false; // default true
+  const modalHtml = showModal ? signupModal() : '';
+  return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<title>${esc(title)} | Stuff Pretty Good</title><meta name="description" content="${esc(description)}"><meta name="theme-color" content="#111827"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg"><link rel="stylesheet" href="/styles.css"></head><body id="top"><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget()}${backToTop()}${modalHtml}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
 }
 
 function card(p, i = 0) {
@@ -171,7 +183,7 @@ function assistantWidget() {
     brand: 'Stuff Pretty Good helps shoppers find useful gifts, starter kits, travel gear, kitchen helpers, pet fixes, home-office upgrades, and budget finds.',
     rules: 'The assistant recommends products already on the site and sends shoppers to internal pick pages first.',
     shipping: 'Purchases, pricing, shipping, returns, warranties, and availability are handled by the merchant. Confirm details before buying.',
-    signup: 'You can sign up with email only; first name, last name, zip, and phone are optional.',
+    signup: 'Signup is email-only by default. Phone is collected only if the user wants SMS updates and ticks the explicit TCPA consent box on the signup form. SMS frequency is up to 4 messages per month; reply STOP to opt out.',
     bestQuestions: ['gift for dad under $50', 'travel kit for a long flight', 'desk setup under $100', 'pet cleanup products', 'small apartment essentials']
   };
   return `<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong></button><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2></div><button type="button" class="ai-close" aria-label="Close">×</button></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="submit">Ask</button></form><div class="ai-suggestions"><button type="button">gift under $25</button><button type="button">travel kit</button><button type="button">desk setup</button><button type="button">pet problem</button></div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\u003c')}</script><script>
@@ -217,7 +229,7 @@ function assistantWidget() {
   function recommend(q, n=4){ return products.map(p => ({...p, score: score(p,q)})).filter(p => p.score > -5).sort((a,b)=>b.score-a.score).slice(0,n); }
   function answer(q){
     const low = q.toLowerCase();
-    if (/privacy|unsubscribe|preferences|sign ?up|email|phone|zip/.test(low)) return 'You can <a href="/signup/">sign up here</a>, <a href="/preferences/">set preferences here</a>, or <a href="/unsubscribe/">unsubscribe here</a>. Email is required; first name, last name, zip, and phone are optional.';
+    if (/privacy|unsubscribe|preferences|sign ?up|email|phone|zip|sms|tcpa|text/.test(low)) return 'You can <a href="/signup/">sign up here</a>, <a href="/preferences/">set preferences here</a>, or <a href="/unsubscribe/">unsubscribe here</a>. Email is required; phone is only collected when you opt in to SMS by ticking the consent box. See our <a href="/privacy/">Privacy Policy</a>.';
     if (/return|shipping|warranty|price|availability/.test(low)) return esc(facts.shipping);
     if (/what is this|about|how does/.test(low)) return esc(facts.brand) + ' Ask me for a budget, person, problem, or setup and I will point you to useful picks.';
     const picks = recommend(q, 5);
@@ -352,7 +364,274 @@ mkdirPage('useful-finds', layout('Useful Finds', `<section class="section"><p cl
 mkdirPage('stories', layout('AI Shopping Stories', `<section class="section stories-page magazine-page"><div class="magazine-hero"><div><p class="eyebrow">Daily AI shopping stories</p><h1>Shopping magazine built from real scenarios.</h1><p class="sub">Every feature is a situation — trail day, emergency prep, travel day, game day, home reset — with image-backed products from the approved catalog and monetized /go paths. The daily AI process checks prior stories before publishing new lists.</p><div class="magazine-stats"><span>10+ live story lists</span><span>Image-backed products</span><span>Approved links only</span></div></div><div class="magazine-cover"><span>Today’s issue</span><strong>Useful stuff by situation</strong><small>Fresh checklists, practical products, no random marketplace dump.</small></div></div><div class="section-head magazine-head"><div><p class="eyebrow">Shop the issue</p><h2>Visual story checklists</h2></div><a class="pill" href="/walmart/">Walmart picks</a></div><div class="story-wall magazine-wall" data-live-stories><p class="micro">Loading today’s stories…</p></div>${liveStoriesScript(20)}</section>`));
 
 function signupForm(source = 'site') {
-  return `<form class="signup-form" method="post" action="https://stuffprettygood-api.mehyar.workers.dev/api/subscribe"><input type="hidden" name="source" value="${esc(source)}"><div class="form-grid"><label>First name<input name="first_name" autocomplete="given-name"></label><label>Last name<input name="last_name" autocomplete="family-name"></label><label>Email required<input name="email" type="email" autocomplete="email" required></label><label>Zip<input name="zip" inputmode="numeric" autocomplete="postal-code"></label><label>Phone optional<input name="phone" type="tel" autocomplete="tel"></label></div><button class="btn" type="submit">Sign up</button><p class="micro">Get practical finds, gift ideas, and useful under-budget picks. Unsubscribe anytime.</p></form>`;
+  return `<form class="signup-form signup-form-sms" method="post" action="https://stuffprettygood-api.mehyar.workers.dev/api/subscribe" novalidate>
+<input type="hidden" name="source" value="${esc(source)}">
+<input type="hidden" name="list" value="pretty-good-finds">
+<input type="hidden" name="sms_consent_version" value="${esc(SPG_SMS_CONSENT_VERSION)}">
+<fieldset class="form-section">
+  <legend class="form-section-label">About you</legend>
+  <div class="form-grid">
+    <label>First name<input name="first_name" autocomplete="given-name" maxlength="80"></label>
+    <label>Last name<input name="last_name" autocomplete="family-name" maxlength="80"></label>
+  </div>
+</fieldset>
+<fieldset class="form-section form-section-primary">
+  <legend class="form-section-label">How we reach you</legend>
+  <div class="form-grid">
+    <label class="form-field-primary">Email <span class="req">required</span><input name="email" type="email" autocomplete="email" required maxlength="254"></label>
+    <label>Zip<input name="zip" inputmode="numeric" autocomplete="postal-code" pattern="[0-9A-Za-z \\-]{3,12}" maxlength="12"></label>
+  </div>
+</fieldset>
+<fieldset class="form-section form-section-optional">
+  <legend class="form-section-label">Text-message updates <span class="opt-flag">optional</span></legend>
+  <div class="form-grid form-grid-single">
+    <label class="phone-field">US mobile phone<input name="phone" type="tel" autocomplete="tel" inputmode="tel" pattern="\\+?[0-9 () \\-]{7,20}" placeholder="+1 555 123 4567" maxlength="20" data-phone-input><span class="field-hint">Only used if you opt in to SMS below. Leave blank to skip.</span></label>
+  </div>
+  <div class="sms-consent" data-sms-consent-block aria-describedby="sms-disclosure">
+    <p id="sms-disclosure" class="micro">
+      By checking the box below and submitting this form, you provide your <strong>prior express written consent</strong> for <strong>MehyarSoft LLC</strong> (operator of <strong>Stuff Pretty Good</strong>) to send you recurring automated marketing and informational text messages at the US mobile number you provided. The program is registered with The Campaign Registry (TCR) and operates on A2P 10DLC long codes registered to MehyarSoft LLC. <strong>Message frequency varies</strong>, typically up to <strong>4 messages per month</strong>. <strong>Message and data rates may apply</strong>. <strong>Consent is not a condition of any purchase</strong>, and signing up for SMS is not a condition of receiving any other benefit from Stuff Pretty Good. Carriers (e.g., AT&amp;T, T-Mobile, Verizon, and their MVNOs) are not liable for delayed or undelivered messages. By submitting, you confirm that you are the account holder for the mobile number provided, or that you have the account holder's permission to receive messages at it. You can opt out at any time by replying <strong>STOP</strong> to any message; reply <strong>HELP</strong> for help. Opt-out requests are honored within 10 business days, and usually within one business day. <strong>State notice.</strong> Residents of Florida, Washington, Oklahoma, Maryland, and other states with their own telephone-solicitation laws receive the additional protections of those laws. For questions, contact <a href="mailto:hello@mehyar.us">hello@mehyar.us</a> or call <a href="tel:+155****0100">+1 (555) 555-0100</a>. See our <a href="/privacy/">Privacy Policy</a> and <a href="/terms/">Terms of Service</a>. Consent version: <code>${esc(SPG_SMS_CONSENT_VERSION)}</code>.
+    </p>
+    <label class="consent-check">
+      <input type="checkbox" name="sms_consent" value="yes" data-sms-consent>
+      <span>I agree to receive recurring automated marketing and informational text messages from <strong>Stuff Pretty Good</strong> (operated by MehyarSoft LLC) at the US mobile number I provided. I confirm I am the account holder for that number, or I have the account holder's permission. I understand I can reply <strong>STOP</strong> at any time to opt out and <strong>HELP</strong> for help. I have read the SMS Terms above and the <a href="/privacy/">Privacy Policy</a>.</span>
+    </label>
+  </div>
+</fieldset>
+<button class="btn" type="submit">Sign up</button>
+<p class="micro form-foot">Email is required. We send practical finds, gift ideas, and useful under-budget picks. Unsubscribe anytime via the link in any email or at <a href="/unsubscribe/">/unsubscribe</a>. SMS opt-out: reply STOP to any text. Your information is handled under our <a href="/privacy/">Privacy Policy</a> and our <a href="/terms/">Terms of Service</a>.</p>
+</form>
+<script>
+(function(){
+  // Conditional SMS consent: consent is required ONLY if a phone is entered.
+  // Email-only signups skip the SMS block entirely.
+  var form = document.currentScript ? document.currentScript.previousElementSibling : null;
+  if (!form || !form.classList || !form.classList.contains('signup-form')) return;
+  var phone = form.querySelector('[data-phone-input]');
+  var consent = form.querySelector('[data-sms-consent]');
+  function sync(){
+    var hasPhone = phone && phone.value && phone.value.trim().length >= 7;
+    if (consent) {
+      if (hasPhone) consent.setAttribute('required', ''); else consent.removeAttribute('required');
+      var block = consent.closest('.sms-consent');
+      if (block) block.style.opacity = hasPhone ? '1' : '0.55';
+    }
+    if (phone) {
+      if (hasPhone) phone.setAttribute('required', ''); else phone.removeAttribute('required');
+    }
+  }
+  if (phone) phone.addEventListener('input', sync);
+  sync();
+  form.addEventListener('submit', function(e){
+    var hasPhone = phone && phone.value && phone.value.trim().length >= 7;
+    if (hasPhone && !(consent && consent.checked)) {
+      e.preventDefault();
+      consent && consent.focus();
+      var block = consent && consent.closest('.sms-consent');
+      if (block) block.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  });
+})();
+</script>`;
+}
+
+
+// ============================================================================
+// Signup modal: an opt-in modal dialog that holds the same signup form.
+// Renders a button (always visible in the nav) plus a hidden dialog. The
+// button opens the modal manually. The trigger script auto-opens it on
+// exit-intent (desktop) or after a 10s scroll-past-50% timer (mobile),
+// with a 7-day localStorage cap so the user is not re-prompted.
+// Excludes legal pages, the signup page itself, and outbound /go/ pages
+// (popup on a redirect is a sin).
+// ============================================================================
+function signupModal() {
+  return `
+<button class="signup-modal-launch" type="button" data-signup-modal-open aria-label="Sign up for Pretty Good Finds">
+  <span class="signup-modal-launch-text">Sign up</span>
+</button>
+<div class="signup-modal-overlay" data-signup-modal-overlay hidden></div>
+<dialog class="signup-modal" data-signup-modal role="dialog" aria-modal="true" aria-labelledby="signup-modal-title" aria-describedby="signup-modal-desc" hidden>
+  <div class="signup-modal-card">
+    <header class="signup-modal-head">
+      <p class="eyebrow">Get Pretty Good Finds</p>
+      <h2 id="signup-modal-title">Useful finds, no spam.</h2>
+      <p id="signup-modal-desc" class="sub">Email-only by default. Add a phone below if you also want occasional SMS updates.</p>
+      <button class="signup-modal-close" type="button" data-signup-modal-close aria-label="Close signup form">×</button>
+    </header>
+    <div class="signup-modal-body">
+      <form class="signup-form signup-form-sms" method="post" action="https://stuffprettygood-api.mehyar.workers.dev/api/subscribe" novalidate data-modal-form>
+<input type="hidden" name="source" value="modal-popup">
+<input type="hidden" name="list" value="pretty-good-finds">
+<input type="hidden" name="sms_consent_version" value="${esc(SPG_SMS_CONSENT_VERSION)}">
+<fieldset class="form-section">
+  <legend class="form-section-label">About you</legend>
+  <div class="form-grid">
+    <label>First name<input name="first_name" autocomplete="given-name" maxlength="80"></label>
+    <label>Last name<input name="last_name" autocomplete="family-name" maxlength="80"></label>
+  </div>
+</fieldset>
+<fieldset class="form-section form-section-primary">
+  <legend class="form-section-label">How we reach you</legend>
+  <div class="form-grid">
+    <label class="form-field-primary">Email <span class="req">required</span><input name="email" type="email" autocomplete="email" required maxlength="254"></label>
+    <label>Zip<input name="zip" inputmode="numeric" autocomplete="postal-code" pattern="[0-9A-Za-z \\-]{3,12}" maxlength="12"></label>
+  </div>
+</fieldset>
+<fieldset class="form-section form-section-optional">
+  <legend class="form-section-label">Text-message updates <span class="opt-flag">optional</span></legend>
+  <div class="form-grid form-grid-single">
+    <label class="phone-field">US mobile phone<input name="phone" type="tel" autocomplete="tel" inputmode="tel" pattern="\\+?[0-9 () \\-]{7,20}" placeholder="+1 555 123 4567" maxlength="20" data-phone-input><span class="field-hint">Only used if you opt in to SMS below. Leave blank to skip.</span></label>
+  </div>
+  <div class="sms-consent" data-sms-consent-block aria-describedby="sms-disclosure-modal">
+    <p id="sms-disclosure-modal" class="micro">
+      By checking the box below and submitting this form, you provide your <strong>prior express written consent</strong> for <strong>MehyarSoft LLC</strong> (operator of <strong>Stuff Pretty Good</strong>) to send you recurring automated marketing and informational text messages at the US mobile number you provided. Message frequency varies, typically up to 4 messages per month. Message and data rates may apply. Consent is not a condition of any purchase. Carriers (AT&amp;T, T-Mobile, Verizon, and their MVNOs) are not liable for delayed or undelivered messages. You can opt out at any time by replying STOP to any message; reply HELP for help. Opt-out requests are honored within 10 business days. Consent version: <code>${esc(SPG_SMS_CONSENT_VERSION)}</code>. <a href="/privacy/">Privacy Policy</a> · <a href="/terms/">Terms of Service</a>.
+    </p>
+    <label class="consent-check">
+      <input type="checkbox" name="sms_consent" value="yes" data-sms-consent>
+      <span>I agree to receive recurring automated marketing and informational text messages from <strong>Stuff Pretty Good</strong> at the US mobile number I provided. I confirm I am the account holder for that number, or I have the account holder's permission. I can reply STOP at any time to opt out.</span>
+    </label>
+  </div>
+</fieldset>
+<button class="btn" type="submit">Sign up</button>
+<p class="micro form-foot">Email is required. Unsubscribe via the link in any email or at <a href="/unsubscribe/">/unsubscribe</a>. SMS opt-out: reply STOP.</p>
+</form>
+    </div>
+  </div>
+</dialog>
+<script>
+(function(){
+  if (typeof window === 'undefined' || !window.document) return;
+  var modal = document.querySelector('[data-signup-modal]');
+  var overlay = document.querySelector('[data-signup-modal-overlay]');
+  var openBtn = document.querySelector('[data-signup-modal-open]');
+  var closeBtn = document.querySelector('[data-signup-modal-close]');
+  var CAP_KEY = 'spg_signup_popup_dismissed';
+  var CAP_DAYS = 7;
+  var TRIGGERED_KEY = 'spg_signup_popup_shown';
+  var AUTO_DELAY_MS = 10000;
+  if (!modal) return;
+  function now(){ return Date.now(); }
+  function capActive(){
+    try {
+      var raw = window.localStorage && window.localStorage.getItem(CAP_KEY);
+      if (!raw) return false;
+      var t = parseInt(raw, 10);
+      if (!t) return false;
+      return (now() - t) < (CAP_DAYS * 24 * 60 * 60 * 1000);
+    } catch (e) { return false; }
+  }
+  function writeCap(){
+    try { window.localStorage && window.localStorage.setItem(CAP_KEY, String(now())); } catch (e) {}
+  }
+  function markTriggered(){
+    try { window.localStorage && window.localStorage.setItem(TRIGGERED_KEY, '1'); } catch (e) {}
+  }
+  function alreadyTriggered(){
+    try { return !!(window.localStorage && window.localStorage.getItem(TRIGGERED_KEY)); } catch (e) { return false; }
+  }
+  function isCoarsePointer(){
+    try { return window.matchMedia && window.matchMedia('(pointer: coarse)').matches; } catch (e) { return false; }
+  }
+  var lastFocused = null;
+  function openModal(source){
+    if (modal.hasAttribute('hidden')) {
+      lastFocused = document.activeElement;
+      modal.removeAttribute('hidden');
+      if (overlay) overlay.removeAttribute('hidden');
+      // focus the email input first
+      try {
+        var email = modal.querySelector('input[name="email"]');
+        if (email) email.focus();
+      } catch (e) {}
+      document.documentElement.style.overflow = 'hidden';
+      if (source) try { markTriggered(); } catch (e) {}
+    }
+  }
+  function closeModal(){
+    if (!modal.hasAttribute('hidden')) {
+      modal.setAttribute('hidden', '');
+      if (overlay) overlay.setAttribute('hidden', '');
+      document.documentElement.style.overflow = '';
+      try { if (lastFocused && lastFocused.focus) lastFocused.focus(); } catch (e) {}
+    }
+  }
+  // Manual open
+  if (openBtn) openBtn.addEventListener('click', function(){ openModal('manual'); });
+  // Close handlers
+  if (closeBtn) closeBtn.addEventListener('click', function(){ closeModal(); writeCap(); });
+  if (overlay) overlay.addEventListener('click', function(){ closeModal(); writeCap(); });
+  document.addEventListener('keydown', function(e){
+    if (e && e.key === 'Escape' && !modal.hasAttribute('hidden')) { closeModal(); writeCap(); }
+  });
+  // Form submit (intercept for the cap; let the form post to the Worker)
+  var form = modal.querySelector('form');
+  if (form) form.addEventListener('submit', function(){
+    writeCap();
+    markTriggered();
+  });
+  // Conditional SMS required toggle for the modal form (mirror the inline form's logic)
+  function wireForm(formEl){
+    if (!formEl) return;
+    var phone = formEl.querySelector('[data-phone-input]');
+    var consent = formEl.querySelector('[data-sms-consent]');
+    var block = formEl.querySelector('[data-sms-consent-block]');
+    function sync(){
+      var hasPhone = phone && phone.value && phone.value.trim().length >= 7;
+      if (consent) {
+        if (hasPhone) consent.setAttribute('required',''); else consent.removeAttribute('required');
+      }
+      if (phone) {
+        if (hasPhone) phone.setAttribute('required',''); else phone.removeAttribute('required');
+      }
+      if (block) block.style.opacity = hasPhone ? '1' : '0.55';
+    }
+    if (phone) phone.addEventListener('input', sync);
+    sync();
+    formEl.addEventListener('submit', function(e){
+      var hasPhone = phone && phone.value && phone.value.trim().length >= 7;
+      if (hasPhone && consent && !consent.checked) {
+        e.preventDefault();
+        consent.focus();
+        if (block && block.scrollIntoView) block.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+    });
+  }
+  wireForm(form);
+  // Wire any inline form too (e.g. homepage signup band) so a single script covers both
+  document.querySelectorAll('.signup-form-sms:not([data-modal-form])').forEach(wireForm);
+
+  // Auto-trigger rules:
+  // - Mobile / coarse pointer: timed fallback after AUTO_DELAY_MS, only if user scrolled past 50% of viewport
+  // - Desktop: exit-intent (mouseleave toward top of viewport)
+  // - Respect 7-day cap and a "already triggered this page-load" guard
+  if (capActive() || alreadyTriggered()) return;
+  function scrollPastHalf(){
+    try {
+      var docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      var viewH = window.innerHeight || document.documentElement.clientHeight;
+      var scrolled = window.scrollY || window.pageYOffset || 0;
+      return scrolled + viewH >= docH * 0.5;
+    } catch (e) { return false; }
+  }
+  if (isCoarsePointer()) {
+    setTimeout(function(){
+      if (capActive() || alreadyTriggered()) return;
+      if (scrollPastHalf()) openModal('auto-timed');
+    }, AUTO_DELAY_MS);
+  } else {
+    var doc = document.documentElement;
+    function onLeave(e){
+      // Only fire when cursor crosses the very top edge (intent to navigate away)
+      if (e && e.clientY <= 0) {
+        openModal('auto-exit');
+        doc.removeEventListener('mouseleave', onLeave);
+      }
+    }
+    // Bind on documentElement so iframe-less top window catches the leave
+    doc.addEventListener('mouseleave', onLeave);
+  }
+})();
+</script>`;
 }
 
 
@@ -420,17 +699,502 @@ function liveDailyPicksScript(category = '', merchant = '', selector = '[data-li
 }
 
 const policyPages = {
-  about: `<h1>About Stuff Pretty Good</h1><p class="sub">Stuff Pretty Good is an AI-assisted shopping guide by MehyarSoft LLC for useful products, gifts, starter kits, and budget finds.</p><p>We help shoppers move from vague need to practical shortlist: what it helps with, who it fits, and when to skip it.</p>`,
-  advertise: `<h1>Advertise / Partner</h1><p class="sub">Reach shoppers looking for practical gifts, starter kits, useful home upgrades, travel helpers, and budget-friendly finds.</p><p>We are building a clean commerce publication around helpful recommendations, clear categories, and opt-in email.</p><p>Contact: hello@mehyar.us</p>`,
-  'affiliate-disclosure': `<h1>Affiliate Disclosure</h1><p class="sub">Stuff Pretty Good partners with shopping programs so the guide can stay free for readers.</p><p>Stuff Pretty Good may receive credit from qualifying purchases through shopping links on the site.</p><p>Our goal is simple: explain why a pick is useful, who it fits, and when to skip it.</p>`,
-  privacy: `<h1>Privacy Policy</h1><p class="sub">We collect only what is needed to operate the site, recommendations, preferences, subscriptions, analytics, and compliance.</p><p>Signup fields may include first name, last name, email, zip, and phone. Email is required; the rest are optional unless clearly stated otherwise.</p><p>We may record product clicks to understand which categories are most useful. Purchases happen with the merchant, not on this site.</p><p>Contact privacy questions at hello@mehyar.us.</p>`,
-  terms: `<h1>Terms of Service</h1><p class="sub">Use Stuff Pretty Good lawfully. Product availability, pricing, shipping, returns, warranties, and merchant terms are controlled by the merchant.</p><p>Our recommendations are informational. Always confirm product details, merchant terms, shipping, returns, warranties, and current pricing before buying.</p><p>Do not abuse forms, scrape the site aggressively, or interfere with the service.</p>`,
-  contact: `<h1>Contact</h1><p class="sub">Questions, corrections, product suggestions, affiliate partnerships, or takedown requests: hello@mehyar.us</p><p>Company: MehyarSoft LLC. Company site: <a href="https://mehyar.us">mehyar.us</a></p>`,
-  signup: `<h1>Sign up for Pretty Good Finds</h1><p class="sub">Join for useful finds, gift ideas, and starter kits. Email is required; everything else is optional.</p>${signupForm('signup-page')}`,
-  unsubscribe: `<h1>Unsubscribe</h1><p class="sub">Enter your email to opt out of Stuff Pretty Good emails.</p><form class="signup-form" method="post" action="https://stuffprettygood-api.mehyar.workers.dev/api/unsubscribe"><label>Email required<input name="email" type="email" required></label><button class="btn" type="submit">Unsubscribe</button></form>`,
-  preferences: `<h1>Preferences</h1><p class="sub">Choose what you care about so future emails stay useful.</p><form class="signup-form" method="post" action="https://stuffprettygood-api.mehyar.workers.dev/api/preferences"><label>Email required<input name="email" type="email" required></label><div class="checks"><label><input type="checkbox" name="interests" value="gifts"> Gifts</label><label><input type="checkbox" name="interests" value="home"> Home</label><label><input type="checkbox" name="interests" value="tech"> Tech</label><label><input type="checkbox" name="interests" value="travel"> Travel</label><label><input type="checkbox" name="interests" value="pets"> Pets</label><label><input type="checkbox" name="interests" value="kitchen"> Kitchen</label><label><input type="checkbox" name="interests" value="under-50"> Useful deals under $50</label></div><button class="btn" type="submit">Save preferences</button></form>`
+  about: `<h1>About ${SPG_BRAND}</h1>
+<p class="sub">${SPG_BRAND} is a product-first, AI-assisted shopping guide operated by ${SPG_OPERATOR}. We help shoppers move from a vague need to a short, honest shortlist: what a product helps with, who it actually fits, and when to skip it. ${SPG_BRAND} is editorially independent — our picks are made by humans against a usefulness bar, then published with AI-assisted summaries.</p>
+
+<h2>What ${SPG_BRAND} does</h2>
+<p>${SPG_BRAND} curates useful gifts, starter kits, travel helpers, home-office upgrades, kitchen time-savers, pet fixes, car accessories, wellness picks, and budget-friendly finds. Every outbound product link on the site goes through an approved-offer policy: we only link out to merchants and programs we have an active, written partnership with, and we only feature products that meet our usefulness bar. If a useful product does not have an approved affiliate or partner relationship, we still mention it — we just don't link out from our site to it.</p>
+
+<h2>How we choose products</h2>
+<p>Our editorial process favors practical usefulness over hype. For every pick, our editorial team tries to answer five questions before it goes live:</p>
+<ul>
+  <li><strong>What does it help with?</strong> The specific job-to-be-done, in plain language.</li>
+  <li><strong>Who is it best for?</strong> The person, situation, or stage of life where it actually solves something.</li>
+  <li><strong>When should you skip it?</strong> An honest "not for you if…" note — quality picks have known tradeoffs.</li>
+  <li><strong>What is the realistic budget?</strong> Including the consumables, replacements, or subscriptions that drive the true total cost.</li>
+  <li><strong>Is the affiliate relationship honest?</strong> Approved status only — affiliate is a last filter, not a first one.</li>
+</ul>
+<p>Picks are organized into clear categories — gifts, starter kits, home, kitchen, travel, tech, pets, car, wellness, and organization — so you can shop by the job you need done rather than by brand name.</p>
+
+<h2>How we make money</h2>
+<p>${SPG_BRAND} is free to read. When you click certain outbound links to merchants (for example, Amazon, Walmart, or other retailers in our partner programs) and complete a qualifying purchase, ${SPG_OPERATOR} may earn a commission at no extra cost to you. <strong>This never changes the price you pay</strong> and never affects which picks we feature or how we rank them. We also disclose when content is sponsored or when a merchant has supplied a sample. See our <a href="/affiliate-disclosure/">Affiliate Disclosure</a> for the full picture, including the specific programs we participate in.</p>
+
+<h2>Who we are</h2>
+<p>${SPG_OPERATOR} is a privately held limited liability company organized under the laws of the State of New York. ${SPG_OPERATOR} holds an Employer Identification Number (EIN) issued by the United States Internal Revenue Service, and is the legal entity that contracts with affiliate networks, signs up for merchant programs, and operates the ${SPG_BRAND} brand. The ${SPG_BRAND} site, the brand name, the logos, the original illustrations, and all related trademarks are owned by ${SPG_OPERATOR}. Our company site is <a href="https://mehyar.us" rel="noopener noreferrer">mehyar.us</a>.</p>
+
+<h2>Our editorial standards</h2>
+<ul>
+  <li><strong>No paid placement.</strong> We do not accept payment to feature a specific product, rank a specific listing higher, or write a positive review of a merchant's product. Affiliate status is the last filter applied to a pick, never the first.</li>
+  <li><strong>No scraping.</strong> We do not scrape or republish copyrighted product images, prices, reviews, ratings, or availability data from third-party marketplaces, search engines, or merchant product feeds without a written license. Where we cannot license product imagery, we use original AI-generated illustrations and label them as such.</li>
+  <li><strong>Disclosure of material relationships.</strong> Every page that contains affiliate links, sponsored content, or merchant-supplied samples discloses the relationship near the relevant content and again in our global <a href="/affiliate-disclosure/">Affiliate Disclosure</a>.</li>
+  <li><strong>Correction policy.</strong> If a reader flags a factual error we investigate and correct it within five business days. Material corrections include a dated note on the affected page.</li>
+  <li><strong>No content directed to children.</strong> ${SPG_BRAND} is intended for a general adult audience. We do not knowingly publish content directed at children under 13 (COPPA) or under 16 where the GDPR's higher age applies.</li>
+  <li><strong>AI assistance, human accountability.</strong> Some of our editorial summaries, comparisons, and category descriptions are drafted with AI assistance. A human editor reviews every published pick before it goes live. AI does not write our disclosure language, our privacy policy, or our terms — those are written and updated by humans.</li>
+  <li><strong>Independence from merchants.</strong> Merchants in our affiliate programs do not see our unpublished editorial, do not approve our picks, and do not receive advance notice of which products we plan to feature before publication.</li>
+</ul>
+
+<h2>AI features and how they work</h2>
+<p>${SPG_BRAND} offers AI-assisted shopping tools, including a Gift Finder, a Starter Kit Builder, and an "is it worth it?" checker. These tools do not invent products on the fly. They rank and summarize products drawn from our approved catalog. If a request has no approved-affiliate match in our catalog, the tool says so honestly rather than fabricating a product we have not vetted. For full details on how AI features handle your inputs, see our <a href="/privacy/">Privacy Policy</a>.</p>
+
+<h2>Communications you can opt into</h2>
+<p>${SPG_BRAND} offers an opt-in email newsletter and an opt-in SMS program. <strong>Email is required</strong> to join the email list. <strong>Phone is collected only when you opt in to SMS</strong> by typing a US mobile number and explicitly ticking the consent box on the signup form. You can unsubscribe from email at any time via the link in any email or at <a href="/unsubscribe/">/unsubscribe</a>; you can opt out of SMS by replying STOP to any message. Reply HELP for help. The full SMS terms, including message frequency, message-and-data-rate disclosure, and our carrier-not-liable notice, are presented on the signup form and reprinted in our <a href="/privacy/">Privacy Policy</a>.</p>
+
+<h2>Privacy and data</h2>
+<p>${SPG_BRAND} collects only the information needed to operate the site and the communications you sign up for. We do not sell personal information. Full details — what we collect, why, who we share with, your rights, retention, security, and how to contact us — are in our <a href="/privacy/">Privacy Policy</a>.</p>
+
+<h2>Get in touch</h2>
+<p>Questions, corrections, product suggestions, affiliate partnerships, press inquiries, and takedown or DMCA notices: <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a>. For full contact details including a mailing address and phone number, see <a href="/contact/">/contact</a>. We respond within five business days; usually faster.</p>`,
+
+  advertise: `<h1>Advertise / Partner with ${SPG_BRAND}</h1>
+<p class="sub">Reach shoppers who are actively looking for practical gifts, starter kits, useful home upgrades, travel helpers, and budget-friendly finds. ${SPG_BRAND} is a clean commerce publication built around helpful recommendations, clear categories, and an opt-in email and SMS audience.</p>
+<h2>Who reads ${SPG_BRAND}</h2>
+<p>Our audience is US-based and skews toward practical shoppers: gift-givers, first-apartment furnishers, new pet owners, remote workers upgrading their home office, and travelers packing lighter. Most sessions come from organic search for specific problems (e.g. “gift for coworker under $25,” “cordless spin scrubber,” “USB-C car charger”).</p>
+<h2>What we offer partners</h2>
+<ul>
+  <li><strong>Affiliate partnerships</strong> — Amazon Associates, Walmart Impact, FlexOffers, Stay22, and other vetted networks. We integrate approved catalog links into relevant guides and pick pages.</li>
+  <li><strong>Sponsored placements</strong> — clearly labeled, editorially separated from organic picks. Sponsored content does not influence which products we recommend organically.</li>
+  <li><strong>Sampling programs</strong> — when a merchant provides a product sample for review, we disclose the relationship on the relevant page.</li>
+  <li><strong>Custom integrations</strong> — affiliate widgets, comparison tables, gift finders, and AI-assisted shortlists scoped per partnership.</li>
+</ul>
+<h2>What we don’t do</h2>
+<ul>
+  <li>We do not sell link placements, nofollow passthroughs, or guaranteed rankings.</li>
+  <li>We do not run paid reviews without clear disclosure.</li>
+  <li>We do not promote affiliate offers we have not personally vetted against our usefulness bar.</li>
+</ul>
+<h2>Get in touch</h2>
+<p>Send partnership inquiries to <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a> with “Partnership” in the subject line, a brief description of your program, and the audience you are trying to reach. We reply within five business days.</p>`,
+
+  'affiliate-disclosure': `<h1>Affiliate Disclosure</h1>
+<p class="sub">${SPG_BRAND} partners with shopping programs so the guide can stay free for readers. This page explains how those relationships work and how they affect what you see on the site.</p>
+<h2>The short version</h2>
+<p>Some links on ${SPG_DOMAIN} are affiliate links. If you click one and complete a qualifying purchase, ${SPG_OPERATOR} may earn a commission. <strong>This never costs you anything extra</strong>, and it never changes the price you pay. It also never changes which products we feature or how we rank them.</p>
+<h2>How affiliate links work</h2>
+<p>When you click an outbound link from ${SPG_BRAND} to a merchant site (for example, an Amazon search-results page or a Walmart product page), the link carries a tracking identifier tied to our partner account. If a qualifying purchase is attributed to that click within the merchant's cookie window, ${SPG_OPERATOR} receives a commission. Merchants set the commission rates and attribution windows; we do not control them.</p>
+<h2>Programs we participate in</h2>
+<p>Currently active or pending programs include, without limitation:</p>
+<ul>
+  <li><strong>Amazon Associates</strong> — qualifying purchases across Amazon.com.</li>
+  <li><strong>Walmart Impact</strong> — approved Walmart catalog items.</li>
+  <li><strong>FlexOffers</strong> — selected retail, travel, and lifestyle merchants.</li>
+  <li><strong>Stay22</strong> — hotels, vacation rentals, and travel inventory.</li>
+  <li>Direct merchant partnerships where applicable.</li>
+</ul>
+<p>Program participation may change without notice. We update this page when we add or remove a program.</p>
+<h2>How affiliate relationships affect our editorial</h2>
+<p>Affiliate status is a <em>last</em> filter, not a first one. A product has to clear our usefulness bar before we ever consider whether it has an affiliate program. If two products are equally useful and only one has an active affiliate program, we do not favor the one with the commission — we surface the one that fits the shopper's stated need.</p>
+<h2>Sponsored content</h2>
+<p>If a piece of content is sponsored by a merchant or advertiser, we label it as sponsored at the top of the page, in the metadata, and in the footer of the affected content. Sponsored content is editorially separated from our organic recommendations.</p>
+<h2>Sampling and gifting</h2>
+<p>When a merchant provides a product sample, loaner, or gift in connection with a review or feature, we disclose that relationship on the relevant page.</p>
+<h2>Your choices</h2>
+<p>You can always visit a merchant directly and search for the same product — you will pay the same price, and we will not earn a commission. Affiliate links are a convenience, not a surcharge.</p>
+<h2>Questions</h2>
+<p>Affiliate, partnership, or disclosure questions: <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a>.</p>`,
+
+  privacy: `<h1>Privacy Policy</h1>
+<p class="sub"><em>Last updated: ${SPG_EFFECTIVE_DATE}.</em> ${SPG_BRAND} (operated by ${SPG_OPERATOR}, a New York limited liability company) respects your privacy. This Privacy Policy explains in plain English what personal information we collect, why we collect it, how we use it, who we share it with, how long we keep it, what rights you have, and how to contact us. If anything in this policy is unclear, please email <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a> and we will answer.</p>
+
+<h2>1. Who we are</h2>
+<p>${SPG_BRAND} is a brand owned and operated by ${SPG_OPERATOR}, a privately held limited liability company organized under the laws of the State of New York, United States. ${SPG_OPERATOR} holds a US Employer Identification Number (EIN) issued by the Internal Revenue Service. References in this policy to "we," "us," or "our" mean ${SPG_OPERATOR}. You can contact us at <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a>, by phone at <a href="tel:${SPG_CONTACT_PHONE.replace(/[^+\\\\d]/g, '')}">${SPG_CONTACT_PHONE}</a>, or by mail at the address available on request to ${SPG_CONTACT_EMAIL}.</p>
+
+<h2>2. Scope of this policy</h2>
+<p>This policy applies to the website located at <a href="https://${SPG_DOMAIN}">${SPG_DOMAIN}</a> and any subdomains we operate (for example, <code>www.${SPG_DOMAIN}</code>), the ${SPG_BRAND} signup, unsubscribe, and preferences pages, and any email or SMS messages we send to subscribers. It does <strong>not</strong> apply to third-party websites we link to — once you click an outbound link to a merchant, partner, or social platform, that destination's privacy practices apply. We encourage you to read those policies before submitting personal information. This policy also does not apply to background processing performed by affiliate networks on their own systems after a click is attributed to us; those networks have their own privacy notices.</p>
+
+<h2>3. The short version (a one-paragraph summary)</h2>
+<p>${SPG_OPERATOR} collects the information you choose to give us (email, optionally your name and ZIP, and a US mobile phone number only if you opt in to SMS), plus basic device and usage information when you visit the site (IP, browser type, pages viewed, link clicks). We use that information to operate the site, send you the messages you signed up for, attribute affiliate commissions to the merchants who fund the site, debug problems, and meet legal recordkeeping obligations. We do not sell personal information. We do not deliver third-party behavioral advertising. We share information only with service providers who act on our instructions, with affiliate networks to attribute clicks, and with authorities when the law requires it. You can access, correct, delete, port, or restrict your information, and you can withdraw any consent at any time.</p>
+
+<h2>4. Information we collect</h2>
+<p>We collect personal information only when we have a lawful basis and a clear purpose. The categories below describe what we collect, where it comes from, and why.</p>
+
+<h3>4.1 Information you give us</h3>
+<ul>
+  <li><strong>Account and signup data.</strong> When you sign up for our email list or SMS list, we collect your first name, last name, email address, ZIP / postal code, and mobile phone number (only if you provide one). <strong>Email is required</strong> to join the email list. <strong>Phone is collected only when you opt in to SMS messaging</strong> by typing a US mobile number and explicitly ticking the SMS consent box. We never require a phone number as a condition of any purchase, signup, or other benefit.</li>
+  <li><strong>Preferences.</strong> When you use the Preferences page or interact with the AI tools, we store your interest categories (gifts, home, tech, travel, pets, kitchen, deals under $50, and similar) so future messages stay relevant.</li>
+  <li><strong>Prompts you submit to AI tools.</strong> When you use the Gift Finder, Starter Kit Builder, or similar AI-assisted features, we collect the free-text prompts you submit and the responses we generate. We use these to operate the feature, improve ranking quality, and debug issues. Do not include sensitive personal information (such as Social Security numbers, financial account numbers, or health information) in prompts.</li>
+  <li><strong>Messages you send us.</strong> If you email us, fill out a form, message us through a partner platform, or reply to one of our emails or SMS messages, we keep a record of the communication so we can respond, follow up, and improve.</li>
+  <li><strong>Survey responses and feedback.</strong> If you respond to a survey or send feedback, we collect what you choose to share.</li>
+</ul>
+
+<h3>4.2 Information collected automatically</h3>
+<ul>
+  <li><strong>Device and connection data.</strong> IP address, approximate geolocation derived from IP, browser type and version, operating system, device type, screen size, referrer URL, and the pages of our site you viewed.</li>
+  <li><strong>Usage data.</strong> Time on page, scroll depth, clicks, outbound link clicks (including affiliate link clicks, which carry our tracking identifier), in-site search queries, and product interactions (such as which picks you expand or save).</li>
+  <li><strong>Cookies and similar technologies.</strong> We use first-party cookies, local storage, and session storage for session state, preferences, and analytics. See Section 6 for categories and control options.</li>
+  <li><strong>Server logs.</strong> Standard web server logs including timestamp, IP, request path, status code, and user agent, retained for security and debugging.</li>
+</ul>
+
+<h3>4.3 Information from partners and service providers</h3>
+<ul>
+  <li><strong>Affiliate networks.</strong> Amazon Associates, Walmart Impact, FlexOffers, Stay22, and other networks may share aggregated, anonymized, or attributed reporting (for example, "a click from our site resulted in a purchase within the cookie window"). Some reports include identifiers — for example, the date and time of a click, the product viewed, the order ID, or a hashed email — that we treat as personal information under applicable law. They use this information to compute and pay our commissions and to detect fraud.</li>
+  <li><strong>Email and SMS delivery providers.</strong> Our email and SMS providers give us delivery, open, click, and bounce information so we can keep our lists clean and honor opt-outs.</li>
+  <li><strong>Analytics providers.</strong> We use Microsoft Clarity for session replay and heatmapping; Clarity may record anonymized interactions to help us understand how the site is used.</li>
+  <li><strong>Social and platform providers.</strong> If you interact with us through social media (for example, by tagging us or DMing us), we may receive profile information consistent with your privacy settings on that platform.</li>
+</ul>
+
+<h2>5. How we use personal information</h2>
+<p>We use personal information to:</p>
+<ul>
+  <li>Operate, secure, and improve the site and our services.</li>
+  <li>Send the email and SMS messages you signed up for, including useful finds, gift ideas, preference updates, and transactional notices.</li>
+  <li>Process unsubscribe, preference, and account requests.</li>
+  <li>Attribute affiliate clicks to merchant networks so we can be paid the commissions that fund the site.</li>
+  <li>Measure content performance, debug issues, and understand which categories and picks are most useful.</li>
+  <li>Detect, prevent, and address fraud, abuse, security incidents, and violations of our terms.</li>
+  <li>Comply with applicable laws, regulations, and lawful government requests.</li>
+  <li>Enforce our Terms of Service and protect our rights, your safety, and the safety of others.</li>
+</ul>
+<p>We do <strong>not</strong> sell personal information. We do not use your phone number or email to deliver third-party advertising to you. We do not run cross-context behavioral advertising on this site.</p>
+
+<h2>6. Cookies, analytics, and session replay</h2>
+<p>We use the following categories of cookies and similar technologies. We try to limit non-essential cookies to those that materially help us run the site.</p>
+<ul>
+  <li><strong>Strictly necessary.</strong> Session, security, and preference cookies required for the site to function. These are set by default and do not require consent under most privacy laws.</li>
+  <li><strong>Analytics.</strong> Aggregated traffic and behavior analytics. We use Microsoft Clarity (<code>clarity.ms</code>) to understand how visitors move through the site via session replay and heatmaps. Clarity may set its own cookies; you can opt out at <a href="https://clarity.microsoft.com/privacy" rel="noopener noreferrer">clarity.microsoft.com/privacy</a>.</li>
+  <li><strong>Affiliate.</strong> Cookies or URL parameters set by affiliate networks (for example, Amazon's <code>tag=...</code> parameter) to attribute clicks and qualifying purchases. These are necessary to operate the site's approved-offer business model and we have no practical alternative if you want to use outbound links.</li>
+  <li><strong>Verification.</strong> Site-verification meta tags from Impact, Amazon, and similar partners to confirm our partnership status. These do not set cookies.</li>
+</ul>
+<p>You can clear or block cookies in your browser settings. Blocking strictly necessary cookies may break parts of the site (for example, you may not be able to stay signed in or save preferences). You can also use the Global Privacy Control signal where required by applicable law (see Section 14).</p>
+
+<h2>7. Email and SMS communications</h2>
+
+<h3>7.1 Email</h3>
+<p>When you sign up for the email list, we collect your email and use it to send you the messages you opted into. Every marketing email contains an unsubscribe link and our physical mailing address. You can also unsubscribe at <a href="/unsubscribe/">/unsubscribe</a> or change what you receive at <a href="/preferences/">/preferences</a>. We honor opt-out requests promptly, typically within ten business days and usually within one business day. Transactional messages (account notices, security alerts, confirmations, double opt-in confirmations) may be sent regardless of marketing opt-out status where required to deliver a service you requested.</p>
+
+<h3>7.2 SMS / text messages</h3>
+<p>SMS is opt-in only. We will not text the mobile number you provide unless you explicitly tick the SMS consent box on the signup form. By submitting the form with the box ticked, you agree that ${SPG_OPERATOR} (operator of ${SPG_BRAND}) may send you recurring automated marketing and informational text messages at that number.</p>
+<p><strong>Key terms of our SMS program:</strong></p>
+<ul>
+  <li><strong>Program operator.</strong> ${SPG_OPERATOR} (operator of ${SPG_BRAND}), a New York limited liability company, EIN on file.</li>
+  <li><strong>What you consent to.</strong> Recurring automated marketing and informational text messages from ${SPG_BRAND} at the mobile number you provided.</li>
+  <li><strong>Frequency.</strong> Message frequency varies; typically up to <strong>4 messages per month</strong>. The exact frequency depends on your selected preferences and seasonal campaigns.</li>
+  <li><strong>Rates.</strong> Message and data rates may apply. Carriers (e.g., AT&amp;T, T-Mobile, Verizon, and their MVNOs) are not liable for delayed or undelivered messages.</li>
+  <li><strong>Not a condition of any purchase.</strong> Consent is not a condition of any purchase, and SMS signup is not a condition of receiving any other benefit from ${SPG_BRAND}.</li>
+  <li><strong>Account holder.</strong> By providing your mobile number, you confirm that you are the account holder for that number or that you have the account holder's permission to receive messages at it.</li>
+  <li><strong>Opt out.</strong> Reply <strong>STOP</strong> to any message to unsubscribe. We honor opt-out requests within 10 business days and usually much faster.</li>
+  <li><strong>Help.</strong> Reply <strong>HELP</strong> for help, or contact <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a>.</li>
+  <li><strong>Records.</strong> We log the date, time, source URL, and version of the SMS consent you provided, the IP address you submitted from, the user agent, and the consent text shown at the time. We retain these records for at least four years from the date of consent to comply with TCPA, A2P 10DLC, CTIA, and applicable state law.</li>
+  <li><strong>Registration.</strong> Our SMS program is registered with The Campaign Registry (TCR) and operates on A2P 10DLC long codes registered to ${SPG_OPERATOR}.</li>
+</ul>
+<p><strong>State-specific SMS notice.</strong> Residents of Florida, Washington, Oklahoma, Maryland, and other states with their own mini-TCPA or telephone-solicitation laws receive the protections of those laws in addition to the TCPA protections above. Where a state law requires additional or earlier consent, that additional consent is collected before any SMS is sent.</p>
+
+<h2>8. How we share personal information</h2>
+<p>We do not sell personal information. We share personal information only with:</p>
+<ul>
+  <li><strong>Service providers</strong> who process data on our behalf — for example, hosting (Cloudflare Pages, Cloudflare Workers), email delivery, SMS delivery, analytics, error monitoring, and database providers. Each provider is bound by confidentiality and data-processing terms consistent with this policy, and only receives the information needed to perform its service.</li>
+  <li><strong>Affiliate and partner networks</strong> (Amazon Associates, Walmart Impact, FlexOffers, Stay22, and similar) so they can attribute clicks and qualifying purchases to our account and pay the resulting commissions to ${SPG_OPERATOR}. These networks may set their own cookies or use URL parameters when you follow an outbound link, and their privacy practices apply once you have clicked through.</li>
+  <li><strong>Legal and regulatory authorities</strong> when we believe in good faith that disclosure is necessary to comply with a law, valid subpoena, court order, or government request, or to protect our rights, your safety, or the safety of others.</li>
+  <li><strong>A successor entity</strong> in the event of a merger, acquisition, reorganization, or sale of assets, in which case we will notify affected users as required by law (typically by email and a banner on the site) and the receiving entity will be required to honor this policy or give you a chance to opt out.</li>
+  <li><strong>Aggregated or de-identified information</strong> that cannot reasonably be used to identify you, which we may share without restriction (for example, "our readers clicked on gift picks 23% more often than home picks in Q4").</li>
+</ul>
+<p>We do not sell personal information for money or other value, and we do not share personal information with third parties for their own cross-context behavioral advertising purposes.</p>
+
+<h2>9. Data retention</h2>
+<p>We keep personal information only as long as we have a lawful basis to do so. In practice:</p>
+<ul>
+  <li><strong>Account and signup records:</strong> until you unsubscribe or delete your account, plus a reasonable wind-down period (typically up to 90 days), after which records are deleted or fully anonymized.</li>
+  <li><strong>SMS consent records:</strong> for at least four years from the date of consent, in line with TCPA, A2P 10DLC, CTIA, and applicable state law.</li>
+  <li><strong>Email consent and suppression records:</strong> indefinitely, to ensure we do not email a previously opted-out address.</li>
+  <li><strong>Server logs and analytics:</strong> typically 13–26 months, then aggregated or deleted.</li>
+  <li><strong>Tax and accounting records:</strong> as required by law (typically seven years in the US for federal tax purposes, longer in some states).</li>
+  <li><strong>Backups:</strong> encrypted backups are retained on a rolling basis for disaster-recovery purposes and are deleted on the same schedule as the underlying records.</li>
+</ul>
+
+<h2>10. Your rights and choices</h2>
+<p>Depending on where you live, you may have the right to:</p>
+<ul>
+  <li><strong>Access</strong> the personal information we hold about you.</li>
+  <li><strong>Correct</strong> inaccurate or incomplete information.</li>
+  <li><strong>Delete</strong> personal information, subject to our legal recordkeeping obligations (we cannot delete SMS consent records within the four-year retention window, and we cannot delete suppression records used to honor your opt-outs).</li>
+  <li><strong>Object to or restrict</strong> certain processing.</li>
+  <li><strong>Withdraw consent</strong> at any time (without affecting the lawfulness of processing before withdrawal).</li>
+  <li><strong>Receive a portable copy</strong> of your information.</li>
+  <li><strong>Opt out of "sale" or "sharing"</strong> for cross-context behavioral advertising (we do not sell personal information; we do not currently run cross-context behavioral ads).</li>
+  <li><strong>Non-discrimination</strong> for exercising any of the rights above.</li>
+</ul>
+<p><strong>How to exercise these rights.</strong> Email <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a> with the right you want to exercise. For your protection, we may need to verify your identity before fulfilling the request. We respond within the timeframes required by applicable law (typically 30–45 days; up to 90 days where complexity warrants, with notice). If we deny your request, we tell you why and how to appeal.</p>
+<p><strong>Authorized agents.</strong> If you submit a request through an authorized agent, we may require proof of the agent's authority and may still verify your identity directly.</p>
+
+<h2>11. California-specific rights (CCPA / CPRA)</h2>
+<p>If you are a California resident, you have additional rights under the California Consumer Privacy Act, as amended by the California Privacy Rights Act ("CCPA/CPRA"):</p>
+<ul>
+  <li><strong>Right to know</strong> what categories of personal information we collect, the sources, the business purposes, and the categories of recipients.</li>
+  <li><strong>Right to delete</strong> personal information we collected from you, subject to the exceptions in Section 10.</li>
+  <li><strong>Right to correct</strong> inaccurate personal information.</li>
+  <li><strong>Right to opt out of sale or sharing</strong> — we do not sell or share personal information as those terms are defined under CCPA/CPRA.</li>
+  <li><strong>Right to limit use of sensitive personal information</strong> — we do not collect sensitive personal information as defined under CCPA/CPRA.</li>
+  <li><strong>Right to non-discrimination</strong> for exercising CCPA/CPRA rights.</li>
+</ul>
+<p>To exercise these rights, follow the process in Section 10. You may also submit a "Do Not Sell or Share My Personal Information" request at any time by emailing <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a>; while we do not sell or share, we will confirm that in writing. California "shining a light" requests can be sent to the same address.</p>
+
+<h2>12. Other US state privacy rights</h2>
+<p>Residents of Colorado, Connecticut, Virginia, Utah, Texas, Oregon, Montana, Iowa, and other US states with comprehensive privacy laws have rights similar to those in Section 10. To exercise those rights, follow the process in Section 10. We honor Global Privacy Control signals as required.</p>
+
+<h2>13. International transfers</h2>
+<p>We are a US-based company. If you visit the site from outside the United States, your information will be transferred to and processed in the United States. By using the site, you understand that US data protection laws may differ from those of your jurisdiction. Where required by law, including for transfers from the EEA, the UK, or Switzerland, we rely on Standard Contractual Clauses (the EU Commission Decision 2021/914 modules) or other approved transfer mechanisms to protect your information.</p>
+
+<h2>14. Children's privacy</h2>
+<p>${SPG_BRAND} is intended for a general adult audience and is not directed at children. We do not knowingly collect personal information from children under 13 (COPPA), under 16 where the GDPR's higher age applies, or under any higher age where local law requires. If you believe a child has provided us with personal information, contact <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a> and we will delete it. The Service is not directed at children, and parents who believe their child has interacted with the Service should contact us.</p>
+
+<h2>15. Security</h2>
+<p>We use reasonable technical and organizational safeguards designed to protect personal information, including: HTTPS/TLS in transit, encryption at rest where supported by our providers, access controls with least-privilege permissions, audit logging of access to administrative functions, separation of environments, and periodic review of vendor security posture. No system is 100% secure; we cannot guarantee absolute security. If a breach affects you, we will notify you and the relevant authorities as required by applicable law.</p>
+
+<h2>16. Third-party links and widgets</h2>
+<p>Outbound merchant links, Amazon Native Shopping Ads, Walmart catalog embeds, embedded reviews, and similar widgets are governed by the privacy practices of the third parties operating them. We do not control and are not responsible for their practices. Once you click an outbound link, the privacy policy of the destination merchant or partner applies. We encourage you to read those policies before submitting personal information.</p>
+
+<h2>17. "Do Not Track" and Global Privacy Controls</h2>
+<p>We honor Global Privacy Control (GPC) signals where required by applicable law (for example, California, Colorado, Connecticut, Virginia, Utah). If your browser sends a GPC signal, we treat it as a valid opt-out of "sale" or "sharing." We do not currently respond to legacy Do Not Track (DNT) browser signals, which are not regulated.</p>
+
+<h2>18. AI features and how they handle inputs</h2>
+<p>${SPG_BRAND} uses AI to summarize and rank products in our approved catalog. AI features operate against a curated product catalog; they do not invent products. Prompts you submit to AI features are:</p>
+<ul>
+  <li>Sent to our AI service provider under a data-processing agreement that prohibits secondary use for model training.</li>
+  <li>Retained only as long as necessary to operate the feature and improve ranking quality, subject to our retention schedule.</li>
+  <li>Not used by us or our providers to train foundation models on your input.</li>
+</ul>
+<p>Do not include sensitive personal information (Social Security numbers, financial account numbers, health information, passwords, or similar) in prompts.</p>
+
+<h2>19. Changes to this policy</h2>
+<p>We may update this policy from time to time. When we do, we revise the "Last updated" date above. For material changes, we will provide additional notice (for example, a banner on the site or an email to active subscribers at least 30 days before the change takes effect, where required by law). Continued use of the site after the effective date of a change constitutes acceptance of the updated policy, except where a law requires affirmative consent. You can always find the current version at this URL, and prior versions are available on request to <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a>.</p>
+
+<h2>20. Contact us</h2>
+<p>Privacy questions, access requests, complaints, and authorized-agent requests:</p>
+<p>Email: <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a><br>
+Phone: <a href="tel:${SPG_CONTACT_PHONE.replace(/[^+\\\\d]/g, '')}">${SPG_CONTACT_PHONE}</a><br>
+Mailing address: available on request to <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a>.</p>
+<p><strong>Designated privacy contact.</strong> For state-specific requests or authorized-agent submissions, address your email to "Privacy" in the subject line so it is routed correctly.</p>
+<p><strong>Complaint escalation.</strong> If we cannot resolve your complaint, you may have the right to lodge a complaint with your local data protection authority (for example, the California Attorney General, the relevant US state attorney general, or the supervisory authority in your EEA Member State). We would, however, appreciate the chance to address your concerns directly before you approach a regulator.</p>`,
+
+  terms: `<h1>Terms of Service</h1>
+<p class="sub"><em>Last updated: ${SPG_EFFECTIVE_DATE}.</em> These Terms of Service ("Terms") govern your access to and use of the website located at <a href="https://${SPG_DOMAIN}">${SPG_DOMAIN}</a> and any subdomains, products, AI-assisted features, signup, unsubscribe, and preferences pages, and email or SMS messages we send (together, the "Service"), operated by ${SPG_OPERATOR}, a New York limited liability company. By accessing or using the Service, clicking "I agree," or submitting a form, you agree to these Terms. If you do not agree, do not use the Service.</p>
+
+<h2>1. Who we are</h2>
+<p>${SPG_BRAND} is a brand owned and operated by ${SPG_OPERATOR}, a privately held limited liability company organized under the laws of the State of New York, United States. ${SPG_OPERATOR} holds a US Employer Identification Number (EIN) issued by the Internal Revenue Service. References to "we," "us," or "our" mean ${SPG_OPERATOR}. You can contact us at <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a>, by phone at <a href="tel:${SPG_CONTACT_PHONE.replace(/[^+\\\\d]/g, '')}">${SPG_CONTACT_PHONE}</a>, or by mail at the address available on request.</p>
+
+<h2>2. Eligibility</h2>
+<p>You must be at least 18 years old (or the age of digital consent in your jurisdiction, whichever is higher) to use the Service. By using the Service, you represent that you meet this requirement and that you are legally able to enter into a binding contract in your jurisdiction. The Service is not directed at children under 13 (COPPA). Parents who believe their child has used the Service should contact us so we can delete any information collected.</p>
+
+<h2>3. What we provide</h2>
+<p>${SPG_BRAND} provides editorial content, AI-assisted shopping tools (including a Gift Finder, Starter Kit Builder, and "is it worth it?" checker), and outbound links to merchants and partner programs. We do not sell products directly, do not process payments, do not ship orders, and do not warehouse inventory. All purchases, returns, warranties, customer service, fulfillment, taxes, and post-purchase support are handled by the merchant you ultimately transact with. We are not a party to any transaction between you and a merchant, and we make no representations or warranties about any merchant, product, or service beyond what is explicitly stated in our editorial content or <a href="/affiliate-disclosure/">Affiliate Disclosure</a>.</p>
+
+<h2>4. Informational purposes only — no professional advice</h2>
+<p>Our recommendations, descriptions, ratings, comparisons, AI-generated summaries, and editorial content are provided for informational and entertainment purposes only. They are not professional advice of any kind — not legal advice, not medical advice, not financial advice, not tax advice, not veterinary advice, not safety advice, and not engineering or installation advice. You are responsible for confirming product details, current pricing, availability, shipping costs, returns, warranties, recalls, compatibility, safety, and merchant terms before making a purchase or use decision. Do not rely on our content as a substitute for professional advice that is appropriate to your circumstances.</p>
+
+<h2>5. Affiliate and sponsored content</h2>
+<p>Some outbound links on the Service are affiliate links. We may earn a commission on qualifying purchases at no extra cost to you. Some content may be sponsored or provided in connection with a merchant sampling program; sponsored content is clearly labeled at the top of the page, in metadata, and at the relevant call-to-action. We are participants in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn fees by linking to Amazon.com and affiliated sites. Amazon, the Amazon logo, AmazonSupply, and the AmazonSupply logo are trademarks of Amazon.com, Inc. or its affiliates. See our <a href="/affiliate-disclosure/">Affiliate Disclosure</a> and <a href="/advertise/">Advertise</a> pages for the full picture.</p>
+
+<h2>6. Account, signup, and SMS terms</h2>
+<p>When you sign up for email or SMS messages, you agree to:</p>
+<ul>
+  <li>Provide accurate, current, and complete information.</li>
+  <li>Keep your contact details — especially your mobile number — up to date.</li>
+  <li>Use the unsubscribe link in any email, or reply <strong>STOP</strong> to any SMS message, to opt out at any time.</li>
+  <li>Reply <strong>HELP</strong> for help with SMS messages.</li>
+  <li>Confirm that you are the account holder for any mobile number you provide, or that you have the account holder's permission to receive messages at it.</li>
+  <li>Not enroll a mobile number belonging to another person without their permission.</li>
+</ul>
+<p>SMS messages you agree to receive are governed by the versioned SMS Terms presented on the signup form at the time you opted in. We log the date, time, source URL, version, IP, user agent, and consent text shown at the time of every consent we collect. The current SMS Terms version is ${SPG_SMS_CONSENT_VERSION}; prior versions are available on request to <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a>. We will not text you without your affirmative consent, and SMS signup is not a condition of any purchase or of receiving any other benefit from ${SPG_BRAND}.</p>
+<p>${SPG_OPERATOR}'s SMS program is registered with The Campaign Registry (TCR) and operates on A2P 10DLC long codes. By submitting a phone number to enroll in SMS, you confirm your agreement with these Terms and with all applicable TCR, carrier, and CTIA messaging guidelines. Where state law (for example, Florida, Washington, Oklahoma, or Maryland) requires additional consent language, that additional consent is collected on the signup form before any SMS is sent.</p>
+
+<h2>7. AI-assisted features and their limits</h2>
+<p>The Service offers AI-assisted shopping tools that summarize and rank products in our approved catalog. These tools do not invent products; they rank and summarize products drawn from our catalog. AI-generated summaries may, despite our review, contain errors or omit relevant details. You should treat AI-assisted output as a starting point, not as a final recommendation. The tools may refuse to recommend a product when no approved-affiliate match exists in our catalog. Outputs may change over time as we update the catalog and the underlying models.</p>
+<p>Do not submit prompts to AI features that contain personal information about yourself or others (including names, phone numbers, email addresses, account numbers, Social Security numbers, or health information). We do not train foundation models on your prompts, but you should assume anything you submit to an AI tool is being processed by a third-party AI provider under our data-processing agreement, which prohibits secondary use for training.</p>
+
+<h2>8. Acceptable use</h2>
+<p>You agree not to:</p>
+<ul>
+  <li>Use the Service for any unlawful purpose or in violation of any applicable law, regulation, or contractual obligation.</li>
+  <li>Submit forms with automated means (bots, scripts, macros) or with information that is not your own.</li>
+  <li>Scrape, crawl, mirror, or otherwise copy the Service or its content at a rate that interferes with normal operation, or in violation of the robots.txt file or any rate-limiting signals we publish.</li>
+  <li>Attempt to access non-public areas of the Service, probe or scan for vulnerabilities, bypass any security measure, or use the Service to gain unauthorized access to any system or network.</li>
+  <li>Interfere with or disrupt the Service, its servers, or any networks connected to it (including denial-of-service attacks).</li>
+  <li>Upload or transmit viruses, malware, ransomware, or any other malicious code.</li>
+  <li>Misrepresent your identity or impersonate any person or entity, including ${SPG_OPERATOR} or any ${SPG_BRAND} staff or affiliate.</li>
+  <li>Use the Service to harass, defame, harm, stalk, or threaten another person.</li>
+  <li>Use the Service in any way that could damage, disable, overburden, or impair our infrastructure or interfere with any other user's enjoyment of the Service.</li>
+  <li>Use the Service to send unsolicited communications, promotions, advertisements, or spam, or to harvest or collect personal information about other users.</li>
+  <li>Circumvent any technological measure we use to protect the Service, including rate limits, CAPTCHA challenges, and access controls.</li>
+</ul>
+<p>We may investigate and take appropriate legal action against anyone who, in our sole discretion, engages in prohibited conduct, including reporting such conduct to law enforcement authorities.</p>
+
+<h2>9. Intellectual property — our content</h2>
+<p>The Service, including its design, code, original illustrations, AI-generated illustrations, copy, photographs, logos, trademarks, and service marks, is owned by ${SPG_OPERATOR} or its licensors and is protected by United States and international intellectual property laws, including copyright, trademark, trade dress, and trade-secret law. You may view and use the Service for personal, non-commercial purposes. You may not reproduce, distribute, modify, create derivative works of, publicly display, publicly perform, republish, download, store, or transmit any material from the Service without our prior written consent, except as enabled by normal browser functionality (for example, a single copy cached by your browser for offline viewing) or as permitted by applicable copyright law (for example, brief quotations used in accordance with fair use).</p>
+<p>All ${SPG_BRAND} trademarks, trade names, logos, and service marks (including the ${SPG_BRAND} name and logo) are the property of ${SPG_OPERATOR}. You may not use these marks without our prior written permission. Feedback you provide about the marks does not grant you any rights in them.</p>
+
+<h2>10. Intellectual property — our content, more specifically</h2>
+<ul>
+  <li><strong>Original illustrations.</strong> Product illustrations on the Service are AI-generated original works created by or for ${SPG_OPERATOR}. They are not licensed from third parties and do not depict any specific real-world product. They are placeholders that we use when we have not licensed product imagery from the merchant.</li>
+  <li><strong>Copy and editorial commentary.</strong> Original copy, comparison write-ups, "is it worth it?" analyses, and category descriptions on the Service are original works authored by ${SPG_OPERATOR} (with AI assistance in some drafts, under human review).</li>
+  <li><strong>Trademarks of third parties.</strong> Merchant names, logos, and product names referenced on the Service are the property of their respective owners. References are for informational purposes only and do not imply endorsement, sponsorship, or affiliation.</li>
+  <li><strong>No scraping.</strong> We do not scrape or republish copyrighted merchant content (product images, prices, reviews, ratings, availability). ${SPG_BRAND} content reflects our independent editorial judgment, not the catalog of any single merchant.</li>
+</ul>
+
+<h2>11. User submissions and the license you grant us</h2>
+<p>If you submit content to us (for example, product suggestions, comments, feedback, survey responses, or messages you send us), you grant ${SPG_OPERATOR} a non-exclusive, royalty-free, worldwide, perpetual, irrevocable, and fully sublicensable right to use, reproduce, modify, adapt, publish, translate, create derivative works from, distribute, and display such content in any media, subject to our <a href="/privacy/">Privacy Policy</a>. You represent and warrant that you own or have the necessary rights to the content you submit, that the content does not violate the rights of any third party (including privacy, publicity, copyright, trademark, or contractual rights), and that the content is not unlawful, defamatory, obscene, or otherwise objectionable. You waive any moral rights in the content to the extent permitted by law. We are not obligated to publish, maintain, or return any submission.</p>
+
+<h2>12. Feedback</h2>
+<p>If you send us unsolicited feedback, suggestions, or ideas about the Service, you agree that we may use that feedback without restriction or compensation to you. You assign any rights in the feedback to ${SPG_OPERATOR} to the maximum extent permitted by law, and you waive any moral rights in the feedback to the extent permitted by law.</p>
+
+<h2>13. Third-party services and links</h2>
+<p>The Service contains links to third-party websites, services, embedded widgets, and APIs (for example, Amazon, Walmart, hotel and travel providers, social platforms, analytics providers, AI providers, and SMS delivery providers). We do not control and are not responsible for the content, policies, or practices of any third party. Your use of third-party services is at your own risk and subject to their terms and privacy policies. Some outbound links are tracked by affiliate networks; see our <a href="/affiliate-disclosure/">Affiliate Disclosure</a>.</p>
+
+<h2>14. Electronic communications; SMS consent and program</h2>
+<p>By submitting a form on the Service or otherwise providing us with a mobile number, you agree that we (and our SMS delivery provider) may send you electronic communications, including SMS messages, at the address or number you provided. Electronic communications include any messages sent via email, SMS, push notification, web in-app message, or similar digital channel. You may opt out of marketing communications at any time (see Section 6), but you consent to receive transactional or administrative communications related to your account.</p>
+<p><strong>SMS Program Terms — Additional Disclosures (TCPA, A2P 10DLC, CTIA):</strong></p>
+<ul>
+  <li><strong>Program operator.</strong> ${SPG_OPERATOR} (operator of ${SPG_BRAND}), a New York limited liability company, EIN on file.</li>
+  <li><strong>What you consent to.</strong> Recurring automated marketing and informational text messages from ${SPG_BRAND} at the mobile number you provided.</li>
+  <li><strong>Frequency.</strong> Message frequency varies; typically up to 4 messages per month.</li>
+  <li><strong>Rates.</strong> Message and data rates may apply.</li>
+  <li><strong>Carriers.</strong> Carriers (e.g., AT&amp;T, T-Mobile, Verizon, and their MVNOs) are not liable for delayed or undelivered messages.</li>
+  <li><strong>Not a condition of purchase.</strong> Consent is not a condition of any purchase.</li>
+  <li><strong>Opt out.</strong> Reply <strong>STOP</strong> at any time. Reply <strong>HELP</strong> for help.</li>
+  <li><strong>Records.</strong> We retain consent records, including the versioned disclosure text, timestamp, source URL, IP, and user agent, for at least four years.</li>
+  <li><strong>Registration.</strong> Our SMS program is registered with The Campaign Registry and operates on A2P 10DLC long codes.</li>
+  <li><strong>Consent version.</strong> The version of the SMS Terms displayed on the signup form at the time of your signup is the binding version for that signup; subsequent versions apply only to new signups.</li>
+</ul>
+
+<h2>15. Disclaimer of warranties</h2>
+<p>THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ACCURACY, RELIABILITY, AND TITLE. WE DO NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, SECURE, OR FREE OF HARMFUL COMPONENTS, OR THAT DEFECTS WILL BE CORRECTED. WE DO NOT WARRANT THE ACCURACY, COMPLETENESS, USEFULNESS, OR LAWFULNESS OF ANY PRODUCT RECOMMENDATION, EDITORIAL CONTENT, AI-GENERATED OUTPUT, MERCHANT LISTING, OR MERCHANT PRODUCT. NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM US SHALL CREATE ANY WARRANTY NOT EXPRESSLY STATED IN THESE TERMS. SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF CERTAIN WARRANTIES; IN SUCH JURISDICTIONS, THE EXCLUSIONS ABOVE APPLY TO THE FULLEST EXTENT PERMITTED BY LAW.</p>
+
+<h2>16. Limitation of liability</h2>
+<p>TO THE FULLEST EXTENT PERMITTED BY LAW, ${SPG_OPERATOR}, ITS AFFILIATES, OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, AND LICENSORS WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING WITHOUT LIMITATION LOSS OF PROFITS, REVENUE, DATA, USE, GOODWILL, BUSINESS OPPORTUNITY, OR OTHER INTANGIBLE LOSSES, RESULTING FROM (A) YOUR ACCESS TO OR USE OF (OR INABILITY TO ACCESS OR USE) THE SERVICE; (B) ANY CONDUCT OR CONTENT OF ANY THIRD PARTY ON OR THROUGH THE SERVICE, INCLUDING ANY MERCHANT, AFFILIATE NETWORK, OR AI PROVIDER; (C) ANY CONTENT OBTAINED FROM THE SERVICE, INCLUDING AI-GENERATED OUTPUT; (D) UNAUTHORIZED ACCESS, USE, OR ALTERATION OF YOUR TRANSMISSIONS OR CONTENT; OR (E) ANY OTHER MATTER RELATING TO THE SERVICE, EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+<p>IN NO EVENT WILL OUR AGGREGATE LIABILITY FOR ANY CLAIM ARISING OUT OF OR RELATING TO THE SERVICE EXCEED ONE HUNDRED US DOLLARS (US$100). THE LIMITATIONS IN THIS SECTION APPLY TO ALL CLAIMS, WHETHER BASED ON WARRANTY, CONTRACT, STATUTE, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY, OR ANY OTHER LEGAL THEORY, AND WHETHER OR NOT WE HAVE BEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGES. SOME JURISDICTIONS DO NOT ALLOW CERTAIN LIMITATIONS OF LIABILITY; IN SUCH JURISDICTIONS, THE LIMITATIONS APPLY TO THE FULLEST EXTENT PERMITTED BY LAW.</p>
+
+<h2>17. Indemnification</h2>
+<p>You agree to defend, indemnify, and hold harmless ${SPG_OPERATOR} and its affiliates, officers, directors, employees, agents, licensors, and service providers from and against any claim, liability, damage, loss, and expense (including reasonable attorneys' fees and costs) arising out of or in any way connected with (a) your access to or use of the Service; (b) your violation of these Terms; (c) your violation of any third-party right, including any intellectual-property, privacy, publicity, or contractual right; (d) your violation of any applicable law; (e) any content you submit or transmit via the Service; or (f) any dispute between you and a third party (including any merchant).</p>
+
+<h2>18. Termination</h2>
+<p>We may suspend or terminate your access to the Service at any time, with or without cause, with or without notice, including (without limitation) if we believe you have violated these Terms, if we suspect fraudulent or abusive activity, if we are required to do so by law or by a merchant or affiliate network, or if we discontinue the Service. Upon termination, all provisions of these Terms that by their nature should survive termination will survive, including ownership, intellectual-property, disclaimers, indemnification, limitations of liability, dispute resolution, and contact provisions. You may stop using the Service at any time. Termination does not affect consent records we are required to retain (typically four years for SMS consent), opt-out records, or any right that has already accrued to either party.</p>
+
+<h2>19. Accessibility</h2>
+<p>We aim to make ${SPG_BRAND} usable for as broad an audience as possible. If you encounter an accessibility barrier or need an alternative format for any content (for example, a large-print or screen-reader-friendly version of these Terms), please contact <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a> with the URL of the page and a description of the issue, and we will work with you to provide the content in a usable form.</p>
+
+<h2>20. Force majeure</h2>
+<p>We will not be liable for any delay or failure to perform resulting from causes outside our reasonable control, including acts of God, war, terrorism, riots, embargoes, sanctions, actions of any governmental authority, epidemics, pandemics, internet or telecommunications outages, power failures, labor disputes, fires, floods, earthquakes, severe weather, or supply-chain disruptions affecting our service providers or affiliate networks.</p>
+
+<h2>21. Export controls and sanctions</h2>
+<p>You may not use the Service if doing so would violate US export controls or sanctions laws (including those administered by the US Department of the Treasury's OFAC or the US Department of Commerce). You represent and warrant that you are not located in, or a resident or national of, any country or territory subject to US sanctions, and that you are not on any list of restricted parties maintained by the US government.</p>
+
+<h2>22. Governing law and venue</h2>
+<p>These Terms are governed by the laws of the State of New York, without regard to its conflict-of-laws rules. The United Nations Convention on Contracts for the International Sale of Goods does not apply. You and ${SPG_OPERATOR} agree to submit to the exclusive jurisdiction of the state and federal courts located in New York County, New York, for any dispute arising out of or relating to these Terms or the Service, except that we may seek injunctive relief in any court of competent jurisdiction to protect our intellectual property, confidential information, or our rights under Section 6 (Account, signup, and SMS terms).</p>
+
+<h2>23. Dispute resolution and arbitration</h2>
+<p><strong>PLEASE READ THIS SECTION CAREFULLY. IT AFFECTS YOUR LEGAL RIGHTS, INCLUDING YOUR RIGHT TO FILE A LAWSUIT IN COURT.</strong></p>
+<p>You and ${SPG_OPERATOR} agree that any dispute, claim, or controversy arising out of or relating to these Terms or the Service (a "Dispute") will be resolved by binding individual arbitration administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules, rather than in court, except that either party may bring a qualifying claim in small-claims court. There is no judge or jury in arbitration, and class actions and class arbitrations are not permitted. You and ${SPG_OPERATOR} each waive any right to a jury trial and to participate in any class action, class arbitration, or other representative action. Nothing in this section prevents either party from seeking injunctive or equitable relief in court to protect intellectual property, confidential information, or rights under Section 6.</p>
+<p>The arbitration will be conducted by a single arbitrator in New York County, New York, unless the parties agree otherwise. The arbitrator's award will be final and binding and may be entered as a judgment in any court of competent jurisdiction. The arbitrator may award the same damages or relief that a court could award, including reasonable attorneys' fees and costs, but only to the extent that a court could award them under these Terms.</p>
+<p>You may opt out of arbitration by sending written notice, including your name and the email address you used to sign up, to <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a> within 30 days of first accepting these Terms. If you opt out, you may pursue your Dispute in court.</p>
+<p>Notwithstanding the above, either party may bring a qualifying action in small-claims court. Either party may also seek injunctive or equitable relief to prevent or remedy a breach of intellectual property rights, confidential information, or the SMS Terms.</p>
+
+<h2>24. Modifications</h2>
+<p>We may modify these Terms from time to time. The "Last updated" date above reflects the most recent change. Material changes will be announced via a banner on the site, an email to active subscribers, or both, at least 30 days before the change takes effect, where required by law. Your continued use of the Service after the effective date of a change constitutes acceptance of the updated Terms, except where the change is material and applicable law requires affirmative consent. If you do not agree to a material change, you may stop using the Service and unsubscribe from communications; for SMS, you may also reply STOP at any time to opt out.</p>
+
+<h2>25. Severability</h2>
+<p>If any provision of these Terms is held to be invalid, illegal, or unenforceable by a court or arbitrator of competent jurisdiction, that provision will be severed, and the remaining provisions will remain in full force and effect. The parties intend that the court or arbitrator modify any severed provision to the minimum extent necessary to render it valid and enforceable while preserving the parties' intent.</p>
+
+<h2>26. No waiver</h2>
+<p>Our failure to enforce any right or provision of these Terms will not be deemed a waiver of such right or provision. Any waiver of any provision of these Terms will be effective only if in writing and signed by an authorized representative of ${SPG_OPERATOR}.</p>
+
+<h2>27. Assignment</h2>
+<p>You may not assign or transfer your rights or obligations under these Terms without our prior written consent. We may assign or transfer these Terms, in whole or in part, without restriction, including in connection with a merger, acquisition, reorganization, sale of assets, or operation of law. Subject to the foregoing, these Terms bind and benefit the parties and their permitted successors and assigns.</p>
+
+<h2>28. Entire agreement</h2>
+<p>These Terms, together with our <a href="/privacy/">Privacy Policy</a> and <a href="/affiliate-disclosure/">Affiliate Disclosure</a>, constitute the entire agreement between you and ${SPG_OPERATOR} regarding the Service and supersede all prior or contemporaneous understandings, proposals, communications, or agreements, whether oral or written, regarding the Service.</p>
+
+<h2>29. Notices</h2>
+<p>You agree that any notices we send you electronically (via email, SMS, or posting on the Service) satisfy any legal requirement that such notices be in writing. You must keep your contact information current. You may send us notices at <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a>.</p>
+
+<h2>30. Contact us</h2>
+<p>Questions, complaints, or notices about these Terms:<br>
+Email: <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a><br>
+Phone: <a href="tel:${SPG_CONTACT_PHONE.replace(/[^+\\\\d]/g, '')}">${SPG_CONTACT_PHONE}</a><br>
+Mailing address: available on request to <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a>.<br>
+Subject-line routing: please address Terms-related messages to "Terms" in the subject line so they are routed correctly.</p>`,
+
+  contact: `<h1>Contact ${SPG_BRAND}</h1>
+<p class="sub">For everything listed below, we are reachable at <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a>. We respond within five business days; usually faster.</p>
+<h2>What to email us about</h2>
+<ul>
+  <li><strong>Questions about a pick.</strong> Send the page URL and what's unclear.</li>
+  <li><strong>Corrections.</strong> Found a factual error? We will correct it promptly and add a note to the page if material.</li>
+  <li><strong>Product suggestions.</strong> Tell us the job, not the brand — we surface by use case.</li>
+  <li><strong>Affiliate and partnership inquiries.</strong> See <a href="/advertise/">Advertise</a>.</li>
+  <li><strong>Press and media.</strong> Add “Press” to the subject line.</li>
+  <li><strong>Takedown requests.</strong> Include the URL and a brief description; we respond within five business days.</li>
+  <li><strong>Privacy and data requests.</strong> See <a href="/privacy/">Privacy</a>.</li>
+  <li><strong>SMS support.</strong> Reply HELP to any message, or email us with your mobile number (do not text it back for support).</li>
+</ul>
+<h2>About the operator</h2>
+<p>Company: <strong>${SPG_OPERATOR}</strong>.<br>
+Brand: <strong>${SPG_BRAND}</strong>.<br>
+Site: <a href="https://${SPG_DOMAIN}">${SPG_DOMAIN}</a>.<br>
+Company site: <a href="https://mehyar.us" rel="noopener noreferrer">mehyar.us</a>.</p>
+<h2>Phone</h2>
+<p><a href="tel:${SPG_CONTACT_PHONE.replace(/[^+\\d]/g, '')}">${SPG_CONTACT_PHONE}</a> (general inquiries; not a support hotline).</p>
+<h2>Mailing address</h2>
+<p>Available on request to <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a>.</p>`,
+
+  signup: `<h1>Sign up for Pretty Good Finds</h1>
+<p class="sub">Get useful finds, gift ideas, and starter kits by email — and, if you opt in, occasional text-message updates too. ${SPG_OPERATOR} (operator of ${SPG_BRAND}) runs the list.</p>
+<h2>How signup works</h2>
+<ol>
+  <li>Fill in your details below. Email is required; first name, last name, and ZIP are optional and help us tailor recommendations.</li>
+  <li>If you want SMS updates, enter a US mobile number and tick the SMS consent box. SMS is opt-in only — we will not text you without that box checked.</li>
+  <li>We send a confirmation email. Click the link inside to finish signing up.</li>
+  <li>Reply STOP to any text to opt out, or HELP for help. The unsubscribe link in any email opts you out of email.</li>
+</ol>
+<h2>What we'll send</h2>
+<ul>
+  <li><strong>Email:</strong> useful finds, gift ideas, starter-kit roundups, deal highlights, occasional product updates. Typically a few emails per month.</li>
+  <li><strong>SMS (if you opt in):</strong> short alerts when a useful pick drops, a new story list goes live, or a small batch we think you'll care about ships. Frequency varies, typically up to 4 messages per month. Message and data rates may apply.</li>
+</ul>
+<h2>Your privacy</h2>
+<p>We keep what you submit on this form only as long as we need it to operate the list and meet legal recordkeeping requirements (typically at least four years for SMS consent). We do not sell your information. See our <a href="/privacy/">Privacy Policy</a> for the full picture and our <a href="/terms/">Terms of Service</a> for the rules of the road.</p>
+${signupForm('signup-page')}`,
+
+  unsubscribe: `<h1>Unsubscribe</h1>
+<p class="sub">Enter the email address you signed up with and we will opt you out of marketing emails. We honor requests promptly, typically within ten business days. If you want to opt out of text messages, simply reply <strong>STOP</strong> to any text we have sent you.</p>
+<p class="micro">If the unsubscribe form below does not work for any reason, email <a href="mailto:${SPG_CONTACT_EMAIL}">${SPG_CONTACT_EMAIL}</a> from the address you signed up with and we will remove you manually.</p>
+<form class="signup-form" method="post" action="https://stuffprettygood-api.mehyar.workers.dev/api/unsubscribe">
+  <input type="hidden" name="source" value="unsubscribe-page">
+  <label>Email <span class="req">required</span><input name="email" type="email" autocomplete="email" required maxlength="254"></label>
+  <button class="btn" type="submit">Unsubscribe</button>
+</form>
+<h2>What happens next</h2>
+<ul>
+  <li>We mark your email as unsubscribed and stop marketing sends within ten business days.</li>
+  <li>We may still send transactional messages required to deliver a service you requested (for example, a confirmation).</li>
+  <li>Unsubscribing from email does not automatically unsubscribe you from SMS. Reply STOP to any text.</li>
+</ul>`,
+
+  preferences: `<h1>Preferences</h1>
+<p class="sub">Tell us what you care about so future emails and (if you opted in) texts stay useful. We use this only to tailor the content you receive from ${SPG_BRAND}; we do not share or sell your preferences.</p>
+<form class="signup-form" method="post" action="https://stuffprettygood-api.mehyar.workers.dev/api/preferences">
+  <input type="hidden" name="source" value="preferences-page">
+  <label>Email <span class="req">required</span><input name="email" type="email" autocomplete="email" required maxlength="254"></label>
+  <div class="checks">
+    <label><input type="checkbox" name="interests" value="gifts"> Gifts</label>
+    <label><input type="checkbox" name="interests" value="home"> Home</label>
+    <label><input type="checkbox" name="interests" value="tech"> Tech</label>
+    <label><input type="checkbox" name="interests" value="travel"> Travel</label>
+    <label><input type="checkbox" name="interests" value="pets"> Pets</label>
+    <label><input type="checkbox" name="interests" value="kitchen"> Kitchen</label>
+    <label><input type="checkbox" name="interests" value="under-50"> Useful deals under $50</label>
+  </div>
+  <div class="checks">
+    <label><input type="radio" name="cadence" value="standard" checked> Standard cadence (default)</label>
+    <label><input type="radio" name="cadence" value="low"> Low cadence (fewer emails)</label>
+  </div>
+  <button class="btn" type="submit">Save preferences</button>
+</form>
+<p class="micro">Manage text-message consent at <a href="/signup/">/signup</a> or reply STOP to any text. See our <a href="/privacy/">Privacy Policy</a>.</p>`
 };
-for (const [slug, html] of Object.entries(policyPages)) mkdirPage(slug, layout(titleCase(slug), `<section class="section post">${html}</section>`));
+// Pages that should NOT show the signup modal: legal/transactional pages where a popup is hostile or redundant.
+const SPG_NO_MODAL_SLUGS = new Set(['privacy', 'terms', 'affiliate-disclosure', 'signup', 'unsubscribe', 'preferences']);
+for (const [slug, html] of Object.entries(policyPages)) {
+  const showModal = !SPG_NO_MODAL_SLUGS.has(slug);
+  mkdirPage(slug, layout(titleCase(slug), `<section class="section post">${html}</section>`, { showModal }));
+}
 
 fs.writeFileSync(path.join(dist, 'robots.txt'), 'User-agent: *\nAllow: /\nSitemap: https://stuffprettygood.com/sitemap.xml\n');
 const urls = ['', 'gift-finder', 'starter-kits', 'under-25', 'under-50', 'walmart', 'stories', 'useful-finds', 'travel', 'home-office', 'kitchen', 'pets', 'tech', 'signup', 'about', 'advertise', 'affiliate-disclosure', 'privacy', 'terms', 'contact', 'unsubscribe', 'preferences', ...posts.map((p) => 'guides/' + p.slug), ...products.map((p) => 'products/' + p.id)];
