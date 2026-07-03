@@ -10,5 +10,7 @@
     "smoke": "node scripts/smoke.mjs",
     "sitestripe:import": "node scripts/import-sitestripe.mjs"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "playwright": "^1.61.1"
+  }
 }

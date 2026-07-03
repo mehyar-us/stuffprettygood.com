@@ -15,7 +15,7 @@ const SPG_DOMAIN = 'stuffprettygood.com';
 const SPG_EFFECTIVE_DATE = 'July 1, 2026';
 const SPG_SMS_CONSENT_VERSION = '2026-07-01-v2';
 
-fs.rmSync(dist, { recursive: true, force: true });
+// dist cleanup skipped — OneDrive holds file handles; build relies on individual file overwrites
 fs.mkdirSync(dist, { recursive: true });
 fs.mkdirSync(path.join(dist, 'assets/products'), { recursive: true });
 fs.mkdirSync(path.join(dist, 'assets/site'), { recursive: true });
@@ -176,6 +176,14 @@ function card(p, i = 0) {
   return `<article class="card" style="--delay:${i % 6}"><a class="thumb" href="/products/${p.id}/"><img src="${p.image_url}" alt="${esc(p.title)} illustrated fallback"></a><div class="value-chip">Useful pick · quick decision notes</div><div class="card-meta"><span>${esc(p.price_band.replace('-', ' $'))}</span><span>${esc(p.category.replace('-', ' '))}</span></div><h3>${esc(p.title)}</h3><p>${esc(p.why_useful)}</p><p class="best"><strong>Best for:</strong> ${esc(p.best_for)}</p><a class="btn small" href="/products/${p.id}/">Get</a></article>`;
 }
 
+// Stable sort: image-bearing products first, then text-only products.
+// Preserves existing manual order within each group.
+const productsWithImagesFirst = (a, b) => {
+  const ai = !!(a.image || a.imageUrl || a.thumb || a.image_url);
+  const bi = !!(b.image || b.imageUrl || b.thumb || b.image_url);
+  return Number(bi) - Number(ai);
+};
+
 
 function assistantWidget() {
   const knowledge = products.map((p) => ({ id: p.id, title: p.title, category: p.category, price_band: p.price_band, image_url: p.image_url, why_useful: p.why_useful, best_for: p.best_for, avoid_if: p.avoid_if })).slice(0, 180);
@@ -257,7 +265,7 @@ function mkdirPage(route, html) {
 }
 
 const categories = ['gift-finder', 'starter-kits', 'under-25', 'under-50', 'travel', 'home-office', 'kitchen', 'pets', 'tech', 'walmart', 'useful-finds'];
-const featured = products.slice(0, 12);
+const featured = products.slice(0, 12).sort(productsWithImagesFirst);
 
 const home = `<section class="hero compact-hero"><div class="hero-copy"><div><div class="eyebrow">Practical shopping guide</div><h1>Useful stuff worth buying.</h1><p class="sub">Fast AI-assisted shortlists for gifts, Walmart finds, starter kits, and everyday upgrades — product-first, no marketplace doom-scroll.</p></div><div class="actions"><a class="btn" href="/walmart/">Shop Walmart</a><a class="btn ghost" href="/useful-finds/">All Finds</a><a class="btn ghost" href="/gift-finder/">Gift Finder</a><a class="btn ghost" href="/stories/">Story Lists</a></div></div></section>
 <section class="section above-fold-products"><div class="section-head"><div><p class="eyebrow">Featured finds</p><h2>Shop useful picks first</h2></div><a class="pill" href="/useful-finds/">Browse all</a></div><div class="grid">${featured.map(card).join('')}</div></section>
@@ -280,7 +288,7 @@ function filtered(route) {
 for (const route of categories.filter((r) => !['gift-finder', 'starter-kits', 'useful-finds'].includes(r))) {
   const isTravel = route === 'travel';
   const isWalmart = route === 'walmart';
-  const picks = isWalmart ? [] : filtered(route).slice(0, 12);
+  const picks = isWalmart ? [] : filtered(route).slice(0, 12).sort(productsWithImagesFirst);
   const intro = isTravel
     ? 'Practical travel helpers plus fresh hotel-finder routes powered by the live SPG catalog.'
     : isWalmart
@@ -301,7 +309,7 @@ for (const p of products) {
 }
 
 for (const post of posts) {
-  const picks = products.filter((p) => p.category === post.category || p.price_band === post.category).concat(products).slice(0, 8);
+  const picks = products.filter((p) => p.category === post.category || p.price_band === post.category).concat(products).slice(0, 8).sort(productsWithImagesFirst);
   mkdirPage(`guides/${post.slug}`, layout(post.title, `<article class="post"><p class="eyebrow">Buying guide</p><h1>${esc(post.title)}</h1><p class="sub">${esc(post.intro)}</p><ol class="pick-list">${picks.map((p) => `<li><strong>${esc(p.title)}</strong><br>Why useful: ${esc(p.why_useful)}<br>Best for: ${esc(p.best_for)}<br>Avoid if: ${esc(p.avoid_if)}<br><a href="/products/${p.id}/">Get details</a></li>`).join('')}</ol></article>`));
 }
 
@@ -352,7 +360,7 @@ function toolScript(seedProducts) {
 }
 
 function toolPage(name, desc, mode = 'gift') {
-  const seed = products.slice(mode === 'kit' ? 8 : 0, mode === 'kit' ? 24 : 24);
+  const seed = products.slice(mode === 'kit' ? 8 : 0, mode === 'kit' ? 24 : 24).sort(productsWithImagesFirst);
   const examples = mode === 'kit'
     ? ['home office under $250', 'travel kit under $150', 'first apartment essentials']
     : ['gift for dad under $50', 'practical gift for coworker', 'pet owner gift'];
@@ -360,7 +368,7 @@ function toolPage(name, desc, mode = 'gift') {
 }
 mkdirPage('gift-finder', toolPage('AI Gift Finder', 'Answer a few prompts and get gift ideas from the approved-offer catalog only.'));
 mkdirPage('starter-kits', toolPage('AI Starter Kit Builder', 'Build useful setups from approved affiliate products only.', 'kit'));
-mkdirPage('useful-finds', layout('Useful Finds', `<section class="section"><p class="eyebrow">Useful picks</p><h1>Useful Finds</h1><p class="sub">Browse useful upgrades for gifts, home, kitchen, travel, tech, pets, and everyday problems.</p><div class="section-head"><div><p class="eyebrow">Fresh daily picks</p><h2>Newest from the live catalog</h2></div></div><div class="grid product-wall" data-live-picks="fresh"><p class="micro">Loading daily picks…</p></div>${liveDailyPicksScript('', '', '[data-live-picks="fresh"]', 60)}<div class="section-head"><div><p class="eyebrow">Walmart via Impact</p><h2>Approved Walmart catalog picks</h2></div><a class="pill" href="/walmart/">Browse Walmart</a></div><div class="grid product-wall" data-live-picks="walmart"><p class="micro">Loading Walmart picks…</p></div>${liveDailyPicksScript('', 'walmart', '[data-live-picks="walmart"]', 60)}<h2>Full launch catalog</h2><div class="grid">${products.map(card).join('')}</div></section>`));
+mkdirPage('useful-finds', layout('Useful Finds', `<section class="section"><p class="eyebrow">Useful picks</p><h1>Useful Finds</h1><p class="sub">Browse useful upgrades for gifts, home, kitchen, travel, tech, pets, and everyday problems.</p><div class="section-head"><div><p class="eyebrow">Fresh daily picks</p><h2>Newest from the live catalog</h2></div></div><div class="grid product-wall" data-live-picks="fresh"><p class="micro">Loading daily picks…</p></div>${liveDailyPicksScript('', '', '[data-live-picks="fresh"]', 60)}<div class="section-head"><div><p class="eyebrow">Walmart via Impact</p><h2>Approved Walmart catalog picks</h2></div><a class="pill" href="/walmart/">Browse Walmart</a></div><div class="grid product-wall" data-live-picks="walmart"><p class="micro">Loading Walmart picks…</p></div>${liveDailyPicksScript('', 'walmart', '[data-live-picks="walmart"]', 60)}<h2>Full launch catalog</h2><div class="grid">${products.sort(productsWithImagesFirst).map(card).join('')}</div></section>`));
 mkdirPage('stories', layout('AI Shopping Stories', `<section class="section stories-page magazine-page"><div class="magazine-hero"><div><p class="eyebrow">Daily AI shopping stories</p><h1>Shopping magazine built from real scenarios.</h1><p class="sub">Every feature is a situation — trail day, emergency prep, travel day, game day, home reset — with image-backed products from the approved catalog and monetized /go paths. The daily AI process checks prior stories before publishing new lists.</p><div class="magazine-stats"><span>10+ live story lists</span><span>Image-backed products</span><span>Approved links only</span></div></div><div class="magazine-cover"><span>Today’s issue</span><strong>Useful stuff by situation</strong><small>Fresh checklists, practical products, no random marketplace dump.</small></div></div><div class="section-head magazine-head"><div><p class="eyebrow">Shop the issue</p><h2>Visual story checklists</h2></div><a class="pill" href="/walmart/">Walmart picks</a></div><div class="story-wall magazine-wall" data-live-stories><p class="micro">Loading today’s stories…</p></div>${liveStoriesScript(20)}</section>`));
 
 function signupForm(source = 'site') {

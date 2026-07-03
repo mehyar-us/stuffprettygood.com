@@ -1,4 +1,19 @@
-
 secrets/
 .env
 data/sitestripe-inbox.json
+
+# Build artifacts
+node_modules/
+package-lock.json
+dist/
+.wrangler/
+
+# Local dev / one-off Playwright audit scripts
+scripts/debug-cards.mjs
+scripts/symmetry-audit.mjs
+scripts/symmetry-extra.mjs
+scripts/symmetry-screenshot.mjs
+
+# Build-script backups
+*.bak.*
+scripts/*.bak
