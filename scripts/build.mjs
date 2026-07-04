@@ -19,6 +19,17 @@ const products = data.products.filter((p) =>
   p.affiliate_url.includes(`tag=${AMAZON_TAG}`)
 );
 
+// Image-first sort: products with real approved images render first on every page.
+// `has_image` is computed by the data layer from image_status (see docs/image-first-sort.md).
+// Within the imaged and non-imaged groups we keep the existing order (created_at desc, etc.).
+const imageFirst = (a, b) => {
+  const ai = a.has_image ? 1 : 0;
+  const bi = b.has_image ? 1 : 0;
+  if (ai !== bi) return bi - ai;
+  return 0;
+};
+const sortedProducts = [...products].sort(imageFirst);
+
 fs.copyFileSync('src/styles.css', path.join(dist, 'styles.css'));
 
 const esc = (s = '') => String(s).replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
@@ -214,7 +225,12 @@ function assistantWidget() {
     Object.entries(aliases).forEach(([cat, words]) => { if (words.some(w => q.toLowerCase().includes(w))) s += p.category === cat ? 8 : 1; });
     return s;
   }
-  function recommend(q, n=4){ return products.map(p => ({...p, score: score(p,q)})).filter(p => p.score > -5).sort((a,b)=>b.score-a.score).slice(0,n); }
+  function recommend(q, n=4){
+    return products.map(p => ({...p, score: score(p,q)}))
+      .filter(p => p.score > -5)
+      .sort((a,b) => (b.score - a.score) || ((b.has_image?1:0) - (a.has_image?1:0)))
+      .slice(0,n);
+  }
   function answer(q){
     const low = q.toLowerCase();
     if (/privacy|unsubscribe|preferences|sign ?up|email|phone|zip/.test(low)) return 'You can <a href="/signup/">sign up here</a>, <a href="/preferences/">set preferences here</a>, or <a href="/unsubscribe/">unsubscribe here</a>. Email is required; first name, last name, zip, and phone are optional.';
@@ -259,10 +275,12 @@ const home = `<section class="hero compact-hero"><div class="hero-copy"><div><di
 mkdirPage('', layout('AI-assisted shopping guide', home));
 
 function filtered(route) {
-  if (route === 'under-25' || route === 'under-50') return products.filter((p) => p.price_band === route);
-  if (route === 'tech') return products.filter((p) => p.category === 'tech');
-  if (route === 'useful-finds') return products;
-  return products.filter((p) => p.category === route).concat(products.slice(0, 4));
+  let pool;
+  if (route === 'under-25' || route === 'under-50') pool = products.filter((p) => p.price_band === route);
+  else if (route === 'tech') pool = products.filter((p) => p.category === 'tech');
+  else if (route === 'useful-finds') pool = products;
+  else pool = products.filter((p) => p.category === route).concat(products.slice(0, 4));
+  return [...pool].sort(imageFirst);
 }
 
 for (const route of categories.filter((r) => !['gift-finder', 'starter-kits', 'useful-finds'].includes(r))) {
@@ -289,7 +307,9 @@ for (const p of products) {
 }
 
 for (const post of posts) {
-  const picks = products.filter((p) => p.category === post.category || p.price_band === post.category).concat(products).slice(0, 8);
+  const picks = [...products.filter((p) => p.category === post.category || p.price_band === post.category).concat(products)]
+    .sort(imageFirst)
+    .slice(0, 8);
   mkdirPage(`guides/${post.slug}`, layout(post.title, `<article class="post"><p class="eyebrow">Buying guide</p><h1>${esc(post.title)}</h1><p class="sub">${esc(post.intro)}</p><ol class="pick-list">${picks.map((p) => `<li><strong>${esc(p.title)}</strong><br>Why useful: ${esc(p.why_useful)}<br>Best for: ${esc(p.best_for)}<br>Avoid if: ${esc(p.avoid_if)}<br><a href="/products/${p.id}/">Get details</a></li>`).join('')}</ol></article>`));
 }
 
@@ -400,7 +420,10 @@ function liveDailyPicksScript(category = '', merchant = '', selector = '[data-li
   fetch('https://stuffprettygood-api.mehyar.workers.dev/api/catalog${query}')
     .then(function(r){ return r.json(); })
     .then(function(data){
-      const products = (data.products || []).filter(function(p){ return p.image_url; }).slice(0, displayLimit);
+      const products = (data.products || [])
+        .filter(function(p){ return p.image_url; })
+        .sort(function(a, b){ return ((b.has_image?1:0) - (a.has_image?1:0)); })
+        .slice(0, displayLimit);
       if (!products.length) return;
       mount.innerHTML = products.map(function(p){
         const id = encodeURIComponent(p.id);
@@ -433,7 +456,7 @@ const policyPages = {
 for (const [slug, html] of Object.entries(policyPages)) mkdirPage(slug, layout(titleCase(slug), `<section class="section post">${html}</section>`));
 
 fs.writeFileSync(path.join(dist, 'robots.txt'), 'User-agent: *\nAllow: /\nSitemap: https://stuffprettygood.com/sitemap.xml\n');
-const urls = ['', 'gift-finder', 'starter-kits', 'under-25', 'under-50', 'walmart', 'stories', 'useful-finds', 'travel', 'home-office', 'kitchen', 'pets', 'tech', 'signup', 'about', 'advertise', 'affiliate-disclosure', 'privacy', 'terms', 'contact', 'unsubscribe', 'preferences', ...posts.map((p) => 'guides/' + p.slug), ...products.map((p) => 'products/' + p.id)];
+const urls = ['', 'gift-finder', 'starter-kits', 'under-25', 'under-50', 'walmart', 'stories', 'useful-finds', 'travel', 'home-office', 'kitchen', 'pets', 'tech', 'signup', 'about', 'advertise', 'affiliate-disclosure', 'privacy', 'terms', 'contact', 'unsubscribe', 'preferences', ...posts.map((p) => 'guides/' + p.slug), ...sortedProducts.map((p) => 'products/' + p.id)];
 fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map((u) => `<url><loc>https://stuffprettygood.com${slugUrl(u)}</loc></url>`).join('')}</urlset>`);
 
 console.log(`built ${products.length} approved products, ${posts.length} guides`);

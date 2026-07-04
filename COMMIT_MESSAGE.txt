@@ -1,0 +1,50 @@
+feat(spg): image-first product sort across all pages
+
+Products with approved real images (SiteStripe, PA-API, merchant feed,
+licensed stock) now render before products that only have the generated
+SVG fallback art. The sort is applied on every page that lists products
+— home, gift-finder, starter-kits, useful-finds, /under-25, /under-50,
+all category pages, AI helper recommendations, the sitemap, and the
+live-daily-picks client-side renderer.
+
+Data layer:
+- Add `has_image` boolean to every product in data/products.json,
+  derived from image_status ∈ {sitestripe, approved_real,
+  merchant_feed, paapi, licensed, site_verified}.
+- Record the sort policy in the products.json meta block.
+- Currently 0/155 products have real images, so the visible order is
+  unchanged today. The sort activates the moment a SiteStripe import
+  lands or PA-API access is granted.
+
+Build pipeline:
+- Add imageFirst() helper to scripts/build.mjs.
+- Apply it in: products filter, filtered(route), recommend(),
+  guide posts, sitemap urls, live-daily-picks fetch.
+- AI helper recommend() now ties on score then image-first.
+
+API worker:
+- /api/catalog: tighten ORDER BY to use image_status first,
+  image_source second, then created_at.
+- /api/chat (chatAnswer): pull a wider pool ordered image-first;
+  sort by score then image-first within the slice.
+- runProductKnowledgeEmbedding(): same image-first ordering so the
+  daily embedding refresh indexes imaged products first.
+
+Operations:
+- docs/image-first-sort.md explains the rule + rollout plan.
+- scripts/workboard-status.sh + cron `spg-workboard-watch`
+  post workboard progress to Telegram every 2 hours.
+- Five SPG-IMG cards tracked on the OpenClaw Workboard plugin;
+  4 of 5 done (deploy is the last step).
+
+Tests:
+- npm run build (in .com repo): 155 products, 10 guides, 22 routes,
+  187 sitemap URLs. All category pages render correctly.
+- scripts/validate.mjs (in .api repo): schema + approved-only
+  catalog + signup + AI idea curation endpoints all pass.
+
+Files changed: 189 (build artifacts) + 4 source files.
+No public URL change. Behavior change is invisible today, becomes
+visible the moment real product images attach.
+
+Refs: stuffprettygood-vision.md §6.2 (image policy).

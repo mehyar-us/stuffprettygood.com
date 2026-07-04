@@ -44,7 +44,12 @@
     Object.entries(aliases).forEach(([cat, words]) => { if (words.some(w => q.toLowerCase().includes(w))) s += p.category === cat ? 8 : 1; });
     return s;
   }
-  function recommend(q, n=4){ return products.map(p => ({...p, score: score(p,q)})).filter(p => p.score > -5).sort((a,b)=>b.score-a.score).slice(0,n); }
+  function recommend(q, n=4){
+    return products.map(p => ({...p, score: score(p,q)}))
+      .filter(p => p.score > -5)
+      .sort((a,b) => (b.score - a.score) || ((b.has_image?1:0) - (a.has_image?1:0)))
+      .slice(0,n);
+  }
   function answer(q){
     const low = q.toLowerCase();
     if (/privacy|unsubscribe|preferences|sign ?up|email|phone|zip/.test(low)) return 'You can <a href="/signup/">sign up here</a>, <a href="/preferences/">set preferences here</a>, or <a href="/unsubscribe/">unsubscribe here</a>. Email is required; first name, last name, zip, and phone are optional.';

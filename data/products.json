@@ -26,7 +26,8 @@
       "why_useful": "keeps phones, earbuds, and tablets from fighting over outlets",
       "best_for": "families, desk setups, shared kitchens",
       "avoid_if": "avoid if you only charge one device",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-digital-meat-thermometer",
@@ -42,7 +43,8 @@
       "why_useful": "takes guessing out of weeknight cooking",
       "best_for": "home cooks, grill people, beginners",
       "avoid_if": "avoid if they never cook",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-label-maker",
@@ -58,7 +60,8 @@
       "why_useful": "turns messy drawers, cables, and pantry bins into systems",
       "best_for": "organizers, apartment dwellers, parents",
       "avoid_if": "avoid if they hate apps",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-office-monitor-light",
@@ -74,7 +77,8 @@
       "why_useful": "lights the desk without glare or table clutter",
       "best_for": "remote workers, students, gamers",
       "avoid_if": "avoid if they use a laptop only",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-compression-packing-cubes",
@@ -90,7 +94,8 @@
       "why_useful": "makes carry-on packing less chaotic",
       "best_for": "weekend travelers, overpackers",
       "avoid_if": "avoid if they only use backpacks with built-in compartments",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-water-fountain-filtered",
@@ -106,7 +111,8 @@
       "why_useful": "encourages pets to drink more and keeps water fresher",
       "best_for": "cat owners, small dog owners",
       "avoid_if": "avoid if your pet hates moving water",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "car-trunk-organizer",
@@ -122,7 +128,8 @@
       "why_useful": "stops groceries, tools, and sports gear from rolling around",
       "best_for": "commuters, parents, rideshare drivers",
       "avoid_if": "avoid if your trunk is always empty",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-airtag-alternative-holder",
@@ -138,7 +145,8 @@
       "why_useful": "helps people stop losing keys, bags, and remotes",
       "best_for": "forgetful people, travelers",
       "avoid_if": "avoid if they refuse tracking apps",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-silicone-utensil-rest",
@@ -154,7 +162,8 @@
       "why_useful": "keeps counters cleaner while cooking",
       "best_for": "home cooks, small kitchens",
       "avoid_if": "avoid if you already use spoon rests",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "apartment-over-door-hooks",
@@ -170,7 +179,8 @@
       "why_useful": "adds storage without drilling holes",
       "best_for": "renters, dorms, small apartments",
       "avoid_if": "avoid if doors have tight clearance",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-laptop-stand",
@@ -186,7 +196,8 @@
       "why_useful": "raises screen height and cleans up posture",
       "best_for": "remote workers, students",
       "avoid_if": "avoid if you need to type on the laptop keyboard all day",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-cable-organizer-pouch",
@@ -202,7 +213,8 @@
       "why_useful": "keeps chargers and adapters from becoming a knot",
       "best_for": "travelers, commuters, creators",
       "avoid_if": "avoid if you only carry one cable",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-hair-remover-roller",
@@ -218,7 +230,8 @@
       "why_useful": "pulls fur off couches without disposable sheets",
       "best_for": "pet owners, car owners",
       "avoid_if": "avoid if your surfaces are delicate",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-magnetic-measuring-spoons",
@@ -234,7 +247,8 @@
       "why_useful": "keeps measuring spoons nested and easy to find",
       "best_for": "bakers, meal preppers",
       "avoid_if": "avoid if you prefer single-purpose scoops",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-mini-projector",
@@ -250,7 +264,8 @@
       "why_useful": "turns a blank wall into movie night",
       "best_for": "families, dorm rooms, backyard nights",
       "avoid_if": "avoid if you need premium brightness",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-cordless-scrubber",
@@ -266,7 +281,8 @@
       "why_useful": "reduces elbow grease for tubs, tile, and sinks",
       "best_for": "busy households, renters",
       "avoid_if": "avoid if you only clean tiny surfaces",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-desk-cable-tray",
@@ -282,7 +298,8 @@
       "why_useful": "hides power strips and cable nests",
       "best_for": "desk setup people, remote workers",
       "avoid_if": "avoid if your desk has no mounting lip",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-neck-pillow-packable",
@@ -298,7 +315,8 @@
       "why_useful": "makes long rides less miserable without huge bulk",
       "best_for": "flyers, road trips",
       "avoid_if": "avoid if you hate neck pillows",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "car-tire-pressure-gauge",
@@ -314,7 +332,8 @@
       "why_useful": "makes car maintenance cheap and easy",
       "best_for": "drivers, commuters, road trippers",
       "avoid_if": "avoid if your car already shows exact PSI",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-sunrise-alarm-clock",
@@ -330,7 +349,8 @@
       "why_useful": "makes waking up feel less harsh",
       "best_for": "students, shift workers, winter climates",
       "avoid_if": "avoid if they need a very loud alarm",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-slim-laundry-hamper",
@@ -346,7 +366,8 @@
       "why_useful": "fits narrow gaps and keeps laundry off the floor",
       "best_for": "small apartments, dorms",
       "avoid_if": "avoid if you need a large family hamper",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-clip-on-strainer",
@@ -362,7 +383,8 @@
       "why_useful": "drains pasta and vegetables without a bulky colander",
       "best_for": "small kitchens, quick meals",
       "avoid_if": "avoid if your pans have unusual rims",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-refillable-toiletry-bottles",
@@ -378,7 +400,8 @@
       "why_useful": "keeps shampoo and lotion organized for TSA bags",
       "best_for": "frequent flyers, gym bags",
       "avoid_if": "avoid if you only use hotel toiletries",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-ergonomic-foot-rest",
@@ -394,7 +417,8 @@
       "why_useful": "helps shorter desks and chairs feel less awkward",
       "best_for": "remote workers, students",
       "avoid_if": "avoid if your feet already rest flat",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-silicone-feeding-mat",
@@ -410,7 +434,8 @@
       "why_useful": "contains water drips and food crumbs around bowls",
       "best_for": "cat and dog owners",
       "avoid_if": "avoid if your pet eats outdoors",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "car-seat-gap-filler",
@@ -426,7 +451,8 @@
       "why_useful": "stops phones and keys from falling between seats",
       "best_for": "drivers, rideshare commuters",
       "avoid_if": "avoid if your console gap is unusually wide",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-webcam-cover-pack",
@@ -442,7 +468,8 @@
       "why_useful": "adds simple privacy without tape residue",
       "best_for": "laptop users, students, remote teams",
       "avoid_if": "avoid if your laptop bezel is very thin",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-magnetic-wristband",
@@ -458,7 +485,8 @@
       "why_useful": "keeps tiny screws and bits close during quick fixes",
       "best_for": "DIY people, furniture assembly",
       "avoid_if": "avoid if they never use tools",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-produce-saver-containers",
@@ -474,7 +502,8 @@
       "why_useful": "helps greens and berries last longer in the fridge",
       "best_for": "meal preppers, families",
       "avoid_if": "avoid if you shop daily",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-luggage-scale",
@@ -490,7 +519,8 @@
       "why_useful": "prevents overweight bag surprises at the airport",
       "best_for": "flyers, students moving",
       "avoid_if": "avoid if you only travel carry-on light",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-desk-mat-large",
@@ -506,7 +536,8 @@
       "why_useful": "defines a cleaner work surface and protects the desk",
       "best_for": "remote workers, students",
       "avoid_if": "avoid if you dislike soft mouse surfaces",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-poop-bag-holder-light",
@@ -522,7 +553,8 @@
       "why_useful": "makes nighttime walks less annoying",
       "best_for": "dog owners, apartment dwellers",
       "avoid_if": "avoid if you only walk in daylight",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "car-portable-vacuum",
@@ -538,7 +570,8 @@
       "why_useful": "handles crumbs and dust between real cleanups",
       "best_for": "parents, commuters, pet owners",
       "avoid_if": "avoid if you need deep detailing power",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-gan-wall-charger",
@@ -554,7 +587,8 @@
       "why_useful": "charges phones, tablets, and laptops with less bulk",
       "best_for": "travelers, desk setups",
       "avoid_if": "avoid if your laptop needs very high wattage",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-motion-night-lights",
@@ -570,7 +604,8 @@
       "why_useful": "adds light in hallways without wiring",
       "best_for": "families, renters",
       "avoid_if": "avoid if you need bright task lighting",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-jar-opener",
@@ -586,7 +621,8 @@
       "why_useful": "makes stuck jars easier without drawer clutter",
       "best_for": "seniors, home cooks",
       "avoid_if": "avoid if you cannot mount it",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-passport-wallet",
@@ -602,7 +638,8 @@
       "why_useful": "keeps passport, cards, and boarding pass together",
       "best_for": "international travelers",
       "avoid_if": "avoid if you prefer no wallet",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-phone-stand",
@@ -618,7 +655,8 @@
       "why_useful": "keeps the phone visible for calls and 2FA",
       "best_for": "desk workers, students",
       "avoid_if": "avoid if you use a charging dock already",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-slow-feeder-bowl",
@@ -634,7 +672,8 @@
       "why_useful": "helps fast eaters slow down at meals",
       "best_for": "dogs that gulp food",
       "avoid_if": "avoid if your pet is anxious with puzzle bowls",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-electric-lighter",
@@ -650,7 +689,8 @@
       "why_useful": "lights candles without disposable lighters",
       "best_for": "candle users, campers",
       "avoid_if": "avoid if they rarely light anything",
-      "created_at": "2026-05-16T00:00:00Z"
+      "created_at": "2026-05-16T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-desk-vacuum",
@@ -666,7 +706,8 @@
       "why_useful": "cleans keyboard crumbs, craft debris, and desk dust fast",
       "best_for": "students, snack-at-desk workers, crafters",
       "avoid_if": "avoid if they hate battery gadgets",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-ceramic-mug-warmer",
@@ -682,7 +723,8 @@
       "why_useful": "keeps coffee or tea warm through long work blocks",
       "best_for": "remote workers, teachers, slow coffee drinkers",
       "avoid_if": "avoid if they only drink iced drinks",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-rechargeable-hand-warmer",
@@ -698,7 +740,8 @@
       "why_useful": "makes cold commutes, games, and winter walks easier",
       "best_for": "commuters, outdoor spectators, cold offices",
       "avoid_if": "avoid if they live somewhere warm year-round",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-smart-notebook",
@@ -714,7 +757,8 @@
       "why_useful": "lets people sketch notes then clear pages instead of wasting paper",
       "best_for": "students, planners, meeting-heavy workers",
       "avoid_if": "avoid if they strongly prefer permanent paper notebooks",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-neck-reading-light",
@@ -730,7 +774,8 @@
       "why_useful": "makes reading, knitting, and small tasks easier without waking anyone",
       "best_for": "readers, crafters, night owls",
       "avoid_if": "avoid if they never read or craft",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-mini-thermal-printer",
@@ -746,7 +791,8 @@
       "why_useful": "prints quick labels, lists, tiny photos, and reminders from a phone",
       "best_for": "planners, students, organizers",
       "avoid_if": "avoid if they do not want another app",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-cordless-milk-frother",
@@ -762,7 +808,8 @@
       "why_useful": "makes coffee feel upgraded without a full espresso setup",
       "best_for": "coffee drinkers, home-office workers",
       "avoid_if": "avoid if they do not drink coffee or matcha",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-vertical-laptop-stand",
@@ -778,7 +825,8 @@
       "why_useful": "frees desk space when using an external monitor",
       "best_for": "remote workers, small desks, students",
       "avoid_if": "avoid if the laptop must stay open all day",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-cable-management-box",
@@ -794,7 +842,8 @@
       "why_useful": "hides power strips and reduces cable mess under desks",
       "best_for": "home offices, gaming setups, living rooms",
       "avoid_if": "avoid if the power strip needs constant access",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-under-desk-headphone-hook",
@@ -810,7 +859,8 @@
       "why_useful": "keeps headphones off the desktop and easy to grab",
       "best_for": "gamers, callers, remote workers",
       "avoid_if": "avoid if they use earbuds only",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-webcam-light-ring",
@@ -826,7 +876,8 @@
       "why_useful": "improves video calls without rearranging the room",
       "best_for": "Zoom-heavy workers, creators, students",
       "avoid_if": "avoid if they already have strong front lighting",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-ergonomic-footrest",
@@ -842,7 +893,8 @@
       "why_useful": "makes long desk sessions more comfortable",
       "best_for": "remote workers, shorter desks, students",
       "avoid_if": "avoid if they move around constantly",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-whiteboard-calendar",
@@ -858,7 +910,8 @@
       "why_useful": "makes deadlines and family schedules visible",
       "best_for": "families, founders, students",
       "avoid_if": "avoid if they already run everything in digital calendars",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-document-scanner-stand",
@@ -874,7 +927,8 @@
       "why_useful": "turns a phone into a quick document scanner setup",
       "best_for": "students, small businesses, receipt trackers",
       "avoid_if": "avoid if they already own a scanner",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-sit-stand-desk-converter",
@@ -890,7 +944,8 @@
       "why_useful": "adds standing work without replacing the whole desk",
       "best_for": "remote workers testing standing work",
       "avoid_if": "avoid if the desk is flimsy or too small",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-keyboard-wrist-rest",
@@ -906,7 +961,8 @@
       "why_useful": "adds comfort during long typing sessions",
       "best_for": "writers, coders, admin workers",
       "avoid_if": "avoid if they dislike soft wrist support",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-oil-sprayer",
@@ -922,7 +978,8 @@
       "why_useful": "adds controlled oil for pans, salads, and air fryers",
       "best_for": "air fryer users, meal prep, home cooks",
       "avoid_if": "avoid if they prefer disposable sprays",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-digital-kitchen-scale",
@@ -938,7 +995,8 @@
       "why_useful": "makes baking, meal prep, and portioning more consistent",
       "best_for": "bakers, coffee people, meal preppers",
       "avoid_if": "avoid if they never measure ingredients",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-air-fryer-liners",
@@ -954,7 +1012,8 @@
       "why_useful": "makes air fryer cleanup faster",
       "best_for": "air fryer owners, busy kitchens",
       "avoid_if": "avoid if the basket shape is unusual",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-silicone-freezer-trays",
@@ -970,7 +1029,8 @@
       "why_useful": "freezes sauces, stock, smoothies, or baby food in useful portions",
       "best_for": "meal preppers, parents, sauce makers",
       "avoid_if": "avoid if freezer space is limited",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-under-sink-organizer",
@@ -986,7 +1046,8 @@
       "why_useful": "turns messy cleaning supplies into reachable storage",
       "best_for": "renters, families, small kitchens",
       "avoid_if": "avoid if plumbing takes all the cabinet space",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-herb-scissors",
@@ -1002,7 +1063,8 @@
       "why_useful": "cuts herbs quickly without pulling out a cutting board",
       "best_for": "home cooks, salad makers, garnish people",
       "avoid_if": "avoid if they rarely cook fresh herbs",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-dish-drying-mat",
@@ -1018,7 +1080,8 @@
       "why_useful": "adds drying space without a bulky rack",
       "best_for": "apartments, small kitchens, renters",
       "avoid_if": "avoid if they already have a full drying rack",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-spice-drawer-organizer",
@@ -1034,7 +1097,8 @@
       "why_useful": "makes spices readable instead of buried in a cabinet",
       "best_for": "home cooks, small kitchens, organizers",
       "avoid_if": "avoid if all spices live on a wall rack",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-bag-sealer",
@@ -1050,7 +1114,8 @@
       "why_useful": "reseals snack, pantry, and freezer bags quickly",
       "best_for": "snack households, pantry organizers",
       "avoid_if": "avoid if they already use clips or containers",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-collapsible-colander",
@@ -1066,7 +1131,8 @@
       "why_useful": "saves cabinet space while covering daily straining jobs",
       "best_for": "small kitchens, RVs, apartments",
       "avoid_if": "avoid if they need heavy-duty stainless gear",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-hanging-toiletry-bag",
@@ -1082,7 +1148,8 @@
       "why_useful": "keeps bathroom counter clutter contained while traveling",
       "best_for": "hotel travelers, gym bags, families",
       "avoid_if": "avoid if they travel with very few toiletries",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-passport-holder-rfid",
@@ -1098,7 +1165,8 @@
       "why_useful": "keeps passport, cards, and travel docs together",
       "best_for": "international travelers, families, students abroad",
       "avoid_if": "avoid if they only travel domestically",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-portable-door-lock",
@@ -1114,7 +1182,8 @@
       "why_useful": "adds peace of mind in hotels, rentals, and dorms",
       "best_for": "solo travelers, students, renters",
       "avoid_if": "avoid if door compatibility is uncertain",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-collapsible-water-bottle",
@@ -1130,7 +1199,8 @@
       "why_useful": "saves bag space after it is empty",
       "best_for": "hikers, festival-goers, carry-on travelers",
       "avoid_if": "avoid if they want an insulated bottle",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-sleep-mask-contoured",
@@ -1146,7 +1216,8 @@
       "why_useful": "blocks light without pressing on eyelids",
       "best_for": "flight sleepers, shift workers, hotel travelers",
       "avoid_if": "avoid if they dislike anything on their face",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-laundry-bag-set",
@@ -1162,7 +1233,8 @@
       "why_useful": "separates dirty clothes and shoes from clean packing",
       "best_for": "vacationers, gym bags, business travelers",
       "avoid_if": "avoid if they use packing cubes for everything",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-phone-tripod",
@@ -1178,7 +1250,8 @@
       "why_useful": "makes photos, video calls, and travel content easier",
       "best_for": "creators, families, solo travelers",
       "avoid_if": "avoid if they never take photos or video",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-universal-adapter",
@@ -1194,7 +1267,8 @@
       "why_useful": "covers international outlet changes in one compact device",
       "best_for": "international travelers, students abroad",
       "avoid_if": "avoid if they only travel within one country",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-seat-back-organizer",
@@ -1210,7 +1284,8 @@
       "why_useful": "keeps road-trip snacks, tablets, and wipes reachable",
       "best_for": "parents, road trips, rideshare drivers",
       "avoid_if": "avoid if no one sits in the back seat",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-silicone-food-mat",
@@ -1226,7 +1301,8 @@
       "why_useful": "contains food and water spills around bowls",
       "best_for": "dog owners, cat owners, messy eaters",
       "avoid_if": "avoid if bowls already sit in a tray",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-poop-bag-holder",
@@ -1242,7 +1318,8 @@
       "why_useful": "keeps bags attached to the leash so walks are easier",
       "best_for": "dog owners, new puppy families",
       "avoid_if": "avoid if they use a waist pouch",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-car-seat-cover",
@@ -1258,7 +1335,8 @@
       "why_useful": "protects seats from hair, mud, and scratches",
       "best_for": "dog owners, road trips, SUV drivers",
       "avoid_if": "avoid if the dog rides in a crate",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-nail-grinder",
@@ -1274,7 +1352,8 @@
       "why_useful": "makes nail care less intimidating than clippers for some pets",
       "best_for": "dog owners, cat owners, anxious pets",
       "avoid_if": "avoid if grooming already happens professionally",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-window-perch",
@@ -1290,7 +1369,8 @@
       "why_useful": "gives indoor cats a sunny watch spot",
       "best_for": "cat owners, apartments, small homes",
       "avoid_if": "avoid if windowsills cannot support mounts",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-collapsible-travel-bowls",
@@ -1306,7 +1386,8 @@
       "why_useful": "makes walks, road trips, and hikes easier with pets",
       "best_for": "dog walkers, travelers, hikers",
       "avoid_if": "avoid if they never take pets out",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-toy-storage-bin",
@@ -1322,7 +1403,8 @@
       "why_useful": "keeps toys from taking over the living room",
       "best_for": "pet owners, families, apartments",
       "avoid_if": "avoid if the pet destroys baskets",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-lint-brush-set",
@@ -1338,7 +1420,8 @@
       "why_useful": "keeps clothes and car seats presentable",
       "best_for": "pet owners, commuters, office workers",
       "avoid_if": "avoid if fur is not a problem",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-automatic-laser-toy",
@@ -1354,7 +1437,8 @@
       "why_useful": "adds short play sessions for bored indoor cats",
       "best_for": "cat owners, apartment cats",
       "avoid_if": "avoid if the cat gets frustrated by lasers",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-anker-style-power-bank",
@@ -1370,7 +1454,8 @@
       "why_useful": "keeps phones alive during travel, events, and long days",
       "best_for": "commuters, travelers, students",
       "avoid_if": "avoid if they need laptop-level power",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-cable-label-tags",
@@ -1386,7 +1471,8 @@
       "why_useful": "stops charger and HDMI confusion behind desks",
       "best_for": "families, offices, gaming setups",
       "avoid_if": "avoid if there are only one or two cables",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-foldable-phone-stand",
@@ -1402,7 +1488,8 @@
       "why_useful": "makes video calls, recipes, and desk viewing easier",
       "best_for": "remote workers, cooks, students",
       "avoid_if": "avoid if they use a case with a strong kickstand",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-usb-c-hub",
@@ -1418,7 +1505,8 @@
       "why_useful": "adds monitor, USB, and card ports to slim laptops",
       "best_for": "laptop users, students, remote workers",
       "avoid_if": "avoid if the laptop already has all needed ports",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-webcam-privacy-covers",
@@ -1434,7 +1522,8 @@
       "why_useful": "adds a simple physical privacy layer to laptops and tablets",
       "best_for": "remote workers, students, privacy-minded people",
       "avoid_if": "avoid if it interferes with thin laptop closure",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-bluetooth-sleep-headband",
@@ -1450,7 +1539,8 @@
       "why_useful": "plays audio in bed without hard earbuds",
       "best_for": "side sleepers, podcast listeners, travelers",
       "avoid_if": "avoid if they dislike fabric headbands",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-rechargeable-aa-batteries",
@@ -1466,7 +1556,8 @@
       "why_useful": "reduces battery waste for remotes, toys, and gadgets",
       "best_for": "families, gamers, smart-home users",
       "avoid_if": "avoid if most devices are built-in rechargeable",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-magnetic-phone-mount",
@@ -1482,7 +1573,8 @@
       "why_useful": "keeps directions visible without holding the phone",
       "best_for": "drivers, delivery workers, commuters",
       "avoid_if": "avoid if their case is not magnet compatible",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-compact-surge-protector",
@@ -1498,7 +1590,8 @@
       "why_useful": "adds outlets and USB charging in tight spaces",
       "best_for": "dorms, travel, home offices",
       "avoid_if": "avoid if they need a long power strip",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-ssd-portable-case",
@@ -1514,7 +1607,8 @@
       "why_useful": "protects drives, dongles, and adapters in one pouch",
       "best_for": "creators, students, photographers",
       "avoid_if": "avoid if they store everything in the cloud",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-shoe-slot-organizer",
@@ -1530,7 +1624,8 @@
       "why_useful": "doubles visible shoe storage in small closets",
       "best_for": "apartment dwellers, families, dorms",
       "avoid_if": "avoid if shoes are mostly boots",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-drawer-dividers",
@@ -1546,7 +1641,8 @@
       "why_useful": "turns junk drawers and dresser drawers into zones",
       "best_for": "organizers, renters, parents",
       "avoid_if": "avoid if drawers are very shallow",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-vacuum-storage-bags",
@@ -1562,7 +1658,8 @@
       "why_useful": "compresses seasonal clothes, blankets, and linens",
       "best_for": "small apartments, movers, seasonal storage",
       "avoid_if": "avoid if they need daily access",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-adhesive-cable-clips",
@@ -1578,7 +1675,8 @@
       "why_useful": "keeps charging cables from falling behind furniture",
       "best_for": "desks, nightstands, TV stands",
       "avoid_if": "avoid if surfaces are delicate or textured",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-bedside-caddy",
@@ -1594,7 +1692,8 @@
       "why_useful": "adds pockets when there is no nightstand space",
       "best_for": "dorms, bunk beds, small bedrooms",
       "avoid_if": "avoid if bed frame does not support it",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-motion-sensor-night-lights",
@@ -1610,7 +1709,8 @@
       "why_useful": "adds safe low light in halls, bathrooms, and closets",
       "best_for": "families, renters, seniors",
       "avoid_if": "avoid if outlets are scarce",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-wool-dryer-balls",
@@ -1626,7 +1726,8 @@
       "why_useful": "helps laundry dry with less disposable softener use",
       "best_for": "families, renters, laundry rooms",
       "avoid_if": "avoid if someone has wool sensitivity",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-shower-squeegee",
@@ -1642,7 +1743,8 @@
       "why_useful": "keeps glass and tile cleaner with a 20-second habit",
       "best_for": "bathrooms, renters, glass showers",
       "avoid_if": "avoid if shower surfaces are textured",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-command-center-board",
@@ -1658,7 +1760,8 @@
       "why_useful": "puts keys, mail, lists, and reminders in one drop zone",
       "best_for": "families, roommates, busy mornings",
       "avoid_if": "avoid if there is no wall space",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-smart-plug-pack",
@@ -1674,7 +1777,8 @@
       "why_useful": "adds timers and voice control to lamps or small appliances",
       "best_for": "smart-home beginners, renters",
       "avoid_if": "avoid if they do not use smart speakers or apps",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-air-quality-monitor",
@@ -1690,7 +1794,8 @@
       "why_useful": "helps identify stale air, humidity, and comfort issues",
       "best_for": "apartments, nurseries, home offices",
       "avoid_if": "avoid if they only want a purifier, not data",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-mini-dehumidifier",
@@ -1706,7 +1811,8 @@
       "why_useful": "helps damp closets, bathrooms, and small rooms feel fresher",
       "best_for": "apartments, basements, bathrooms",
       "avoid_if": "avoid if the space is large or very wet",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "wellness-resistance-bands-set",
@@ -1722,7 +1828,8 @@
       "why_useful": "adds simple strength work without a gym setup",
       "best_for": "beginners, travelers, desk workers",
       "avoid_if": "avoid if they need heavy weights",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "wellness-foam-roller",
@@ -1738,7 +1845,8 @@
       "why_useful": "helps with warmups, recovery, and mobility routines",
       "best_for": "runners, gym people, desk workers",
       "avoid_if": "avoid if pressure feels too intense",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "wellness-acupressure-mat",
@@ -1754,7 +1862,8 @@
       "why_useful": "creates a wind-down ritual for tense backs and necks",
       "best_for": "desk workers, relaxation routines",
       "avoid_if": "avoid if they dislike sharp pressure",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "wellness-cold-therapy-wrap",
@@ -1770,7 +1879,8 @@
       "why_useful": "handles minor aches with heat or cold in one reusable wrap",
       "best_for": "active people, desk workers, families",
       "avoid_if": "avoid if medical care is needed",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "wellness-pill-organizer-weekly",
@@ -1786,7 +1896,8 @@
       "why_useful": "keeps vitamins and medications organized by day",
       "best_for": "travelers, caregivers, supplement users",
       "avoid_if": "avoid if medication schedule is complex",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "wellness-water-bottle-tracker",
@@ -1802,7 +1913,8 @@
       "why_useful": "makes hydration goals more visible through the day",
       "best_for": "students, gym people, office workers",
       "avoid_if": "avoid if they prefer insulated bottles",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "wellness-yoga-mat-strap",
@@ -1818,7 +1930,8 @@
       "why_useful": "makes carrying a mat cleaner and easier",
       "best_for": "yoga students, pilates, commuters",
       "avoid_if": "avoid if they already use a mat bag",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "car-portable-tire-inflator",
@@ -1834,7 +1947,8 @@
       "why_useful": "handles low tire pressure without hunting for a gas station air pump",
       "best_for": "commuters, road trips, new drivers",
       "avoid_if": "avoid if they already have roadside kit with inflator",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "car-jump-starter-pack",
@@ -1850,7 +1964,8 @@
       "why_useful": "adds emergency battery backup without waiting for another car",
       "best_for": "drivers, winter climates, road trips",
       "avoid_if": "avoid if they will not keep it charged",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "car-trash-can-waterproof",
@@ -1866,7 +1981,8 @@
       "why_useful": "keeps wrappers and receipts contained on commutes and trips",
       "best_for": "families, commuters, rideshare drivers",
       "avoid_if": "avoid if the car is already spotless",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "car-dash-cam-budget",
@@ -1882,7 +1998,8 @@
       "why_useful": "records drives for accidents, parking issues, or road incidents",
       "best_for": "commuters, rideshare drivers, new drivers",
       "avoid_if": "avoid if local laws or privacy expectations are unclear",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "car-emergency-escape-tool",
@@ -1898,7 +2015,8 @@
       "why_useful": "adds a seatbelt cutter and window breaker for emergencies",
       "best_for": "drivers, parents, road-trip kits",
       "avoid_if": "avoid if you cannot mount it within reach",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "car-phone-charger-fast",
@@ -1914,7 +2032,8 @@
       "why_useful": "keeps phones charged during maps, music, and rideshare use",
       "best_for": "drivers, travelers, delivery workers",
       "avoid_if": "avoid if the car already has fast USB-C ports",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "car-backseat-tablet-holder",
@@ -1930,7 +2049,8 @@
       "why_useful": "makes kid road trips calmer with hands-free screens",
       "best_for": "parents, long drives, family cars",
       "avoid_if": "avoid if screen time is not part of travel",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "apartment-draft-stopper",
@@ -1946,7 +2066,8 @@
       "why_useful": "cuts drafts, hallway noise, and light leaks",
       "best_for": "renters, dorms, older apartments",
       "avoid_if": "avoid if door clearance is tight",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "apartment-stick-on-led-lights",
@@ -1962,7 +2083,8 @@
       "why_useful": "adds light inside closets, cabinets, and dark corners",
       "best_for": "renters, kitchens, closets",
       "avoid_if": "avoid if you do not want battery upkeep",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "apartment-rolling-storage-cart",
@@ -1978,7 +2100,8 @@
       "why_useful": "creates movable storage in narrow bathroom or kitchen gaps",
       "best_for": "small apartments, dorms, renters",
       "avoid_if": "avoid if floor space is already blocked",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "apartment-tension-shelf",
@@ -1994,7 +2117,8 @@
       "why_useful": "works around pipes to add cabinet storage",
       "best_for": "renters, small bathrooms, kitchens",
       "avoid_if": "avoid if cabinet dimensions are unusual",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "apartment-folding-step-stool",
@@ -2010,7 +2134,8 @@
       "why_useful": "helps reach high shelves then folds flat",
       "best_for": "apartments, kitchens, closets",
       "avoid_if": "avoid if a heavy-duty ladder is needed",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "apartment-magnetic-screen-door",
@@ -2026,7 +2151,8 @@
       "why_useful": "lets air in while helping keep bugs out",
       "best_for": "renters, patios, pet households",
       "avoid_if": "avoid if doorway size is unusual",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "hobby-led-light-strip",
@@ -2042,7 +2168,8 @@
       "why_useful": "adds mood lighting behind desks, shelves, and TVs",
       "best_for": "teens, creators, dorms, gaming rooms",
       "avoid_if": "avoid if they dislike app-controlled lights",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "hobby-beginner-tool-kit",
@@ -2058,7 +2185,8 @@
       "why_useful": "covers basic fixes, assembly, and hanging tasks",
       "best_for": "new apartments, dorms, first homes",
       "avoid_if": "avoid if they already own serious tools",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "hobby-acrylic-paint-marker-set",
@@ -2074,7 +2202,8 @@
       "why_useful": "makes small creative projects easy to start",
       "best_for": "crafters, teens, DIY gifts",
       "avoid_if": "avoid if they hate messy hobbies",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "hobby-mini-tripod-ring-light",
@@ -2090,7 +2219,8 @@
       "why_useful": "improves product shots, calls, and short videos",
       "best_for": "creators, sellers, students",
       "avoid_if": "avoid if they already have lighting gear",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "hobby-bird-feeder-window",
@@ -2106,7 +2236,8 @@
       "why_useful": "turns a window into low-maintenance nature watching",
       "best_for": "families, apartments, grandparents",
       "avoid_if": "avoid if building rules prohibit feeders",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "hobby-starter-sewing-kit",
@@ -2122,7 +2253,8 @@
       "why_useful": "handles loose buttons, simple repairs, and travel fixes",
       "best_for": "students, travelers, first apartments",
       "avoid_if": "avoid if they already have a full sewing box",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-insulated-tumbler-accessories",
@@ -2138,7 +2270,8 @@
       "why_useful": "upgrades daily drink bottles with straws, lids, and cleaning tools",
       "best_for": "commuters, students, gym people",
       "avoid_if": "avoid if they do not use reusable cups",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-shower-steamers",
@@ -2154,7 +2287,8 @@
       "why_useful": "turns a normal shower into a small relaxation ritual",
       "best_for": "busy people, self-care gifts, guests",
       "avoid_if": "avoid if they are sensitive to scents",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-mini-waffle-maker",
@@ -2170,7 +2304,8 @@
       "why_useful": "makes quick breakfasts, snacks, and novelty treats",
       "best_for": "students, families, small kitchens",
       "avoid_if": "avoid if counter space is extremely limited",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-electric-wine-opener",
@@ -2186,7 +2321,8 @@
       "why_useful": "makes opening bottles easier and cleaner",
       "best_for": "hosts, wine drinkers, housewarming gifts",
       "avoid_if": "avoid if they rarely drink wine",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-candle-warmer-lamp",
@@ -2202,7 +2338,8 @@
       "why_useful": "enjoys candle scent without an open flame",
       "best_for": "candle people, apartments, offices",
       "avoid_if": "avoid if they prefer actually burning candles",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-bento-lunch-box",
@@ -2218,7 +2355,8 @@
       "why_useful": "makes packed lunches cleaner and more organized",
       "best_for": "students, office workers, meal preppers",
       "avoid_if": "avoid if they need microwave-safe glass only",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-compact-umbrella",
@@ -2234,7 +2372,8 @@
       "why_useful": "keeps a reliable umbrella in bags and cars",
       "best_for": "commuters, students, travelers",
       "avoid_if": "avoid if they already carry a full-size umbrella",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-keychain-multitool",
@@ -2250,7 +2389,8 @@
       "why_useful": "adds tiny scissors, opener, screwdriver, or pry tool on the go",
       "best_for": "DIY people, travelers, everyday carry fans",
       "avoid_if": "avoid if they fly often and tool rules matter",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "tech-magnetic-cable-ties",
@@ -2266,7 +2406,8 @@
       "why_useful": "bundles cords, chargers, and travel cables without disposable zip ties",
       "best_for": "desk setups, travelers, organizers",
       "avoid_if": "avoid if they need permanent cable mounting",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "kitchen-citrus-juicer-manual",
@@ -2282,7 +2423,8 @@
       "why_useful": "makes quick lemon or lime juice for cooking and drinks",
       "best_for": "home cooks, cocktail people, meal prep",
       "avoid_if": "avoid if they already use an electric juicer",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-laundry-detergent-sheets",
@@ -2298,7 +2440,8 @@
       "why_useful": "reduces bulky bottles and is easy to store or travel with",
       "best_for": "apartments, travelers, small laundry rooms",
       "avoid_if": "avoid if they need a specialty detergent",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "travel-privacy-luggage-tags",
@@ -2314,7 +2457,8 @@
       "why_useful": "labels bags while hiding personal details from casual view",
       "best_for": "travelers, students, families",
       "avoid_if": "avoid if they only use carry-ons with built-in ID windows",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "pet-door-scratch-guard",
@@ -2330,7 +2474,8 @@
       "why_useful": "protects doors from scratching and paw marks",
       "best_for": "dog owners, renters, anxious pets",
       "avoid_if": "avoid if the pet does not scratch doors",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "office-meeting-notebook",
@@ -2346,7 +2491,8 @@
       "why_useful": "gives calls and follow-ups a dedicated capture system",
       "best_for": "managers, founders, students",
       "avoid_if": "avoid if they use only digital notes",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "car-sun-visor-organizer",
@@ -2362,7 +2508,8 @@
       "why_useful": "keeps registration, cards, pens, and small documents reachable",
       "best_for": "commuters, rideshare drivers, families",
       "avoid_if": "avoid if the visor is already crowded",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "wellness-desk-walking-pad",
@@ -2378,7 +2525,8 @@
       "why_useful": "adds light movement during work or TV time",
       "best_for": "remote workers, small apartments, step-count people",
       "avoid_if": "avoid if noise or downstairs neighbors are a concern",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "organization-clear-storage-bins",
@@ -2394,7 +2542,8 @@
       "why_useful": "makes pantry, closet, and shelf storage visible and tidy",
       "best_for": "families, renters, organizers",
       "avoid_if": "avoid if cabinet measurements are unknown",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "gift-magnetic-bookmark-set",
@@ -2410,7 +2559,8 @@
       "why_useful": "keeps pages marked without falling out or bending corners",
       "best_for": "readers, students, journal users",
       "avoid_if": "avoid if they mostly read ebooks",
-      "created_at": "2026-05-18T00:00:00Z"
+      "created_at": "2026-05-18T00:00:00Z",
+      "has_image": false
     },
     {
       "id": "home-office-silicone-cable-passthrough-grommets",
@@ -2426,7 +2576,8 @@
       "why_useful": "makes desk cables look intentional instead of messy",
       "best_for": "home office desks, renters, students",
       "avoid_if": "avoid if your desk already has built-in cable routing",
-      "created_at": "2026-05-18T16:14:11.100Z"
+      "created_at": "2026-05-18T16:14:11.100Z",
+      "has_image": false
     },
     {
       "id": "kitchen-magnetic-weekly-meal-planner",
@@ -2442,7 +2593,8 @@
       "why_useful": "turns meal planning into a visible household system",
       "best_for": "families, meal preppers, busy couples",
       "avoid_if": "avoid if you never plan meals in advance",
-      "created_at": "2026-05-18T16:14:11.101Z"
+      "created_at": "2026-05-18T16:14:11.101Z",
+      "has_image": false
     },
     {
       "id": "home-collapsible-grocery-crate",
@@ -2458,7 +2610,8 @@
       "why_useful": "keeps groceries, returns, and car supplies from sliding everywhere",
       "best_for": "drivers, apartment dwellers, bulk shoppers",
       "avoid_if": "avoid if you only shop with small bags",
-      "created_at": "2026-05-18T16:14:11.101Z"
+      "created_at": "2026-05-18T16:14:11.101Z",
+      "has_image": false
     },
     {
       "id": "travel-packing-checklist-notepad",
@@ -2474,7 +2627,8 @@
       "why_useful": "cuts last-minute packing mistakes before trips",
       "best_for": "families, anxious packers, frequent travelers",
       "avoid_if": "avoid if you already use a packing app",
-      "created_at": "2026-05-18T16:14:11.101Z"
+      "created_at": "2026-05-18T16:14:11.101Z",
+      "has_image": false
     },
     {
       "id": "pets-adjustable-pet-car-barrier",
@@ -2490,7 +2644,15 @@
       "why_useful": "keeps dogs from climbing into the front seat while driving",
       "best_for": "dog owners, road trips, SUVs",
       "avoid_if": "avoid if your pet always rides in a crate",
-      "created_at": "2026-05-18T16:14:11.101Z"
+      "created_at": "2026-05-18T16:14:11.101Z",
+      "has_image": false
     }
-  ]
+  ],
+  "image_sort_policy": {
+    "rule": "has_image = image_status in {sitestripe, approved_real, merchant_feed, paapi, licensed, site_verified}",
+    "applied_at": "2026-07-04T01:07:23Z",
+    "note": "Sort products with real approved images first on every page; SVG fallback is the default for the rest.",
+    "real_image_count": 0,
+    "total_count": 155
+  }
 }
