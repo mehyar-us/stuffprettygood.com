@@ -12,12 +12,30 @@ fs.mkdirSync(path.join(dist, 'assets/site'), { recursive: true });
 
 const data = JSON.parse(fs.readFileSync('data/products.json', 'utf8'));
 const posts = JSON.parse(fs.readFileSync('data/posts.json', 'utf8')).posts;
-const products = data.products.filter((p) =>
+const amazonProducts = data.products.filter((p) =>
   p.affiliate_status === 'approved' &&
   p.approval_status === 'approved' &&
   p.affiliate_url &&
   p.affiliate_url.includes(`tag=${AMAZON_TAG}`)
 );
+
+// Walmart/Impact products live in a separate file so the Amazon catalog stays
+// isolated. We merge them here so every page (home, category, AI helper, sitemap)
+// sees one unified catalog. Walmart entries have real approved images.
+let walmartProducts = [];
+try {
+  const walmartData = JSON.parse(fs.readFileSync('data/walmart-products.json', 'utf8'));
+  walmartProducts = (walmartData.products || []).filter((p) =>
+    p.affiliate_status === 'approved' &&
+    p.approval_status === 'approved' &&
+    p.affiliate_url &&
+    p.image_url
+  );
+} catch (_) {
+  // no walmart-products.json yet — that's fine, just continue with Amazon-only
+}
+
+const products = [...walmartProducts, ...amazonProducts];
 
 // Image-first sort: products with real approved images render first on every page.
 // `has_image` is computed by the data layer from image_status (see docs/image-first-sort.md).
@@ -43,6 +61,12 @@ const searchTerm = (p) => {
   return url.searchParams.get('k') || p.title;
 };
 const amazonNativeAd = (p, compact = false) => {
+  // For non-Amazon merchants (e.g. Walmart/Impact), render the real product image
+  // directly with a merchant badge. No Amazon ad script.
+  if (p.merchant_id && p.merchant_id !== 'amazon') {
+    const merchantLabel = p.merchant_id === 'walmart' ? 'Walmart' : esc(p.merchant_id);
+    return `<div class="product-image-real" aria-label="${esc(p.title)} product photo from ${merchantLabel}"><img src="${esc(p.image_url)}" alt="${esc(p.title)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"><div class="merchant-badge">${merchantLabel} · Impact approved</div></div>`;
+  }
   if (p.sitestripe_embed_html) {
     return `<div class="amazon-native sitestripe ${compact ? 'compact' : ''}" aria-label="Amazon SiteStripe preview for ${esc(p.title)}">${p.sitestripe_embed_html}<div class="native-fallback"><img src="${p.image_url}" alt="${esc(p.title)} illustrated fallback"><span>Amazon preview may be blocked by privacy tools.</span></div></div>`;
   }
@@ -95,7 +119,15 @@ function productSvg(p) {
   <text x="572" y="362" text-anchor="end" font-size="34">${theme.emoji}</text>
 </svg>`;
 }
-for (const p of products) fs.writeFileSync(path.join(dist, p.image_url), productSvg(p));
+// Generate a generated SVG fallback only for products whose image_url is a
+// local path (e.g. /assets/products/<id>.svg). Real-image products (Walmart CDN,
+// future PA-API / SiteStripe) skip this — they reference a remote URL that we
+// must not overwrite.
+for (const p of products) {
+  if (typeof p.image_url === 'string' && p.image_url.startsWith('/')) {
+    fs.writeFileSync(path.join(dist, p.image_url), productSvg(p));
+  }
+}
 
 
 const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Stuff Pretty Good logo">
@@ -172,7 +204,11 @@ function layout(title, body, description = 'AI-assisted shopping guide for usefu
 }
 
 function card(p, i = 0) {
-  return `<article class="card" style="--delay:${i % 6}"><a class="thumb" href="/products/${p.id}/"><img src="${p.image_url}" alt="${esc(p.title)} illustrated fallback"></a><div class="value-chip">Useful pick · quick decision notes</div><div class="card-meta"><span>${esc(p.price_band.replace('-', ' $'))}</span><span>${esc(p.category.replace('-', ' '))}</span></div><h3>${esc(p.title)}</h3><p>${esc(p.why_useful)}</p><p class="best"><strong>Best for:</strong> ${esc(p.best_for)}</p><a class="btn small" href="/products/${p.id}/">Get</a></article>`;
+  const hasRealImage = typeof p.image_url === 'string' && (p.image_url.startsWith('http://') || p.image_url.startsWith('https://'));
+  const merchantBadge = p.merchant_id && p.merchant_id !== 'amazon'
+    ? `<span class="merchant-pill">${p.merchant_id === 'walmart' ? 'Walmart' : esc(p.merchant_id)} · Impact</span>`
+    : '';
+  return `<article class="card" style="--delay:${i % 6}"><a class="thumb" href="/products/${p.id}/"><img src="${p.image_url}" alt="${esc(p.title)}"${hasRealImage ? ' loading="lazy" referrerpolicy="no-referrer-when-downgrade"' : ''}></a>${merchantBadge}<div class="value-chip">Useful pick · quick decision notes</div><div class="card-meta"><span>${esc(p.price_band.replace('-', ' $'))}</span><span>${esc(p.category.replace('-', ' '))}</span></div><h3>${esc(p.title)}</h3><p>${esc(p.why_useful)}</p><p class="best"><strong>Best for:</strong> ${esc(p.best_for)}</p><a class="btn small" href="/products/${p.id}/">Get</a></article>`;
 }
 
 

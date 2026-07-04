@@ -10,6 +10,6 @@ Commands:
 - npm run daily:check
 - npm run smoke
 
-Daily curation rule: add only manually curated Amazon search-link products with the Associates tag. Do not scrape Amazon images, prices, reviews, ratings, or availability. Generated artwork remains the fallback until PA-API, SiteStripe, merchant feed, or licensed images are approved.
+Daily curation rule: add only manually curated Amazon search-link products with the Associates tag. Images and product metadata come from approved sources only: Amazon PA-API when available, Amazon SiteStripe embeds, merchant feeds (Walmart, Impact, etc.), and licensed stock. The generated SVG is the fallback when no approved image source applies.
 
 Hard rule: only affiliate_status=approved products with approved affiliate URLs render outbound buttons.

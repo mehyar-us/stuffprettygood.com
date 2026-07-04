@@ -10,7 +10,7 @@ Public rule: no outbound product link goes live unless the merchant/network is a
   - Status: approved/available for v0.1
   - Env/key name: SPG_AMAZON_ASSOCIATES_TAG or AMAZON_ASSOCIATES_TAG
   - Current tag in generated links: mehyarmedia-20
-  - Restrictions: do not scrape Amazon prices, ratings, reviews, availability, or product images. Use original copy and original/generated images unless Amazon Product Advertising API access becomes available.
+  - Image sources: approved sources only. Amazon PA-API when available, Amazon SiteStripe embeds, merchant feeds (Walmart, Impact, etc.), and licensed stock. The generated SVG is the fallback when no approved image source applies.
 
 ## Blocked until account approval / access
 
@@ -28,9 +28,9 @@ These should not be used for live product links until the account is approved an
    - Best for auto-affiliating broad retail links after site looks credible.
    - Signup direction: apply after v0.1 guide pages and disclosure pages are live. Do not submit if CAPTCHA/manual verification blocks automation.
 
-4. Walmart Affiliates
+4. Walmart Affiliates (via Impact)
    - Best for home basics, kitchen, pets, baby/family, budget finds.
-   - Signup direction: apply after credible content exists. Do not link to Walmart until accepted.
+   - Status: Impact catalog feed is approved and live (`image_source='walmart_feed'`, `image_status='approved_affiliate_or_licensed'`). Real Walmart product images surface via the API. Static site pulls approved Walmart rows into the build so visitors see real photos on day one.
 
 5. Awin / Etsy / FlexOffers / Impact
    - Best for expanding gifts, DTC, lifestyle, software, and premium merchant coverage.
