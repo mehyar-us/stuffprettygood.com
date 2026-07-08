@@ -339,9 +339,18 @@
     if (!picks.length) return 'I did not find a tight match yet. Try a clearer need like “travel gift under $50,” “desk setup,” “kitchen time saver,” or “pet cleanup.”';
     return '<strong>Good shortlist:</strong>' + picks.map(p => '<a class="ai-pick" href="/products/'+esc(p.id)+'/"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'"><span><b>'+esc(p.title)+'</b><em>'+esc(p.why_useful)+'</em><small>Best for: '+esc(p.best_for)+'</small><strong>Get</strong></span></a>').join('') + '<p class="micro">Tip: ask “what should I avoid?” or “show cheaper picks” to narrow it.</p>';
   }
-  launch.addEventListener('click', function(){ panel.hidden = false; root.classList.add('open'); renderHistory(); });
-  close.addEventListener('click', function(){ panel.hidden = true; root.classList.remove('open'); });
-  suggestions.forEach(btn => btn.addEventListener('click', function(){ panel.hidden=false; root.classList.add('open'); form.q.value = btn.textContent; form.dispatchEvent(new Event('submit', {cancelable:true})); }));
+  // Haptic feedback helper — returns instantly on unsupported browsers / iOS Safari
+  // (navigator.vibrate is undefined). Soft 10ms pulse on launch, double-pulse on
+  // suggestion chips (legible as a "tap pattern"), single-tick on send.
+  // Respects prefers-reduced-motion: no haptic at all.
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function haptic(pattern){
+    if (reduceMotion) return;
+    try { if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') navigator.vibrate(pattern); } catch (_) {}
+  }
+  launch.addEventListener('click', function(){ haptic(10); panel.hidden = false; root.classList.add('open'); renderHistory(); });
+  close.addEventListener('click', function(){ haptic(10); panel.hidden = true; root.classList.remove('open'); });
+  suggestions.forEach(btn => btn.addEventListener('click', function(){ haptic([10, 40, 10]); panel.hidden=false; root.classList.add('open'); form.q.value = btn.textContent; form.dispatchEvent(new Event('submit', {cancelable:true})); }));
   form.addEventListener('submit', function(e){
     e.preventDefault();
     const q = new FormData(form).get('q').trim(); if (!q) return;
@@ -356,6 +365,7 @@
     const user = { role:'user', html: esc(q) };
     const bot = { role:'bot', html: answer(q) };
     history.push(user, bot); save(); renderHistory(); form.reset();
+    haptic(8);
     if (rl && rl.allowed) window.SPGRateLimit.record();
   });
 })();
