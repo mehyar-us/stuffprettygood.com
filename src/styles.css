@@ -158,3 +158,20 @@ body{background:radial-gradient(circle at 10% -10%,#fed7aa 0,#f6f1e8 24%,#eef6ff
 .spg-reveal{opacity:0;transform:translateY(14px);will-change:opacity,transform}
 .spg-reveal-in{animation:spg-reveal-up .5s cubic-bezier(.2,.7,.2,1) both;opacity:1;transform:none;will-change:auto}
 @media(max-width:560px){.spg-reveal{transform:translateY(8px)}.spg-reveal-in{animation-duration:.42s}}
+
+/* --- PWA splash screen ---
+   Renders only when the site is opened in installed/standalone mode
+   (display-mode: standalone for Android/Chrome, fullscreen on iOS).
+   In a regular browser tab it is hidden so it never flashes during page load.
+   The .is-loaded class is added by the inline <script> in scripts/build.mjs
+   once the DOM is interactive (or after the 900ms safety-net), which fades it
+   out and removes it from layout. */
+.spg-splash{position:fixed;inset:0;z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background:radial-gradient(circle at 30% 18%,#ffe9bd 0,#f6f1e8 38%,#eaf4ff 100%);color:#101827;transition:opacity .45s ease,visibility 0s linear .45s;opacity:1;visibility:visible;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+.spg-splash-logo{width:96px;height:96px;border-radius:28px;background:#111827;box-shadow:0 22px 60px rgba(15,23,42,.22);display:grid;place-items:center;color:#fb923c;font-weight:950;font-size:34px;letter-spacing:-.04em;animation:splash-pulse 1.6s ease-in-out infinite}
+.spg-splash span{font-weight:950;font-size:18px;letter-spacing:-.03em;color:#101827}
+.spg-splash small{color:#64748b;font-weight:750;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+.spg-splash.is-loaded{opacity:0;visibility:hidden;pointer-events:none}
+@keyframes splash-pulse{0%,100%{transform:scale(1);box-shadow:0 22px 60px rgba(15,23,42,.22)}50%{transform:scale(1.05);box-shadow:0 28px 80px rgba(249,115,22,.28)}}
+@media(display-mode:standalone){.spg-splash{display:flex}}
+@media(-webkit-min-device-pixel-ratio:0){html.is-pwa .spg-splash{display:flex}}
+html.is-pwa body{overscroll-behavior:none}
