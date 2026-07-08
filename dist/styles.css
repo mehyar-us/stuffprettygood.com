@@ -130,3 +130,23 @@ body{background:radial-gradient(circle at 10% -10%,#fed7aa 0,#f6f1e8 24%,#eef6ff
 @keyframes spg-fade{from{opacity:0}to{opacity:1}}
 @keyframes spg-pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
 @media(max-width:560px){.signup-modal-launch{bottom:calc(max(12px,env(safe-area-inset-bottom)) + 76px);padding:10px 14px;font-size:13px}.signup-modal-card{border-radius:20px;padding:18px}.signup-modal-head h2{font-size:20px}}
+
+/* SPG PWA install button + offline-page polish */
+.spg-install{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--line,#e2e8f0);border-radius:999px;background:#fff;font:950 13px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#111827;cursor:pointer;box-shadow:0 12px 32px rgba(15,23,42,.12);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.spg-install:hover{transform:translateY(-2px);box-shadow:0 18px 46px rgba(15,23,42,.18);border-color:#fdba74}
+.spg-install:focus-visible{outline:3px solid #fdba74;outline-offset:2px}
+.spg-install[hidden]{display:none!important}
+.spg-install span{display:grid;place-items:center;width:30px;height:30px;border-radius:999px;background:linear-gradient(135deg,#0f766e,#f97316);color:#fff;font-size:14px}
+.spg-install strong{font-size:13px;letter-spacing:.01em}
+@media(prefers-color-scheme:dark){.spg-install{background:#1f2937;color:#f8fafc;border-color:#334155}.spg-install strong{color:#f8fafc}}
+@media(max-width:560px){.spg-install{padding:8px 10px;font-size:12px}.spg-install strong{font-size:11px}}
+/* SPG AI rate-limit pill — shows remaining daily quota in chat header */
+.spg-quota-pill{display:inline-block;margin-top:6px;padding:3px 9px;border-radius:999px;background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;font:950 11px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.02em;transition:background .18s ease,color .18s ease,border-color .18s ease}
+.spg-quota-pill[hidden]{display:none!important}
+.spg-quota-pill[data-state="ok"]{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}
+.spg-quota-pill[data-state="low"]{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+.spg-quota-pill[data-state="exhausted"]{background:#fef2f2;color:#991b1b;border-color:#fecaca}
+
+/* SPG rate-limit message — shown in chat when user is throttled */
+.rate-limit-msg{color:#9a3412;font-style:italic;display:inline-block;padding:4px 8px;background:#fff7ed;border-radius:10px}
+@media(prefers-color-scheme:dark){.spg-quota-pill{background:#1f2937;color:#fdba74;border-color:#78350f}.spg-quota-pill[data-state="ok"]{background:#064e3b;color:#a7f3d0;border-color:#065f46}.spg-quota-pill[data-state="low"]{background:#1f2937;color:#fdba74;border-color:#78350f}.spg-quota-pill[data-state="exhausted"]{background:#1f2937;color:#fca5a5;border-color:#7f1d1d}.rate-limit-msg{background:#1f2937;color:#fdba74}}
