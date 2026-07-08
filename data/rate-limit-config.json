@@ -1,0 +1,10 @@
+{
+  "perMinute": 3,
+  "perHour": 20,
+  "perDay": 50,
+  "maxQueryLength": 1000,
+  "cookieName": "spg_rl_id",
+  "cookieTtlSeconds": 3600,
+  "storageKey": "spg_rl_state_v1",
+  "_comment": "Tunable limits for the AI companion rate limiter. Override defaults in assets/js/rate-limit.js. When the future Cloudflare Worker proxy is live (Phase 11 of spg-improve-loop), these become hints — the Worker enforces the hard cap with KV-based IP rate limits and a per-key token bucket."
+}

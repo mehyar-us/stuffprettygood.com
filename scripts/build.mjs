@@ -31,6 +31,15 @@ const products = data.products.filter((p) =>
 
 fs.copyFileSync('src/styles.css', path.join(dist, 'styles.css'));
 
+// Progressive Web App: copy the service worker source verbatim into dist/.
+// Registered from every generated page; serves a network-first HTML strategy
+// with cache-first same-origin static assets and an /offline.html fallback.
+fs.copyFileSync('src/sw.js', path.join(dist, 'sw.js'));
+
+// Offline fallback page is regenerated on every build (it's a static asset the
+// SW serves when a navigation fails on a cold cache).
+fs.copyFileSync('dist/offline.html', path.join(dist, 'offline.html'));
+
 const esc = (s = '') => String(s).replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 const titleCase = (s) => esc(String(s).replaceAll('-', ' ').replace(/\b\w/g, (c) => c.toUpperCase()));
 const slugUrl = (route = '') => `/${route}${route && !route.endsWith('/') ? '/' : ''}`;
@@ -156,20 +165,201 @@ function normalizeLinks(html) {
 function backToTop() {
   return '<a class="back-top" href="#top" aria-label="Back to top"><span>↑</span><strong>Top</strong></a><script>(function(){function internalHost(host){return host===location.host||host==="stuffprettygood.com"||host==="www.stuffprettygood.com"||host==="stuffprettygood-api.mehyar.workers.dev";}function tuneLinks(root){(root||document).querySelectorAll("a[href]").forEach(function(a){var raw=a.getAttribute("href")||"";if(!raw||raw.startsWith("#")||raw.startsWith("mailto:")||raw.startsWith("tel:")){a.removeAttribute("target");return;}try{var u=new URL(raw,location.href);if((u.pathname.startsWith("/go/")&&internalHost(u.host))||(/^https?:$/.test(u.protocol)&&!internalHost(u.host))){a.target="_blank";var rel=(a.getAttribute("rel")||"").trim().split(" ").filter(Boolean);["noopener","noreferrer"].forEach(function(v){if(!rel.includes(v))rel.push(v);});a.setAttribute("rel",rel.join(" "));}else{a.removeAttribute("target");}}catch(e){a.removeAttribute("target");}})}tuneLinks(document);new MutationObserver(function(){tuneLinks(document);}).observe(document.documentElement,{childList:true,subtree:true});})();</script>';
 }
+
+// Progressive Web App registration: enables network-first HTML with a
+// cache-first asset layer + offline page, and exposes a custom install
+// button when the browser fires `beforeinstallprompt`.
+function pwaRegistration() {
+  return `<script>(function(){
+  if (!('serviceWorker' in navigator)) return;
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').then(function (reg) {
+      if (reg && reg.active) {
+        try { navigator.serviceWorker.ready.then(function (r) { if (r && r.active) r.active.postMessage({ type: 'PING' }); }); } catch (e) {}
+      }
+    }).catch(function () {});
+  });
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    var btn = document.querySelector('[data-spg-install]');
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'spg-install';
+      btn.setAttribute('data-spg-install', '');
+      btn.setAttribute('aria-label', 'Install Stuff Pretty Good');
+      btn.innerHTML = '<span>↓</span><strong>Install</strong>';
+      btn.addEventListener('click', function () { btn.setAttribute('hidden', ''); e.prompt(); });
+      var refs = document.querySelectorAll('.nav-links');
+      if (refs.length) refs[refs.length - 1].appendChild(btn);
+      else document.body.appendChild(btn);
+    } else { btn.removeAttribute('hidden'); }
+    btn.__deferredPrompt = e;
+  });
+  window.addEventListener('appinstalled', function () {
+    var btn = document.querySelector('[data-spg-install]');
+    if (btn) btn.setAttribute('hidden', '');
+  });
+})();</script>`;
+}
 const microsoftClaritySnippet = `<script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "wt52najgso");
-</script>`;
-const impactSiteVerification = 'Impact-Site-Verification: c6f92ec5-b2a3-4bf2-8e8f-29fa6621424b';
+    })})(window, document, "clarity", "script", "wt52najgso");
+    </script>`;
+    const impactSiteVerification = 'Impact-Site-Verification: c6f92ec5-b2a3-4bf2-8e8f-29fa6621424b';
+
+    // AI companion rate limit — token-spend protection. Inlined into pages so
+    // no external JS dependency. Tunable via window.SPG_RL_CONFIG override.
+    //
+    // Two layers of defense:
+    //   1. Client-side soft limits (localStorage + cookie) — UX guard. Trivially
+    //      bypassable, fine for today since the companion makes no LLM calls.
+    //   2. Server-side hard limits — REQUIRED the moment an LLM is wired in.
+    //      The Worker proxy at stuffprettygood-api.mehyar.workers.dev enforces
+    //      IP-based rate limits in KV; this client check just saves the
+    //      round-trip when the user is already over budget.
+    const RATE_LIMIT_CONFIG = {
+      perMinute: 3,
+      perHour: 20,
+      perDay: 50,
+      maxQueryLength: 1000,
+      cookieName: 'spg_rl_id',
+      cookieTtlSeconds: 3600,
+      storageKey: 'spg_rl_state_v1'
+    };
+
+    function rateLimitScript() {
+      const cfg = JSON.stringify(RATE_LIMIT_CONFIG);
+      return `<script>(function(global){
+      'use strict';
+      var CONFIG = ${cfg};
+      var STATE = null;
+      var QUOTA_PILL = null;
+      function getSoftId(){
+        var m = document.cookie.match(new RegExp('(?:^|; )' + CONFIG.cookieName + '=([^;]*)'));
+        if (m) return m[1];
+        var id = (global.crypto && global.crypto.randomUUID)
+          ? global.crypto.randomUUID()
+          : 'rl-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        document.cookie = CONFIG.cookieName + '=' + id +
+          '; max-age=' + CONFIG.cookieTtlSeconds + '; path=/; SameSite=Lax';
+        return id;
+      }
+      function utcDay(){ return new Date().toISOString().slice(0,10); }
+      function loadState(){
+        try {
+          var raw = localStorage.getItem(CONFIG.storageKey);
+          if (!raw) return freshState();
+          var p = JSON.parse(raw);
+          var t = utcDay();
+          if (p.day !== t) { p.day = t; p.dayCount = 0; }
+          return p;
+        } catch(e) {
+          console.warn('[spg-rl] storage unavailable, failing open:', e);
+          return freshState();
+        }
+      }
+      function freshState(){ return { day: utcDay(), minute: [], hour: [], dayCount: 0 }; }
+      function saveState(){
+        try { localStorage.setItem(CONFIG.storageKey, JSON.stringify(STATE)); }
+        catch(e) { console.warn('[spg-rl] could not persist state:', e); }
+      }
+      function pruneWindow(win, ttlMs, now){
+        var cutoff = now - ttlMs;
+        while (win.length && win[0] < cutoff) win.shift();
+      }
+      function quotaRemaining(){
+        var now = Date.now();
+        pruneWindow(STATE.minute, 60000, now);
+        pruneWindow(STATE.hour, 3600000, now);
+        return Math.max(0, Math.min(
+          CONFIG.perMinute - STATE.minute.length,
+          CONFIG.perHour - STATE.hour.length,
+          CONFIG.perDay - STATE.dayCount
+        ));
+      }
+      function check(queryLength){
+        var now = Date.now();
+        pruneWindow(STATE.minute, 60000, now);
+        pruneWindow(STATE.hour, 3600000, now);
+        if (queryLength > CONFIG.maxQueryLength) {
+          return { allowed: false, reason: 'query_too_long', retryAfterSeconds: 0,
+            message: 'That message is a little long — try under ' + CONFIG.maxQueryLength + ' characters?' };
+        }
+        if (STATE.minute.length >= CONFIG.perMinute) {
+          var oldest = STATE.minute[0];
+          var sec = Math.ceil((oldest + 60000 - now) / 1000);
+          return { allowed: false, reason: 'per_minute', retryAfterSeconds: sec,
+            message: 'Slow down a sec — you can ask again in ' + sec + 's.' };
+        }
+        if (STATE.hour.length >= CONFIG.perHour) {
+          var oldest2 = STATE.hour[0];
+          var min = Math.max(1, Math.ceil((oldest2 + 3600000 - now) / 60000));
+          return { allowed: false, reason: 'per_hour', retryAfterSeconds: min * 60,
+            message: 'You have hit the hourly limit. Come back in ' + min + ' min.' };
+        }
+        if (STATE.dayCount >= CONFIG.perDay) {
+          var now2 = new Date();
+          var tomorrow = new Date(Date.UTC(now2.getUTCFullYear(), now2.getUTCMonth(), now2.getUTCDate() + 1));
+          return { allowed: false, reason: 'per_day', retryAfterSeconds: Math.ceil((tomorrow.getTime() - now2.getTime())/1000),
+            message: 'Daily limit reached. Resets at midnight UTC.' };
+        }
+        return { allowed: true, reason: null, retryAfterSeconds: 0, remaining: quotaRemaining() };
+      }
+      function record(){
+        var now = Date.now();
+        STATE.minute.push(now);
+        STATE.hour.push(now);
+        STATE.dayCount += 1;
+        saveState();
+        updateQuotaPill();
+      }
+      function updateQuotaPill(){
+        if (!QUOTA_PILL) return;
+        var r = quotaRemaining();
+        QUOTA_PILL.textContent = r + ' of ' + CONFIG.perDay + ' left today';
+        QUOTA_PILL.dataset.state = r === 0 ? 'exhausted' : r < 5 ? 'low' : 'ok';
+        QUOTA_PILL.hidden = false;
+      }
+      function init(){
+        STATE = loadState();
+        QUOTA_PILL = document.getElementById('spg-quota-pill');
+        if (QUOTA_PILL) updateQuotaPill();
+      }
+      function getEdgeAuthHeaders(){
+        return {
+          'X-SPG-Soft-Id': getSoftId(),
+          'X-SPG-Quota-Remaining': String(quotaRemaining()),
+          'X-SPG-Client': 'static-v1'
+        };
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+      global.SPGRateLimit = {
+        check: check,
+        record: record,
+        quotaRemaining: quotaRemaining,
+        getEdgeAuthHeaders: getEdgeAuthHeaders,
+        getSoftId: getSoftId,
+        reset: function(){ STATE = freshState(); saveState(); updateQuotaPill(); },
+        CONFIG: function(){ return Object.assign({}, CONFIG); }
+      };
+    })(window);</script>`;
+    }
+
+
 
 function layout(title, body, opts = {}, description = 'AI-assisted shopping guide for useful gifts, starter kits, and practical products.') {
   const shellClass = body.includes('compact-hero') ? 'site-shell home-shell' : 'site-shell';
   const showModal = opts.showModal !== false; // default true
   const modalHtml = showModal ? signupModal() : '';
-  return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<title>${esc(title)} | Stuff Pretty Good</title><meta name="description" content="${esc(description)}"><meta name="theme-color" content="#111827"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg"><link rel="stylesheet" href="/styles.css"></head><body id="top"><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget()}${backToTop()}${modalHtml}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
+  return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<title>${esc(title)} | Stuff Pretty Good</title><meta name="description" content="${esc(description)}"><meta name="theme-color" content="#111827"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg"><link rel="stylesheet" href="/styles.css"></head><body id="top"><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget()}${backToTop()}${pwaRegistration()}${modalHtml}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
 }
 
 function card(p, i = 0) {
@@ -194,7 +384,7 @@ function assistantWidget() {
     signup: 'Signup is email-only by default. Phone is collected only if the user wants SMS updates and ticks the explicit TCPA consent box on the signup form. SMS frequency is up to 4 messages per month; reply STOP to opt out.',
     bestQuestions: ['gift for dad under $50', 'travel kit for a long flight', 'desk setup under $100', 'pet cleanup products', 'small apartment essentials']
   };
-  return `<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong></button><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2></div><button type="button" class="ai-close" aria-label="Close">×</button></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="submit">Ask</button></form><div class="ai-suggestions"><button type="button">gift under $25</button><button type="button">travel kit</button><button type="button">desk setup</button><button type="button">pet problem</button></div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\u003c')}</script><script>
+  return `${rateLimitScript()}<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong></button><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2><span id="spg-quota-pill" class="spg-quota-pill" hidden></span></div><button type="button" class="ai-close" aria-label="Close">×</button></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="submit">Ask</button></form><div class="ai-suggestions"><button type="button">gift under $25</button><button type="button">travel kit</button><button type="button">desk setup</button><button type="button">pet problem</button></div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\u003c')}</script><script>
 (function(){
   const root = document.querySelector('[data-ai-bubble]');
   const dataEl = document.getElementById('spg-ai-catalog');
@@ -250,9 +440,18 @@ function assistantWidget() {
   form.addEventListener('submit', function(e){
     e.preventDefault();
     const q = new FormData(form).get('q').trim(); if (!q) return;
+    // Rate limit guard — prevents accidental spam and (future) token spend
+    const rl = window.SPGRateLimit && window.SPGRateLimit.check(q.length);
+    if (rl && !rl.allowed) {
+      const user = { role:'user', html: esc(q) };
+      const bot = { role:'bot', html: '<em class="rate-limit-msg">' + esc(rl.message) + '</em>' };
+      history.push(user, bot); save(); renderHistory(); form.reset();
+      return;
+    }
     const user = { role:'user', html: esc(q) };
     const bot = { role:'bot', html: answer(q) };
     history.push(user, bot); save(); renderHistory(); form.reset();
+    if (rl && rl.allowed) window.SPGRateLimit.record();
   });
 })();
 </script>`;
@@ -315,7 +514,7 @@ for (const post of posts) {
 
 function toolScript(seedProducts) {
   const safeProducts = seedProducts.map((p) => ({ id: p.id, title: p.title, category: p.category, price_band: p.price_band, image_url: p.image_url, why_useful: p.why_useful, best_for: p.best_for, avoid_if: p.avoid_if }));
-  return `<script type="application/json" id="spg-catalog">${JSON.stringify(safeProducts).replace(/</g, '\\u003c')}</script><script>
+  return `${rateLimitScript()}<script type="application/json" id="spg-catalog">${JSON.stringify(safeProducts).replace(/</g, '\\u003c')}</script><script>
 (function(){
   const catalog = JSON.parse(document.getElementById('spg-catalog').textContent);
   const form = document.querySelector('[data-finder-form]');
@@ -348,11 +547,21 @@ function toolScript(seedProducts) {
   }
   form.addEventListener('submit', function(e){
     e.preventDefault();
-    const q = new FormData(form).get('intent').toLowerCase()+' '+new FormData(form).get('interests').toLowerCase();
+    const intent = new FormData(form).get('intent') || '';
+    const interests = new FormData(form).get('interests') || '';
+    const q = (intent + ' ' + interests).trim();
+    const rl = window.SPGRateLimit && window.SPGRateLimit.check(q.length);
+    if (rl && !rl.allowed) {
+      results.innerHTML = '<p class="notice rate-limit-msg">' + htmlEscape(rl.message) + '</p>';
+      results.scrollIntoView({behavior:'smooth', block:'start'});
+      return;
+    }
+    const query = intent.toLowerCase() + ' ' + interests.toLowerCase();
     const budget = new FormData(form).get('budget');
-    const ranked = catalog.map(p => ({...p, score: score(p, q, budget)})).sort((a,b) => b.score - a.score).slice(0,8);
+    const ranked = catalog.map(p => ({...p, score: score(p, query, budget)})).sort((a,b) => b.score - a.score).slice(0,8);
     render(ranked);
     results.scrollIntoView({behavior:'smooth', block:'start'});
+    if (rl && rl.allowed) window.SPGRateLimit.record();
   });
   render(catalog.slice(0,6));
 })();
@@ -364,7 +573,7 @@ function toolPage(name, desc, mode = 'gift') {
   const examples = mode === 'kit'
     ? ['home office under $250', 'travel kit under $150', 'first apartment essentials']
     : ['gift for dad under $50', 'practical gift for coworker', 'pet owner gift'];
-  return layout(name, `<section class="section tool upgraded-tool"><div><p class="eyebrow">AI shopping assistant</p><h1>${esc(name)}</h1><p class="sub">${esc(desc)} Ask naturally. Answers are grounded in useful picks and guides already on Stuff Pretty Good.</p><form class="finder" data-finder-form><label>What are you shopping for?<input class="input" name="intent" placeholder="${esc(examples[0])}" required></label><label>Budget<select class="input" name="budget"><option value="">Any budget</option><option value="under-25">Under $25</option><option value="under-50">Under $50</option><option value="under-100">Under $100</option></select></label><label>Interests / situation<input class="input" name="interests" placeholder="${esc(examples.slice(1).join(' · '))}"></label><button class="btn" type="submit">Find my shortlist</button></form><p class="notice">Tip: try “travel gift under $50,” “desk setup,” “pet problem,” or “kitchen time saver.”</p></div><div class="tool-preview"><h2>What you get</h2><ul><li>5–8 practical picks</li><li>why it helps</li><li>who it fits</li><li>when to skip it</li></ul></div></section><section class="section results-section"><div class="section-head"><div><p class="eyebrow">AI shortlist</p><h2>Useful picks for this session</h2></div></div><div class="recommendation-list" data-finder-results></div></section>${toolScript(seed)}`);
+  return layout(name, `<section class="section tool upgraded-tool"><div><p class="eyebrow">AI shopping assistant</p><h1>${esc(name)}</h1><span id="spg-quota-pill" class="spg-quota-pill" hidden></span><p class="sub">${esc(desc)} Ask naturally. Answers are grounded in useful picks and guides already on Stuff Pretty Good.</p><form class="finder" data-finder-form><label>What are you shopping for?<input class="input" name="intent" placeholder="${esc(examples[0])}" required></label><label>Budget<select class="input" name="budget"><option value="">Any budget</option><option value="under-25">Under $25</option><option value="under-50">Under $50</option><option value="under-100">Under $100</option></select></label><label>Interests / situation<input class="input" name="interests" placeholder="${esc(examples.slice(1).join(' · '))}"></label><button class="btn" type="submit">Find my shortlist</button></form><p class="notice">Tip: try “travel gift under $50,” “desk setup,” “pet problem,” or “kitchen time saver.”</p></div><div class="tool-preview"><h2>What you get</h2><ul><li>5–8 practical picks</li><li>why it helps</li><li>who it fits</li><li>when to skip it</li></ul></div></section><section class="section results-section"><div class="section-head"><div><p class="eyebrow">AI shortlist</p><h2>Useful picks for this session</h2></div></div><div class="recommendation-list" data-finder-results></div></section>${toolScript(seed)}`);
 }
 mkdirPage('gift-finder', toolPage('AI Gift Finder', 'Answer a few prompts and get gift ideas from the approved-offer catalog only.'));
 mkdirPage('starter-kits', toolPage('AI Starter Kit Builder', 'Build useful setups from approved affiliate products only.', 'kit'));
