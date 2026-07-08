@@ -22,6 +22,18 @@ fs.mkdirSync(path.join(dist, 'assets/site'), { recursive: true });
 
 const data = JSON.parse(fs.readFileSync('data/products.json', 'utf8'));
 const posts = JSON.parse(fs.readFileSync('data/posts.json', 'utf8')).posts;
+let RATE_LIMIT_CONFIG;
+try {
+  RATE_LIMIT_CONFIG = JSON.parse(fs.readFileSync('data/rate-limit-config.json', 'utf8'));
+  // Strip the optional _comment field so it doesn't end up inlined into pages.
+  delete RATE_LIMIT_CONFIG._comment;
+} catch (e) {
+  console.warn('[spg-build] data/rate-limit-config.json missing or invalid, using defaults');
+  RATE_LIMIT_CONFIG = {
+    perMinute: 3, perHour: 20, perDay: 50, maxQueryLength: 1000,
+    cookieName: 'spg_rl_id', cookieTtlSeconds: 3600, storageKey: 'spg_rl_state_v1'
+  };
+}
 const products = data.products.filter((p) =>
   p.affiliate_status === 'approved' &&
   p.approval_status === 'approved' &&
@@ -221,15 +233,8 @@ const microsoftClaritySnippet = `<script type="text/javascript">
     //      The Worker proxy at stuffprettygood-api.mehyar.workers.dev enforces
     //      IP-based rate limits in KV; this client check just saves the
     //      round-trip when the user is already over budget.
-    const RATE_LIMIT_CONFIG = {
-      perMinute: 3,
-      perHour: 20,
-      perDay: 50,
-      maxQueryLength: 1000,
-      cookieName: 'spg_rl_id',
-      cookieTtlSeconds: 3600,
-      storageKey: 'spg_rl_state_v1'
-    };
+    // RATE_LIMIT_CONFIG is loaded at the top of this file from
+    // data/rate-limit-config.json (with sensible fallback defaults).
 
     function rateLimitScript() {
       const cfg = JSON.stringify(RATE_LIMIT_CONFIG);

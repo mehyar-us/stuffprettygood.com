@@ -1,6 +1,6 @@
 ---
 name: spg-improve-loop
-description: Use when running the recurring 15-minute improvement loop for the StuffPrettyGood.com project. Drives the site's visual polish, SEO surface, AI companion, and PWA quality while keeping the kanban board unblocked and posting a Telegram report only when something actually shipped. Reads vision.md, picks the next lane (visual / SEO / AI companion / PWA), builds, deploys to the production custom domain, runs browser QA, files tickets, never blocks on a stuck card.
+description: Use when running the recurring 15-minute improvement loop for the StuffPrettyGood.com project. Drives the site's visual polish, SEO surface, AI companion, and PWA quality while keeping the kanban board unblocked, committing + pushing to GitHub after every successful new thing, and posting a Telegram report to the home channel on EVERY tick (shipped / filed / unblocked / quiet) with the cron job title `spg-improve-loop` in the header. Reads vision.md, picks the next lane (visual / SEO / AI companion / PWA), builds, deploys to the production custom domain, runs browser QA, files tickets, never blocks on a stuck card.
 version: 1.0.0
 author: Stuff Pretty Good + Hermes Agent
 license: MIT
@@ -13,7 +13,14 @@ metadata:
 
 # SPG Improve Loop
 
-The 15-minute tick that keeps stuffprettygood.com moving. Each tick is opinionated: it reads `vision.md` for direction, picks a lane, builds, deploys to the **production** custom domain (not a preview URL — the existing kanban cards tripped on that), runs the live site through the browser, files tickets for anything broken, and pings Telegram only when state changed.
+The 15-minute tick that keeps stuffprettygood.com moving. Each tick is opinionated: it reads `vision.md` for direction, picks a lane, builds, deploys to the **production** custom domain (not a preview URL — the existing kanban cards tripped on that), runs the live site through the browser, files tickets for anything broken, **commits + pushes to GitHub after every successful new thing**, and pings Telegram on EVERY tick (shipped / filed / unblocked / quiet) with the cron job title `spg-improve-loop` in the header so the user always knows what is running.
+
+**Tick contract — non-negotiable:**
+- Every tick commits + pushes to `deploy/legal-expansion-and-signup-modal` if it touched any source file
+- Every tick writes a report to `reports/cron-tick-{N}.md` (committed to git) as the durable record
+- Every tick attempts to send that report to the Telegram home channel via `send_message`
+- The Telegram message ALWAYS includes `spg-improve-loop · tick N` in the first line
+- On Telegram send failure, the next tick resends the previous tick's report and pings a 🚨
 
 ## Project grounding (read this first)
 
@@ -185,28 +192,50 @@ Pick the assignee by category:
 
 Verify the assignees exist on this machine: `hermes profile list`. The dispatcher silently drops unknown names.
 
-### Phase 8 — Telegram report (15 s, only if state changed)
+### Phase 8 — Telegram report (15 s, EVERY tick — never silent)
 
-**Silent on no-op ticks.** If the tick built nothing, deployed nothing, filed nothing — no Telegram message. The user does not need "tick 47: all quiet" pings.
+**EVERY tick delivers to Telegram.** No-op ticks get a 1-line ⚪ ping. Shipped / filed / unblocked ticks get the full 5-section report. The user wants to see *every* tick land on their phone, with the cron job title `spg-improve-loop · tick N` in the header so they know which cron is running.
 
-When state changed, send a single concise message:
+**First, commit the durable report to git.** This is the fallback if Telegram send fails. Run BEFORE attempting the send:
+
+```bash
+mkdir -p reports
+NEXT_N=$(($(ls reports/ 2>/dev/null | grep -oE 'cron-tick-[0-9]+' | sort -t- -k3 -n | tail -1 | grep -oE '[0-9]+' || echo 0) + 1))
+cat > reports/cron-tick-${NEXT_N}.md <<'EOF'
+# spg-improve-loop · tick <N>
+
+📦 PROJECT: stuffprettygood.com
+🎯 SUGGESTED: <one line — what the tick proposed to do>
+✅ DONE: <bullets — every committed change + every kanban action>
+🧪 TESTED: <bullets — validate, build, deploy, browser QA, anything that passed/failed>
+📊 RESULTS: <bullets — what changed, ticket IDs, SHA, CF deploy version, success state>
+🔗 LINKS: <bullets — live URL with cache-buster, commit SHA, deploy URL, ticket IDs, screenshot path>
+🧠 MEMORY: <one line — what next-tick-Hermes should know>
+EOF
+git add reports/cron-tick-${NEXT_N}.md
+git commit -m "chore(reports): spg-improve-loop · tick <N> — <one-line summary>"
+```
+
+**Then, send the same content to Telegram.** Use the home channel via `send_message(target="telegram", message=...)`. Wrap the first line in the cron title so the user always sees `spg-improve-loop · tick N`. On send failure, log the error and continue — the durable report in git is the source of truth.
 
 ```
-SPG tick <n> · <one-line summary>
+spg-improve-loop · tick <N> · <one-line summary>
 
-Shipped:
-• <commit-sha-short> — <one-line what changed>
-• Deployed to production · CF version <id>
-
-Tickets filed: <count>
-• <id> · <title> · → <assignee>
-• <id> · <title> · → <assignee>
+📦 PROJECT: stuffprettygood.com
+🎯 SUGGESTED: <one line>
+✅ DONE: <bullets>
+🧪 TESTED: <bullets>
+📊 RESULTS: <bullets>
+🔗 LINKS: <bullets — live URL with cache-buster, commit SHA, deploy URL, ticket IDs>
+🧠 MEMORY: <one line>
 
 Live now: https://stuffprettygood.com/?cb=<ts>
 MEDIA:<screenshot-path>
 ```
 
-Keep it under 12 lines. Screenshot is the headline — Telegram renders inline. Use `send_message` with `target="telegram"` (home channel). The user can drill into a ticket from the kanban dashboard; the Telegram message is just the status pulse.
+The 5 sections (PROJECT / SUGGESTED / DONE / TESTED / RESULTS / LINKS / MEMORY) are non-negotiable. The user reads Telegram on their phone and the structure lets them scan in 2 seconds. If a section is empty (e.g. no tickets filed), write "none" rather than omitting — empty sections are confusing.
+
+On `send_message` failure, the next tick's report opens with: `🚨 spg-improve-loop · previous tick's Telegram send failed. Resending: <report>` and includes the previous tick's report body in full. This is the watchdog: if Telegram delivery ever silently breaks again, the next tick surfaces it.
 
 ## PWA gap to fix in the first 2 ticks
 
@@ -281,16 +310,17 @@ The current `ai-bubble` is a thin client-side matcher. vision.md § 3 names 4 fe
 
 ## Cron shape
 
-This skill is meant to be driven by a cron job, not invoked by hand:
+This skill is meant to be driven by a cron job, not invoked by hand. The cron job name is `spg-improve-loop` and it MUST appear in the first line of every Telegram report so the user always knows which loop is running.
 
 ```
+name:     spg-improve-loop
 schedule: every 15m
-prompt: "Run one tick of the spg-improve-loop. Project root: C:/Users/mehya/OneDrive/Documents/GitHub/stuffprettygood.com. Board: stuffprettygood-com. Telegram home channel for the report. Read vision.md at least once per session for theme. Stay under 15 minutes of real work per tick — measure tool-call count, not wall time."
-skills: [spg-improve-loop, dogfood, kanban-orchestrator]
-workdir: C:/Users/mehya/OneDrive/Documents/GitHub/stuffprettygood.com
+prompt:   "Run one tick of the spg-improve-loop. Project root: C:/Users/mehya/OneDrive/Documents/GitHub/stuffprettygood.com. Board: stuffprettygood-com. Telegram home channel for the report — ping on EVERY tick, no exceptions. The first line of every Telegram message MUST be: spg-improve-loop · tick N. Read vision.md at least once per session for theme. Stay under 15 minutes of real work per tick — measure tool-call count, not wall time. Commit + push to origin/deploy/legal-expansion-and-signup-modal after every successful source change. Write the durable report to reports/cron-tick-{N}.md before attempting the Telegram send."
+skills:   [spg-improve-loop, dogfood, kanban-orchestrator]
+workdir:  C:/Users/mehya/OneDrive/Documents/GitHub/stuffprettygood.com
 ```
 
-The cron prompt must be self-contained — the cron job runs in a fresh session with no current-chat context. Include the project path, the board name, the Telegram target, and the time budget. Do NOT tell the cron job to "keep improving" — that's what this skill is for.
+The cron prompt must be self-contained — the cron job runs in a fresh session with no current-chat context. Include the project path, the board name, the Telegram target, the **mandatory every-tick delivery rule**, the **report header format**, the **commit + push rule**, the **durable report path**, and the time budget. Do NOT tell the cron job to "keep improving" — that's what this skill is for.
 
 ## Common pitfalls
 
@@ -299,7 +329,7 @@ The cron prompt must be self-contained — the cron job runs in a fresh session 
 3. **Skipping `node scripts/validate.mjs`.** The user has been bitten by "validated locally but shipped broken" before. The validator is the project's only automated gate. Run it, paste the exit code in the report.
 4. **Filing a ticket without proof.** A kanban card with "the signup form is broken" is useless. Every card needs a URL, repro steps, expected vs actual, screenshot path, and ideally a `curl` command that reproduces the failure. If you can't reproduce it in 2 minutes, it's not a real ticket — close the finding in conversation memory instead.
 5. **Filing a ticket and then fixing it in the same tick.** The skill's job is to find and dispatch, not to fix. Fixes happen in *next* tick's lane, when the assignee reports back. This is the orchestrator/worker separation.
-6. **Telegram pinging on no-op ticks.** The user does not want "tick 47: all quiet." If nothing shipped and nothing was filed, stay silent. The kanban dashboard is the heartbeat; Telegram is the *change log*.
+6. **Going silent on a no-op tick.** The user has asked 3 times for every-tick delivery. Every tick pings Telegram with `spg-improve-loop · tick N` in the header, even if the tick was a 1-line "all clear." Silent ticks = broken loop. If you forgot to ping, file a one-line kanban card titled `tick N missed telegram ping` so the user can audit.
 7. **Using `kanban_create` from inside a worker-spawned tick.** If the cron fires a worker that runs this skill, the worker has the `kanban_*` toolset but a narrower scope. Use the operator CLI (`hermes kanban --board stuffprettygood-com ...`) for cross-process visibility. The kanban-orchestrator skill covers the difference.
 8. **Re-reading `vision.md` every tick.** It's 650 lines. Read it once per session for theme, then reference the lane-specific sections in this skill (which are pre-quoted).
 9. **Trying to add a real LLM call to the AI companion in a single tick.** The catalog grounding, system prompt, prompt-injection guard, cost, latency, and Workers-AI vs OpenAI choice are all a multi-card workstream. File a "research: LLM call shape" card, get the user to greenlight, then build.
@@ -315,8 +345,10 @@ The cron prompt must be self-contained — the cron job runs in a fresh session 
 - [ ] Browser QA covered at least homepage + one AI page + one category page
 - [ ] `browser_console` was clean (or any errors are filed as tickets)
 - [ ] Every finding from phase 6 has a kanban card with URL, repro, severity, and assignee
-- [ ] If state changed, Telegram report sent with commit SHA, deploy version, ticket count, and screenshot
-- [ ] If state didn't change, no Telegram message sent
+- [ ] Source changes committed + pushed to `origin/deploy/legal-expansion-and-signup-modal` (this is mandatory, not optional)
+- [ ] Durable report written to `reports/cron-tick-{N}.md` and committed
+- [ ] Telegram report sent with `spg-improve-loop · tick N` in the first line, all 5 sections present, MEDIA: screenshot if any
+- [ ] If Telegram send failed, the failure is logged and a kanban card titled `tick N missed telegram ping` exists
 
 ## Companion files
 
