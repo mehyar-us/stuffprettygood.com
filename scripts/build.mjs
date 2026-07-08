@@ -502,6 +502,83 @@ function pageHeading(route) {
   return PAGE_TITLES[route || ''] || titleCase(route || '');
 }
 
+// Per-route OG image theme. Each page gets a distinct gradient + accent emoji
+// so social shares (Twitter, iMessage, Slack previews) show unique artwork
+// instead of every page pointing at the same global spg-shopping-guide.svg.
+// Routes not listed get a deterministic neutral theme keyed off the route slug.
+// Tick 7 fix — closes Lane A backlog item #1: per-page OG image variety.
+const PAGE_OG_THEMES = {
+  '':                     { a: '#0f766e', b: '#fde68a', emoji: '🎁', line: 'AI shortlists · better gifts · practical products' },
+  'gift-finder':          { a: '#7c3aed', b: '#fde68a', emoji: '🎁', line: 'Answer a few prompts. Get gift shortlists you can act on.' },
+  'starter-kits':         { a: '#0ea5e9', b: '#fbcfe8', emoji: '🧰', line: 'Build useful setups from approved affiliate picks.' },
+  'useful-finds':         { a: '#0f766e', b: '#fde68a', emoji: '✨', line: 'Fresh daily finds from the approved catalog.' },
+  'stories':              { a: '#db2777', b: '#fde68a', emoji: '📰', line: 'Shop by real-life situation with AI-built shortlists.' },
+  'under-25':             { a: '#16a34a', b: '#fef9c3', emoji: '💸', line: 'Practical picks under $25.' },
+  'under-50':             { a: '#0891b2', b: '#fde68a', emoji: '💵', line: 'Practical picks under $50.' },
+  'walmart':              { a: '#ea580c', b: '#fde68a', emoji: '🛒', line: 'Approved Walmart catalog picks, filtered for usefulness.' },
+  'travel':               { a: '#0284c7', b: '#bae6fd', emoji: '✈️', line: 'Travel gear, hotel finders & trip kits.' },
+  'home-office':          { a: '#1d4ed8', b: '#e0e7ff', emoji: '🪑', line: 'Home-office upgrades for desk & posture.' },
+  'kitchen':              { a: '#b45309', b: '#fde68a', emoji: '🍳', line: 'Kitchen helpers that save weeknight time.' },
+  'pets':                 { a: '#059669', b: '#fde68a', emoji: '🐾', line: 'Pet problem-solvers: fur, water, walks, travel.' },
+  'tech':                 { a: '#312e81', b: '#c7d2fe', emoji: '🔌', line: 'Practical tech accessories & small fixes.' },
+  'signup':               { a: '#0f766e', b: '#fde68a', emoji: '📬', line: 'Get Pretty Good Finds by email.' },
+  'privacy':              { a: '#1f2937', b: '#f3f4f6', emoji: '🔒', line: 'Privacy policy & TCPA SMS opt-out.' },
+  'terms':                { a: '#1f2937', b: '#f3f4f6', emoji: '📄', line: 'Terms of service & disclaimers.' },
+  'contact':              { a: '#0f172a', b: '#bae6fd', emoji: '✉️', line: 'Contact Stuff Pretty Good.' },
+  'about':                { a: '#0f766e', b: '#fde68a', emoji: '🟢', line: 'About Stuff Pretty Good & editorial standards.' },
+  'affiliate-disclosure': { a: '#0f172a', b: '#fde68a', emoji: '💼', line: 'Affiliate disclosure & FTC compliance.' },
+  'advertise':            { a: '#9333ea', b: '#fde68a', emoji: '📣', line: 'Advertise on Stuff Pretty Good.' },
+  'unsubscribe':          { a: '#475569', b: '#fde68a', emoji: '🛑', line: 'Unsubscribe from email or SMS updates.' },
+  'preferences':          { a: '#0891b2', b: '#fde68a', emoji: '⚙️', line: 'Manage email & SMS preferences.' },
+};
+const OG_NEUTRAL_THEMES = [
+  { a: '#0f766e', b: '#fde68a' },
+  { a: '#7c3aed', b: '#bae6fd' },
+  { a: '#db2777', b: '#fde68a' },
+  { a: '#0891b2', b: '#fde68a' },
+  { a: '#ea580c', b: '#fde68a' },
+  { a: '#16a34a', b: '#fde68a' },
+];
+
+function hashSlug(s) {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; }
+  return h;
+}
+
+// Build a per-route OG image (1200x630-friendly aspect, 960x360 to match the
+// existing global SVG so social cards stay consistent). Returns the file path
+// relative to site root, and writes the SVG to dist/assets/og/<slug>.svg.
+// Pitfall-aware: this is a single-quoted template-literal builder, NOT inlined
+// into another template-literal block — keeps the inlined-string-build traps
+// from pitfalls #27 + #28 at bay.
+function pageOgImageSvg(route, title) {
+  const key = route || 'index';
+  const slug = key === '' ? 'home' : key.replace(/[^a-z0-9-]/gi, '-');
+  const theme = PAGE_OG_THEMES[key] || (() => {
+    const t = OG_NEUTRAL_THEMES[hashSlug(key) % OG_NEUTRAL_THEMES.length];
+    return { a: t.a, b: t.b, emoji: '🟢', line: esc(title) || 'Stuff Pretty Good' };
+  })();
+  const safeTitle = esc(title || theme.line).slice(0, 64);
+  const safeLine = esc(theme.line).slice(0, 90);
+  return {
+    filename: `assets/og/${slug}.svg`,
+    url: `/assets/og/${slug}.svg`,
+    svg:
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-label="${esc(title || 'Stuff Pretty Good')} social preview">
+  <defs><linearGradient id="og-${slug}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${theme.a}"/><stop offset="1" stop-color="${theme.b}"/></linearGradient><filter id="og-glow-${slug}"><feDropShadow dx="0" dy="22" stdDeviation="22" flood-color="#020617" flood-opacity=".28"/></filter></defs>
+  <rect width="960" height="360" rx="44" fill="url(#og-${slug})"/>
+  <circle cx="106" cy="92" r="58" fill="#fff7ed" opacity=".22"/><circle cx="848" cy="78" r="92" fill="#bfdbfe" opacity=".18"/><path d="M64 292C190 242 278 330 402 278s192-74 320 8 184 8 216-22" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" opacity=".22"/>
+  <g filter="url(#og-glow-${slug})"><rect x="62" y="54" width="836" height="252" rx="40" fill="#fff"/></g>
+  <image href="/assets/site/spg-logo.svg" x="92" y="86" width="120" height="120"/>
+  <text x="240" y="160" font-family="Inter,Arial,sans-serif" font-size="58" font-weight="900" fill="#111827">${theme.emoji}</text>
+  <text x="92" y="240" font-family="Inter,Arial,sans-serif" font-size="44" font-weight="900" fill="#0f172a">${safeTitle}</text>
+  <text x="92" y="280" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="600" fill="#475569">${safeLine}</text>
+  <text x="880" y="328" text-anchor="end" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="900" fill="#fff7ed">stuffprettygood.com</text>
+</svg>`
+  };
+}
+
 function layout(title, body, opts = {}, description) {
   const desc = description || 'AI-assisted shopping guide for useful gifts, starter kits, and practical products.';
   const shellClass = body.includes('compact-hero') ? 'site-shell home-shell' : 'site-shell';
@@ -621,6 +698,20 @@ function mkdirPage(route, html) {
   final = final.replace(
     /<meta property="og:url" content="https:\/\/stuffprettygood\.com\/">/,
     `<meta property="og:url" content="${canonicalHref}">`
+  );
+  // Per-page OG image: write a route-specific SVG and point og:image at it,
+  // instead of every page sharing /assets/site/spg-shopping-guide.svg. The
+  // page title is extracted from the layout's <title> tag when available;
+  // fall back to PAGE_TITLES[route] for routed pages, and to the pass-through
+  // slug for ad-hoc pages. Tick 7 fix — Lane A polish: per-page OG image.
+  fs.mkdirSync(path.join(dist, 'assets/og'), { recursive: true });
+  const titleMatch = final.match(/<title>([^<]+)<\/title>/);
+  const rawTitle = titleMatch ? titleMatch[1].split(' | ')[0].trim() : '';
+  const ogSlug = pageOgImageSvg(route, rawTitle);
+  fs.writeFileSync(path.join(dist, ogSlug.filename), ogSlug.svg);
+  final = final.replace(
+    /<meta property="og:image" content="\/assets\/site\/spg-shopping-guide\.svg">/,
+    `<meta property="og:image" content="${ogSlug.url}"><meta property="og:image:width" content="960"><meta property="og:image:height" content="360">`
   );
   fs.writeFileSync(path.join(dir, 'index.html'), normalizeLinks(final));
 }
