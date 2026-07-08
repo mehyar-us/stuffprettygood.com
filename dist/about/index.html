@@ -265,6 +265,29 @@
     var btn = document.querySelector('[data-spg-install]');
     if (btn) btn.setAttribute('hidden', '');
   });
+})();</script><script>(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (typeof IntersectionObserver === 'undefined') return;
+  var SELECTOR = '.card, .story-card, .magazine-card, .recommendation, .panel, .signup-band, .lanes a, .guide-list a, .hero-stack, .hero-card, .hero-copy, .decision-boxes div, .visual-proof';
+  var nodes = Array.prototype.slice.call(document.querySelectorAll(SELECTOR));
+  if (!nodes.length) return;
+  nodes.forEach(function(n){
+    if (n.dataset.spgReveal === 'off') return;
+    n.classList.add('spg-reveal');
+  });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('spg-reveal-in');
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+  nodes.forEach(function(n){ io.observe(n); });
+  // Safety net: if IO never fires within 1.2s (e.g. cached offline page), flip them on.
+  setTimeout(function(){
+    nodes.forEach(function(n){ if (!n.classList.contains('spg-reveal-in')) n.classList.add('spg-reveal-in'); });
+    io.disconnect();
+  }, 1200);
 })();</script>
 <button class="signup-modal-launch" type="button" data-signup-modal-open aria-label="Sign up for Pretty Good Finds">
   <span class="signup-modal-launch-text">Sign up</span>

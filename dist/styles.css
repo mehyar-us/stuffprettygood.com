@@ -150,3 +150,11 @@ body{background:radial-gradient(circle at 10% -10%,#fed7aa 0,#f6f1e8 24%,#eef6ff
 /* SPG rate-limit message — shown in chat when user is throttled */
 .rate-limit-msg{color:#9a3412;font-style:italic;display:inline-block;padding:4px 8px;background:#fff7ed;border-radius:10px}
 @media(prefers-color-scheme:dark){.spg-quota-pill{background:#1f2937;color:#fdba74;border-color:#78350f}.spg-quota-pill[data-state="ok"]{background:#064e3b;color:#a7f3d0;border-color:#065f46}.spg-quota-pill[data-state="low"]{background:#1f2937;color:#fdba74;border-color:#78350f}.spg-quota-pill[data-state="exhausted"]{background:#1f2937;color:#fca5a5;border-color:#7f1d1d}.rate-limit-msg{background:#1f2937;color:#fdba74}}
+
+/* SPG scroll-reveal motion: fade-up on viewport entry. Honours
+   prefers-reduced-motion (JS short-circuits before these apply). The 1.2s
+   safety-net in the JS guarantees visibility even when IO is throttled. */
+@keyframes spg-reveal-up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.spg-reveal{opacity:0;transform:translateY(14px);will-change:opacity,transform}
+.spg-reveal-in{animation:spg-reveal-up .5s cubic-bezier(.2,.7,.2,1) both;opacity:1;transform:none;will-change:auto}
+@media(max-width:560px){.spg-reveal{transform:translateY(8px)}.spg-reveal-in{animation-duration:.42s}}

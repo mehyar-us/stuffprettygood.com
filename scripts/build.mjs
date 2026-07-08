@@ -214,6 +214,37 @@ function pwaRegistration() {
   });
 })();</script>`;
 }
+// SPG scroll-reveal motion. IntersectionObserver + prefers-reduced-motion + fade-up
+// keyframe. Auto-targets the major card surfaces (cards, story cards, magazine
+// cards, recommendation rows, panels, signup-band, hero stack, lanes, guide links).
+// Inlined into every page so no extra request; runs once on DOM ready.
+function scrollRevealScript() {
+  return `<script>(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (typeof IntersectionObserver === 'undefined') return;
+  var SELECTOR = '.card, .story-card, .magazine-card, .recommendation, .panel, .signup-band, .lanes a, .guide-list a, .hero-stack, .hero-card, .hero-copy, .decision-boxes div, .visual-proof';
+  var nodes = Array.prototype.slice.call(document.querySelectorAll(SELECTOR));
+  if (!nodes.length) return;
+  nodes.forEach(function(n){
+    if (n.dataset.spgReveal === 'off') return;
+    n.classList.add('spg-reveal');
+  });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('spg-reveal-in');
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+  nodes.forEach(function(n){ io.observe(n); });
+  // Safety net: if IO never fires within 1.2s (e.g. cached offline page), flip them on.
+  setTimeout(function(){
+    nodes.forEach(function(n){ if (!n.classList.contains('spg-reveal-in')) n.classList.add('spg-reveal-in'); });
+    io.disconnect();
+  }, 1200);
+})();</script>`;
+}
+
 const microsoftClaritySnippet = `<script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -443,7 +474,7 @@ function layout(title, body, opts = {}, description) {
   const showModal = opts.showModal !== false; // default true
   const modalHtml = showModal ? signupModal() : '';
   const fullTitle = `${esc(title)} | Stuff Pretty Good`;
-  return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<title>${fullTitle}</title><meta name="description" content="${esc(desc)}"><meta property="og:title" content="${fullTitle}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="https://stuffprettygood.com${opts.canonical || '/'}"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#111827"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg"><link rel="stylesheet" href="/styles.css"></head><body id="top"><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget()}${backToTop()}${pwaRegistration()}${modalHtml}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
+  return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<title>${fullTitle}</title><meta name="description" content="${esc(desc)}"><meta property="og:title" content="${fullTitle}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="https://stuffprettygood.com${opts.canonical || '/'}"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#111827"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg"><link rel="stylesheet" href="/styles.css"></head><body id="top"><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget()}${backToTop()}${pwaRegistration()}${scrollRevealScript()}${modalHtml}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
 }
 
 function card(p, i = 0) {
