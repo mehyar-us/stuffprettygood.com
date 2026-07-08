@@ -218,17 +218,19 @@ function pwaRegistration() {
 // keyframe. Auto-targets the major card surfaces (cards, story cards, magazine
 // cards, recommendation rows, panels, signup-band, hero stack, lanes, guide links).
 // Inlined into every page so no extra request; runs once on DOM ready.
+//
+// Tick 6 update (closes t_98bc242f): wraps the initial setup in a MutationObserver
+// that watches document.body so cards injected AFTER by data-live-picks /
+// data-live-stories JS fetchers also get the reveal. Without this, the safety-net
+// safety-net + IO captured a snapshot at body-end and missed ~87 of ~117 cards.
+// `handled` Set dedupes nodes across the initial pass, MutationObserver path, and
+// the 1.2s safety-net so no node is double-observed.
 function scrollRevealScript() {
   return `<script>(function(){
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (typeof IntersectionObserver === 'undefined') return;
   var SELECTOR = '.card, .story-card, .magazine-card, .recommendation, .panel, .signup-band, .lanes a, .guide-list a, .hero-stack, .hero-card, .hero-copy, .decision-boxes div, .visual-proof';
-  var nodes = Array.prototype.slice.call(document.querySelectorAll(SELECTOR));
-  if (!nodes.length) return;
-  nodes.forEach(function(n){
-    if (n.dataset.spgReveal === 'off') return;
-    n.classList.add('spg-reveal');
-  });
+  var handled = new WeakSet();
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if (!e.isIntersecting) return;
@@ -236,11 +238,43 @@ function scrollRevealScript() {
       io.unobserve(e.target);
     });
   }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
-  nodes.forEach(function(n){ io.observe(n); });
-  // Safety net: if IO never fires within 1.2s (e.g. cached offline page), flip them on.
+  function attach(n){
+    if (!n || handled.has(n)) return;
+    if (n.nodeType !== 1) return;
+    if (!(n.matches && n.matches(SELECTOR))) return;
+    if (n.dataset && n.dataset.spgReveal === 'off') return;
+    handled.add(n);
+    n.classList.add('spg-reveal');
+    io.observe(n);
+  }
+  // Initial pass — snapshot of whatever the server already rendered.
+  var initial = Array.prototype.slice.call(document.querySelectorAll(SELECTOR));
+  initial.forEach(attach);
+  // Late-arrival pass — MutationObserver picks up cards injected by the
+  // data-live-picks / data-live-stories fetchers (see t_98bc242f).
+  if (typeof MutationObserver !== 'undefined'){
+    var mo = new MutationObserver(function(records){
+      records.forEach(function(r){
+        var added = r.addedNodes && r.addedNodes.length ? r.addedNodes : [];
+        added.forEach(function(node){
+          if (node.nodeType !== 1) return;
+          attach(node);
+          // Also descend one level — many fetchers inject wrapper divs with cards inside.
+          if (node.querySelectorAll){
+            Array.prototype.slice.call(node.querySelectorAll(SELECTOR)).forEach(attach);
+          }
+        });
+      });
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+  }
+  // Safety net: if IO never fires within 1.2s (e.g. cached offline page), flip
+    // every handled-but-unrevealed node on. Still runs through the handled set so we
+    // don't try to flip nodes added after the timeout (those go through IO).
   setTimeout(function(){
-    nodes.forEach(function(n){ if (!n.classList.contains('spg-reveal-in')) n.classList.add('spg-reveal-in'); });
-    io.disconnect();
+    handled && document.querySelectorAll(SELECTOR).forEach(function(n){
+      if (!n.classList.contains('spg-reveal-in')) n.classList.add('spg-reveal-in');
+    });
   }, 1200);
 })();</script>`;
 }
