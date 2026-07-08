@@ -427,6 +427,16 @@ function pageTitle(route) {
   return PAGE_TITLES[route || ''] || titleCase(route || '');
 }
 
+// pageHeading keeps the on-page H1 in sync with the <title>. Without this, the
+// category-page loop used to emit `<title>Useful picks under $50</title>` but
+// the visible H1 stayed "Under 50" — search engines and on-page visitors saw
+// different page names. Prefer the descriptive PAGE_TITLES entry so H1 and
+// <title> agree, fall back to titleCase(route) for routes not in the map.
+// Tick 3 fix — see skill pitfall #17 (H1/title sync).
+function pageHeading(route) {
+  return PAGE_TITLES[route || ''] || titleCase(route || '');
+}
+
 function layout(title, body, opts = {}, description) {
   const desc = description || 'AI-assisted shopping guide for useful gifts, starter kits, and practical products.';
   const shellClass = body.includes('compact-hero') ? 'site-shell home-shell' : 'site-shell';
@@ -586,7 +596,7 @@ for (const route of categories.filter((r) => !['gift-finder', 'starter-kits', 'u
       ? `<section class="section"><div class="section-head"><div><p class="eyebrow">Impact catalog</p><h2>Fresh Walmart picks</h2></div></div><div class="grid product-wall" data-live-picks><p class="micro">Loading approved Walmart picks…</p></div>${liveDailyPicksScript('', 'walmart', '[data-live-picks]', 60)}</section>`
       : '';
   const staticGrid = picks.length ? `<div class="grid">${picks.map(card).join('')}</div>` : '';
-  mkdirPage(route, layout(pageTitle(route), `<section class="section"><p class="eyebrow">Useful picks</p><h1>${titleCase(route)}</h1><p class="sub">${intro}</p>${staticGrid}</section>${liveSection}`, {}, pageDescription(route)));
+  mkdirPage(route, layout(pageTitle(route), `<section class="section"><p class="eyebrow">Useful picks</p><h1>${pageHeading(route)}</h1><p class="sub">${intro}</p>${staticGrid}</section>${liveSection}`, {}, pageDescription(route)));
 }
 
 for (const p of products) {
