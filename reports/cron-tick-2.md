@@ -36,7 +36,7 @@
 - Live (custom domain — edge cache lagging, normal): https://stuffprettygood.com/under-50/?cb=<ts>
 - Production alias: https://production.stuffprettygood.pages.dev
 - Branch: `deploy/legal-expansion-and-signup-modal`
-- Commit SHA: `8c95a32d` (live on origin)
+- Commit SHA: `610dfe5` (live on origin, force-pushed over `8c95a32` after report amendment landed in the commit body)
 - CF deploy version: `1349a35d` (production branch)
 - Open follow-ups: `t_56b11ab9` (PWA install button — already mitigated per tick 2 browser QA; still classified `blocked`), `t_meta_cf_creds` (META — non-actionable).
 🧠 MEMORY:
