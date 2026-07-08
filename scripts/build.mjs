@@ -392,12 +392,48 @@ function pageDescription(route) {
   return PAGE_DESCRIPTIONS[route || ''] || 'AI-assisted shopping guide for useful gifts, starter kits, and practical products.';
 }
 
+// Per-page <title> map. Each page gets a descriptive title stem (≤60 chars
+// total with "| Stuff Pretty Good" suffix) instead of a bare titleCase(slug)
+// like "Under 50" or "Privacy". The brand suffix is added by layout().
+// Pages not listed fall back to titleCase(route) — same as before, so no
+// regressions. Product pages and guide pages already pass descriptive titles
+// directly into layout() and don't need this map.
+const PAGE_TITLES = {
+  '': 'Useful gifts, starter kits & budget finds',
+  'gift-finder': 'AI Gift Finder',
+  'starter-kits': 'AI Starter Kit Builder',
+  'useful-finds': 'Useful finds across every category',
+  'stories': 'AI shopping stories by situation',
+  'under-25': 'Useful picks under $25',
+  'under-50': 'Useful picks under $50',
+  'walmart': 'Approved Walmart catalog picks',
+  'travel': 'Travel gear, hotel finders & trip kits',
+  'home-office': 'Home-office upgrades for desk & posture',
+  'kitchen': 'Kitchen helpers that save weeknight time',
+  'pets': 'Pet problem-solvers: fur, water, walks, travel',
+  'tech': 'Practical tech accessories & small fixes',
+  'signup': 'Get Pretty Good Finds by email',
+  'privacy': 'Privacy policy & TCPA SMS opt-out',
+  'terms': 'Terms of service & disclaimers',
+  'contact': 'Contact Stuff Pretty Good',
+  'about': 'About Stuff Pretty Good & editorial standards',
+  'affiliate-disclosure': 'Affiliate disclosure & FTC compliance',
+  'advertise': 'Advertise on Stuff Pretty Good',
+  'unsubscribe': 'Unsubscribe from email or SMS updates',
+  'preferences': 'Manage email & SMS preferences',
+};
+
+function pageTitle(route) {
+  return PAGE_TITLES[route || ''] || titleCase(route || '');
+}
+
 function layout(title, body, opts = {}, description) {
   const desc = description || 'AI-assisted shopping guide for useful gifts, starter kits, and practical products.';
   const shellClass = body.includes('compact-hero') ? 'site-shell home-shell' : 'site-shell';
   const showModal = opts.showModal !== false; // default true
   const modalHtml = showModal ? signupModal() : '';
-  return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<title>${esc(title)} | Stuff Pretty Good</title><meta name="description" content="${esc(desc)}"><meta name="theme-color" content="#111827"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg"><link rel="stylesheet" href="/styles.css"></head><body id="top"><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget()}${backToTop()}${pwaRegistration()}${modalHtml}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
+  const fullTitle = `${esc(title)} | Stuff Pretty Good`;
+  return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<title>${fullTitle}</title><meta name="description" content="${esc(desc)}"><meta property="og:title" content="${fullTitle}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="https://stuffprettygood.com${opts.canonical || '/'}"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#111827"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg"><link rel="stylesheet" href="/styles.css"></head><body id="top"><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget()}${backToTop()}${pwaRegistration()}${modalHtml}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
 }
 
 function card(p, i = 0) {
@@ -498,7 +534,20 @@ function assistantWidget() {
 function mkdirPage(route, html) {
   const dir = path.join(dist, route);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, 'index.html'), normalizeLinks(html));
+  // Inject a canonical link right before </head> if the page doesn't already have one
+  // (the /go/<id>/ redirect pages have their own canonical pointing at the merchant).
+  // Also rewrite the og:url placeholder so social shares show the real page URL.
+  let final = html;
+  const canonicalHref = `https://stuffprettygood.com/${route ? route + '/' : ''}`;
+  if (!/<link\s+rel="canonical"/i.test(final)) {
+    final = final.replace('</head>', `<link rel="canonical" href="${canonicalHref}"></head>`);
+  }
+  // og:url defaults to '/' in the layout template — rewrite it to the real URL.
+  final = final.replace(
+    /<meta property="og:url" content="https:\/\/stuffprettygood\.com\/">/,
+    `<meta property="og:url" content="${canonicalHref}">`
+  );
+  fs.writeFileSync(path.join(dir, 'index.html'), normalizeLinks(final));
 }
 
 const categories = ['gift-finder', 'starter-kits', 'under-25', 'under-50', 'travel', 'home-office', 'kitchen', 'pets', 'tech', 'walmart', 'useful-finds'];
@@ -513,7 +562,7 @@ const home = `<section class="hero compact-hero"><div class="hero-copy"><div><di
 <section class="section split sales-strip"><div><p class="eyebrow">How it works</p><h2>Tell us the job. We show the stuff worth considering.</h2></div><p class="sub">Stuff Pretty Good is built around useful outcomes: better gifts, cleaner desks, smarter travel, faster kitchens, calmer pet care, and budget-friendly upgrades.</p></section>
 <section class="section panel"><div class="section-head"><div><p class="eyebrow">Buying guides</p><h2>Start with the problem. Leave with a shortlist.</h2></div></div><div class="guide-list">${posts.map((p) => `<a href="/guides/${p.slug}/">${esc(p.title)}<span>Get guide →</span></a>`).join('')}</div></section>
 <section class="signup-band"><div><p class="eyebrow">Email list</p><h2>Get useful finds without doom-scrolling.</h2><p>Join for useful finds, gift ideas, and starter kits. Email is required; everything else is optional.</p></div>${signupForm('homepage')}</section>`;
-mkdirPage('', layout('AI-assisted shopping guide', home, {}, pageDescription('')));
+mkdirPage('', layout(pageTitle(''), home, {}, pageDescription('')));
 
 function filtered(route) {
   if (route === 'under-25' || route === 'under-50') return products.filter((p) => p.price_band === route);
@@ -537,7 +586,7 @@ for (const route of categories.filter((r) => !['gift-finder', 'starter-kits', 'u
       ? `<section class="section"><div class="section-head"><div><p class="eyebrow">Impact catalog</p><h2>Fresh Walmart picks</h2></div></div><div class="grid product-wall" data-live-picks><p class="micro">Loading approved Walmart picks…</p></div>${liveDailyPicksScript('', 'walmart', '[data-live-picks]', 60)}</section>`
       : '';
   const staticGrid = picks.length ? `<div class="grid">${picks.map(card).join('')}</div>` : '';
-  mkdirPage(route, layout(titleCase(route), `<section class="section"><p class="eyebrow">Useful picks</p><h1>${titleCase(route)}</h1><p class="sub">${intro}</p>${staticGrid}</section>${liveSection}`, {}, pageDescription(route)));
+  mkdirPage(route, layout(pageTitle(route), `<section class="section"><p class="eyebrow">Useful picks</p><h1>${titleCase(route)}</h1><p class="sub">${intro}</p>${staticGrid}</section>${liveSection}`, {}, pageDescription(route)));
 }
 
 for (const p of products) {
@@ -615,8 +664,8 @@ function toolPage(name, desc, mode = 'gift') {
 }
 mkdirPage('gift-finder', toolPage('AI Gift Finder', 'Answer a few prompts and get gift ideas from the approved-offer catalog only.'));
 mkdirPage('starter-kits', toolPage('AI Starter Kit Builder', 'Build useful setups from approved affiliate products only.', 'kit'));
-mkdirPage('useful-finds', layout('Useful Finds', `<section class="section"><p class="eyebrow">Useful picks</p><h1>Useful Finds</h1><p class="sub">Browse useful upgrades for gifts, home, kitchen, travel, tech, pets, and everyday problems.</p><div class="section-head"><div><p class="eyebrow">Fresh daily picks</p><h2>Newest from the live catalog</h2></div></div><div class="grid product-wall" data-live-picks="fresh"><p class="micro">Loading daily picks…</p></div>${liveDailyPicksScript('', '', '[data-live-picks="fresh"]', 60)}<div class="section-head"><div><p class="eyebrow">Walmart via Impact</p><h2>Approved Walmart catalog picks</h2></div><a class="pill" href="/walmart/">Browse Walmart</a></div><div class="grid product-wall" data-live-picks="walmart"><p class="micro">Loading Walmart picks…</p></div>${liveDailyPicksScript('', 'walmart', '[data-live-picks="walmart"]', 60)}<h2>Full launch catalog</h2><div class="grid">${products.sort(productsWithImagesFirst).map(card).join('')}</div></section>`, {}, pageDescription('useful-finds')));
-mkdirPage('stories', layout('AI Shopping Stories', `<section class="section stories-page magazine-page"><div class="magazine-hero"><div><p class="eyebrow">Daily AI shopping stories</p><h1>Shopping magazine built from real scenarios.</h1><p class="sub">Every feature is a situation — trail day, emergency prep, travel day, game day, home reset — with image-backed products from the approved catalog and monetized /go paths. The daily AI process checks prior stories before publishing new lists.</p><div class="magazine-stats"><span>10+ live story lists</span><span>Image-backed products</span><span>Approved links only</span></div></div><div class="magazine-cover"><span>Today’s issue</span><strong>Useful stuff by situation</strong><small>Fresh checklists, practical products, no random marketplace dump.</small></div></div><div class="section-head magazine-head"><div><p class="eyebrow">Shop the issue</p><h2>Visual story checklists</h2></div><a class="pill" href="/walmart/">Walmart picks</a></div><div class="story-wall magazine-wall" data-live-stories><p class="micro">Loading today’s stories…</p></div>${liveStoriesScript(20)}</section>`, {}, pageDescription('stories')));
+mkdirPage('useful-finds', layout(pageTitle('useful-finds'), `<section class="section"><p class="eyebrow">Useful picks</p><h1>Useful Finds</h1><p class="sub">Browse useful upgrades for gifts, home, kitchen, travel, tech, pets, and everyday problems.</p><div class="section-head"><div><p class="eyebrow">Fresh daily picks</p><h2>Newest from the live catalog</h2></div></div><div class="grid product-wall" data-live-picks="fresh"><p class="micro">Loading daily picks…</p></div>${liveDailyPicksScript('', '', '[data-live-picks="fresh"]', 60)}<div class="section-head"><div><p class="eyebrow">Walmart via Impact</p><h2>Approved Walmart catalog picks</h2></div><a class="pill" href="/walmart/">Browse Walmart</a></div><div class="grid product-wall" data-live-picks="walmart"><p class="micro">Loading Walmart picks…</p></div>${liveDailyPicksScript('', 'walmart', '[data-live-picks="walmart"]', 60)}<h2>Full launch catalog</h2><div class="grid">${products.sort(productsWithImagesFirst).map(card).join('')}</div></section>`, {}, pageDescription('useful-finds')));
+mkdirPage('stories', layout(pageTitle('stories'), `<section class="section stories-page magazine-page"><div class="magazine-hero"><div><p class="eyebrow">Daily AI shopping stories</p><h1>Shopping magazine built from real scenarios.</h1><p class="sub">Every feature is a situation — trail day, emergency prep, travel day, game day, home reset — with image-backed products from the approved catalog and monetized /go paths. The daily AI process checks prior stories before publishing new lists.</p><div class="magazine-stats"><span>10+ live story lists</span><span>Image-backed products</span><span>Approved links only</span></div></div><div class="magazine-cover"><span>Today’s issue</span><strong>Useful stuff by situation</strong><small>Fresh checklists, practical products, no random marketplace dump.</small></div></div><div class="section-head magazine-head"><div><p class="eyebrow">Shop the issue</p><h2>Visual story checklists</h2></div><a class="pill" href="/walmart/">Walmart picks</a></div><div class="story-wall magazine-wall" data-live-stories><p class="micro">Loading today’s stories…</p></div>${liveStoriesScript(20)}</section>`, {}, pageDescription('stories')));
 
 function signupForm(source = 'site') {
   return `<form class="signup-form signup-form-sms" method="post" action="https://stuffprettygood-api.mehyar.workers.dev/api/subscribe" novalidate>
@@ -1448,7 +1497,7 @@ ${signupForm('signup-page')}`,
 const SPG_NO_MODAL_SLUGS = new Set(['privacy', 'terms', 'affiliate-disclosure', 'signup', 'unsubscribe', 'preferences']);
 for (const [slug, html] of Object.entries(policyPages)) {
   const showModal = !SPG_NO_MODAL_SLUGS.has(slug);
-  mkdirPage(slug, layout(titleCase(slug), `<section class="section post">${html}</section>`, { showModal }, pageDescription(slug)));
+  mkdirPage(slug, layout(pageTitle(slug), `<section class="section post">${html}</section>`, { showModal }, pageDescription(slug)));
 }
 
 fs.writeFileSync(path.join(dist, 'robots.txt'), 'User-agent: *\nAllow: /\nSitemap: https://stuffprettygood.com/sitemap.xml\n');
