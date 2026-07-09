@@ -18,14 +18,17 @@
 - node scripts/build.mjs (155 products + 10 guides built).
 - Skipped browser QA — twitter:card metadata is server-rendered HTML-only; visual confirmation requires an external Twitter card validator URL which is out of scope.
 📊 RESULTS:
-- Files changed: 190 (1 source + 189 dist), +202/-189.
-- git diff stat: scripts/build.mjs +13 / -0 (new mkdirPage twitter rewrite block); 189 dist/*.html files each gained the 4 twitter metadata tags (+1/-1 since the rewrite was an injection after the og:image line).
-- Single commit ready per pitfall #61 (source + dist + report together).
-- One commit per pitfall #61: chore(reports) + feat(seo) merged into a single lane-B ship.
+- Files changed: 191 (1 source + 189 dist + 1 report), +235/-189.
+- git diff stat: scripts/build.mjs +13 / -0 (new mkdirPage twitter rewrite block); 189 dist/*.html files each gained the 4 twitter metadata tags (+1/-1 since the rewrite was an injection after the og:image line); 1 new report file.
+- Single commit shipped per pitfall #61 (source + dist + report together) — commit SHA 92fd0e3.
+- Wrangler deploy: 7a5c1724.stuffprettygood.pages.dev (189 files uploaded, 662 already in sync from prior ticks). Alias URL: production.stuffprettygood.pages.dev.
+- Push to origin/deploy/legal-expansion-and-signup-modal LANDED (LOCAL 92fd0e3 == REMOTE 92fd0e3, AHEAD count 0) per pitfall #47 ground-truth recipe.
 🔗 LINKS:
-- Live preview: https://stuffprettygood.com/?cb=$(date +%s) — twitter:card metadata visible on every non-/go page in HTML view-source.
-- Per-page OG image showcase (sample): https://stuffprettygood.com/gift-finder/, /under-50/, /kitchen/, /privacy/, /signup/, /open/.
-- Commit (pending): one lane-B ship commit + one chore(reports) commit per pitfall-#61 source+dist+report merge.
+- Live preview (deploy verification): https://7a5c1724.stuffprettygood.pages.dev/ — twitter:card metadata verified live on home + 5 sampled routes (gift-finder, under-50, privacy, signup, kitchen) — full 5-tag metadata per page.
+- Per-page OG image showcase (sample live): https://7a5c1724.stuffprettygood.pages.dev/gift-finder/, /under-50/, /kitchen/, /privacy/, /signup/, /open/.
+- Custom domain: https://stuffprettygood.com/ — edge cache may lag 30-60s; preview URL is authoritative until then (pitfall #33).
+- Commit: 92fd0e3be50446c5bcc7177f28a427c4532af087 (on origin/deploy/legal-expansion-and-signup-modal).
+- Browser QA (tick 44): navigated to https://7a5c1724.stuffprettygood.pages.dev/?cb=<date>; HTML structure rendered correctly (no broken sections); 3 pre-existing empty-message JS errors in console (same baseline as cron-tick-22.md — unrelated to the metadata patch which is pure HTML).
 🧠 MEMORY:
 - The mkdirPage(route, html) signature is the canonical one for any per-page transform that only needs the html body — title/desc are re-extractable via regex from the html. No caller updates needed.
 - /go/<id>/ pages should ALWAYS stay noindex + meta-empty for OG/Twitter — they're the merchant redirect layer (Amazon, Walmart) and pointing social unfurls at them would waste share juice.
