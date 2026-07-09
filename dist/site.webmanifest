@@ -20,6 +20,9 @@
     "standalone",
     "minimal-ui"
   ],
+  "launch_handler": {
+    "client_mode": "auto"
+  },
   "icons": [
     {
       "src": "/favicon.svg",
