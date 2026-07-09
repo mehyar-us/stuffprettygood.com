@@ -16,7 +16,7 @@
 - **Gift finder** (`/gift-finder/`): renders, form present, AI widget button present, no JS errors.
 - **Live curl** (`-A "Mozilla/5.0"`, pitfall #80): 6/6 sample routes (`/`, `/gift-finder/`, `/starter-kits/`, `/under-50/`, `/signup/`, `/privacy/`, `/about/`) each return 10 matches of "ios-hint" — IIFE wired everywhere.
 📊 RESULTS:
-- **Commit SHA:** (filled in by next bash step before Telegram send — local SHA only; push deferred per pitfall #47 if upstream hangs)
+- **Commit SHA:** `ccbbc23` (push verified per pitfall #47 ground-truth recipe: `git ls-remote origin deploy/legal-expansion-and-signup-modal` → `ccbbc23e1099ac7689adcd7c1773102a39687b87` matches `git rev-parse HEAD`; push landed in <30s, well under 60s tool ceiling).
 - **CF deploy:** `1ff85c6d.stuffprettygood.pages.dev` (preview URL authoritative per pitfall #33/#72/#76); production alias `production.stuffprettygood.pages.dev`.
 - **Diff size:** 3 source files + 188 dist files / +96/-1 in source (src/styles.css +20/-0, scripts/build.mjs +75/-1, + 1 line for the layout wire = net +96/-1) + ~+264/-0 across 188 dist files (each gets ~+1.4 lines from the inlined IIFE).
 - **Schema/gate verification:** ✅ offline 15-assertion gate ✅ live curl gate ✅ browser DOM-side-effect gate ✅ `node --check` syntactic parse.
@@ -24,6 +24,6 @@
 🔗 LINKS:
 - Live custom-domain (cache-busted): https://stuffprettygood.com/?cb=$(date +%s)
 - Preview URL (authoritative per pitfall #33/#72/#76): https://1ff85c6d.stuffprettygood.pages.dev/
-- Commit (SHA pending push): local SHA captured at end of tick
+- Commit: [ccbbc23](https://github.com/mehyar-us/stuffprettygood.com/commit/ccbbc23e1099ac7689adcd7c1773102a39687b87)
 - Kanban: `t_c9e7c234` (implementation), `t_71e37a86` (real-iOS QA follow-up), `t_56b11ab9` (false-alarm evidence comment)
 🧠 MEMORY: iOS Safari install hint IIFE adds a class-on-root gate (`.is-ios-safari`) + localStorage-dismiss + 3.5s splash-aware delay. UA detection covers iPhone|iPad|iPod + iPadOS desktop mode (MacIntel + maxTouchPoints>1), excludes Chrome/Firefox/Edge/Opera/DuckDuckGo on iOS via the negative-lookahead WebKit check. Pattern: IIFE early-returns → never enter DOM → zero overhead on non-iOS browsers. Future Lane A entries that need a "feature-detect + DOM-side-effect-only-on-target" IIFE should mirror this gate (small, fail-closed, splash-aware delay, ARIA-polite). Browser QA from Windows env is limited to "IIFE correctly early-returns on non-iOS UA" — actual visual confirmation requires real iOS device, hence the t_71e37a86 QA follow-up.
