@@ -16,6 +16,10 @@
     "lifestyle",
     "productivity"
   ],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
   "icons": [
     {
       "src": "/favicon.svg",
