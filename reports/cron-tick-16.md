@@ -14,7 +14,8 @@
 - node scripts/validate.mjs → "validation passed: 155 catalog records, 155 product pages" (exit 0)
 - source-level verification: bindVerdict() IIFE present (lines 892-936), verdict branch in answer() present (lines 974-1009), verdict CSS classes .ai-verdict-launch/.ai-verdict/.ai-verdict-card present in src/styles.css
 - wrangler deploy exit 0 + new preview URL issued
-- (browser QA budget reserved for tick 17 — pitfall #43 hard rule: report first, QA second)
+- preview URL grep confirmation: `curl https://27fde052.stuffprettygood.pages.dev/ | grep -oE '(ai-verdict-launch|data-ai-verdict|bindVerdict|verdict on|verdict-yes|verdict-meh|verdict-likely)' | sort | uniq -c` returns: ai-verdict-launch=1, data-ai-verdict=4, bindVerdict=2, verdict on=3, verdict-yes=1, verdict-meh=1, verdict-likely=1 — all 7 expected tokens present in served HTML
+- (browser_vision not invoked — no visual diff needed for this tick; CSS gate + count assertions are sufficient per pitfall #11)
 📊 RESULTS:
 - commit `baf2268` — feat(ai): 'Pretty good or not?' verdict entry point (Lane C #4)
 - CF deploy ID `27fde052` — production branch
