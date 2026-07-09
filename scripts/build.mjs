@@ -1637,6 +1637,19 @@ function mkdirPage(route, html) {
     /<meta property="og:image" content="\/assets\/site\/spg-shopping-guide\.svg">/,
     `<meta property="og:image" content="${ogSlug.url}"><meta property="og:image:width" content="960"><meta property="og:image:height" content="360">`
   );
+  // Per-page Twitter Card metadata: rewrite the generic twitter:image placeholder
+  // to point at the same per-page SVG, and inject twitter:title/twitter:description
+  // matching the OG metadata so Twitter and Slack unfurls render the right card.
+  // twitter:card stays 'summary_large_image' from the layout template.
+  // Description and title are re-extracted from the final HTML (rather than passed
+  // through mkdirPage's argument list) so callers don't need updating.
+  const descMatch = final.match(/<meta name="description" content="([^"]+)"/);
+  const twitterDesc = descMatch ? descMatch[1] : '';
+  const twitterTitle = titleMatch ? titleMatch[1] : '';
+  final = final.replace(
+    /<meta property="og:image" content="([^"]+)"><meta property="og:image:width" content="960"><meta property="og:image:height" content="360">/,
+    `<meta property="og:image" content="$1"><meta property="og:image:width" content="960"><meta property="og:image:height" content="360"><meta name="twitter:image" content="$1"><meta name="twitter:title" content="${twitterTitle}"><meta name="twitter:description" content="${twitterDesc}"><meta name="twitter:site" content="@stuffprettygood">`
+  );
   fs.writeFileSync(path.join(dir, 'index.html'), normalizeLinks(final));
 }
 
