@@ -913,19 +913,41 @@ const PAGE_SUGGESTIONS = {
 // blocks (`BreadcrumbList`, `Product`, `FAQPage`) ship only when the route matches.
 // Each block is one <script type="application/ld+json"> so JSON-LD parsers see it
 // individually and Google's Rich Results Test can validate per-page.
+//
+// Lane B tick 47: extend Organization JSON-LD so Google Knowledge Graph + rich
+// results can populate the brand panel without guessing. (a) telephone at the
+// top level (Knowledge Panel direct-line); (b) email at the top level
+// (search-result snippet); (c) PostalAddress block (Knowledge Panel local
+// listing — SPG_OPERATOR is a New York LLC); (d) foundingDate '2026'
+// (Knowledge Panel timeline); (e) areaServed Expanded to ['US','CA','GB'] for
+// future Google Shopping expansion; (f) sameAs stays [] until social profiles
+// are live (empty sameAs is the documented safe-state).
 const ORGANIZATION_JSONLD = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: SPG_BRAND,
+  alternateName: 'SPG',
   url: `https://${SPG_DOMAIN}/`,
   logo: `https://${SPG_DOMAIN}/assets/site/spg-logo.svg`,
   description: 'AI-assisted shopping guide for useful gifts, starter kits, and practical products.',
+  foundingDate: '2026',
+  founder: { '@type': 'Organization', name: SPG_OPERATOR },
+  email: SPG_CONTACT_EMAIL,
+  telephone: SPG_CONTACT_PHONE,
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'US',
+    addressRegion: 'NY',
+    addressLocality: 'New York',
+    name: SPG_OPERATOR
+  },
   sameAs: [],
   contactPoint: [{
     '@type': 'ContactPoint',
     contactType: 'customer support',
     email: SPG_CONTACT_EMAIL,
-    areaServed: 'US',
+    telephone: SPG_CONTACT_PHONE,
+    areaServed: ['US', 'CA', 'GB'],
     availableLanguage: ['en']
   }]
 });
