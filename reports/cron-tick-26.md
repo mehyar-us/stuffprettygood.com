@@ -8,7 +8,8 @@
   - Commit `1d47a14` fix(pitfall-61): commit tick 25 source patch — manifest id field
   - Commit chain now: 9bc19c4 → 9133c21 (tick 25 report only) → 1d47a14 (this tick, source patch committed)
   - CF deploy `65ddffc6.stuffprettygood.pages.dev` — live preview authoritative (custom domain still serving old version per pitfall #33 edge cache lag)
-  - Local 13 commits ahead of origin 00f8357; background push `proc_9a4ebd76a929` in flight (per pitfall #47/#51 — 60s tool ceiling, background-only for push)
+  - Local 14 commits ahead of origin 00f8357 (latest: 82d38a3); push DEFERRED per pitfall #47 (background proc died silently, foreground push hung past 45s without progress, pitfall #57 reproduced)
+  - Tick 27 must verify push with ground-truth recipe and retry; production deploy via wrangler IS durable
 🔗 LINKS:
   - Live preview (authoritative): https://65ddffc6.stuffprettygood.pages.dev/site.webmanifest
   - Live preview homepage: https://65ddffc6.stuffprettygood.pages.dev/
