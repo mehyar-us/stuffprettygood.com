@@ -24,7 +24,7 @@
 - Browser QA on `https://stuffprettygood.com/?cb=32`: 100 elements snapshot, full homepage rendered (nav, hero, 15 product cards, Walmart strip, useful-finds, stories strip, category band, signup form, AI helper FAB, footer). JS console reported 1 silent exception (empty message — typical browser_console pitfall "previous script block threw" noise, not actionable). The "Install Stuff Pretty Good" button is visible (ref=e10) because the headless browser fires `beforeinstallprompt` — this is the CORRECT behavior per the false-alarm triage on `t_56b11ab9` (tick 12 — the button is created dynamically in the handler, never in static markup; on Safari/Firefox where `beforeinstallprompt` doesn't fire, no button is created). No new tickets filed
 
 📊 RESULTS:
-- Local commit: `TBD` (will fill after `git commit` per pitfall #58 — pre-push amend + kill+restart push pattern honored)
+- Local commit: `3801b0a` (feat+seo+dist+report ONE-commit discipline per pitfall #61: 3 files / +48/-2 — `scripts/build.mjs` +7/-1, `dist/sitemap.xml` +41/-1, `reports/cron-tick-32.md` new file)
 - Source file change: `scripts/build.mjs` (+7/-1, lines 2469-2475 — new sitemap writer block)
 - Built artifact: `dist/sitemap.xml` regenerated (+7,941 bytes / +52%, 187 entries each gain a `<lastmod>` line)
 - CF Pages deploy: `17ec22b0.stuffprettygood.pages.dev` (version label `17ec22b0`, 1 new file uploaded, 847 cached)
