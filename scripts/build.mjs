@@ -773,7 +773,7 @@ function assistantWidget(route) {
     || PAGE_SUGGESTIONS[r.split('/')[0]]
     || DEFAULT_SUGGESTIONS;
   const chipsHtml = suggestionChips.map(t => `<button type="button">${esc(t)}</button>`).join('');
-  return `${rateLimitScript()}<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong></button><button class="ai-verdict-launch" type="button" data-ai-verdict-launch aria-label="Pretty good or not? Quick verdict on a URL or product" hidden><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm-1 14.5L6.5 12l1.4-1.4L11 13.7l5.1-5.1L17.5 10Z"/></svg><strong>Pretty good or not?</strong></button><form class="ai-verdict" data-ai-verdict hidden novalidate><label class="eyebrow" for="spg-verdict-q">Paste a URL or product name</label><div class="ai-verdict-row"><input id="spg-verdict-q" name="verdict" autocomplete="off" placeholder="e.g. https://amzn.to/... or Anova Precision Cooker" required><button type="submit">Verdict</button><button type="button" class="ai-verdict-cancel" aria-label="Cancel verdict">×</button></div></form><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2><span id="spg-quota-pill" class="spg-quota-pill" hidden></span></div><div class="ai-header-actions"><button type="button" class="ai-share" data-ai-share hidden aria-label="Copy shareable link"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M18 8a3 3 0 0 0-2.05-.81 3 3 0 0 0-2.95 2.4 1 1 0 1 0 1.96.4 1 1 0 0 1 1.99-.2 1 1 0 0 1-.6 1.18 1 1 0 1 0 .7 1.86A3 3 0 0 0 18 8Zm-9.95 8.81a3 3 0 0 0 2.05.81 3 3 0 0 0 2.95-2.4 1 1 0 1 0-1.96-.4 1 1 0 0 1-1.99.2 1 1 0 0 1 .6-1.18 1 1 0 1 0-.7-1.86A3 3 0 0 0 8.05 16.81Zm5.45-3.31a1 1 0 0 0-1.32-.5l-3.16 1.4a1 1 0 1 0 .81 1.83l3.16-1.4a1 1 0 0 0 .51-1.33Z"/></svg></button><button type="button" class="ai-close" aria-label="Close">×</button></div></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="button" class="ai-mic" data-ai-mic hidden aria-label="Voice input" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11Z"/></svg></button><button type="submit">Ask</button></form><div class="ai-suggestions" data-ai-suggestions>${chipsHtml}</div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\\\u003c')}</script><script>
+  return `${rateLimitScript()}<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong></button><button class="ai-verdict-launch" type="button" data-ai-verdict-launch aria-label="Pretty good or not? Quick verdict on a URL or product" hidden><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm-1 14.5L6.5 12l1.4-1.4L11 13.7l5.1-5.1L17.5 10Z"/></svg><strong>Pretty good or not?</strong></button><form class="ai-verdict" data-ai-verdict hidden novalidate><label class="eyebrow" for="spg-verdict-q">Paste a URL or product name</label><div class="ai-verdict-row"><input id="spg-verdict-q" name="verdict" autocomplete="off" placeholder="e.g. https://amzn.to/... or Anova Precision Cooker" required><button type="submit">Verdict</button><button type="button" class="ai-verdict-cancel" aria-label="Cancel verdict">×</button></div></form><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2><span id="spg-quota-pill" class="spg-quota-pill" hidden></span></div><div class="ai-header-actions"><button type="button" class="ai-share" data-ai-share hidden aria-label="Copy shareable link"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M18 8a3 3 0 0 0-2.05-.81 3 3 0 0 0-2.95 2.4 1 1 0 1 0 1.96.4 1 1 0 0 1 1.99-.2 1 1 0 0 1-.6 1.18 1 1 0 1 0 .7 1.86A3 3 0 0 0 18 8Zm-9.95 8.81a3 3 0 0 0 2.05.81 3 3 0 0 0 2.95-2.4 1 1 0 1 0-1.96-.4 1 1 0 0 1-1.99.2 1 1 0 0 1 .6-1.18 1 1 0 1 0-.7-1.86A3 3 0 0 0 8.05 16.81Zm5.45-3.31a1 1 0 0 0-1.32-.5l-3.16 1.4a1 1 0 1 0 .81 1.83l3.16-1.4a1 1 0 0 0 .51-1.33Z"/></svg></button><button type="button" class="ai-close" aria-label="Close">×</button></div></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><button type="button" class="ai-compare-toggle" data-ai-compare-toggle aria-label="Compare two picks" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9 3 3 9l6 6V11h6v4l6-6-6-6v4H9Zm0 12v4h6v-4l6 6-6 6v-4H3l6-6Z"/></svg><span data-ai-compare-label>Compare</span></button><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="button" class="ai-mic" data-ai-mic hidden aria-label="Voice input" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11Z"/></svg></button><button type="submit">Ask</button></form><div class="ai-compare-chip" data-ai-compare-chip hidden><span data-ai-compare-chip-text>Tap two product cards to compare</span><button type="button" class="ai-compare-chip-clear" aria-label="Cancel compare">×</button></div><div class="ai-suggestions" data-ai-suggestions>${chipsHtml}</div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\\\u003c')}</script><script>
 (function(){
   const root = document.querySelector('[data-ai-bubble]');
   const dataEl = document.getElementById('spg-ai-catalog');
@@ -883,7 +883,136 @@ function assistantWidget(route) {
     form.addEventListener('submit', function(){ if (recognition) abortListening(true); });
   };
   bindVoice();
-  // Lane C #4 (tick 16): "Pretty good or not?" verdict entry point. A second
+  // Lane C #6 (tick 18): "Compare two picks" mode. Toggle in the form row,
+  // next two product-card clicks set Pick A then Pick B, then a side-by-side
+  // card renders inside the chat panel. State lives in window._spgCompare so
+  // the toggle button, the floating chip, and the delegated click handler
+  // all read the same object. Third click resets the cycle.
+  const compareBtn = root.querySelector('[data-ai-compare-toggle]');
+  const compareLabel = compareBtn && compareBtn.querySelector('[data-ai-compare-label]');
+  const compareChip = root.querySelector('[data-ai-compare-chip]');
+  const compareChipText = compareChip && compareChip.querySelector('[data-ai-compare-chip-text]');
+  const compareClear = compareChip && compareChip.querySelector('.ai-compare-chip-clear');
+  window._spgCompare = { on: false, a: null, b: null };
+  function findProductById(id){
+    for (var i = 0; i < products.length; i++) if (products[i].id === id) return products[i];
+    return null;
+  }
+  function refreshCompareChip(){
+    if (!compareChip || !compareChipText) return;
+    if (!window._spgCompare.on){ compareChip.hidden = true; return; }
+    compareChip.hidden = false;
+    if (!window._spgCompare.a){ compareChipText.textContent = 'Pick 1/2 — tap a product card'; }
+    else if (!window._spgCompare.b){ compareChipText.textContent = 'Pick 2/2 — ' + window._spgCompare.a.title; }
+    else { compareChipText.textContent = 'Showing: ' + window._spgCompare.a.title + ' vs ' + window._spgCompare.b.title; }
+  }
+  function setCompareLabel(){
+    if (!compareBtn || !compareLabel) return;
+    if (!window._spgCompare.on){ compareLabel.textContent = 'Compare'; compareBtn.setAttribute('aria-pressed','false'); }
+    else if (!window._spgCompare.a){ compareLabel.textContent = 'Pick 1/2'; compareBtn.setAttribute('aria-pressed','true'); }
+    else if (!window._spgCompare.b){ compareLabel.textContent = 'Pick 2/2'; compareBtn.setAttribute('aria-pressed','true'); }
+    else { compareLabel.textContent = 'Compared'; compareBtn.setAttribute('aria-pressed','true'); }
+      }
+      // Build the side-by-side card. Tokenize best_for on commas + whitespace,
+      // then intersect the two use-case sets so we can call out which pick wins
+      // for which reasons. Falls back to "head-to-head identical" if the products
+      // share nearly all best_for tags.
+  function renderCompare(a, b){
+    if (!a || !b) return;
+    function col(p, label){
+      return '<div class="ai-compare-col">'
+        + '<p class="eyebrow">'+esc(label)+'</p>'
+        + '<a class="ai-compare-thumb" href="/products/'+esc(p.id)+'/"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'"></a>'
+        + '<h4>'+esc(p.title)+'</h4>'
+        + '<p class="band"><span class="pill">'+esc(p.category)+'</span><span class="pill">'+esc(p.price_band)+'</span></p>'
+        + '<p><strong>Why:</strong> '+esc(p.why_useful)+'</p>'
+        + '<p><strong>Best for:</strong> '+esc(p.best_for)+'</p>'
+        + '<p class="avoid"><strong>Avoid if:</strong> '+esc(p.avoid_if)+'</p>'
+        + '<a class="btn sm" href="/products/'+esc(p.id)+'/">View the pick</a>'
+        + '</div>';
+    }
+    function tags(p){
+      return (p.best_for||'').toLowerCase().split(/[^a-z0-9]+/).filter(function(t){ return t && t.length > 2; });
+    }
+    var ta = tags(a), tb = tags(b);
+    var shared = ta.filter(function(t){ return tb.indexOf(t) !== -1; });
+    var onlyA = ta.filter(function(t){ return tb.indexOf(t) === -1; }).slice(0,4);
+    var onlyB = tb.filter(function(t){ return ta.indexOf(t) === -1; }).slice(0,4);
+    var verdict = '';
+    if (shared.length) verdict += '<p><strong>Both win for:</strong> '+shared.map(esc).join(', ')+'.</p>';
+    if (onlyA.length) verdict += '<p><strong>Pick A wins for:</strong> '+onlyA.map(esc).join(', ')+'.</p>';
+    if (onlyB.length) verdict += '<p><strong>Pick B wins for:</strong> '+onlyB.map(esc).join(', ')+'.</p>';
+    if (!verdict) verdict = '<p><strong>Head-to-head:</strong> nearly identical use cases. Pick by price or availability.</p>';
+    var html = '<div class="ai-compare-card" data-ai-compare-card>'
+      + '<p class="eyebrow">Compare</p>'
+      + '<div class="ai-compare-grid">'
+      + col(a, 'Pick A') + col(b, 'Pick B')
+      + '</div>'
+      + '<div class="ai-compare-verdict">'+verdict+'</div>'
+      + '</div>';
+    add('bot', html);
+    var resp = { kind: 'compare' };
+    history.push({ role: 'bot', html: html });
+    save();
+    appendFollowUps(resp);
+    // Reset so the next card tap starts a fresh pair.
+    window._spgCompare.a = null; window._spgCompare.b = null;
+    setCompareLabel(); refreshCompareChip();
+  }
+  function onCardPicked(p){
+    if (!window._spgCompare.on || !p) return;
+    if (!window._spgCompare.a){
+      window._spgCompare.a = p; haptic([10, 30, 10]);
+    } else if (!window._spgCompare.b){
+      if (p.id === window._spgCompare.a.id){ window._spgCompare.a = p; }
+      else {
+        window._spgCompare.b = p; haptic([10, 40, 10, 40, 10]);
+        if (panel.hidden){ panel.hidden = false; root.classList.add('open'); renderHistory(); }
+        renderCompare(window._spgCompare.a, window._spgCompare.b);
+        return;
+      }
+    } else {
+      window._spgCompare.a = p; window._spgCompare.b = null; haptic([10, 30, 10]);
+    }
+    setCompareLabel(); refreshCompareChip();
+  }
+  const bindCompare = function(){
+    if (!compareBtn) return;
+    compareBtn.hidden = false;
+    function toggleCompare(){
+      window._spgCompare.on = !window._spgCompare.on;
+      window._spgCompare.a = null; window._spgCompare.b = null;
+      setCompareLabel(); refreshCompareChip();
+      root.classList.toggle('compare-on', window._spgCompare.on);
+      haptic(window._spgCompare.on ? [10, 30, 10] : 6);
+    }
+    compareBtn.addEventListener('click', toggleCompare);
+    if (compareClear){
+      compareClear.addEventListener('click', function(){
+        window._spgCompare.on = false;
+        window._spgCompare.a = null; window._spgCompare.b = null;
+        setCompareLabel(); refreshCompareChip();
+        root.classList.remove('compare-on');
+      });
+    }
+    // Delegated click: any anchor pointing at /products/<id>/ counts as a
+    // card tap. Covers .ai-pick inside chat messages AND product-wall cards
+    // rendered by the live-picks fetchers.
+    document.addEventListener('click', function(e){
+      if (!window._spgCompare.on) return;
+      var t = e.target;
+      var anchor = t && t.closest && t.closest('a[href^="/products/"]');
+      if (!anchor) return;
+      var m = (anchor.getAttribute('href') || '').match(/^\/products\/([^/]+)\/?$/);
+      if (!m) return;
+      var p = findProductById(m[1]);
+      if (!p) return;
+      e.preventDefault();
+      onCardPicked(p);
+    }, true);
+  };
+  bindCompare();
+      // Lane C #4 (tick 16): "Pretty good or not?" verdict entry point. A second
   // compose box that lives next to the AI launch. Submitting it routes the
   // user's URL or product name into the chat panel as a verdict-style question
   // (handled by the verdict branch in answer()). The launcher is feature-gated
@@ -1116,7 +1245,8 @@ function assistantWidget(route) {
       shipping:['Show me picks under $50', 'What about gift ideas?'],
       privacy: ['How does SMS opt-in work?', 'Take me to signup'],
       brand:   ['Show me starter kits', 'Gift ideas under $50'],
-      verdict: ['Compare to a similar pick', 'Show me cheaper options', 'Why this pick?']
+      verdict: ['Compare to a similar pick', 'Show me cheaper options', 'Why this pick?'],
+      compare: ['Compare two more picks', 'Show cheaper picks', 'Why these picks?']
     };
     function followUpsFor(kind){ return FOLLOW_UPS_BY_KIND[kind] || []; }
     // Render a follow-up row INSIDE the last bot message. Returns the wrapper
