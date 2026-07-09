@@ -501,14 +501,82 @@ function offlineIndicatorScript() {
 })();</script>`;
 }
 
+function iosInstallHintScript() {
+  // Lane A #21 — iOS Safari "Tap Share → Add to Home Screen" hint banner.
+  // iOS Safari never fires beforeinstallprompt, so the install button IIFE
+  // (in pwaRegistration) only ever appears on Android Chrome / desktop Edge.
+  // This IIFE fills the gap: detects iPhone/iPad/iPod Safari (and iPadOS
+  // desktop mode), adds .is-ios-safari to <html>, lazily creates a dismissable
+  // banner after a 3.5s delay (so the splash + initial paint finish first),
+  // and persists dismissal in localStorage so the hint doesn't nag every visit.
+  // If already installed (navigator.standalone === true) or display-mode is
+  // standalone, the IIFE early-returns — banner never appears.
+  // pointer-events:auto (different from offline indicator) so the close
+  // button can receive taps. aria-live=polite so AT users hear the nudge
+  // without it yelling.
+  return `<script>(function(){
+  if (typeof navigator === 'undefined' || !window.addEventListener) return;
+  // Already installed → never show
+  if (navigator.standalone === true) return;
+  if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return;
+  // Detect iOS Safari. iPadOS desktop mode uses MacIntel + touch points;
+  // iPadOS Safari mobile mode uses iPad UA. Cover both.
+  var ua = navigator.userAgent || '';
+  var isIos = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && (navigator.maxTouchPoints || 0) > 1);
+  var isWebkit = /WebKit/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS|DuckDuckGo/.test(ua);
+  if (!isIos || !isWebkit) return;
+  // Dismissed previously → don't nag
+  var dismissed = false;
+  try { dismissed = window.localStorage.getItem('spg-ios-hint-dismissed') === '1'; } catch (e) {}
+  if (dismissed) return;
+  document.documentElement.classList.add('is-ios-safari');
+  function ensureBanner(){
+    if (document.querySelector('.spg-ios-hint')) return document.querySelector('.spg-ios-hint');
+    var b = document.createElement('div');
+    b.className = 'spg-ios-hint is-dismissed';
+    b.setAttribute('role', 'status');
+    b.setAttribute('aria-live', 'polite');
+    b.setAttribute('aria-hidden', 'true');
+    b.innerHTML = '<span class="spg-ios-hint-icon" aria-hidden="true">' +
+      '<svg viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M12 2v12m0 0 4-4m-4 4-4-4M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>' +
+      '</span>' +
+      '<span class="spg-ios-hint-body">' +
+      '<p class="spg-ios-hint-title">Install Stuff Pretty Good</p>' +
+      '<p class="spg-ios-hint-sub">Tap <strong>Share</strong> \u2192 <strong>Add to Home Screen</strong></p>' +
+      '</span>' +
+      '<button type="button" class="spg-ios-hint-close" aria-label="Dismiss install hint">\u00d7</button>';
+    document.body.appendChild(b);
+    b.querySelector('.spg-ios-hint-close').addEventListener('click', function(){
+      b.classList.add('is-dismissed');
+      b.setAttribute('aria-hidden', 'true');
+      try { window.localStorage.setItem('spg-ios-hint-dismissed', '1'); } catch (e) {}
+    });
+    return b;
+  }
+  // Wait 3.5s after DOM ready so splash + first paint finish first.
+  function show(){
+    var b = ensureBanner();
+    requestAnimationFrame(function(){
+      b.classList.remove('is-dismissed');
+      b.setAttribute('aria-hidden', 'false');
+    });
+  }
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(show, 3500);
+  } else {
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(show, 3500); });
+  }
+})();</script>`;
+}
+
 const microsoftClaritySnippet = `<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })})(window, document, "clarity", "script", "wt52najgso");
-    </script>`;
-    const impactSiteVerification = 'Impact-Site-Verification: c6f92ec5-b2a3-4bf2-8e8f-29fa6621424b';
+  (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })})(window, document, "clarity", "script", "wt52najgso");
+  </script>`;
+  const impactSiteVerification = 'Impact-Site-Verification: c6f92ec5-b2a3-4bf2-8e8f-29fa6621424b';
 
     // AI companion rate limit — token-spend protection. Inlined into pages so
     // no external JS dependency. Tunable via window.SPG_RL_CONFIG override.
@@ -1044,7 +1112,7 @@ function layout(title, body, opts = {}, description) {
   if (opts.productJsonLd) jsonLdBlocks.push(`<script type="application/ld+json">${opts.productJsonLd}</script>`);
   // Per-page FAQPage schema for the AI tools.
   if (FAQ_JSONLD[route]) jsonLdBlocks.push(`<script type="application/ld+json">${JSON.stringify(FAQ_JSONLD[route])}</script>`);
-  return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<script>(function(){try{var t=localStorage.getItem('spg-theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}else if(t==='light'){document.documentElement.setAttribute('data-theme','light');}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();</script><title>${fullTitle}</title><meta name="description" content="${esc(desc)}"><meta property="og:title" content="${fullTitle}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="https://stuffprettygood.com${opts.canonical || '/'}"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#f6f1e8" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#111827"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="SPG"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="format-detection" content="telephone=no,email=no,address=no,date=no"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg">${jsonLdBlocks.join('')}<link rel="stylesheet" href="/styles.css"></head><body id="top" data-route="${esc(route)}"><div class="spg-splash" aria-hidden="true" id="spg-splash"><div class="spg-splash-logo">SPG</div><span>Stuff Pretty Good</span><small>loading</small></div><script>(function(){try{if(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches){document.documentElement.classList.add('is-pwa');}else if(navigator.standalone===true){document.documentElement.classList.add('is-pwa');}var s=document.getElementById('spg-splash');if(!s)return;function dismiss(){s.classList.add('is-loaded');setTimeout(function(){if(s&&s.parentNode){s.parentNode.removeChild(s);}},500);}if(document.readyState==='complete'||document.readyState==='interactive'){setTimeout(dismiss,80);}else{document.addEventListener('DOMContentLoaded',function(){setTimeout(dismiss,40);});}setTimeout(dismiss,1400);}catch(e){var s=document.getElementById('spg-splash');if(s&&s.parentNode){s.parentNode.removeChild(s);}})();</script><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a><button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode" aria-pressed="false"><span class="moon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" focusable="false"><path fill="currentColor" d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"/></svg></span><span class="sun" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" focusable="false"><path fill="currentColor" d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66 1.41-1.41M4.93 19.07l1.41-1.41m0-11.32L4.93 4.93m14.14 14.14-1.41-1.41M12 7a5 5 0 1 0 5 5 5 5 0 0 0-5-5Z"/></svg></span><span class="label">Theme</span></button></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget(route)}${backToTop()}${pwaRegistration()}${scrollRevealScript()}${themeToggleScript()}${pullToRefreshScript()}${offlineIndicatorScript()}${modalHtml}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
+  return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<script>(function(){try{var t=localStorage.getItem('spg-theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}else if(t==='light'){document.documentElement.setAttribute('data-theme','light');}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();</script><title>${fullTitle}</title><meta name="description" content="${esc(desc)}"><meta property="og:title" content="${fullTitle}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="https://stuffprettygood.com${opts.canonical || '/'}"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#f6f1e8" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#111827"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="SPG"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="format-detection" content="telephone=no,email=no,address=no,date=no"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg">${jsonLdBlocks.join('')}<link rel="stylesheet" href="/styles.css"></head><body id="top" data-route="${esc(route)}"><div class="spg-splash" aria-hidden="true" id="spg-splash"><div class="spg-splash-logo">SPG</div><span>Stuff Pretty Good</span><small>loading</small></div><script>(function(){try{if(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches){document.documentElement.classList.add('is-pwa');}else if(navigator.standalone===true){document.documentElement.classList.add('is-pwa');}var s=document.getElementById('spg-splash');if(!s)return;function dismiss(){s.classList.add('is-loaded');setTimeout(function(){if(s&&s.parentNode){s.parentNode.removeChild(s);}},500);}if(document.readyState==='complete'||document.readyState==='interactive'){setTimeout(dismiss,80);}else{document.addEventListener('DOMContentLoaded',function(){setTimeout(dismiss,40);});}setTimeout(dismiss,1400);}catch(e){var s=document.getElementById('spg-splash');if(s&&s.parentNode){s.parentNode.removeChild(s);}})();</script><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a><button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode" aria-pressed="false"><span class="moon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" focusable="false"><path fill="currentColor" d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"/></svg></span><span class="sun" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" focusable="false"><path fill="currentColor" d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66 1.41-1.41M4.93 19.07l1.41-1.41m0-11.32L4.93 4.93m14.14 14.14-1.41-1.41M12 7a5 5 0 1 0 5 5 5 5 0 0 0-5-5Z"/></svg></span><span class="label">Theme</span></button></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget(route)}${backToTop()}${pwaRegistration()}${scrollRevealScript()}${themeToggleScript()}${pullToRefreshScript()}${offlineIndicatorScript()}${iosInstallHintScript()}${modalHtml}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
   }
 
   function card(p, i = 0) {
