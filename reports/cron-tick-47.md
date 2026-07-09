@@ -24,6 +24,8 @@
 
 📊 RESULTS:
 - **Lane:** B (SEO surface — Organization JSON-LD enrichment)
+- **CF deploy:** `8ad1cb35.stuffprettygood.pages.dev` (preview URL authoritative per pitfall #33/#72/#76); production alias `production.stuffprettygood.pages.dev`
+- **Commit SHA:** `ead29b6` (push verified per pitfall #47 ground-truth recipe: `git ls-remote origin deploy/legal-expansion-and-signup-modal` → `ead29b60378a828ccc4ff89e8cd1a9dcd974e283` matches `git rev-parse HEAD`; `git rev-list --count origin..HEAD` = 0 — push landed in <90s)
 - **Source file change:** `scripts/build.mjs` (+23/-1, lines 914-955)
 - **Built artifact:** 188 dist files regenerated with expanded Organization schema (+1 line each, +23 chars from source into ~+23 chars in each dist HTML body)
 - **Diff size:** 189 files / +212/-189 — 1 source + 188 dist + 1 line shift per dist page
