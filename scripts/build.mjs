@@ -579,6 +579,43 @@ function pageOgImageSvg(route, title) {
   };
 }
 
+// Per-page AI-bubble suggestion chips. The AI helper on every page used to show
+// the same 4 generic chips ("gift under $25", "travel kit", "desk setup", "pet
+// problem") regardless of which category page the shopper was on. Now the chip
+// set changes to match the page context — a kitchen shopper sees "kitchen time
+// saver", a travel shopper sees "flight essentials", etc. Lane C backlog #1.
+const DEFAULT_SUGGESTIONS = ['gift under $25', 'travel kit', 'desk setup', 'pet problem'];
+const PAGE_SUGGESTIONS = {
+  '':                          ['useful under $25', 'gift under $50', 'desk setup', 'starter kit ideas'],
+  'gift-finder':               ['gift for dad under $50', 'gift for coworker', 'gift under $25', 'gift for mom'],
+  'starter-kits':              ['home office starter kit', 'travel starter kit', 'kitchen starter kit', 'desk setup under $100'],
+  'under-50':                  ['useful under $50', 'useful under $25', 'budget desk setup', 'cheap kitchen'],
+  'under-25':                  ['useful under $25', 'cheap useful wins', 'desk upgrades', 'kitchen under $25'],
+  'walmart':                   ['walmart approved picks', 'walmart under $25', 'walmart under $50', 'walmart desk'],
+  'tech':                      ['phone accessories', 'laptop accessories', 'desk tech', 'cable organization'],
+  'kitchen':                   ['kitchen time saver', 'kitchen under $25', 'meal prep tools', 'coffee upgrades'],
+  'home-office':               ['desk setup under $100', 'desk upgrades', 'laptop stand', 'cable management'],
+  'home':                      ['apartment essentials', 'small space storage', 'renters', 'kitchen home'],
+  'pets':                      ['pet cleanup', 'pet under $25', 'cat owner essentials', 'dog walking kit'],
+  'travel':                    ['flight essentials', 'carry-on kit', 'travel under $50', 'road trip kit'],
+  'car':                       ['car under $30', 'road trip kit', 'commuter essentials', 'rideshare kit'],
+  'wellness':                  ['desk wellness', 'sleep setup', 'recovery tools', 'hydration'],
+  'organization':              ['apartment storage', 'closet organizers', 'kitchen organization', 'desk organization'],
+  'hobby':                     ['beginner tool kit', 'starter creative', 'hobby under $25', 'desk hobby'],
+  'gifts':                     ['gift under $25', 'gift under $50', 'gift for dad', 'gift for mom'],
+  'signup':                    ['what is the email list', 'how do SMS updates work', 'privacy policy', 'unsubscribe'],
+  'stories':                   ['useful stories', 'gift stories', 'travel stories', 'kitchen stories'],
+  'guides':                    ['useful finds guide', 'gifts guide', 'kitchen guide', 'home office guide'],
+  'privacy':                   ['what data do you collect', 'how to unsubscribe', 'how to update preferences', 'tcpa disclosure'],
+  'terms':                     ['return policy', 'warranty', 'how pricing works', 'affiliate disclosure'],
+  'contact':                   ['how do I contact support', 'affiliate partnership', 'press inquiry', 'takedown request'],
+  'affiliate-disclosure':      ['how affiliate links work', 'which merchants', 'return policy', 'editorial policy'],
+  'preferences':               ['how to unsubscribe', 'how to update email', 'how to opt out of SMS', 'privacy policy'],
+  'about':                     ['what is stuff pretty good', 'how do you pick products', 'editorial policy', 'who runs spg'],
+  'advertise':                 ['advertising options', 'sponsored placement', 'newsletter sponsorship', 'contact sales'],
+  'products':                  ['compare two picks', 'show cheaper options', 'best for travel', 'best for desk'],
+};
+
 // JSON-LD structured-data blocks. Per Lane B backlog #1 (tick 2): per-page meta
 // is in layout()/mkdirPage(); per pitfall #12: site-wide meta belongs in layout().
 // `Organization` and `WebSite` (with SearchAction) ship on EVERY page; route-aware
@@ -702,7 +739,7 @@ function layout(title, body, opts = {}, description) {
   if (opts.productJsonLd) jsonLdBlocks.push(`<script type="application/ld+json">${opts.productJsonLd}</script>`);
   // Per-page FAQPage schema for the AI tools.
   if (FAQ_JSONLD[route]) jsonLdBlocks.push(`<script type="application/ld+json">${JSON.stringify(FAQ_JSONLD[route])}</script>`);
-  return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<title>${fullTitle}</title><meta name="description" content="${esc(desc)}"><meta property="og:title" content="${fullTitle}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="https://stuffprettygood.com${opts.canonical || '/'}"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#111827"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="SPG"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg">${jsonLdBlocks.join('')}<link rel="stylesheet" href="/styles.css"></head><body id="top"><div class="spg-splash" aria-hidden="true" id="spg-splash"><div class="spg-splash-logo">SPG</div><span>Stuff Pretty Good</span><small>loading</small></div><script>(function(){try{if(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches){document.documentElement.classList.add('is-pwa');}else if(navigator.standalone===true){document.documentElement.classList.add('is-pwa');}var s=document.getElementById('spg-splash');if(!s)return;function dismiss(){s.classList.add('is-loaded');setTimeout(function(){if(s&&s.parentNode){s.parentNode.removeChild(s);}},500);}if(document.readyState==='complete'||document.readyState==='interactive'){setTimeout(dismiss,80);}else{document.addEventListener('DOMContentLoaded',function(){setTimeout(dismiss,40);});}setTimeout(dismiss,1400);}catch(e){var s=document.getElementById('spg-splash');if(s&&s.parentNode){s.parentNode.removeChild(s);}})();</script><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget()}${backToTop()}${pwaRegistration()}${scrollRevealScript()}${modalHtml}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
+  return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b">${microsoftClaritySnippet}<title>${fullTitle}</title><meta name="description" content="${esc(desc)}"><meta property="og:title" content="${fullTitle}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="https://stuffprettygood.com${opts.canonical || '/'}"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#111827"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="SPG"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg">${jsonLdBlocks.join('')}<link rel="stylesheet" href="/styles.css"></head><body id="top" data-route="${esc(route)}"><div class="spg-splash" aria-hidden="true" id="spg-splash"><div class="spg-splash-logo">SPG</div><span>Stuff Pretty Good</span><small>loading</small></div><script>(function(){try{if(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches){document.documentElement.classList.add('is-pwa');}else if(navigator.standalone===true){document.documentElement.classList.add('is-pwa');}var s=document.getElementById('spg-splash');if(!s)return;function dismiss(){s.classList.add('is-loaded');setTimeout(function(){if(s&&s.parentNode){s.parentNode.removeChild(s);}},500);}if(document.readyState==='complete'||document.readyState==='interactive'){setTimeout(dismiss,80);}else{document.addEventListener('DOMContentLoaded',function(){setTimeout(dismiss,40);});}setTimeout(dismiss,1400);}catch(e){var s=document.getElementById('spg-splash');if(s&&s.parentNode){s.parentNode.removeChild(s);}})();</script><div class="${shellClass}"><nav class="nav"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div>${body}${assistantWidget(route)}${backToTop()}${pwaRegistration()}${scrollRevealScript()}${modalHtml}<footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
   }
 
   function card(p, i = 0) {
@@ -718,7 +755,7 @@ const productsWithImagesFirst = (a, b) => {
 };
 
 
-function assistantWidget() {
+function assistantWidget(route) {
   const knowledge = products.map((p) => ({ id: p.id, title: p.title, category: p.category, price_band: p.price_band, image_url: p.image_url, why_useful: p.why_useful, best_for: p.best_for, avoid_if: p.avoid_if })).slice(0, 180);
   const siteFacts = {
     brand: 'Stuff Pretty Good helps shoppers find useful gifts, starter kits, travel gear, kitchen helpers, pet fixes, home-office upgrades, and budget finds.',
@@ -727,7 +764,16 @@ function assistantWidget() {
     signup: 'Signup is email-only by default. Phone is collected only if the user wants SMS updates and ticks the explicit TCPA consent box on the signup form. SMS frequency is up to 4 messages per month; reply STOP to opt out.',
     bestQuestions: ['gift for dad under $50', 'travel kit for a long flight', 'desk setup under $100', 'pet cleanup products', 'small apartment essentials']
   };
-  return `${rateLimitScript()}<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong></button><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2><span id="spg-quota-pill" class="spg-quota-pill" hidden></span></div><button type="button" class="ai-close" aria-label="Close">×</button></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="submit">Ask</button></form><div class="ai-suggestions"><button type="button">gift under $25</button><button type="button">travel kit</button><button type="button">desk setup</button><button type="button">pet problem</button></div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\u003c')}</script><script>
+  // Resolve per-page suggestion chips; fall back to defaults. Lane C backlog #1
+  // (tick 12): chips used to be the same 4 across all 188 pages, now they
+  // change with the page context. Lookup uses a prefix match so /products/<id>/
+  // pages inherit the "products" set, and the homepage '' key is checked last.
+  const r = (typeof route === 'string' ? route : '');
+  const suggestionChips = PAGE_SUGGESTIONS[r]
+    || PAGE_SUGGESTIONS[r.split('/')[0]]
+    || DEFAULT_SUGGESTIONS;
+  const chipsHtml = suggestionChips.map(t => `<button type="button">${esc(t)}</button>`).join('');
+  return `${rateLimitScript()}<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong></button><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2><span id="spg-quota-pill" class="spg-quota-pill" hidden></span></div><button type="button" class="ai-close" aria-label="Close">×</button></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="submit">Ask</button></form><div class="ai-suggestions" data-ai-suggestions>${chipsHtml}</div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\\\u003c')}</script><script>
 (function(){
   const root = document.querySelector('[data-ai-bubble]');
   const dataEl = document.getElementById('spg-ai-catalog');
@@ -740,7 +786,21 @@ function assistantWidget() {
   const close = root.querySelector('.ai-close');
   const form = root.querySelector('[data-ai-form]');
   const messages = root.querySelector('[data-ai-messages]');
-  const suggestions = root.querySelectorAll('.ai-suggestions button');
+  const sugWrap = root.querySelector('.ai-suggestions');
+  // Bind a delegated click listener on the suggestion-chip container so chips
+  // rendered server-side still get the same haptic + auto-submit behavior.
+  const bindSuggestions = function(){
+    sugWrap.querySelectorAll('button').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        haptic([10, 40, 10]);
+        panel.hidden = false;
+        root.classList.add('open');
+        form.q.value = btn.textContent;
+        form.dispatchEvent(new Event('submit', {cancelable:true}));
+      });
+    });
+  };
+  bindSuggestions();
   const sessionKey = 'spg_ai_session_v1';
   const esc = (v) => String(v || '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const history = JSON.parse(sessionStorage.getItem(sessionKey) || '[]');
@@ -788,7 +848,6 @@ function assistantWidget() {
   }
   launch.addEventListener('click', function(){ haptic(10); panel.hidden = false; root.classList.add('open'); renderHistory(); });
   close.addEventListener('click', function(){ haptic(10); panel.hidden = true; root.classList.remove('open'); });
-  suggestions.forEach(btn => btn.addEventListener('click', function(){ haptic([10, 40, 10]); panel.hidden=false; root.classList.add('open'); form.q.value = btn.textContent; form.dispatchEvent(new Event('submit', {cancelable:true})); }));
   form.addEventListener('submit', function(e){
     e.preventDefault();
     const q = new FormData(form).get('q').trim(); if (!q) return;
@@ -884,7 +943,7 @@ for (const route of categories.filter((r) => !['gift-finder', 'starter-kits', 'u
 
 for (const p of products) {
   mkdirPage(`products/${p.id}`, layout(p.title, `<article class="post product-detail"><div class="detail-grid"><div>${amazonNativeAd(p)}<div class="visual-proof"><span>Original SPG visual</span><strong>Built for fast shopping decisions</strong></div></div><div><div class="card-meta"><span>${esc(p.category.replace('-', ' '))}</span><span>${esc(p.price_band.replace('-', ' $'))}</span></div><h1>${esc(p.title)}</h1><p class="sub">${esc(p.why_useful)}</p><div class="decision-boxes"><div><span>Best for</span><strong>${esc(p.best_for)}</strong></div><div><span>Skip if</span><strong>${esc(p.avoid_if)}</strong></div><div><span>Good fit when</span><strong>You want a practical upgrade without overthinking it.</strong></div></div><a class="btn" href="/go/${p.id}/" rel="nofollow sponsored">Get</a><p class="micro">Confirm current product details with the merchant before buying.</p></div></div></article>`, { route: `products/${p.id}`, productJsonLd: productJsonLd(p) }, `${esc(p.title)} — ${esc(p.why_useful)} Best for ${esc(p.best_for)}. Approved by Stuff Pretty Good.`));
-  mkdirPage(`go/${p.id}`, `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Redirecting</title><meta name="robots" content="noindex"><link rel="canonical" href="${p.affiliate_url}"><body id="top"><img src="${p.image_url}" alt="${esc(p.title)}" style="max-width:420px;width:100%;border-radius:20px"><p>Opening the pick…</p><script>location.replace(${JSON.stringify(p.affiliate_url)})</script><p><a href="${p.affiliate_url}" rel="nofollow sponsored noopener">Continue</a></p>${backToTop()}</body></html>`);
+  mkdirPage(`go/${p.id}`, `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Redirecting</title><meta name="robots" content="noindex"><link rel="canonical" href="${p.affiliate_url}"><body id="top" data-route="go/${esc(p.id)}"><img src="${p.image_url}" alt="${esc(p.title)}" style="max-width:420px;width:100%;border-radius:20px"><p>Opening the pick…</p><script>location.replace(${JSON.stringify(p.affiliate_url)})</script><p><a href="${p.affiliate_url}" rel="nofollow sponsored noopener">Continue</a></p>${backToTop()}</body></html>`);
 }
 
 for (const post of posts) {
