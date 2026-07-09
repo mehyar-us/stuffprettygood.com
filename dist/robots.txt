@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
+Disallow: /open
 Sitemap: https://stuffprettygood.com/sitemap.xml
