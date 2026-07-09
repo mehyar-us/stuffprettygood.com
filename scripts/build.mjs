@@ -942,6 +942,29 @@ const FAQ_JSONLD = {
   }
 };
 
+// Build an ItemList JSON-LD block from a list of product records shown on a
+// category page. Each top-level product on the page becomes a ListItem with the
+// canonical product URL as the `url` and the title as the `name`. Helps Google
+// surface the category page as a list of products in search results. Pairs with
+// the existing BreadcrumbList on the same page. Lane B tick 42.
+function categoryItemListJsonLd(route, title, picks) {
+  if (!Array.isArray(picks) || picks.length === 0) return '';
+  const itemListElement = picks.slice(0, 24).map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: `https://${SPG_DOMAIN}/products/${p.id}/`,
+    name: p.title
+  }));
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: title || 'Products',
+    itemListOrder: 'https://schema.org/ItemListUnordered',
+    numberOfItems: itemListElement.length,
+    itemListElement
+  });
+}
+
 // Auto-derive a BreadcrumbList from the route path. Routes like `products/<id>` and
 // `guides/<slug>` get one more level than top-level routes. The home route (`''`)
 // gets just Home so the list is still valid JSON-LD even if trivial.
@@ -1000,7 +1023,11 @@ function layout(title, body, opts = {}, description) {
     `<script type="application/ld+json">${WEBSITE_JSONLD}</script>`
   ];
   // Per-page breadcrumbs (skip on `/` since a single-item list is noise).
-  if (route) jsonLdBlocks.push(`<script type="application/ld+json">${breadcrumbJsonLd(route, title)}</script>`);
+    if (route) jsonLdBlocks.push(`<script type="application/ld+json">${breadcrumbJsonLd(route, title)}</script>`);
+    // Per-page ItemList JSON-LD for category pages that ship with a picks array
+    // (under-25 / under-50 / travel / home-office / kitchen / pets / tech / walmart).
+    // Threaded via opts.categoryItemListJsonLd so the layout stays schema-source-of-truth.
+    if (opts.categoryItemListJsonLd) jsonLdBlocks.push(`<script type="application/ld+json">${opts.categoryItemListJsonLd}</script>`);
   // Per-page Product schema for /products/<id>/ pages.
   if (opts.productJsonLd) jsonLdBlocks.push(`<script type="application/ld+json">${opts.productJsonLd}</script>`);
   // Per-page FAQPage schema for the AI tools.
@@ -1637,7 +1664,14 @@ for (const route of categories.filter((r) => !['gift-finder', 'starter-kits', 'u
       ? `<section class="section"><div class="section-head"><div><p class="eyebrow">Impact catalog</p><h2>Fresh Walmart picks</h2></div></div><div class="grid product-wall" data-live-picks><p class="micro">Loading approved Walmart picks…</p></div>${liveDailyPicksScript('', 'walmart', '[data-live-picks]', 60)}</section>`
       : '';
   const staticGrid = picks.length ? `<div class="grid">${picks.map(card).join('')}</div>` : '';
-  mkdirPage(route, layout(pageTitle(route), `<section class="section"><p class="eyebrow">Useful picks</p><h1>${pageHeading(route)}</h1><p class="sub">${intro}</p>${staticGrid}</section>${liveSection}`, { route }, pageDescription(route)));
+    // Walmart renders live Impact picks only (no static grid). The static catalog
+    // doesn't tag any product as `category === 'walmart'` (walmart is a merchant
+    // overlay sourced from the Impact live feed, not a static field), so the
+    // ItemList JSON-LD would be misleading if we fed it the `filtered('walmart')`
+    // fallback. Skip walmart's ItemList — let the live picks surface as the visible
+    // list and let crawlers lean on BreadcrumbList + Organization for context.
+    const itemListJsonLd = !isWalmart && picks.length ? categoryItemListJsonLd(route, pageTitle(route), picks) : '';
+    mkdirPage(route, layout(pageTitle(route), `<section class="section"><p class="eyebrow">Useful picks</p><h1>${pageHeading(route)}</h1><p class="sub">${intro}</p>${staticGrid}</section>${liveSection}`, { route, categoryItemListJsonLd: itemListJsonLd }, pageDescription(route)));
 }
 
 for (const p of products) {
@@ -1716,7 +1750,7 @@ function toolPage(name, desc, mode = 'gift') {
 }
 mkdirPage('gift-finder', toolPage('AI Gift Finder', 'Answer a few prompts and get gift ideas from the approved-offer catalog only.'));
 mkdirPage('starter-kits', toolPage('AI Starter Kit Builder', 'Build useful setups from approved affiliate products only.', 'kit'));
-mkdirPage('useful-finds', layout(pageTitle('useful-finds'), `<section class="section"><p class="eyebrow">Useful picks</p><h1>Useful Finds</h1><p class="sub">Browse useful upgrades for gifts, home, kitchen, travel, tech, pets, and everyday problems.</p><div class="section-head"><div><p class="eyebrow">Fresh daily picks</p><h2>Newest from the live catalog</h2></div></div><div class="grid product-wall" data-live-picks="fresh"><p class="micro">Loading daily picks…</p></div>${liveDailyPicksScript('', '', '[data-live-picks="fresh"]', 60)}<div class="section-head"><div><p class="eyebrow">Walmart via Impact</p><h2>Approved Walmart catalog picks</h2></div><a class="pill" href="/walmart/">Browse Walmart</a></div><div class="grid product-wall" data-live-picks="walmart"><p class="micro">Loading Walmart picks…</p></div>${liveDailyPicksScript('', 'walmart', '[data-live-picks="walmart"]', 60)}<h2>Full launch catalog</h2><div class="grid">${products.sort(productsWithImagesFirst).map(card).join('')}</div></section>`, { route: 'useful-finds' }, pageDescription('useful-finds')));
+mkdirPage('useful-finds', layout(pageTitle('useful-finds'), `<section class="section"><p class="eyebrow">Useful picks</p><h1>Useful Finds</h1><p class="sub">Browse useful upgrades for gifts, home, kitchen, travel, tech, pets, and everyday problems.</p><div class="section-head"><div><p class="eyebrow">Fresh daily picks</p><h2>Newest from the live catalog</h2></div></div><div class="grid product-wall" data-live-picks="fresh"><p class="micro">Loading daily picks…</p></div>${liveDailyPicksScript('', '', '[data-live-picks="fresh"]', 60)}<div class="section-head"><div><p class="eyebrow">Walmart via Impact</p><h2>Approved Walmart catalog picks</h2></div><a class="pill" href="/walmart/">Browse Walmart</a></div><div class="grid product-wall" data-live-picks="walmart"><p class="micro">Loading Walmart picks…</p></div>${liveDailyPicksScript('', 'walmart', '[data-live-picks="walmart"]', 60)}<h2>Full launch catalog</h2><div class="grid">${products.sort(productsWithImagesFirst).map(card).join('')}</div></section>`, { route: 'useful-finds', categoryItemListJsonLd: categoryItemListJsonLd('useful-finds', pageTitle('useful-finds'), products) }, pageDescription('useful-finds')));
 mkdirPage('stories', layout(pageTitle('stories'), `<section class="section stories-page magazine-page"><div class="magazine-hero"><div><p class="eyebrow">Daily AI shopping stories</p><h1>Shopping magazine built from real scenarios.</h1><p class="sub">Every feature is a situation — trail day, emergency prep, travel day, game day, home reset — with image-backed products from the approved catalog and monetized /go paths. The daily AI process checks prior stories before publishing new lists.</p><div class="magazine-stats"><span>10+ live story lists</span><span>Image-backed products</span><span>Approved links only</span></div></div><div class="magazine-cover"><span>Today’s issue</span><strong>Useful stuff by situation</strong><small>Fresh checklists, practical products, no random marketplace dump.</small></div></div><div class="section-head magazine-head"><div><p class="eyebrow">Shop the issue</p><h2>Visual story checklists</h2></div><a class="pill" href="/walmart/">Walmart picks</a></div><div class="story-wall magazine-wall" data-live-stories><p class="micro">Loading today’s stories…</p></div>${liveStoriesScript(20)}</section>`, { route: 'stories' }, pageDescription('stories')));
 
 function signupForm(source = 'site') {
