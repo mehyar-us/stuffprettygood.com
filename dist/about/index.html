@@ -193,6 +193,21 @@
     });
   };
   bindSuggestions();
+  // Delegated click handler for follow-up chips rendered inside bot messages.
+  // Uses event delegation on [data-ai-messages] so chips added dynamically
+  // (after each submit) are picked up without re-binding. Mirrors the haptic +
+  // auto-submit pattern from bindSuggestions() above.
+  const bindFollowups = function(){
+    messages.addEventListener('click', function(e){
+      const t = e.target;
+      if (!t || !t.closest || !t.closest('[data-ai-followup]')) return;
+      const btn = t.closest('[data-ai-followup]');
+      haptic([10, 40, 10]);
+      form.q.value = btn.textContent;
+      form.dispatchEvent(new Event('submit', {cancelable:true}));
+    });
+  };
+  bindFollowups();
   const sessionKey = 'spg_ai_session_v1';
   const esc = (v) => String(v || '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const history = JSON.parse(sessionStorage.getItem(sessionKey) || '[]');
@@ -220,15 +235,50 @@
     return s;
   }
   function recommend(q, n=4){ return products.map(p => ({...p, score: score(p,q)})).filter(p => p.score > -5).sort((a,b)=>b.score-a.score).slice(0,n); }
-  function answer(q){
-    const low = q.toLowerCase();
-    if (/privacy|unsubscribe|preferences|sign ?up|email|phone|zip|sms|tcpa|text/.test(low)) return 'You can <a href="/signup/">sign up here</a>, <a href="/preferences/">set preferences here</a>, or <a href="/unsubscribe/">unsubscribe here</a>. Email is required; phone is only collected when you opt in to SMS by ticking the consent box. See our <a href="/privacy/">Privacy Policy</a>.';
-    if (/return|shipping|warranty|price|availability/.test(low)) return esc(facts.shipping);
-    if (/what is this|about|how does/.test(low)) return esc(facts.brand) + ' Ask me for a budget, person, problem, or setup and I will point you to useful picks.';
-    const picks = recommend(q, 5);
-    if (!picks.length) return 'I did not find a tight match yet. Try a clearer need like “travel gift under $50,” “desk setup,” “kitchen time saver,” or “pet cleanup.”';
-    return '<strong>Good shortlist:</strong>' + picks.map(p => '<a class="ai-pick" href="/products/'+esc(p.id)+'/"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'"><span><b>'+esc(p.title)+'</b><em>'+esc(p.why_useful)+'</em><small>Best for: '+esc(p.best_for)+'</small><strong>Get</strong></span></a>').join('') + '<p class="micro">Tip: ask “what should I avoid?” or “show cheaper picks” to narrow it.</p>';
-  }
+    // Lane C backlog #2 (tick 12): follow-up chips after each bot response.
+    // answer() now returns { html, kind } so the submit handler can attach a
+    // contextual micro-question row. Kinds match the branches below — each gets
+    // a small set of chips tuned to the shape of the answer (product shortlist
+    // vs. policy/brand answer vs. empty/no-match).
+    function answer(q){
+      const low = q.toLowerCase();
+      if (/privacy|unsubscribe|preferences|sign ?up|email|phone|zip|sms|tcpa|text/.test(low)) return { kind:'privacy', html:'You can <a href="/signup/">sign up here</a>, <a href="/preferences/">set preferences here</a>, or <a href="/unsubscribe/">unsubscribe here</a>. Email is required; phone is only collected when you opt in to SMS by ticking the consent box. See our <a href="/privacy/">Privacy Policy</a>.' };
+      if (/return|shipping|warranty|price|availability/.test(low)) return { kind:'shipping', html: esc(facts.shipping) };
+      if (/what is this|about|how does/.test(low)) return { kind:'brand', html: esc(facts.brand) + ' Ask me for a budget, person, problem, or setup and I will point you to useful picks.' };
+      const picks = recommend(q, 5);
+      if (!picks.length) return { kind:'empty', html:'I did not find a tight match yet. Try a clearer need like “travel gift under $50,” “desk setup,” “kitchen time saver,” or “pet cleanup.”' };
+      return { kind:'picks', html:'<strong>Good shortlist:</strong>' + picks.map(p => '<a class="ai-pick" href="/products/'+esc(p.id)+'/"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'"><span><b>'+esc(p.title)+'</b><em>'+esc(p.why_useful)+'</em><small>Best for: '+esc(p.best_for)+'</small><strong>Get</strong></span></a>').join('') };
+    }
+    // Two-to-three contextual follow-ups per answer kind. Order is intentional:
+    // most-useful chip first, "narrow it" second, "broaden it" third. Avoid
+    // duplicating the question the user just asked (would feel like a robot).
+    const FOLLOW_UPS_BY_KIND = {
+      picks:   ['What should I avoid here?', 'Show cheaper picks', 'Show me better options'],
+      empty:   ['Starter kits under $50', 'Popular gift picks', 'Travel kit ideas'],
+      shipping:['Show me picks under $50', 'What about gift ideas?'],
+      privacy: ['How does SMS opt-in work?', 'Take me to signup'],
+      brand:   ['Show me starter kits', 'Gift ideas under $50']
+    };
+    function followUpsFor(kind){ return FOLLOW_UPS_BY_KIND[kind] || []; }
+    // Render a follow-up row INSIDE the last bot message. Returns the wrapper
+    // element so the delegated click handler can find all follow-up chips
+    // regardless of which bot message they belong to.
+    function appendFollowUps(row){
+      const chips = followUpsFor(row.kind);
+      if (!chips.length) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'ai-followups';
+      wrap.setAttribute('data-ai-followups', '');
+      chips.forEach(function(text){
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'ai-followup';
+        b.textContent = text;
+        b.setAttribute('data-ai-followup', '');
+        wrap.appendChild(b);
+      });
+      messages.lastElementChild && messages.lastElementChild.appendChild(wrap);
+    }
   // Haptic feedback helper — returns instantly on unsupported browsers / iOS Safari
   // (navigator.vibrate is undefined). Soft 10ms pulse on launch, double-pulse on
   // suggestion chips (legible as a "tap pattern"), single-tick on send.
@@ -252,11 +302,12 @@
       return;
     }
     const user = { role:'user', html: esc(q) };
-    const bot = { role:'bot', html: answer(q) };
-    history.push(user, bot); save(); renderHistory(); form.reset();
-    haptic(8);
-    if (rl && rl.allowed) window.SPGRateLimit.record();
-  });
+        const resp = answer(q);
+        const bot = { role:'bot', html: resp.html };
+        history.push(user, bot); save(); renderHistory(); appendFollowUps(resp); form.reset();
+        haptic(8);
+        if (rl && rl.allowed) window.SPGRateLimit.record();
+      });
 })();
 </script><a class="back-top" href="#top" aria-label="Back to top"><span>↑</span><strong>Top</strong></a><script>(function(){function internalHost(host){return host===location.host||host==="stuffprettygood.com"||host==="www.stuffprettygood.com"||host==="stuffprettygood-api.mehyar.workers.dev";}function tuneLinks(root){(root||document).querySelectorAll("a[href]").forEach(function(a){var raw=a.getAttribute("href")||"";if(!raw||raw.startsWith("#")||raw.startsWith("mailto:")||raw.startsWith("tel:")){a.removeAttribute("target");return;}try{var u=new URL(raw,location.href);if((u.pathname.startsWith("/go/")&&internalHost(u.host))||(/^https?:$/.test(u.protocol)&&!internalHost(u.host))){a.target="_blank";var rel=(a.getAttribute("rel")||"").trim().split(" ").filter(Boolean);["noopener","noreferrer"].forEach(function(v){if(!rel.includes(v))rel.push(v);});a.setAttribute("rel",rel.join(" "));}else{a.removeAttribute("target");}}catch(e){a.removeAttribute("target");}})}tuneLinks(document);new MutationObserver(function(){tuneLinks(document);}).observe(document.documentElement,{childList:true,subtree:true});})();</script><script>(function(){
   if (!('serviceWorker' in navigator)) return;
