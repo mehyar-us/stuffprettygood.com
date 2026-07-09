@@ -773,7 +773,7 @@ function assistantWidget(route) {
     || PAGE_SUGGESTIONS[r.split('/')[0]]
     || DEFAULT_SUGGESTIONS;
   const chipsHtml = suggestionChips.map(t => `<button type="button">${esc(t)}</button>`).join('');
-  return `${rateLimitScript()}<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong></button><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2><span id="spg-quota-pill" class="spg-quota-pill" hidden></span></div><button type="button" class="ai-close" aria-label="Close">×</button></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="button" class="ai-mic" data-ai-mic hidden aria-label="Voice input" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11Z"/></svg></button><button type="submit">Ask</button></form><div class="ai-suggestions" data-ai-suggestions>${chipsHtml}</div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\\\u003c')}</script><script>
+  return `${rateLimitScript()}<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong></button><button class="ai-verdict-launch" type="button" data-ai-verdict-launch aria-label="Pretty good or not? Quick verdict on a URL or product" hidden><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm-1 14.5L6.5 12l1.4-1.4L11 13.7l5.1-5.1L17.5 10Z"/></svg><strong>Pretty good or not?</strong></button><form class="ai-verdict" data-ai-verdict hidden novalidate><label class="eyebrow" for="spg-verdict-q">Paste a URL or product name</label><div class="ai-verdict-row"><input id="spg-verdict-q" name="verdict" autocomplete="off" placeholder="e.g. https://amzn.to/... or Anova Precision Cooker" required><button type="submit">Verdict</button><button type="button" class="ai-verdict-cancel" aria-label="Cancel verdict">×</button></div></form><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2><span id="spg-quota-pill" class="spg-quota-pill" hidden></span></div><button type="button" class="ai-close" aria-label="Close">×</button></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="button" class="ai-mic" data-ai-mic hidden aria-label="Voice input" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11Z"/></svg></button><button type="submit">Ask</button></form><div class="ai-suggestions" data-ai-suggestions>${chipsHtml}</div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\\\u003c')}</script><script>
 (function(){
   const root = document.querySelector('[data-ai-bubble]');
   const dataEl = document.getElementById('spg-ai-catalog');
@@ -883,6 +883,57 @@ function assistantWidget(route) {
     form.addEventListener('submit', function(){ if (recognition) abortListening(true); });
   };
   bindVoice();
+  // Lane C #4 (tick 16): "Pretty good or not?" verdict entry point. A second
+  // compose box that lives next to the AI launch. Submitting it routes the
+  // user's URL or product name into the chat panel as a verdict-style question
+  // (handled by the verdict branch in answer()). The launcher is feature-gated
+  // on touch + viewport width: we hide it on very narrow screens so the chat
+  // FAB stays reachable. Reduce-motion users get a quieter transition.
+  const verdictLaunch = root.querySelector('[data-ai-verdict-launch]');
+  const verdictForm = root.querySelector('[data-ai-verdict]');
+  const verdictCancel = verdictForm && verdictForm.querySelector('.ai-verdict-cancel');
+  const verdictInput = verdictForm && verdictForm.querySelector('input[name="verdict"]');
+  const bindVerdict = function(){
+    if (!verdictLaunch || !verdictForm) return;
+    verdictLaunch.hidden = false;
+    function openVerdict(){
+      verdictForm.hidden = false;
+      root.classList.add('verdict-open');
+      haptic(8);
+      // Defer focus until the form is in the layout
+      window.setTimeout(function(){ verdictInput && verdictInput.focus(); }, 60);
+    }
+    function closeVerdict(silent){
+      verdictForm.hidden = true;
+      root.classList.remove('verdict-open');
+      if (verdictForm) verdictForm.reset();
+      if (!silent) haptic(6);
+    }
+    verdictLaunch.addEventListener('click', function(){
+      if (verdictForm.hidden) openVerdict();
+      else closeVerdict(false);
+    });
+    if (verdictCancel) verdictCancel.addEventListener('click', function(){ closeVerdict(false); });
+    verdictForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      const raw = new FormData(verdictForm).get('verdict');
+      const text = String(raw || '').trim();
+      if (!text) { verdictInput && verdictInput.focus(); return; }
+      // Build a verdict-style question. Strip protocol + host from URLs so the
+      // matcher inside recommend() can score against product titles.
+      const stripped = text.replace(/^https?:\/\/(www\.)?/, '').replace(/\/+$/, '').slice(0, 240);
+      const q = 'Verdict on ' + stripped;
+      // Open the chat panel and submit. The verdict branch in answer() returns
+      // a thumbs-up / pass / thumbs-down shape tuned for this entry.
+      closeVerdict(true);
+      panel.hidden = false;
+      root.classList.add('open');
+      renderHistory();
+      form.q.value = q;
+      form.dispatchEvent(new Event('submit', {cancelable:true}));
+    });
+  };
+  bindVerdict();
   const sessionKey = 'spg_ai_session_v1';
   const esc = (v) => String(v || '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const history = JSON.parse(sessionStorage.getItem(sessionKey) || '[]');
@@ -917,6 +968,45 @@ function assistantWidget(route) {
     // vs. policy/brand answer vs. empty/no-match).
     function answer(q){
       const low = q.toLowerCase();
+      // Lane C #4 (tick 16): "Pretty good or not?" verdict. Different shape
+      // than picks: a single shortlist ranked by confidence, plus a clear
+      // yes / meh / no signal so the user gets a verdict, not a 5-card catalog.
+      if (/^verdict on\s+/.test(low)){
+        const target = q.replace(/^verdict on\s+/i, '').trim();
+        // Build tokens from the target. For URLs we already stripped the host
+        // upstream; for product names we tokenize on whitespace.
+        const tokens = target.toLowerCase().split(/[^a-z0-9]+/).filter(function(t){ return t && t.length > 1 && !['http','https','www','com','net','amzn','to','amazon','product','dp','gp'].includes(t); });
+        if (!tokens.length) return { kind:'verdict', html:'Paste a real product name or URL — the verdict box needs at least one keyword I can match.' };
+        // Score products against the token set; prefer ones with multiple token hits.
+        const scored = products.map(function(p){
+          const text = (p.title + ' ' + p.category + ' ' + p.why_useful + ' ' + p.best_for).toLowerCase();
+          let hits = 0;
+          tokens.forEach(function(t){ if (text.indexOf(t) !== -1) hits += 1; });
+          return { p: p, hits: hits };
+        }).filter(function(r){ return r.hits > 0; }).sort(function(a,b){ return b.hits - a.hits; }).slice(0, 3);
+        if (!scored.length) {
+          return { kind:'verdict', html:'<strong>Verdict: lean no.</strong> I don\'t have a confident match for <em>'+esc(target)+'</em> in the catalog. Try a sharper name, or ask the chat for a similar product you can substitute.' };
+        }
+        const top = scored[0].p;
+        const second = scored[1] && scored[1].p;
+        const confidence = scored[0].hits >= 2 ? 'yes' : (scored[1] ? 'meh' : 'lean-yes');
+        const verdictLabel = confidence === 'yes' ? 'Verdict: pretty good' : (confidence === 'meh' ? 'Verdict: close, but pickier' : 'Verdict: probably worth it');
+        const verdictClass = confidence === 'yes' ? 'verdict-yes' : (confidence === 'meh' ? 'verdict-meh' : 'verdict-likely');
+        const reason = confidence === 'yes'
+          ? 'Strong match in the SPG catalog on multiple keywords.'
+          : (confidence === 'meh'
+              ? 'One solid match, but the title is a stretch — read the tradeoffs before buying.'
+              : 'Decent single-keyword match; use the chat to compare if you want a sharper pick.');
+        return { kind:'verdict', html:
+          '<div class="ai-verdict-card '+verdictClass+'"><p class="eyebrow">'+verdictLabel+'</p>'+
+          '<h3>'+esc(top.title)+'</h3>'+
+          '<p>'+esc(top.why_useful)+'</p>'+
+          '<p class="best"><strong>Best for:</strong> '+esc(top.best_for)+'</p>'+
+          '<p class="micro">'+esc(reason)+'</p>'+
+          (second ? '<p class="micro">Runner-up: <a href="/products/'+esc(second.id)+'/">'+esc(second.title)+'</a></p>' : '')+
+          '<a class="btn sm" href="/products/'+esc(top.id)+'/">View the pick</a></div>'
+        };
+      }
       if (/privacy|unsubscribe|preferences|sign ?up|email|phone|zip|sms|tcpa|text/.test(low)) return { kind:'privacy', html:'You can <a href="/signup/">sign up here</a>, <a href="/preferences/">set preferences here</a>, or <a href="/unsubscribe/">unsubscribe here</a>. Email is required; phone is only collected when you opt in to SMS by ticking the consent box. See our <a href="/privacy/">Privacy Policy</a>.' };
       if (/return|shipping|warranty|price|availability/.test(low)) return { kind:'shipping', html: esc(facts.shipping) };
       if (/what is this|about|how does/.test(low)) return { kind:'brand', html: esc(facts.brand) + ' Ask me for a budget, person, problem, or setup and I will point you to useful picks.' };
@@ -932,7 +1022,8 @@ function assistantWidget(route) {
       empty:   ['Starter kits under $50', 'Popular gift picks', 'Travel kit ideas'],
       shipping:['Show me picks under $50', 'What about gift ideas?'],
       privacy: ['How does SMS opt-in work?', 'Take me to signup'],
-      brand:   ['Show me starter kits', 'Gift ideas under $50']
+      brand:   ['Show me starter kits', 'Gift ideas under $50'],
+      verdict: ['Compare to a similar pick', 'Show me cheaper options', 'Why this pick?']
     };
     function followUpsFor(kind){ return FOLLOW_UPS_BY_KIND[kind] || []; }
     // Render a follow-up row INSIDE the last bot message. Returns the wrapper
