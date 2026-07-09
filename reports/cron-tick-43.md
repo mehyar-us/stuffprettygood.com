@@ -36,7 +36,7 @@
 - Live preview shape gate: `https://ca037496.stuffprettygood.pages.dev/site.webmanifest` returns 24-key manifest with `file_handlers[0].name='Pretty Good Verdict'` + `action='/open/?file=%s'` + 4 accept mime types → LIVE OK.
 - Live /open handler verification: `https://ca037496.stuffprettygood.pages.dev/open/?file=demo.txt` returns HTML containing `fileParam` (3 occurrences), `File ready to read` (1), `Open in AI companion` (1) → LIVE OK.
 - Custom-domain CDN: STALE (7-key manifest) per pitfall #76 (chronic reproduction). Preview URL authoritative.
-- Push status: BACKGROUND IN FLIGHT (proc_53bdd56a71d4) — verification via `git ls-remote` follows in next step.
+- Push status: LANDED — `git ls-remote origin deploy/legal-expansion-and-signup-modal == git rev-parse HEAD == a0aa1badbf56d18ccd167f7acced0e57ba766fbd` (verified per pitfall #47 ground-truth recipe). First push landed `56db226` (source+dist+report); correction commit `a0aa1ba` (report SHA fill-in per pitfall #62) landed on second push. 0 ahead, 0 behind.
 🔗 LINKS:
 - Live (preview URL, authoritative): https://ca037496.stuffprettygood.pages.dev/site.webmanifest
 - Live (preview URL, /open with file=): https://ca037496.stuffprettygood.pages.dev/open/?file=demo.txt
