@@ -27,6 +27,12 @@
     "preferred_width": 480
   },
   "handle_links": "preferred",
+  "protocol_handlers": [
+    {
+      "protocol": "web+spg",
+      "url": "/open?u=%s"
+    }
+  ],
   "icons": [
     {
       "src": "/favicon.svg",
