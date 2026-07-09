@@ -914,4 +914,44 @@
   document.addEventListener('touchmove', onMove, { passive: false });
   document.addEventListener('touchend', onEnd, { passive: true });
   document.addEventListener('touchcancel', reset, { passive: true });
+})();</script><script>(function(){
+  if (!document.documentElement.classList.contains('is-pwa')) return;
+  if (typeof window === 'undefined' || !window.addEventListener) return;
+  var banner = null;
+  var hideTimer = null;
+  var lastState = null;
+  function ensureBanner(){
+    if (banner) return banner;
+    banner = document.createElement('div');
+    banner.className = 'spg-offline';
+    banner.setAttribute('role', 'status');
+    banner.setAttribute('aria-live', 'polite');
+    banner.setAttribute('aria-hidden', 'true');
+    banner.innerHTML = '<span class="spg-offline-dot" aria-hidden="true"></span><span class="spg-offline-label">You’re offline · showing cached content</span>';
+    document.body.appendChild(banner);
+    return banner;
+  }
+  function show(){
+    var b = ensureBanner();
+    if (lastState === 'offline') return;
+    lastState = 'offline';
+    if (hideTimer){ clearTimeout(hideTimer); hideTimer = null; }
+    b.classList.add('is-visible');
+    b.setAttribute('aria-hidden', 'false');
+  }
+  function hide(){
+    var b = ensureBanner();
+    if (lastState === 'online') return;
+    lastState = 'online';
+    // brief grace so users see the "back online" confirmation before dismiss
+    if (hideTimer) clearTimeout(hideTimer);
+    hideTimer = setTimeout(function(){
+      b.classList.remove('is-visible');
+      b.setAttribute('aria-hidden', 'true');
+    }, 1400);
+  }
+  // Initial state — if the page loaded while already offline, show immediately.
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) show();
+  window.addEventListener('offline', function(){ show(); });
+  window.addEventListener('online', function(){ hide(); });
 })();</script><footer class="footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>

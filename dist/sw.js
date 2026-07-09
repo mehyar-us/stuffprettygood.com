@@ -5,7 +5,7 @@
  *   - Outbound affiliate traffic / Workers API: passthrough (never cached, never intercepted)
  * Bumping SW_VERSION invalidates the old caches on the next activate.
  */
-const SW_VERSION = 'spg-v1';
+const SW_VERSION = 'spg-v2';
 const SW_CACHE = `spg-${SW_VERSION}`;
 const OFFLINE_URL = '/offline.html';
 const PRECACHE = [

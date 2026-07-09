@@ -237,3 +237,21 @@ html.is-pwa body{overscroll-behavior:none}
 @keyframes spg-ptr-spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.spg-ptr{transition:none}.spg-ptr.is-spinning .spg-ptr-arrow{animation-duration:2s}}
 @media(max-width:560px){.spg-ptr{font-size:11px;padding:7px 12px}}
+
+/* --- PWA offline indicator (Lane A #6) ---
+   Fixed-top banner that only renders when html.is-pwa is set (installed PWA).
+   The banner is created lazily by offlineIndicatorScript() in scripts/build.mjs
+   on the first 'offline' window event, so non-PWA tabs never pay the cost and
+   the banner never enters the DOM unless the device actually goes offline.
+   Slides down from the top edge via transform (no layout reflow), amber→orange
+   gradient matches the "is-ready" PTR pill for visual consistency. pointer-
+   events:none so it cannot intercept taps on the nav underneath. aria-live=polite
+   so AT users hear the transition without it yelling. prefers-reduced-motion
+   makes the transition instantaneous. z-index 9050 sits BELOW the PTR pill
+   (9100) and ABOVE the splash (9999 only during boot). */
+.spg-offline{position:fixed;left:50%;top:0;transform:translate(-50%,-100%);z-index:9050;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:0 0 14px 14px;background:linear-gradient(135deg,#f97316,#fbbf24);color:#1f1300;font:950 13px/1.3 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.02em;box-shadow:0 14px 30px rgba(249,115,22,.32);transition:transform .28s cubic-bezier(.2,.7,.2,1);pointer-events:none;max-width:calc(100vw - 24px);text-align:center}
+.spg-offline.is-visible{transform:translate(-50%,0)}
+.spg-offline-dot{width:8px;height:8px;border-radius:50%;background:#7c2d12;box-shadow:0 0 0 3px rgba(124,45,18,.18);flex:none;animation:spg-offline-pulse 1.4s ease-in-out infinite}
+@keyframes spg-offline-pulse{0%,100%{opacity:1}50%{opacity:.45}}
+@media(prefers-reduced-motion:reduce){.spg-offline{transition:none}.spg-offline-dot{animation-duration:2s}}
+@media(max-width:560px){.spg-offline{font-size:12px;padding:9px 14px}}
