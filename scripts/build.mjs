@@ -773,7 +773,7 @@ function assistantWidget(route) {
     || PAGE_SUGGESTIONS[r.split('/')[0]]
     || DEFAULT_SUGGESTIONS;
   const chipsHtml = suggestionChips.map(t => `<button type="button">${esc(t)}</button>`).join('');
-  return `${rateLimitScript()}<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong></button><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2><span id="spg-quota-pill" class="spg-quota-pill" hidden></span></div><button type="button" class="ai-close" aria-label="Close">×</button></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="submit">Ask</button></form><div class="ai-suggestions" data-ai-suggestions>${chipsHtml}</div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\\\u003c')}</script><script>
+  return `${rateLimitScript()}<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong></button><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2><span id="spg-quota-pill" class="spg-quota-pill" hidden></span></div><button type="button" class="ai-close" aria-label="Close">×</button></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="button" class="ai-mic" data-ai-mic hidden aria-label="Voice input" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11Z"/></svg></button><button type="submit">Ask</button></form><div class="ai-suggestions" data-ai-suggestions>${chipsHtml}</div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\\\u003c')}</script><script>
 (function(){
   const root = document.querySelector('[data-ai-bubble]');
   const dataEl = document.getElementById('spg-ai-catalog');
@@ -787,6 +787,7 @@ function assistantWidget(route) {
   const form = root.querySelector('[data-ai-form]');
   const messages = root.querySelector('[data-ai-messages]');
   const sugWrap = root.querySelector('.ai-suggestions');
+  const micBtn  = root.querySelector('[data-ai-mic]');
   // Bind a delegated click listener on the suggestion-chip container so chips
   // rendered server-side still get the same haptic + auto-submit behavior.
   const bindSuggestions = function(){
@@ -816,6 +817,72 @@ function assistantWidget(route) {
     });
   };
   bindFollowups();
+  // Lane C #3 (tick 14): voice input via Web Speech API. Feature-detected —
+  // the mic button stays [hidden] in markup, and bindVoice() unhides it ONLY
+  // if SpeechRecognition (or webkitSpeechRecognition) is on the window global. On
+  // unsupported browsers (iOS Safari, most desktops without an engine) the
+  // button never appears, no console errors, no broken click target. Stops
+  // cleanly on unmount / second click / form submit so the user can stop
+  // listening with one tap instead of waiting for silence. Reduces-motion:
+  // ignore haptic pulse but still start/stop recognition.
+  const SR = (typeof window !== 'undefined') && (window.SpeechRecognition || window.webkitSpeechRecognition);
+  const bindVoice = function(){
+    if (!SR || !micBtn) return;
+    micBtn.hidden = false;
+    let recognition = null;
+    let interim = '';
+    function setActive(on){
+      micBtn.classList.toggle('ai-mic--active', !!on);
+      micBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      if (on) haptic(12); else haptic(6);
+    }
+    function abortListening(silent){
+      if (!recognition) return;
+      try { recognition.onend = null; recognition.stop(); } catch (_) {}
+      recognition = null; interim = '';
+      setActive(false);
+      if (!silent) form.q.placeholder = 'Mic blocked. Type instead.';
+      window.setTimeout(function(){ form.q.placeholder = 'Ask: gift for dad under $50'; }, 2500);
+    }
+    micBtn.addEventListener('click', function(){
+      if (recognition) { abortListening(true); return; }
+      const Rec = (window.SpeechRecognition || window.webkitSpeechRecognition);
+      if (!Rec) return;
+      try {
+        recognition = new Rec();
+        recognition.lang = 'en-US';
+        recognition.interimResults = true;
+        recognition.continuous = false;
+        recognition.maxAlternatives = 1;
+        recognition.onresult = function(ev){
+          let txt = interim;
+          for (let i = ev.resultIndex; i < ev.results.length; i++) {
+            const r = ev.results[i];
+            txt += r[0].transcript;
+            if (!r.isFinal) interim = txt;
+          }
+          form.q.value = txt.trim();
+          // If the recognizer already returned a final segment, auto-submit.
+          if (ev.results[ev.results.length - 1].isFinal && form.q.value.length) {
+            form.dispatchEvent(new Event('submit', {cancelable: true}));
+          }
+        };
+        recognition.onerror = function(ev){ abortListening(ev.error !== 'no-speech' && ev.error !== 'aborted'); };
+        recognition.onend = function(){ setActive(false); recognition = null; interim = ''; };
+        recognition.start();
+        setActive(true);
+      } catch (e) {
+        // Most likely cause: permission denied, or the browser revoked mid-session.
+        recognition = null;
+        setActive(false);
+      }
+    });
+    // Stop listening when the user navigates away — prevents the red mic dot
+    // from persisting on the panel after the panel hides.
+    close.addEventListener('click', function(){ if (recognition) abortListening(true); });
+    form.addEventListener('submit', function(){ if (recognition) abortListening(true); });
+  };
+  bindVoice();
   const sessionKey = 'spg_ai_session_v1';
   const esc = (v) => String(v || '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const history = JSON.parse(sessionStorage.getItem(sessionKey) || '[]');
