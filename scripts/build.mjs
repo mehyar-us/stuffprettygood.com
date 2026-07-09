@@ -1841,6 +1841,24 @@ function mkdirPage(route, html) {
     /<meta property="og:image" content="([^"]+)"><meta property="og:image:width" content="960"><meta property="og:image:height" content="360">/,
     `<meta property="og:image" content="$1"><meta property="og:image:width" content="960"><meta property="og:image:height" content="360"><meta name="twitter:image" content="$1"><meta name="twitter:title" content="${twitterTitle}"><meta name="twitter:description" content="${twitterDesc}"><meta name="twitter:site" content="@stuffprettygood">`
   );
+  // Mark the current nav link with aria-current="page" for screen-reader users
+  // and visual highlight (CSS rule in styles.css). Scoped to <div class="nav-links">
+  // so the same /signup/ footer link is not touched. Home route '' marks the
+  // logo link (which is the only "/"-href inside the nav element).
+  if (route === '' || /^[a-z0-9-]+$/.test(route)) {
+    if (route === '') {
+      final = final.replace(
+        /<a class="logo" href="\/">/,
+        `<a class="logo" aria-current="page" href="/">`
+      );
+    } else {
+      const targetHref = `/${route}/`;
+      final = final.replace(
+        new RegExp(`(<div class="nav-links">[^<]*(?:<a[^>]*>[^<]*</a>[^<]*)*?)<a href="${targetHref.replace(/\//g, '\\/')}">`),
+        `$1<a aria-current="page" href="${targetHref}">`
+      );
+    }
+  }
   fs.writeFileSync(path.join(dir, 'index.html'), normalizeLinks(final));
 }
 
