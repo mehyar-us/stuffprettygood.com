@@ -12,6 +12,51 @@
   --shadow:0 28px 90px rgba(15,23,42,.12);
   --soft-shadow:0 18px 55px rgba(15,23,42,.08);
 }
+/* Dark-mode token overrides (Lane A #4). Activated by an inline <script>
+   in the <head> that sets data-theme="dark" on <html> before paint, so the
+   page never flashes light-then-dark. Token-only overrides — body uses
+   radial-gradient defined separately so we re-state it below. */
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0b1220;
+  --ink:#f1f5f9;
+  --muted:#94a3b8;
+  --card:#111c2e;
+  --line:#1f2a44;
+  --orange:#fb923c;
+  --orange-2:#fdba74;
+  --teal:#5eead4;
+  --blue:#60a5fa;
+  --shadow:0 28px 90px rgba(0,0,0,.4);
+  --soft-shadow:0 18px 55px rgba(0,0,0,.28);
+}
+:root[data-theme="dark"] body{background:radial-gradient(circle at 8% -4%,#1f2937 0,#0b1220 38%,#172033 100%);color:var(--ink)}
+:root[data-theme="dark"] .hero,:root[data-theme="dark"] .hero-copy{color:#f1f5f9}
+:root[data-theme="dark"] .nav{background:rgba(17,28,46,.82);border-color:rgba(31,42,68,.9);box-shadow:0 12px 38px rgba(0,0,0,.32)}
+:root[data-theme="dark"] .nav-links a,:root[data-theme="dark"] .pill,:root[data-theme="dark"] .footer-links a{background:rgba(17,28,46,.74);border-color:#1f2a44;color:#cbd5e1}
+:root[data-theme="dark"] .nav-links a:hover,:root[data-theme="dark"] .pill:hover{border-color:#fdba74;color:#fdba74;background:rgba(31,42,68,.9)}
+:root[data-theme="dark"] .hero-copy,:root[data-theme="dark"] .hero-card,:root[data-theme="dark"] .panel,:root[data-theme="dark"] .card,:root[data-theme="dark"] .post,:root[data-theme="dark"] .signup-band,:root[data-theme="dark"] .tool{background:linear-gradient(180deg,rgba(17,28,46,.94),rgba(11,18,32,.96));border-color:#1f2a44;color:#f1f5f9}
+:root[data-theme="dark"] .footer{background:rgba(11,18,32,.7);border-color:#1f2a44;color:#cbd5e1}
+:root[data-theme="dark"] h1,:root[data-theme="dark"] h2,:root[data-theme="dark"] h3,:root[data-theme="dark"] h4,:root[data-theme="dark"] .ink{color:#f1f5f9}
+:root[data-theme="dark"] .sub,:root[data-theme="dark"] p,:root[data-theme="dark"] .card p,:root[data-theme="dark"] .muted{color:#cbd5e1}
+:root[data-theme="dark"] .hero-copy .sub,:root[data-theme="dark"] .hero-copy .eyebrow{color:#fed7aa}
+:root[data-theme="dark"] .hero-stack span{background:#111c2e;border-color:#1f2a44;color:#e2e8f0}
+:root[data-theme="dark"] .theme-toggle{background:#111c2e;border-color:#1f2a44;color:#fb923c}
+:root[data-theme="dark"] .theme-toggle:hover{background:#1f2a44;border-color:#fb923c}
+/* Theme toggle button — sits inside .nav-links so it inherits the same pill
+   flex layout. Has aria-pressed for screen-reader state. The two spans
+   (.sun + .moon) swap visibility based on data-theme on the <html> element. */
+.theme-toggle{position:relative;display:inline-flex;align-items:center;gap:6px;padding:9px 11px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.74);color:#334155;font:850 12px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;cursor:pointer;transition:transform .15s ease,background .15s ease,border-color .15s ease,color .15s ease;flex:none;white-space:nowrap;height:38px}
+.theme-toggle:hover{transform:translateY(-1px);border-color:#fdba74;color:#9a3412;background:#fff7ed}
+.theme-toggle:focus-visible{outline:3px solid #fdba74;outline-offset:2px}
+.theme-toggle .sun,.theme-toggle .moon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;flex:none}
+.theme-toggle .sun{display:none}
+.theme-toggle .moon{display:inline-flex}
+:root[data-theme="dark"] .theme-toggle .sun{display:inline-flex}
+:root[data-theme="dark"] .theme-toggle .moon{display:none}
+.theme-toggle .label{display:none}
+@media(max-width:560px){.theme-toggle{padding:9px 10px}.theme-toggle .label{display:none}}
+@media(prefers-reduced-motion:reduce){.theme-toggle{transition:none}}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at 8% -4%,#ffe9bd 0,#f6f1e8 32%,#eaf4ff 100%);color:var(--ink)}
