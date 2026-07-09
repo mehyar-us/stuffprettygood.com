@@ -852,6 +852,61 @@ const FAQ_JSONLD = {
       { '@type': 'Question', name: 'Are these kits physical bundles I can buy?', acceptedAnswer: { '@type': 'Answer', text: 'No — they are shortlists of standalone products from the approved catalog that work well together. You buy each item separately through its /go/<id>/ page so current pricing and availability stay accurate.' } },
       { '@type': 'Question', name: 'How is this different from the AI Gift Finder?', acceptedAnswer: { '@type': 'Answer', text: 'Gift Finder targets a person and an occasion. Starter Kit Builder targets a setup or situation (e.g. "first apartment essentials" or "travel kit under $150") and assembles the kit across multiple categories.' } }
     ]
+  },
+  // Lane B category-page FAQPage blocks (tick 35). Each route below is a curated
+  // shop-by-category page that benefits from 3-4 FAQ Q/A pairs so search engines
+  // and AI tools can ingest the "what is this page" + "how do picks qualify"
+  // canonical questions. mainEntity questions are unique per route — no overlap
+  // with the gift-finder / starter-kits entries above.
+  'under-50': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What is Stuff Pretty Good\'s Under $50 page?', acceptedAnswer: { '@type': 'Answer', text: 'A curated shortlist of useful products under $50 pulled from our approved affiliate catalog. Each pick solves a concrete daily problem — desk cleanup, kitchen prep, travel, pet care — without hitting premium pricing.' } },
+      { '@type': 'Question', name: 'How do you decide what makes the Under $50 list?', acceptedAnswer: { '@type': 'Answer', text: 'Every pick is approved-affiliate, currently priced under $50 at the merchant, and reviews as genuinely useful (not a cheap filler gadget). We rotate weekly based on stock, price changes, and reader feedback.' } },
+      { '@type': 'Question', name: 'Does Under $50 include the cheapest possible product?', acceptedAnswer: { '@type': 'Answer', text: 'No — cheap is not the goal. The page favors the best value at the price, with products that hold up to daily use rather than one-time novelty.' } },
+      { '@type': 'Question', name: 'Can I ask the AI to narrow Under $50 picks for me?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Open the SPG AI bubble in the bottom-right and ask for "useful under $50" or a more specific situation like "desk setup under $50" — the bubble will pull from the same approved catalog.' } }
+    ]
+  },
+  'walmart': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What is the Walmart-approved picks page on SPG?', acceptedAnswer: { '@type': 'Answer', text: 'A shortlist of products available through Walmart\'s affiliate program that we have vetted as useful enough to recommend. Every link routes through /go/<id>/ so you still confirm current price and shipping on Walmart before buying.' } },
+      { '@type': 'Question', name: 'Why filter picks to one retailer like Walmart?', acceptedAnswer: { '@type': 'Answer', text: 'Some shoppers prefer the predictability of one retailer — easy returns, store pickup, and a familiar checkout. This page keeps the SPG "no fake hype" rule while letting you shop that constraint.' } },
+      { '@type': 'Question', name: 'Is the Walmart page a substitute for the main catalog?', acceptedAnswer: { '@type': 'Answer', text: 'No. It is a subset. The full approved catalog spans many retailers and price points; the Walmart page only shows the picks that route to Walmart.' } },
+      { '@type': 'Question', name: 'Are Walmart prices on SPG updated in real time?', acceptedAnswer: { '@type': 'Answer', text: 'No — we link to the merchant and let Walmart serve the live price. SPG shows the category and price band we vetted the product at; final pricing lives on the merchant page.' } }
+    ]
+  },
+  'home-office': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What makes the Home Office picks page worth browsing?', acceptedAnswer: { '@type': 'Answer', text: 'It rounds up practical home-office upgrades — monitor lights, laptop stands, cable management, footrests, desk mats — from the approved SPG catalog, so you can build a less painful desk without researching every gadget.' } },
+      { '@type': 'Question', name: 'I already own a laptop and monitor — what would actually help?', acceptedAnswer: { '@type': 'Answer', text: 'The most useful add-ons tend to be cable management, a monitor light bar, an adjustable laptop stand, and an under-desk headphone hook. All four appear on this page with short buyer notes.' } },
+      { '@type': 'Question', name: 'Are these picks suitable for a small desk or apartment?', acceptedAnswer: { '@type': 'Answer', text: 'Yes — most home-office picks are sized for shared desks and small rooms. Picks like the vertical laptop stand and cable management box are specifically chosen for tight spaces.' } },
+      { '@type': 'Question', name: 'Does Home Office overlap with the desk-setup guide?', acceptedAnswer: { '@type': 'Answer', text: 'They share product picks but serve different jobs: the category page is a browseable shortlist, the desk-setup guide is a curated walkthrough for someone starting from zero.' } }
+    ]
+  },
+  'kitchen': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What kind of products are on the SPG Kitchen page?', acceptedAnswer: { '@type': 'Answer', text: 'Practical kitchen helpers — magnetic measuring spoons, clip-on pot strainers, produce-saver containers, utensil rests, jar openers, and other small tools that make weeknight cooking less annoying.' } },
+      { '@type': 'Question', name: 'Are the kitchen picks suitable for small apartments or dorms?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. The shortlist favors space-saving tools (clip-on strainers, magnetic organizers, single-purpose gadgets) over bulky appliances. Most picks fit in a single drawer.' } },
+      { '@type': 'Question', name: 'Are any of these picks single-use novelties?', acceptedAnswer: { '@type': 'Answer', text: 'No — every kitchen pick is something a regular home cook reaches for at least weekly. Single-use gadgets without repeat-use value are filtered out before they reach the list.' } },
+      { '@type': 'Question', name: 'Can I ask the AI which kitchen pick to start with?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Open the SPG AI bubble and ask something like "what should I get first for a small kitchen" — the bubble will answer with a short shortlist from the same approved catalog.' } }
+    ]
+  },
+  'travel': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What kind of products are on the SPG Travel page?', acceptedAnswer: { '@type': 'Answer', text: 'Practical travel gear — compression packing cubes, refillable toiletry bottles, luggage scales, neck pillows, cable organizers, passport wallets — small enough to carry, useful enough to use on every trip.' } },
+      { '@type': 'Question', name: 'I only travel carry-on. Are any of these still useful?', acceptedAnswer: { '@type': 'Answer', text: 'Most picks are carry-on-friendly by design: refillable bottles that fit TSA bags, packable neck pillows, slim passport wallets, and cable pouches. We avoid bulky gear.' } },
+      { '@type': 'Question', name: 'Do you recommend travel adapters and converters?', acceptedAnswer: { '@type': 'Answer', text: 'A universal travel adapter is on the page. For voltage conversion, we link to general guidance rather than recommending a specific converter — needs vary by destination and device.' } },
+      { '@type': 'Question', name: 'Can the AI build me a travel kit for a specific trip?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Open the SPG AI bubble and describe your trip — length, destination type, and whether you will check a bag — and the assistant will pull a shortlist from the approved travel catalog.' } }
+    ]
   }
 };
 
