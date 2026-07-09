@@ -286,3 +286,24 @@ html.is-pwa body{overscroll-behavior:none}
 .spg-open-actions{display:flex;gap:12px;justify-content:center;margin-top:20px;flex-wrap:wrap}
 .spg-open-url{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#0f172a;color:#fefce8;padding:10px 14px;border-radius:10px;margin:12px 0;word-break:break-all;font-size:14px;line-height:1.4}
 @media(prefers-reduced-motion:reduce){.spg-open-spinner{animation-duration:2s}}
+
+/* Lane A #22 (tick 48): saved picks. The .ai-pick card now hosts an inline
+   star toggle (.ai-save-btn) anchored to its top-right. Default state is
+   "unsaved" — outline, white background, ink color, aria-pressed=false. On
+   click the IIFE toggles localStorage and flips .active (filled gold star,
+   gradient border, soft amber background). The .ai-launch FAB carries a small
+   counter pill (.ai-launch-pill) that shows the saved count and is hidden
+   when 0. Both icons hit a 24x24 minimum touch target for Gen Z.
+   Layout uses position:relative on .ai-pick so the star can float absolute. */
+.ai-pick{position:relative}
+.ai-save-btn{position:absolute;top:8px;right:8px;width:30px;height:30px;display:grid;place-items:center;border:1px solid #e2e8f0;border-radius:999px;background:#fff;color:#94a3b8;cursor:pointer;padding:0;transition:transform .15s ease,background .15s ease,border-color .15s ease,color .15s ease,box-shadow .15s ease;z-index:2}
+.ai-save-btn:hover{transform:translateY(-1px);background:#fff7ed;border-color:#fdba74;color:#9a3412}
+.ai-save-btn:focus-visible{outline:3px solid #fdba74;outline-offset:2px}
+.ai-save-btn svg{width:14px;height:14px;display:block}
+.ai-save-btn.active{background:linear-gradient(135deg,#fde68a,#fdba74);color:#9a3412;border-color:transparent;box-shadow:0 6px 18px rgba(251,146,60,.32);animation:ai-save-pop .25s ease}
+.ai-save-btn.active:hover{background:linear-gradient(135deg,#fdba74,#fb923c);color:#fff}
+.ai-bubble.compare-on .ai-save-btn{opacity:.35;pointer-events:none}
+@keyframes ai-save-pop{0%{transform:scale(.7)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+.ai-launch{position:relative}
+.ai-launch-pill{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;display:grid;place-items:center;padding:0 6px;border:2px solid #fff;border-radius:999px;background:linear-gradient(135deg,#f97316,#f59e0b);color:#fff;font:950 11px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.02em;box-shadow:0 6px 16px rgba(15,23,42,.22);animation:ai-save-pop .3s ease both}
+.ai-launch-pill[hidden]{display:none}

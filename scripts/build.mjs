@@ -1168,7 +1168,7 @@ function assistantWidget(route) {
     || PAGE_SUGGESTIONS[r.split('/')[0]]
     || DEFAULT_SUGGESTIONS;
   const chipsHtml = suggestionChips.map(t => `<button type="button">${esc(t)}</button>`).join('');
-  return `${rateLimitScript()}<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong></button><button class="ai-verdict-launch" type="button" data-ai-verdict-launch aria-label="Pretty good or not? Quick verdict on a URL or product" hidden><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm-1 14.5L6.5 12l1.4-1.4L11 13.7l5.1-5.1L17.5 10Z"/></svg><strong>Pretty good or not?</strong></button><form class="ai-verdict" data-ai-verdict hidden novalidate><label class="eyebrow" for="spg-verdict-q">Paste a URL or product name</label><div class="ai-verdict-row"><input id="spg-verdict-q" name="verdict" autocomplete="off" placeholder="e.g. https://amzn.to/... or Anova Precision Cooker" required><button type="submit">Verdict</button><button type="button" class="ai-verdict-cancel" aria-label="Cancel verdict">×</button></div></form><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2><span id="spg-quota-pill" class="spg-quota-pill" hidden></span></div><div class="ai-header-actions"><button type="button" class="ai-share" data-ai-share hidden aria-label="Copy shareable link"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M18 8a3 3 0 0 0-2.05-.81 3 3 0 0 0-2.95 2.4 1 1 0 1 0 1.96.4 1 1 0 0 1 1.99-.2 1 1 0 0 1-.6 1.18 1 1 0 1 0 .7 1.86A3 3 0 0 0 18 8Zm-9.95 8.81a3 3 0 0 0 2.05.81 3 3 0 0 0 2.95-2.4 1 1 0 1 0-1.96-.4 1 1 0 0 1-1.99.2 1 1 0 0 1 .6-1.18 1 1 0 1 0-.7-1.86A3 3 0 0 0 8.05 16.81Zm5.45-3.31a1 1 0 0 0-1.32-.5l-3.16 1.4a1 1 0 1 0 .81 1.83l3.16-1.4a1 1 0 0 0 .51-1.33Z"/></svg></button><button type="button" class="ai-close" aria-label="Close">×</button></div></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><button type="button" class="ai-compare-toggle" data-ai-compare-toggle aria-label="Compare two picks" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9 3 3 9l6 6V11h6v4l6-6-6-6v4H9Zm0 12v4h6v-4l6 6-6 6v-4H3l6-6Z"/></svg><span data-ai-compare-label>Compare</span></button><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="button" class="ai-mic" data-ai-mic hidden aria-label="Voice input" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11Z"/></svg></button><button type="submit">Ask</button></form><div class="ai-compare-chip" data-ai-compare-chip hidden><span data-ai-compare-chip-text>Tap two product cards to compare</span><button type="button" class="ai-compare-chip-clear" aria-label="Cancel compare">×</button></div><div class="ai-suggestions" data-ai-suggestions>${chipsHtml}</div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\\\u003c')}</script><script>
+  return `${rateLimitScript()}<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong><span class="ai-launch-pill" data-ai-launch-pill hidden aria-live="polite"></span></button><button class="ai-verdict-launch" type="button" data-ai-verdict-launch aria-label="Pretty good or not? Quick verdict on a URL or product" hidden><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm-1 14.5L6.5 12l1.4-1.4L11 13.7l5.1-5.1L17.5 10Z"/></svg><strong>Pretty good or not?</strong></button><form class="ai-verdict" data-ai-verdict hidden novalidate><label class="eyebrow" for="spg-verdict-q">Paste a URL or product name</label><div class="ai-verdict-row"><input id="spg-verdict-q" name="verdict" autocomplete="off" placeholder="e.g. https://amzn.to/... or Anova Precision Cooker" required><button type="submit">Verdict</button><button type="button" class="ai-verdict-cancel" aria-label="Cancel verdict">×</button></div></form><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2><span id="spg-quota-pill" class="spg-quota-pill" hidden></span></div><div class="ai-header-actions"><button type="button" class="ai-share" data-ai-share hidden aria-label="Copy shareable link"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M18 8a3 3 0 0 0-2.05-.81 3 3 0 0 0-2.95 2.4 1 1 0 1 0 1.96.4 1 1 0 0 1 1.99-.2 1 1 0 0 1-.6 1.18 1 1 0 1 0 .7 1.86A3 3 0 0 0 18 8Zm-9.95 8.81a3 3 0 0 0 2.05.81 3 3 0 0 0 2.95-2.4 1 1 0 1 0-1.96-.4 1 1 0 0 1-1.99.2 1 1 0 0 1 .6-1.18 1 1 0 1 0-.7-1.86A3 3 0 0 0 8.05 16.81Zm5.45-3.31a1 1 0 0 0-1.32-.5l-3.16 1.4a1 1 0 1 0 .81 1.83l3.16-1.4a1 1 0 0 0 .51-1.33Z"/></svg></button><button type="button" class="ai-close" aria-label="Close">×</button></div></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><button type="button" class="ai-compare-toggle" data-ai-compare-toggle aria-label="Compare two picks" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9 3 3 9l6 6V11h6v4l6-6-6-6v4H9Zm0 12v4h6v-4l6 6-6 6v-4H3l6-6Z"/></svg><span data-ai-compare-label>Compare</span></button><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="button" class="ai-mic" data-ai-mic hidden aria-label="Voice input" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11Z"/></svg></button><button type="submit">Ask</button></form><div class="ai-compare-chip" data-ai-compare-chip hidden><span data-ai-compare-chip-text>Tap two product cards to compare</span><button type="button" class="ai-compare-chip-clear" aria-label="Cancel compare">×</button></div><div class="ai-suggestions" data-ai-suggestions>${chipsHtml}</div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\\\u003c')}</script><script>
 (function(){
   const root = document.querySelector('[data-ai-bubble]');
   const dataEl = document.getElementById('spg-ai-catalog');
@@ -1551,6 +1551,86 @@ function assistantWidget(route) {
     }
   }
   bindShare();
+  // Lane A #22 (tick 48): saved picks. Persist user's starred picks to
+  // localStorage and surface the count on the AI launch button so they see
+  // engagement stacking across visits. Each pick card in the chat panel now
+  // ships with an inline star toggle (data-ai-save). Clicks are captured in
+  // capture phase so the underlying /products/<id>/ anchor never triggers on
+  // the star (preventDefault on the click + stopImmediatePropagation keeps
+  // the save toggling clean). Mirrors the lane-c compare-mode capture-phase
+  // delegation pattern in scripts/build.mjs:1396.
+  const SAVED_KEY = 'spg-saved-picks:v1';
+  const launchPill = root.querySelector('[data-ai-launch-pill]');
+  function loadSaved(){
+    try { const v = JSON.parse(localStorage.getItem(SAVED_KEY) || '[]'); return Array.isArray(v) ? v : []; }
+    catch (_) { return []; }
+  }
+  function writeSaved(list){
+    try { localStorage.setItem(SAVED_KEY, JSON.stringify(list)); } catch (_) {}
+  }
+  function isSaved(id, list){ return list.some(function(s){ return s && s.id === id; }); }
+  function refreshPill(){
+    if (!launchPill) return;
+    const list = loadSaved();
+    const n = list.length;
+    if (n > 0){
+      launchPill.textContent = String(n);
+      launchPill.hidden = false;
+      launchPill.setAttribute('aria-label', n + ' saved pick' + (n === 1 ? '' : 's'));
+    } else {
+      launchPill.textContent = '';
+      launchPill.hidden = true;
+    }
+  }
+  function refreshStarState(){
+    const list = loadSaved();
+    const ids = {};
+    list.forEach(function(s){ ids[s.id] = true; });
+    root.querySelectorAll('[data-ai-save]').forEach(function(btn){
+      const id = btn.getAttribute('data-save-id');
+      const on = !!ids[id];
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      const title = btn.getAttribute('data-save-title') || 'pick';
+      btn.setAttribute('aria-label', (on ? 'Remove ' : 'Save ') + title + (on ? ' from saved' : ''));
+    });
+  }
+  function toggleSave(id, title){
+    const list = loadSaved();
+    const idx = list.findIndex(function(s){ return s && s.id === id; });
+    if (idx >= 0) { list.splice(idx, 1); }
+    else {
+      if (list.length >= 24) list.shift();
+      list.push({ id: id, title: title || '', ts: Date.now() });
+    }
+    writeSaved(list);
+    refreshPill();
+    refreshStarState();
+  }
+  // Capture-phase delegated click: any [data-ai-save] inside the bubble toggles.
+  // Runs BEFORE the compare-mode /products/<id>/ click handler (line 1396) so
+  // star toggles never accidentally fire onCardPicked() too.
+  root.addEventListener('click', function(e){
+    var t = e.target;
+    var btn = t && t.closest && t.closest('[data-ai-save]');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var id = btn.getAttribute('data-save-id');
+    var title = btn.getAttribute('data-save-title') || '';
+    if (!id) return;
+    toggleSave(id, title);
+    haptic(8);
+  }, true);
+  // MutationObserver: when answer() renders new .ai-pick cards, refresh the
+  // star visual state to reflect the persisted saved list. Without this, new
+  // picks would render as unstarred even if they're already in the saved list.
+  if (typeof MutationObserver !== 'undefined'){
+    var savedObserver = new MutationObserver(function(){ refreshStarState(); });
+    savedObserver.observe(messages, { childList: true, subtree: true });
+  }
+  refreshPill();
+  refreshStarState();
   const sessionKey = 'spg_ai_session_v1';
   const esc = (v) => String(v || '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const history = JSON.parse(sessionStorage.getItem(sessionKey) || '[]');
@@ -1625,11 +1705,31 @@ function assistantWidget(route) {
         };
       }
       if (/privacy|unsubscribe|preferences|sign ?up|email|phone|zip|sms|tcpa|text/.test(low)) return { kind:'privacy', html:'You can <a href="/signup/">sign up here</a>, <a href="/preferences/">set preferences here</a>, or <a href="/unsubscribe/">unsubscribe here</a>. Email is required; phone is only collected when you opt in to SMS by ticking the consent box. See our <a href="/privacy/">Privacy Policy</a>.' };
+      // Lane A #22 (tick 48): saved picks. Read from the same localStorage key
+      // that bindSavedPicks() writes to (spg-saved-picks:v1). Returns a 'saved'
+      // kind so FOLLOW_UPS_BY_KIND.saved applies (Email-me-this-list follow-up
+      // routes the user to /signup/ — that's the actual money line this ladders
+      // to; the saved list itself just makes the user want to keep it).
+      if (/saved|saved picks|my picks|wishlist|saved list|show saved|show my|what did i save/i.test(low)){
+        const savedKey = 'spg-saved-picks:v1';
+        let savedList = [];
+        try { savedList = JSON.parse(localStorage.getItem(savedKey) || '[]') || []; } catch (_) { savedList = []; }
+        if (!savedList.length) return { kind:'saved', html:'<p>No saved picks yet. Ask for <em>gift under $50</em> or <em>desk setup</em>, then tap the star on any pick to save it here. Your saved list lives on this device.</p>' };
+        const items = savedList.slice(0, 8).map(function(s){
+          const p = products.find(function(pp){ return pp.id === s.id; });
+          if (!p) return '';
+          return '<a class="ai-pick" data-product-id="'+esc(p.id)+'" href="/products/'+esc(p.id)+'/"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'"><span><b>'+esc(p.title)+'</b><em>'+esc(p.why_useful)+'</em><small>Best for: '+esc(p.best_for)+'</small><strong>Get</strong></span><button type="button" class="ai-save-btn active" data-ai-save data-save-id="'+esc(p.id)+'" data-save-title="'+esc(p.title)+'" aria-label="Remove '+esc(p.title)+' from saved" aria-pressed="true"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21Z"/></svg></button></a>';
+        }).filter(Boolean).join('');
+        const tail = savedList.length > 8 ? '<p class="micro">Showing 8 of '+esc(String(savedList.length))+'. Ask <em>show me saved</em> again after clearing a few.</p>' : '';
+        const header = '<p class="eyebrow">Saved picks ('+esc(String(savedList.length))+')</p>';
+        const cta = '<p class="micro"><a href="/signup/">Email me this list</a> · <a href="/preferences/">Set preferences</a></p>';
+        return { kind:'saved', html: header + items + cta + tail };
+      }
       if (/return|shipping|warranty|price|availability/.test(low)) return { kind:'shipping', html: esc(facts.shipping) };
       if (/what is this|about|how does/.test(low)) return { kind:'brand', html: esc(facts.brand) + ' Ask me for a budget, person, problem, or setup and I will point you to useful picks.' };
       const picks = recommend(q, 5);
       if (!picks.length) return { kind:'empty', html:'I did not find a tight match yet. Try a clearer need like “travel gift under $50,” “desk setup,” “kitchen time saver,” or “pet cleanup.”' };
-      return { kind:'picks', html:'<strong>Good shortlist:</strong>' + picks.map(p => '<a class="ai-pick" href="/products/'+esc(p.id)+'/"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'"><span><b>'+esc(p.title)+'</b><em>'+esc(p.why_useful)+'</em><small>Best for: '+esc(p.best_for)+'</small><strong>Get</strong></span></a>').join('') };
+      return { kind:'picks', html:'<strong>Good shortlist:</strong>' + picks.map(p => '<a class="ai-pick" data-product-id="'+esc(p.id)+'" href="/products/'+esc(p.id)+'/"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'"><span><b>'+esc(p.title)+'</b><em>'+esc(p.why_useful)+'</em><small>Best for: '+esc(p.best_for)+'</small><strong>Get</strong></span><button type="button" class="ai-save-btn" data-ai-save data-save-id="'+esc(p.id)+'" data-save-title="'+esc(p.title)+'" aria-label="Save '+esc(p.title)+'" aria-pressed="false"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21Z"/></svg></button></a>').join('') };
     }
     // Two-to-three contextual follow-ups per answer kind. Order is intentional:
     // most-useful chip first, "narrow it" second, "broaden it" third. Avoid
@@ -1641,7 +1741,8 @@ function assistantWidget(route) {
       privacy: ['How does SMS opt-in work?', 'Take me to signup'],
       brand:   ['Show me starter kits', 'Gift ideas under $50'],
       verdict: ['Compare to a similar pick', 'Show me cheaper options', 'Why this pick?'],
-      compare: ['Compare two more picks', 'Show cheaper picks', 'Why these picks?']
+      compare: ['Compare two more picks', 'Show cheaper picks', 'Why these picks?'],
+      saved:   ['Show me saved', 'Email me this list', 'Compare two saved picks']
     };
     function followUpsFor(kind){ return FOLLOW_UPS_BY_KIND[kind] || []; }
     // Render a follow-up row INSIDE the last bot message. Returns the wrapper
