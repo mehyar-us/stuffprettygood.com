@@ -2466,6 +2466,12 @@ for (const [slug, html] of Object.entries(policyPages)) {
 
 fs.writeFileSync(path.join(dist, 'robots.txt'), 'User-agent: *\nAllow: /\nSitemap: https://stuffprettygood.com/sitemap.xml\n');
 const urls = ['', 'gift-finder', 'starter-kits', 'under-25', 'under-50', 'walmart', 'stories', 'useful-finds', 'travel', 'home-office', 'kitchen', 'pets', 'tech', 'signup', 'about', 'advertise', 'affiliate-disclosure', 'privacy', 'terms', 'contact', 'unsubscribe', 'preferences', ...posts.map((p) => 'guides/' + p.slug), ...products.map((p) => 'products/' + p.id)];
-fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map((u) => `<url><loc>https://stuffprettygood.com${slugUrl(u)}</loc></url>`).join('')}</urlset>`);
+const _spgBuildIso = new Date().toISOString();
+const _spgSitemapEntries = urls.map((u) => {
+  let _spgLastmod = _spgBuildIso;
+  try { _spgLastmod = fs.statSync(path.join(dist, slugUrl(u), 'index.html')).mtime.toISOString(); } catch (_) { /* route not built — fall back to build-time ISO */ }
+  return `<url><loc>https://stuffprettygood.com${slugUrl(u)}</loc><lastmod>${_spgLastmod}</lastmod></url>`;
+}).join('');
+fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${_spgSitemapEntries}</urlset>`);
 
 console.log(`built ${products.length} approved products, ${posts.length} guides`);
