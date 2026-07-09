@@ -50,6 +50,13 @@
       "type": "image/svg+xml",
       "form_factor": "wide",
       "label": "Stuff Pretty Good home — AI shopping guide, gift finder, and starter kits"
+    },
+    {
+      "src": "/assets/site/spg-shopping-guide-narrow.svg",
+      "sizes": "540x960",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Stuff Pretty Good home — mobile install preview"
     }
   ],
   "shortcuts": [

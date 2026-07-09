@@ -135,7 +135,7 @@ const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" r
 </svg>`;
 fs.writeFileSync(path.join(dist, 'assets/site/spg-logo.svg'), logoSvg);
 fs.writeFileSync(path.join(dist, 'favicon.svg'), logoSvg);
-fs.writeFileSync(path.join(dist, 'site.webmanifest'), JSON.stringify({ id: 'stuffprettygood', name: 'Stuff Pretty Good', short_name: 'SPG', description: 'AI shortlists, gift finder, starter kits, and useful product picks under $50. Buy faster, waste less.', lang: 'en-US', dir: 'ltr', start_url: '/', scope: '/', display: 'standalone', orientation: 'any', prefer_related_applications: false, background_color: '#f6f1e8', theme_color: '#111827', categories: ['shopping', 'lifestyle', 'productivity', 'product-catalog'], display_override: ['standalone', 'minimal-ui'], launch_handler: { client_mode: 'auto' }, edge_side_panel: { preferred_width: 480 }, handle_links: 'preferred', protocol_handlers: [{ protocol: 'web+spg', url: '/open?u=%s' }], icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any maskable' }], screenshots: [{ src: '/assets/site/spg-shopping-guide.svg', sizes: '960x360', type: 'image/svg+xml', form_factor: 'wide', label: 'Stuff Pretty Good home — AI shopping guide, gift finder, and starter kits' }], shortcuts: [{ name: 'Gift Finder', short_name: 'Gift Finder', url: '/gift-finder/', icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }] }, { name: 'Starter Kits', short_name: 'Starter Kits', url: '/starter-kits/', icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }] }, { name: 'Under $50', short_name: 'Under $50', url: '/under-50/', icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }] }, { name: 'Sign up', short_name: 'Sign up', url: '/signup/', icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }] }] }, null, 2));
+fs.writeFileSync(path.join(dist, 'site.webmanifest'), JSON.stringify({ id: 'stuffprettygood', name: 'Stuff Pretty Good', short_name: 'SPG', description: 'AI shortlists, gift finder, starter kits, and useful product picks under $50. Buy faster, waste less.', lang: 'en-US', dir: 'ltr', start_url: '/', scope: '/', display: 'standalone', orientation: 'any', prefer_related_applications: false, background_color: '#f6f1e8', theme_color: '#111827', categories: ['shopping', 'lifestyle', 'productivity', 'product-catalog'], display_override: ['standalone', 'minimal-ui'], launch_handler: { client_mode: 'auto' }, edge_side_panel: { preferred_width: 480 }, handle_links: 'preferred', protocol_handlers: [{ protocol: 'web+spg', url: '/open?u=%s' }], icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any maskable' }], screenshots: [{ src: '/assets/site/spg-shopping-guide.svg', sizes: '960x360', type: 'image/svg+xml', form_factor: 'wide', label: 'Stuff Pretty Good home — AI shopping guide, gift finder, and starter kits' }, { src: '/assets/site/spg-shopping-guide-narrow.svg', sizes: '540x960', type: 'image/svg+xml', form_factor: 'narrow', label: 'Stuff Pretty Good home — mobile install preview' }], shortcuts: [{ name: 'Gift Finder', short_name: 'Gift Finder', url: '/gift-finder/', icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }] }, { name: 'Starter Kits', short_name: 'Starter Kits', url: '/starter-kits/', icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }] }, { name: 'Under $50', short_name: 'Under $50', url: '/under-50/', icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }] }, { name: 'Sign up', short_name: 'Sign up', url: '/signup/', icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }] }] }, null, 2));
 
 const siteArtSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-label="Stuff Pretty Good AI shopping guide visual">
   <defs><linearGradient id="spg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#080f1f"/><stop offset=".38" stop-color="#0f766e"/><stop offset=".72" stop-color="#f97316"/><stop offset="1" stop-color="#fde68a"/></linearGradient><filter id="glow"><feDropShadow dx="0" dy="26" stdDeviation="26" flood-color="#020617" flood-opacity=".28"/></filter></defs>
@@ -148,6 +148,30 @@ const siteArtSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360
   <text x="480" y="328" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="31" font-weight="950" fill="#fff7ed">AI shortlists · better gifts · practical products</text>
 </svg>`
 fs.writeFileSync(path.join(dist, 'assets/site/spg-shopping-guide.svg'), siteArtSvg);
+
+const siteArtSvgNarrow = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 960" role="img" aria-label="Stuff Pretty Good AI shopping guide — mobile install surface">
+  <defs><linearGradient id="spgn" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#080f1f"/><stop offset=".38" stop-color="#0f766e"/><stop offset=".72" stop-color="#f97316"/><stop offset="1" stop-color="#fde68a"/></linearGradient><filter id="glown"><feDropShadow dx="0" dy="22" stdDeviation="22" flood-color="#020617" flood-opacity=".3"/></filter></defs>
+  <rect width="540" height="960" rx="56" fill="url(#spgn)"/>
+  <circle cx="86" cy="120" r="62" fill="#fff7ed" opacity=".22"/><circle cx="468" cy="100" r="98" fill="#bfdbfe" opacity=".18"/><circle cx="270" cy="840" r="120" fill="#fde68a" opacity=".16"/>
+  <path d="M40 720C150 660 260 760 380 700s140-60 200-10" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round" opacity=".22"/>
+  <g filter="url(#glown)">
+    <rect x="70" y="200" width="400" height="160" rx="36" fill="#fff"/>
+    <rect x="70" y="386" width="400" height="160" rx="36" fill="#fff"/>
+    <rect x="70" y="572" width="400" height="160" rx="36" fill="#fff"/>
+  </g>
+  <image href="/assets/site/spg-logo.svg" x="220" y="234" width="100" height="100"/>
+  <text x="350" y="270" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="900" fill="#0f766e">SPG</text>
+  <text x="120" y="320" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#111827">AI shortlists</text>
+  <text x="120" y="348" font-family="Inter,Arial,sans-serif" font-size="16" fill="#475569">gift finder + starter kits</text>
+  <text x="120" y="430" font-size="56">⚡</text>
+  <text x="120" y="510" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#111827">Useful upgrades</text>
+  <text x="120" y="538" font-family="Inter,Arial,sans-serif" font-size="16" fill="#475569">under $50 picks that last</text>
+  <text x="120" y="610" font-size="56">🎁</text>
+  <text x="120" y="690" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#111827">Gift ideas</text>
+  <text x="120" y="718" font-family="Inter,Arial,sans-serif" font-size="16" fill="#475569">for people who have everything</text>
+  <text x="270" y="888" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="950" fill="#fff7ed">buy faster · waste less</text>
+</svg>`;
+fs.writeFileSync(path.join(dist, 'assets/site/spg-shopping-guide-narrow.svg'), siteArtSvgNarrow);
 
 function isExternalHref(href) {
   if (/^(?:https?:\/\/(?:www\.)?stuffprettygood\.com)?\/go\//i.test(href) || /^https?:\/\/stuffprettygood-api\.mehyar\.workers\.dev\/go\//i.test(href)) return true;

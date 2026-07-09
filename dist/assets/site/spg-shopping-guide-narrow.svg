@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 960" role="img" aria-label="Stuff Pretty Good AI shopping guide — mobile install surface">
+  <defs><linearGradient id="spgn" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#080f1f"/><stop offset=".38" stop-color="#0f766e"/><stop offset=".72" stop-color="#f97316"/><stop offset="1" stop-color="#fde68a"/></linearGradient><filter id="glown"><feDropShadow dx="0" dy="22" stdDeviation="22" flood-color="#020617" flood-opacity=".3"/></filter></defs>
+  <rect width="540" height="960" rx="56" fill="url(#spgn)"/>
+  <circle cx="86" cy="120" r="62" fill="#fff7ed" opacity=".22"/><circle cx="468" cy="100" r="98" fill="#bfdbfe" opacity=".18"/><circle cx="270" cy="840" r="120" fill="#fde68a" opacity=".16"/>
+  <path d="M40 720C150 660 260 760 380 700s140-60 200-10" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round" opacity=".22"/>
+  <g filter="url(#glown)">
+    <rect x="70" y="200" width="400" height="160" rx="36" fill="#fff"/>
+    <rect x="70" y="386" width="400" height="160" rx="36" fill="#fff"/>
+    <rect x="70" y="572" width="400" height="160" rx="36" fill="#fff"/>
+  </g>
+  <image href="/assets/site/spg-logo.svg" x="220" y="234" width="100" height="100"/>
+  <text x="350" y="270" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="900" fill="#0f766e">SPG</text>
+  <text x="120" y="320" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#111827">AI shortlists</text>
+  <text x="120" y="348" font-family="Inter,Arial,sans-serif" font-size="16" fill="#475569">gift finder + starter kits</text>
+  <text x="120" y="430" font-size="56">⚡</text>
+  <text x="120" y="510" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#111827">Useful upgrades</text>
+  <text x="120" y="538" font-family="Inter,Arial,sans-serif" font-size="16" fill="#475569">under $50 picks that last</text>
+  <text x="120" y="610" font-size="56">🎁</text>
+  <text x="120" y="690" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#111827">Gift ideas</text>
+  <text x="120" y="718" font-family="Inter,Arial,sans-serif" font-size="16" fill="#475569">for people who have everything</text>
+  <text x="270" y="888" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="950" fill="#fff7ed">buy faster · waste less</text>
+</svg>
