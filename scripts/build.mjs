@@ -1168,7 +1168,7 @@ function assistantWidget(route) {
     || PAGE_SUGGESTIONS[r.split('/')[0]]
     || DEFAULT_SUGGESTIONS;
   const chipsHtml = suggestionChips.map(t => `<button type="button">${esc(t)}</button>`).join('');
-  return `${rateLimitScript()}<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong><span class="ai-launch-pill" data-ai-launch-pill hidden aria-live="polite"></span></button><button class="ai-verdict-launch" type="button" data-ai-verdict-launch aria-label="Pretty good or not? Quick verdict on a URL or product" hidden><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm-1 14.5L6.5 12l1.4-1.4L11 13.7l5.1-5.1L17.5 10Z"/></svg><strong>Pretty good or not?</strong></button><form class="ai-verdict" data-ai-verdict hidden novalidate><label class="eyebrow" for="spg-verdict-q">Paste a URL or product name</label><div class="ai-verdict-row"><input id="spg-verdict-q" name="verdict" autocomplete="off" placeholder="e.g. https://amzn.to/... or Anova Precision Cooker" required><button type="submit">Verdict</button><button type="button" class="ai-verdict-cancel" aria-label="Cancel verdict">×</button></div></form><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2><span id="spg-quota-pill" class="spg-quota-pill" hidden></span></div><div class="ai-header-actions"><button type="button" class="ai-share" data-ai-share hidden aria-label="Copy shareable link"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M18 8a3 3 0 0 0-2.05-.81 3 3 0 0 0-2.95 2.4 1 1 0 1 0 1.96.4 1 1 0 0 1 1.99-.2 1 1 0 0 1-.6 1.18 1 1 0 1 0 .7 1.86A3 3 0 0 0 18 8Zm-9.95 8.81a3 3 0 0 0 2.05.81 3 3 0 0 0 2.95-2.4 1 1 0 1 0-1.96-.4 1 1 0 0 1-1.99.2 1 1 0 0 1 .6-1.18 1 1 0 1 0-.7-1.86A3 3 0 0 0 8.05 16.81Zm5.45-3.31a1 1 0 0 0-1.32-.5l-3.16 1.4a1 1 0 1 0 .81 1.83l3.16-1.4a1 1 0 0 0 .51-1.33Z"/></svg></button><button type="button" class="ai-close" aria-label="Close">×</button></div></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><button type="button" class="ai-compare-toggle" data-ai-compare-toggle aria-label="Compare two picks" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9 3 3 9l6 6V11h6v4l6-6-6-6v4H9Zm0 12v4h6v-4l6 6-6 6v-4H3l6-6Z"/></svg><span data-ai-compare-label>Compare</span></button><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="button" class="ai-mic" data-ai-mic hidden aria-label="Voice input" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11Z"/></svg></button><button type="submit">Ask</button></form><div class="ai-compare-chip" data-ai-compare-chip hidden><span data-ai-compare-chip-text>Tap two product cards to compare</span><button type="button" class="ai-compare-chip-clear" aria-label="Cancel compare">×</button></div><div class="ai-suggestions" data-ai-suggestions>${chipsHtml}</div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\\\u003c')}</script><script>
+  return `${rateLimitScript()}<div class="ai-bubble" data-ai-bubble><button class="ai-launch" type="button" aria-label="Open SPG AI helper"><span>AI</span><strong>Ask SPG</strong><span class="ai-launch-pill" data-ai-launch-pill hidden aria-live="polite"></span></button><button class="ai-verdict-launch" type="button" data-ai-verdict-launch aria-label="Pretty good or not? Quick verdict on a URL or product" hidden><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm-1 14.5L6.5 12l1.4-1.4L11 13.7l5.1-5.1L17.5 10Z"/></svg><strong>Pretty good or not?</strong></button><form class="ai-verdict" data-ai-verdict hidden novalidate><label class="eyebrow" for="spg-verdict-q">Paste a URL or product name</label><div class="ai-verdict-row"><input id="spg-verdict-q" name="verdict" autocomplete="off" placeholder="e.g. https://amzn.to/... or Anova Precision Cooker" required><button type="submit">Verdict</button><button type="button" class="ai-verdict-cancel" aria-label="Cancel verdict">×</button></div></form><section class="ai-panel" hidden><header><div><p class="eyebrow">SPG AI Helper</p><h2>Ask about gifts, kits, budgets, or any pick.</h2><span id="spg-quota-pill" class="spg-quota-pill" hidden></span></div><div class="ai-header-actions"><button type="button" class="ai-share" data-ai-share hidden aria-label="Copy shareable link"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M18 8a3 3 0 0 0-2.05-.81 3 3 0 0 0-2.95 2.4 1 1 0 1 0 1.96.4 1 1 0 0 1 1.99-.2 1 1 0 0 1-.6 1.18 1 1 0 1 0 .7 1.86A3 3 0 0 0 18 8Zm-9.95 8.81a3 3 0 0 0 2.05.81 3 3 0 0 0 2.95-2.4 1 1 0 1 0-1.96-.4 1 1 0 0 1-1.99.2 1 1 0 0 1 .6-1.18 1 1 0 1 0-.7-1.86A3 3 0 0 0 8.05 16.81Zm5.45-3.31a1 1 0 0 0-1.32-.5l-3.16 1.4a1 1 0 1 0 .81 1.83l3.16-1.4a1 1 0 0 0 .51-1.33Z"/></svg></button><button type="button" class="ai-reset" data-ai-reset aria-label="Start a new chat" title="Start a new chat"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 5V2L7 7l5 5V8a5 5 0 1 1-5 5H5a7 7 0 1 0 7-8Z"/></svg></button><button type="button" class="ai-close" aria-label="Close">×</button></div></header><div class="ai-messages" data-ai-messages></div><form class="ai-form" data-ai-form><button type="button" class="ai-compare-toggle" data-ai-compare-toggle aria-label="Compare two picks" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9 3 3 9l6 6V11h6v4l6-6-6-6v4H9Zm0 12v4h6v-4l6 6-6 6v-4H3l6-6Z"/></svg><span data-ai-compare-label>Compare</span></button><input name="q" autocomplete="off" placeholder="Ask: gift for dad under $50" required><button type="button" class="ai-mic" data-ai-mic hidden aria-label="Voice input" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11Z"/></svg></button><button type="submit">Ask</button></form><div class="ai-compare-chip" data-ai-compare-chip hidden><span data-ai-compare-chip-text>Tap two product cards to compare</span><button type="button" class="ai-compare-chip-clear" aria-label="Cancel compare">×</button></div><div class="ai-suggestions" data-ai-suggestions>${chipsHtml}</div></section></div><script type="application/json" id="spg-ai-catalog">${JSON.stringify({ products: knowledge, siteFacts }).replace(/</g, '\\\\u003c')}</script><script>
 (function(){
   const root = document.querySelector('[data-ai-bubble]');
   const dataEl = document.getElementById('spg-ai-catalog');
@@ -1551,6 +1551,28 @@ function assistantWidget(route) {
     }
   }
   bindShare();
+  // Lane C #8 (tick 51): "Start new chat" clears the persistent history
+  // (localStorage spg-ai-history:v1) and resets the in-memory 'history'
+  // array. Click reloads the warm greeting so the bubble feels like a real
+  // shopping companion with a clean-slate affordance. Also hides the share
+  // button (no share state to encode when there is no Q&A yet) and clears
+  // any URL #spg=... fragment so the next replay is not poisoned.
+  const resetBtn = root.querySelector('[data-ai-reset]');
+  function resetHistory(){
+    try { localStorage.removeItem(sessionKey); } catch (_) {}
+    try { localStorage.removeItem(seenKey); } catch (_) {}
+    history.length = 0;
+    try { if (location.hash && location.hash.indexOf('spg=') === 1) window.history.replaceState(null, '', location.pathname + location.search); } catch (_) {}
+    const shareBtn2 = root.querySelector('[data-ai-share]');
+    if (shareBtn2) shareBtn2.hidden = true;
+    renderHistory();
+    haptic(10);
+  }
+  if (resetBtn){
+    resetBtn.addEventListener('click', function(){
+      resetHistory();
+    });
+  }
   // Lane A #22 (tick 48): saved picks. Persist user's starred picks to
   // localStorage and surface the count on the AI launch button so they see
   // engagement stacking across visits. Each pick card in the chat panel now
@@ -1631,10 +1653,18 @@ function assistantWidget(route) {
   }
   refreshPill();
   refreshStarState();
-  const sessionKey = 'spg_ai_session_v1';
+  // Lane C #8 (tick 51): persistent chat history. Persists user + bot turns
+  // to localStorage so a return visitor sees their last conversation instead
+  // of a fresh greeting. Capped at 12 turns to bound storage; first-time
+  // visitors still see the warm greeting via a separate seen flag. Pattern
+  // matches the bindSavedPicks IIFE family (localStorage key prefix spg-
+  // or spg-...:v1 for forward-compat versioning).
+  const sessionKey = 'spg-ai-history:v1';
+  const seenKey = 'spg-ai-history-seen:v1';
   const esc = (v) => String(v || '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  const history = JSON.parse(sessionStorage.getItem(sessionKey) || '[]');
-  function save(){ sessionStorage.setItem(sessionKey, JSON.stringify(history.slice(-12))); }
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem(sessionKey) || '[]'); if (!Array.isArray(history)) history = []; } catch (_) { history = []; }
+  function save(){ try { localStorage.setItem(sessionKey, JSON.stringify(history.slice(-12))); } catch (_) {} }
   function add(role, html){
     const item = document.createElement('div');
     item.className = 'ai-msg ' + role;
@@ -1642,7 +1672,18 @@ function assistantWidget(route) {
     messages.appendChild(item);
     messages.scrollTop = messages.scrollHeight;
   }
-  function renderHistory(){ messages.innerHTML=''; if (!history.length) add('bot', '<strong>Tell me what you need.</strong><br>I can help with gifts, starter kits, budget finds, categories, product tradeoffs, signup, and site questions.'); history.forEach(m => add(m.role, m.html)); }
+  function renderHistory(){
+    messages.innerHTML='';
+    if (!history.length){
+      // First-ever visit OR just reset: warm greeting. The seen flag
+      // tracks whether the user has ever opened the bubble so a reset
+      // ("New chat" button) re-shows the greeting, but a return visit
+      // with empty history is impossible (history only clears via reset).
+      add('bot', '<strong>Tell me what you need.</strong><br>I can help with gifts, starter kits, budget finds, categories, product tradeoffs, signup, and site questions.');
+      try { localStorage.setItem(seenKey, '1'); } catch (_) {}
+    }
+    history.forEach(m => add(m.role, m.html));
+  }
   function budgetMatch(p, q){
     if (/under\s*25|\$25|cheap/i.test(q)) return p.price_band === 'under-25';
     if (/under\s*50|\$50/i.test(q)) return p.price_band === 'under-50' || p.price_band === 'under-25';
