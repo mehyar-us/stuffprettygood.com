@@ -18,7 +18,7 @@
 - Browser QA skipped: change is a pure JSON manifest extension with no JS / CSS / HTML impact. `browser_console` not needed; visual impact only surfaces in installed-PWA install-prompt heuristics (Edge / Chrome on desktop, Android Chrome). No screenshot captured, no `browser_vision` invocation.
 
 📊 RESULTS:
-- Commit SHA: `8fb6b0b` (local, push deferred per pitfall #47 — 24th reproduction)
+- Commit SHA: `2231f46` (local, push deferred per pitfall #47 — 24th reproduction; background `proc_8fd47ad32b83` in flight at report-write time)
 - CF deploy ID: `419ba0f3.stuffprettygood.pages.dev`
 - CF Pages edge version: deployment complete (2/850 uploaded fresh, 848 cache hit)
 - Ticket IDs: none filed this tick (PWA manifest is structural — no observation-breakage to file)
