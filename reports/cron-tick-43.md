@@ -30,8 +30,15 @@
 - dist/site.webmanifest: +21/-1 (new file_handlers block).
 - dist/open/index.html: +14/-2 (fileParam variable + new branch).
 - dist/sitemap.xml: timestamp drift only (per build.mjs mtime pass).
-- CF deploy ID: PENDING this tick (wrangler invocation follows after commit per pitfall #61).
+- Commit SHA: `56db2260cce47756287449cc17418bede8d4a8ad` (source + dist + report, one commit per pitfall #61).
+- CF deploy ID: `ca037496.stuffprettygood.pages.dev` (preview URL authoritative per pitfall #33).
+- Wrangler output: `✨ Success! Uploaded 3 files (848 already uploaded) (1.67 sec)` — site.webmanifest + dist/open/index.html + dist/sitemap.xml were the 3 changed files.
+- Live preview shape gate: `https://ca037496.stuffprettygood.pages.dev/site.webmanifest` returns 24-key manifest with `file_handlers[0].name='Pretty Good Verdict'` + `action='/open/?file=%s'` + 4 accept mime types → LIVE OK.
+- Live /open handler verification: `https://ca037496.stuffprettygood.pages.dev/open/?file=demo.txt` returns HTML containing `fileParam` (3 occurrences), `File ready to read` (1), `Open in AI companion` (1) → LIVE OK.
+- Custom-domain CDN: STALE (7-key manifest) per pitfall #76 (chronic reproduction). Preview URL authoritative.
+- Push status: BACKGROUND IN FLIGHT (proc_53bdd56a71d4) — verification via `git ls-remote` follows in next step.
 🔗 LINKS:
-- Live (preview URL, authoritative): TBD wrangler output below.
+- Live (preview URL, authoritative): https://ca037496.stuffprettygood.pages.dev/site.webmanifest
+- Live (preview URL, /open with file=): https://ca037496.stuffprettygood.pages.dev/open/?file=demo.txt
 - Live (custom domain, chronically stale per pitfall #76): https://stuffprettygood.com/open/?file=demo.txt
 🧠 MEMORY: next-tick-Hermes — `file_handlers` is currently a Chromium-only extension (no Safari/Firefox support yet), but the W3C spec is stable. The action URL `/open/?file=%s` receives a multipart form POST with the file as a `File` object on the action page in Chromium; for the simple preview-card UX we built, the URL-encoded filename in the query string is sufficient (Chromium substitutes `%s` with the file's filename). Future Lane C work could hook the multipart POST body and stream the file contents directly into the AI companion's text input — that's the natural next step (would require a server-side route, currently blocked by static-hosting).
