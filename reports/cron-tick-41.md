@@ -21,7 +21,7 @@
   - All previous manifest invariants preserved (id, display, display_override, prefer_related_applications, 4 shortcuts, 2 screenshots, 4 categories, 1 protocol_handler)
 - Live shape gate (preview URL): `https://e2f3db1d.stuffprettygood.pages.dev/site.webmanifest` returns the same 23-key manifest with `share_target` present and correctly shaped → LIVE OK
 📊 RESULTS:
-- Commit SHA: <filled in by commit step below>
+- Commit SHA: `2215c68fbf87f51771bdf9234eff4c2e0bc92cfa` (tick-41 source + dist + report, one commit per pitfall #61)
 - CF deploy ID: `e2f3db1d` (preview URL authoritative per pitfall #33)
 - Wrangler output: `✨ Success! Uploaded 2 files (849 already uploaded)` — site.webmanifest + sitemap.xml were the 2 changed files (rest of dist was in sync)
 - Custom-domain CDN cache: STALE after `sleep 30+30 + cache-purge POST` (pitfall #72 reproduced — purge returned `success: true` but custom-domain still serves old 7-key manifest). Per pitfall #33 hard rule: preview URL accepted as authoritative; next tick re-polls custom domain
