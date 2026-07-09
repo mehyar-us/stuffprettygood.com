@@ -108,5 +108,15 @@
         }
       ]
     }
-  ]
+  ],
+  "share_target": {
+    "action": "/open/?u=https%3A%2F%2Fstuffprettygood.com",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
 }
