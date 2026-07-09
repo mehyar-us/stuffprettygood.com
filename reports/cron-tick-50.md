@@ -19,16 +19,15 @@
 - prod custom domain still serves stale HTML per pitfall #72 chronic behavior (preview URL is authoritative)
 📊 RESULTS:
 - commit SHAs:
-  - `d2c54b7` feat(a11y): aria-current="page" on active nav link (Lane A tick 50)
-  - `7c90f31` chore(reports): tick 50 — fill in commit SHAs (per pitfall #62)
+  - `2dd5f4e` feat(a11y): aria-current="page" on active nav link (Lane A tick 50)
 - CF deploy version: `c6a834ca.stuffprettygood.pages.dev` (preview URL authoritative per pitfall #33)
-- files touched: src/styles.css (+2/-0), scripts/build.mjs (+18/-0), dist/* (7 affected pages + styles.css + sitemap.xml auto-regenerated)
+- files touched: src/styles.css (+2/-0), scripts/build.mjs (+18/-0), dist/* (7 affected pages + styles.css + sitemap.xml auto-regenerated), reports/cron-tick-50.md (new)
 - tickets filed: none this tick (clean implementation, no findings)
-- push state: **LANDED** ✓ — 2 commits pushed to origin/deploy/legal-expansion-and-signup-modal (verified via `git ls-remote`: local matches origin post-push)
+- push state: **LANDED** ✓ — 1 commit pushed to origin/deploy/legal-expansion-and-signup-modal (verified via `git ls-remote`: local matches origin post-push)
 🔗 LINKS:
 - live URL: https://stuffprettygood.com/gift-finder/?cb=spg50 (custom-domain cache may lag per pitfall #72 — preview is authoritative)
 - preview: https://c6a834ca.stuffprettygood.pages.dev/gift-finder/?cb=spg50
 - preview home: https://c6a834ca.stuffprettygood.pages.dev/?cb=spg50
-- commit: 7c90f31 (HEAD; pushed ✓)
+- commit: 2dd5f4e (HEAD; pushed ✓)
 - deploy: https://c6a834ca.stuffprettygood.pages.dev
 🧠 MEMORY: Tick-50 closed a real a11y gap that was invisible to sighted users but obvious to screen-reader users — every page rendered the same 6 nav links with no semantic hint of which page was current. The pattern: scope the regex to `<div class="nav-links">` so footer links are never tagged, and special-case the home route to mark the logo link (which lives outside `.nav-links`). Future Lane A work that touches per-page nav state should: (a) keep the regex scoped to `<div class="nav-links">`, (b) reuse the route-validation gate `/^[a-z0-9-]+$/` so user-supplied routes can't inject HTML into the regex, (c) verify in browser via computed-style reads on the matching link (CSS rule fires on `border-color` change, not on text changes). The 11-entry Lane A pattern family index is now: id, prefer_related_applications, categories, shortcuts, screenshots, display_override, launch_handler, edge_side_panel, share_target, file_handlers, **aria-current nav highlight** (NEW, tick 50) — distinct from JSON manifest extensions because it touches dist/* HTML directly via build-time regex rewrite. Next candidate Lane A wins: per-page `<title>` suffix when filtered by category, or `aria-label` on the theme-toggle button when the current state is "dark".
