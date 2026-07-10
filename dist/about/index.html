@@ -344,9 +344,11 @@
       + '</div>';
     add('bot', html);
     var resp = { kind: 'compare' };
-    history.push({ role: 'bot', html: html });
+    var cmpQ = 'compare ' + (window._spgCompare.a && window._spgCompare.a.title || '') + ' vs ' + (window._spgCompare.b && window._spgCompare.b.title || '');
+    history.push({ role: 'bot', html: html, _q: cmpQ });
     save();
     appendFollowUps(resp);
+    appendFeedbackRow(history.length - 1);
     // Reset so the next card tap starts a fresh pair.
     window._spgCompare.a = null; window._spgCompare.b = null;
     setCompareLabel(); refreshCompareChip();
@@ -368,7 +370,42 @@
     }
     setCompareLabel(); refreshCompareChip();
   }
-  const bindCompare = function(){
+  // Lane C #9 (tick 52): "Was this helpful?" feedback handler. Delegated
+  // click on the messages container reads the vote from data-ai-feedback-vote
+  // and toggles history[i]._fb. Persists via save() (already saves the
+  // history blob which carries _fb on the bot entry). Re-evaluates
+  // aria-pressed + active class on BOTH buttons in the row so the user
+  // sees the chosen one light up and the other dim. Pure UX — no analytics
+  // fired, no PII collected, opt-in only by the act of clicking.
+  const bindFeedback = function(){
+    messages.addEventListener('click', function(e){
+      var t = e.target;
+      if (!t || !t.closest || !t.closest('[data-ai-feedback-vote]')) return;
+      var btn = t.closest('[data-ai-feedback-vote]');
+      var row = btn.closest('[data-ai-feedback]');
+      if (!row) return;
+      var idx = parseInt(row.getAttribute('data-ai-feedback-idx') || '-1', 10);
+      var m = history[idx];
+      if (!m || m.role !== 'bot') return;
+      var clicked = btn.getAttribute('data-ai-feedback-vote');
+      // Toggle: clicking the active vote clears it; clicking the other flips it.
+      m._fb = (m._fb === clicked) ? '' : clicked;
+      save();
+      // Update aria-pressed + active class on both buttons in this row.
+      row.querySelectorAll('[data-ai-feedback-vote]').forEach(function(b){
+        var v = b.getAttribute('data-ai-feedback-vote');
+        var on = (m._fb === v);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        b.classList.toggle('ai-feedback-btn--active', on);
+      });
+      // Show/hide the thanks element.
+      var thanks = row.querySelector('[data-ai-feedback-thanks]');
+      if (thanks) thanks.setAttribute('data-ai-feedback-thanks-visible', m._fb ? 'true' : 'false');
+      haptic(8);
+    });
+  };
+  bindFeedback();
+    const bindCompare = function(){
     if (!compareBtn) return;
     compareBtn.hidden = false;
     function toggleCompare(){
@@ -679,7 +716,13 @@
       add('bot', '<strong>Tell me what you need.</strong><br>I can help with gifts, starter kits, budget finds, categories, product tradeoffs, signup, and site questions.');
       try { localStorage.setItem(seenKey, '1'); } catch (_) {}
     }
-    history.forEach(m => add(m.role, m.html));
+    history.forEach(function(m, i){
+      add(m.role, m.html);
+      // Lane C #9 (tick 52): re-attach feedback row on history rebuild
+      // so a persisted bot message keeps its thumbs-up/down state across
+      // panel reopens and page reloads.
+      if (m.role === 'bot' && (m._fb || m._q)) appendFeedbackRow(i);
+    });
   }
   function budgetMatch(p, q){
     if (/unders*25|$25|cheap/i.test(q)) return p.price_band === 'under-25';
@@ -802,6 +845,58 @@
       });
       messages.lastElementChild && messages.lastElementChild.appendChild(wrap);
     }
+    // Lane C #9 (tick 52): "Was this helpful?" feedback chips. Each bot
+    // message gets a thin row of (👍 / 👎 / "Was this helpful?" prompt / hidden
+    // thanks). Toggling a button writes the vote onto the history entry's
+    // _fb field, persists to localStorage via the existing save() call,
+    // and updates aria-pressed + the active-state CSS class. The vote
+    // re-applies on renderHistory() rebuilds (see forEach loop above).
+    // Pure UX — no PII collected, no analytics fired.
+    function feedbackKey(q){
+      // djb2 hash of the question text → 8-char fingerprint
+      var h = 5381;
+      for (var i = 0; i < q.length; i++) h = ((h << 5) + h + q.charCodeAt(i)) >>> 0;
+      return ('00000000' + h.toString(16)).slice(-8);
+    }
+    function appendFeedbackRow(idx){
+      var m = history[idx];
+      if (!m || m.role !== 'bot') return;
+      var q = m._q || '';
+      var current = m._fb || '';
+      var wrap = document.createElement('div');
+      wrap.className = 'ai-feedback';
+      wrap.setAttribute('data-ai-feedback', '');
+      wrap.setAttribute('data-ai-feedback-idx', String(idx));
+      var prompt = document.createElement('span');
+      prompt.className = 'ai-feedback-prompt';
+      prompt.textContent = 'Was this helpful?';
+      wrap.appendChild(prompt);
+      function makeBtn(vote, glyph, ariaLabel){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'ai-feedback-btn' + (vote === 'down' ? ' ai-feedback-btn--down' : '');
+        b.setAttribute('data-ai-feedback-vote', vote);
+        b.setAttribute('aria-label', ariaLabel);
+        b.setAttribute('aria-pressed', current === vote ? 'true' : 'false');
+        if (current === vote) b.classList.add('ai-feedback-btn--active');
+        b.textContent = glyph;
+        return b;
+      }
+      wrap.appendChild(makeBtn('up', '👍', 'Helpful'));
+      wrap.appendChild(makeBtn('down', '👎', 'Not helpful'));
+      var thanks = document.createElement('span');
+      thanks.className = 'ai-feedback-thanks';
+      thanks.setAttribute('data-ai-feedback-thanks', '');
+      thanks.textContent = 'Thanks — noted.';
+      if (current) thanks.setAttribute('data-ai-feedback-thanks-visible', 'true');
+      wrap.appendChild(thanks);
+      // Append inside the bot message div (last child of messages).
+      var botEl = messages.lastElementChild;
+      if (botEl) botEl.appendChild(wrap);
+      // Also expose the question fingerprint on the wrapper so the click
+      // handler can confirm the key without re-reading history.
+      wrap.setAttribute('data-ai-feedback-key', feedbackKey(q));
+    }
   // Haptic feedback helper — returns instantly on unsupported browsers / iOS Safari
   // (navigator.vibrate is undefined). Soft 10ms pulse on launch, double-pulse on
   // suggestion chips (legible as a "tap pattern"), single-tick on send.
@@ -826,8 +921,8 @@
     }
     const user = { role:'user', html: esc(q) };
         const resp = answer(q);
-        const bot = { role:'bot', html: resp.html };
-        history.push(user, bot); save(); renderHistory(); appendFollowUps(resp); form.reset();
+        const bot = { role:'bot', html: resp.html, _q: q };
+        history.push(user, bot); save(); renderHistory(); appendFollowUps(resp); appendFeedbackRow(history.length - 1); form.reset();
         recordShareState(q, resp.html);
         haptic(8);
         if (rl && rl.allowed) window.SPGRateLimit.record();
