@@ -938,6 +938,40 @@ const PAGE_OG_THEMES = {
   'preferences':          { a: '#0891b2', b: '#fde68a', emoji: '⚙️', line: 'Manage email & SMS preferences.' },
   'open':                 { a: '#1e3a8a', b: '#fde68a', emoji: '🔗', line: 'Open a Stuff Pretty Good deep link.' },
 };
+
+// Per-page mobile status-bar theme color. The light/dark pair is consumed by
+// Safari iOS + Chrome Android when the page is saved to the home screen or
+// installed as a PWA — the address bar / status-bar tint matches the route's
+// brand accent instead of staying on the global cream/navy. Mirrors the route
+// keys in PAGE_OG_THEMES so the social card gradient and the in-OS chrome
+// gradient stay in sync. Routes not in the map fall back to the global
+// cream/navy pair (handled in layout()).
+const PAGE_THEME_COLORS = {
+  '':                     { light: '#f6f1e8', dark: '#0b1220' },
+  'gift-finder':          { light: '#fde68a', dark: '#1e1b4b' },
+  'starter-kits':         { light: '#bae6fd', dark: '#0c4a6e' },
+  'useful-finds':         { light: '#fde68a', dark: '#134e4a' },
+  'stories':              { light: '#fde68a', dark: '#831843' },
+  'under-25':             { light: '#fef9c3', dark: '#14532d' },
+  'under-50':             { light: '#fde68a', dark: '#155e75' },
+  'walmart':              { light: '#fde68a', dark: '#7c2d12' },
+  'travel':               { light: '#bae6fd', dark: '#0c4a6e' },
+  'home-office':          { light: '#e0e7ff', dark: '#1e3a8a' },
+  'kitchen':              { light: '#fde68a', dark: '#78350f' },
+  'pets':                 { light: '#fde68a', dark: '#064e3b' },
+  'tech':                 { light: '#c7d2fe', dark: '#1e1b4b' },
+  'signup':               { light: '#fde68a', dark: '#134e4a' },
+  'privacy':              { light: '#f3f4f6', dark: '#111827' },
+  'terms':                { light: '#f3f4f6', dark: '#111827' },
+  'contact':              { light: '#bae6fd', dark: '#0f172a' },
+  'about':                { light: '#fde68a', dark: '#134e4a' },
+  'affiliate-disclosure': { light: '#fde68a', dark: '#0f172a' },
+  'advertise':            { light: '#fde68a', dark: '#581c87' },
+  'unsubscribe':          { light: '#fde68a', dark: '#334155' },
+  'preferences':          { light: '#fde68a', dark: '#155e75' },
+  'open':                 { light: '#fde68a', dark: '#1e3a8a' },
+};
+
 const OG_NEUTRAL_THEMES = [
   { a: '#0f766e', b: '#fde68a' },
   { a: '#7c3aed', b: '#bae6fd' },
@@ -1353,6 +1387,21 @@ function mkdirPage(route, html) {
     /<meta property="og:image" content="([^"]+)"><meta property="og:image:width" content="960"><meta property="og:image:height" content="360">/,
     `<meta property="og:image" content="$1"><meta property="og:image:width" content="960"><meta property="og:image:height" content="360"><meta name="twitter:image" content="$1"><meta name="twitter:title" content="${twitterTitle}"><meta name="twitter:description" content="${twitterDesc}"><meta name="twitter:site" content="@stuffprettygood">`
   );
+  // Per-page theme-color: replace the global cream/navy triple with the route's
+  // brand-tinted pair from PAGE_THEME_COLORS so the iOS Safari + Android Chrome
+  // status bar / address bar tint matches the page's accent gradient when the
+  // page is installed as a PWA or saved to the home screen. Routes not in the
+  // map fall back to the layout's default (no rewrite happens, the original
+  // 3-line block stays). Same pattern as the Twitter Card injection above:
+  // re-extract from rendered HTML rather than threading new params through every
+  // caller of mkdirPage.
+  const themeColors = PAGE_THEME_COLORS[route];
+  if (themeColors) {
+    final = final.replace(
+      /<meta name="theme-color" content="#f6f1e8" media="\(prefers-color-scheme: light\)"><meta name="theme-color" content="#0b1220" media="\(prefers-color-scheme: dark\)"><meta name="theme-color" content="#111827">/,
+      `<meta name="theme-color" content="${themeColors.light}" media="(prefers-color-scheme: light)"><meta name="theme-color" content="${themeColors.dark}" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="${themeColors.dark}">`
+    );
+  }
   // Mark the current nav link with aria-current="page" for screen-reader users
   // and visual highlight (CSS rule in styles.css). Scoped to <div class="nav-links">
   // so the same /signup/ footer link is not touched. Home route '' marks the
