@@ -4,61 +4,91 @@
       "slug": "best-useful-gifts-under-25",
       "title": "Best Useful Gifts Under $25",
       "category": "under-25",
-      "intro": "Gifts that solve small daily annoyances without looking like filler."
+      "intro": "Gifts that solve small daily annoyances without looking like filler.",
+      "published_at": "2026-07-03",
+      "author": "Stuff Pretty Good Editorial",
+      "modified_at": "2026-07-03"
     },
     {
       "slug": "best-useful-gifts-under-50",
       "title": "Best Useful Gifts Under $50",
       "category": "under-50",
-      "intro": "Practical gifts with enough substance to feel intentional."
+      "intro": "Practical gifts with enough substance to feel intentional.",
+      "published_at": "2026-07-04",
+      "author": "Stuff Pretty Good Editorial",
+      "modified_at": "2026-07-04"
     },
     {
       "slug": "home-office-starter-kit-under-250",
       "title": "Home Office Starter Kit Under $250",
       "category": "home-office",
-      "intro": "A starter setup for cleaner calls, better posture, and less desk chaos."
+      "intro": "A starter setup for cleaner calls, better posture, and less desk chaos.",
+      "published_at": "2026-07-05",
+      "author": "Stuff Pretty Good Editorial",
+      "modified_at": "2026-07-05"
     },
     {
       "slug": "travel-stuff-people-actually-use",
       "title": "Travel Stuff People Actually Use",
       "category": "travel",
-      "intro": "Compact helpers that earn their bag space."
+      "intro": "Compact helpers that earn their bag space.",
+      "published_at": "2026-07-06",
+      "author": "Stuff Pretty Good Editorial",
+      "modified_at": "2026-07-06"
     },
     {
       "slug": "kitchen-tools-that-save-time",
       "title": "Kitchen Tools That Save Time",
       "category": "kitchen",
-      "intro": "Small tools that reduce cleanup, guessing, or prep friction."
+      "intro": "Small tools that reduce cleanup, guessing, or prep friction.",
+      "published_at": "2026-07-07",
+      "author": "Stuff Pretty Good Editorial",
+      "modified_at": "2026-07-07"
     },
     {
       "slug": "desk-upgrades-that-make-work-better",
       "title": "Desk Upgrades That Make Work Better",
       "category": "home-office",
-      "intro": "Useful desk improvements before buying a new desk."
+      "intro": "Useful desk improvements before buying a new desk.",
+      "published_at": "2026-07-08",
+      "author": "Stuff Pretty Good Editorial",
+      "modified_at": "2026-07-08"
     },
     {
       "slug": "useful-car-accessories-under-30",
       "title": "Useful Car Accessories Under $30",
       "category": "car",
-      "intro": "Cheap car gear that prevents recurring annoyances."
+      "intro": "Cheap car gear that prevents recurring annoyances.",
+      "published_at": "2026-07-09",
+      "author": "Stuff Pretty Good Editorial",
+      "modified_at": "2026-07-09"
     },
     {
       "slug": "pet-products-that-solve-annoying-problems",
       "title": "Pet Products That Solve Annoying Problems",
       "category": "pets",
-      "intro": "Pet-owner fixes for fur, water, storage, and cleanup."
+      "intro": "Pet-owner fixes for fur, water, storage, and cleanup.",
+      "published_at": "2026-07-03",
+      "author": "Stuff Pretty Good Editorial",
+      "modified_at": "2026-07-03"
     },
     {
       "slug": "small-apartment-essentials",
       "title": "Small Apartment Essentials",
       "category": "home",
-      "intro": "Space-saving picks for renters and tight rooms."
+      "intro": "Space-saving picks for renters and tight rooms.",
+      "published_at": "2026-07-04",
+      "author": "Stuff Pretty Good Editorial",
+      "modified_at": "2026-07-04"
     },
     {
       "slug": "tech-accessories-that-are-actually-practical",
       "title": "Tech Accessories That Are Actually Practical",
       "category": "tech",
-      "intro": "Tech add-ons that solve boring problems instead of adding clutter."
+      "intro": "Tech add-ons that solve boring problems instead of adding clutter.",
+      "published_at": "2026-07-05",
+      "author": "Stuff Pretty Good Editorial",
+      "modified_at": "2026-07-05"
     }
   ]
 }

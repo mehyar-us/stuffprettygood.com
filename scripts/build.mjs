@@ -1373,6 +1373,30 @@ function productJsonLd(p) {
   });
 }
 
+// Build an Article JSON-LD block for /guides/<slug>/ buying-guide pages.
+// Tick 73 — Lane B #9 article schema. Google surfaces rich Article snippets
+// (search appearance, news carousels, structured-data carousel eligibility)
+// when the page exposes schema.org/Article with author + datePublished +
+// dateModified + image. The brand-as-author pattern (Organization author with
+// same name as publisher) is the documented safe shape for content sites that
+// publish under a brand name rather than an individual byline.
+function articleJsonLd(post, slug) {
+  const url = `https://${SPG_DOMAIN}/guides/${slug}/`;
+  const ogImage = `https://${SPG_DOMAIN}/assets/og/guides-${slug}.svg`;
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: (post.intro || '').slice(0, 160),
+    image: ogImage,
+    datePublished: post.published_at || '2026-07-03',
+    dateModified: post.modified_at || post.published_at || '2026-07-03',
+    author: { '@type': 'Organization', name: post.author || 'Stuff Pretty Good Editorial', url: `https://${SPG_DOMAIN}/about/` },
+    publisher: { '@type': 'Organization', name: SPG_BRAND, logo: { '@type': 'ImageObject', url: `https://${SPG_DOMAIN}/assets/site/spg-logo.svg` } },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url }
+  });
+}
+
 function layout(title, body, opts = {}, description) {
   const desc = description || 'AI-assisted shopping guide for useful gifts, starter kits, and practical products.';
   const shellClass = body.includes('compact-hero') ? 'site-shell home-shell' : 'site-shell';
@@ -1402,6 +1426,8 @@ function layout(title, body, opts = {}, description) {
   if (opts.productJsonLd) jsonLdBlocks.push(`<script type="application/ld+json">${opts.productJsonLd}</script>`);
   // Per-page FAQPage schema for the AI tools.
   if (FAQ_JSONLD[route]) jsonLdBlocks.push(`<script type="application/ld+json">${JSON.stringify(FAQ_JSONLD[route])}</script>`);
+  // Per-page Article schema for /guides/<slug>/ buying-guide pages.
+  if (opts.articleJsonLd) jsonLdBlocks.push(`<script type="application/ld+json">${opts.articleJsonLd}</script>`);
   return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b"><link rel="preconnect" href="https://www.clarity.ms" crossorigin>
 <link rel="dns-prefetch" href="https://www.clarity.ms">
 <link rel="preconnect" href="https://stuffprettygood-api.mehyar.workers.dev" crossorigin>
@@ -1514,6 +1540,20 @@ function mkdirPage(route, html) {
       `<meta name="theme-color" content="${themeColors.light}" media="(prefers-color-scheme: light)"><meta name="theme-color" content="${themeColors.dark}" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="${themeColors.dark}">`
     );
   }
+  // Per-page article:author + article:published_time meta tags. Inject right
+  // after the og:image:alt line (so all author/date metadata sits in one
+  // block in the head). Routes matching /^guides\// (Lane B #9, tick 73) get
+  // the author + publish-date pair from data/posts.json; all other routes
+  // leave the layout's defaults untouched (no rewrite happens).
+  if (/^guides\//.test(route)) {
+    const post = posts.find((p) => `guides/${p.slug}` === route);
+    if (post) {
+      final = final.replace(
+        /<meta property="og:image:alt" content="([^"]+)">/,
+        `<meta property="og:image:alt" content="$1"><meta property="article:author" content="${esc(post.author || 'Stuff Pretty Good Editorial')}"><meta property="article:published_time" content="${esc(post.published_at || '2026-07-03')}"><meta property="article:modified_time" content="${esc(post.modified_at || post.published_at || '2026-07-03')}">`
+      );
+    }
+  }
   // Mark the current nav link with aria-current="page" for screen-reader users
   // and visual highlight (CSS rule in styles.css). Scoped to <div class="nav-links">
   // so the same /signup/ footer link is not touched. Home route '' marks the
@@ -1602,7 +1642,7 @@ for (const p of products) {
 
 for (const post of posts) {
   const picks = products.filter((p) => p.category === post.category || p.price_band === post.category).concat(products).slice(0, 8).sort(productsWithImagesFirst);
-  mkdirPage(`guides/${post.slug}`, layout(post.title, `<article class="post"><p class="eyebrow">Buying guide</p><h1>${esc(post.title)}</h1><p class="sub">${esc(post.intro)}</p><ol class="pick-list">${picks.map((p) => `<li><strong>${esc(p.title)}</strong><br>Why useful: ${esc(p.why_useful)}<br>Best for: ${esc(p.best_for)}<br>Avoid if: ${esc(p.avoid_if)}<br><a href="/products/${p.id}/">Get details</a></li>`).join('')}</ol></article>`, { route: `guides/${post.slug}` }, `${esc(post.title)} — ${esc(post.intro)}`.slice(0, 160)));
+  mkdirPage(`guides/${post.slug}`, layout(post.title, `<article class="post"><p class="eyebrow">Buying guide</p><h1>${esc(post.title)}</h1><p class="sub">${esc(post.intro)}</p><ol class="pick-list">${picks.map((p) => `<li><strong>${esc(p.title)}</strong><br>Why useful: ${esc(p.why_useful)}<br>Best for: ${esc(p.best_for)}<br>Avoid if: ${esc(p.avoid_if)}<br><a href="/products/${p.id}/">Get details</a></li>`).join('')}</ol></article>`, { route: `guides/${post.slug}`, articleJsonLd: articleJsonLd(post, post.slug) }, `${esc(post.title)} — ${esc(post.intro)}`.slice(0, 160)));
 }
 
 function toolScript(seedProducts) {
