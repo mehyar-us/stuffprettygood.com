@@ -453,7 +453,7 @@
       if (!text) { verdictInput && verdictInput.focus(); return; }
       // Build a verdict-style question. Strip protocol + host from URLs so the
       // matcher inside recommend() can score against product titles.
-      const stripped = text.replace(/^https?://(www.)?/, '').replace(//+$/, '').slice(0, 240);
+      const stripped = text.replace(new RegExp('^https?:\/\/(www\.)?'), '').replace(new RegExp('\/+$'), '').slice(0, 240);
       const q = 'Verdict on ' + stripped;
       // Open the chat panel and submit. The verdict branch in answer() returns
       // a thumbs-up / pass / thumbs-down shape tuned for this entry.
@@ -724,7 +724,7 @@
       // than picks: a single shortlist ranked by confidence, plus a clear
       // yes / meh / no signal so the user gets a verdict, not a 5-card catalog.
       if (/^verdict ons+/.test(low)){
-        const target = q.replace(/^verdict ons+/i, '').trim();
+        const target = q.replace(new RegExp('^verdict on\s+', 'i'), '').trim();
         // Build tokens from the target. For URLs we already stripped the host
         // upstream; for product names we tokenize on whitespace.
         const tokens = target.toLowerCase().split(/[^a-z0-9]+/).filter(function(t){ return t && t.length > 1 && !['http','https','www','com','net','amzn','to','amazon','product','dp','gp'].includes(t); });
@@ -737,7 +737,7 @@
           return { p: p, hits: hits };
         }).filter(function(r){ return r.hits > 0; }).sort(function(a,b){ return b.hits - a.hits; }).slice(0, 3);
         if (!scored.length) {
-          return { kind:'verdict', html:'<strong>Verdict: lean no.</strong> I don't have a confident match for <em>'+esc(target)+'</em> in the catalog. Try a sharper name, or ask the chat for a similar product you can substitute.' };
+          return { kind:'verdict', html:'<strong>Verdict: lean no.</strong> I don\'t have a confident match for <em>'+esc(target)+'</em> in the catalog. Try a sharper name, or ask the chat for a similar product you can substitute.' };
         }
         const top = scored[0].p;
         const second = scored[1] && scored[1].p;
