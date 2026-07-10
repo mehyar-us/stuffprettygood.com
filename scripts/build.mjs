@@ -1547,19 +1547,55 @@ const FAQ_JSONLD = {
 };
 
 
+// Build the shared Offer block for a Product shape. Used by both the per-product
+// page (`productJsonLd`) and the nested Product ListItem on category pages
+// (`categoryItemListJsonLd`). Centralized so the price/availability/brand
+// contract stays in one place. Lane B tick 80.
+function productOfferJsonLd(p) {
+  const url = `https://${SPG_DOMAIN}/products/${p.id}/`;
+  const offers = {
+    '@type': 'Offer',
+    url: url,
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+    priceValidUntil: '2027-12-31'
+  };
+  if (typeof p.price === 'number') offers.price = p.price;
+  return offers;
+}
+
 // Build an ItemList JSON-LD block from a list of product records shown on a
-// category page. Each top-level product on the page becomes a ListItem with the
-// canonical product URL as the `url` and the title as the `name`. Helps Google
-// surface the category page as a list of products in search results. Pairs with
-// the existing BreadcrumbList on the same page. Lane B tick 42.
+// category page. Each top-level product on the page becomes a ListItem whose
+// `item` nests a full schema.org/Product shape (name + url + image + brand +
+// offers) — the documented Google pattern for Product carousel rich-result
+// eligibility. Each ListItem also keeps the legacy top-level `url` + `name`
+// fields as a fallback for crawlers that only read the slim shape. Pairs with
+// the existing BreadcrumbList on the same page. Lane B tick 42 (slim) +
+// Lane B tick 80 (full Product shape).
 function categoryItemListJsonLd(route, title, picks) {
   if (!Array.isArray(picks) || picks.length === 0) return '';
-  const itemListElement = picks.slice(0, 24).map((p, i) => ({
-    '@type': 'ListItem',
-    position: i + 1,
-    url: `https://${SPG_DOMAIN}/products/${p.id}/`,
-    name: p.title
-  }));
+  const itemListElement = picks.slice(0, 24).map((p, i) => {
+    const url = `https://${SPG_DOMAIN}/products/${p.id}/`;
+    const image = p.image_url
+      ? (p.image_url.startsWith('http') ? p.image_url : `https://${SPG_DOMAIN}${p.image_url}`)
+      : undefined;
+    const product = {
+      '@type': 'Product',
+      name: p.title,
+      url: url,
+      brand: { '@type': 'Brand', name: SPG_BRAND },
+      offers: productOfferJsonLd(p)
+    };
+    if (image) product.image = image;
+    if (p.category) product.category = p.category;
+    return {
+      '@type': 'ListItem',
+      position: i + 1,
+      url: url,
+      name: p.title,
+      item: product
+    };
+  });
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'ItemList',
@@ -1588,30 +1624,25 @@ function breadcrumbJsonLd(route, title) {
   return JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items });
 }
 
-// Build a Product JSON-LD block from a product record. Uses the existing schema
-// shape so we don't need to add fields to data/products.json.
+// Build a Product JSON-LD block from a product record. Uses the shared
+// `productOfferJsonLd` helper for the Offer block so the price/availability
+// contract stays in one place. Lane B tick 23 (initial), Lane B tick 80
+// (refactored to share offer builder with categoryItemListJsonLd).
 function productJsonLd(p) {
   const url = `https://${SPG_DOMAIN}/products/${p.id}/`;
-  const offers = {
-    '@type': 'Offer',
-    url: url,
-    priceCurrency: 'USD',
-    availability: 'https://schema.org/InStock',
-    price: typeof p.price === 'number' ? p.price : undefined,
-    priceValidUntil: '2027-12-31'
-  };
-  // Drop undefined `price` so we don't claim a price we don't have.
-  if (offers.price === undefined) delete offers.price;
-  return JSON.stringify({
+  const product = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: p.title,
     description: `${p.title} — ${p.why_useful}`,
-    image: p.image_url ? (p.image_url.startsWith('http') ? p.image_url : `https://${SPG_DOMAIN}${p.image_url}`) : undefined,
     brand: { '@type': 'Brand', name: SPG_BRAND },
     category: p.category,
-    offers: offers
-  });
+    offers: productOfferJsonLd(p)
+  };
+  if (p.image_url) {
+    product.image = p.image_url.startsWith('http') ? p.image_url : `https://${SPG_DOMAIN}${p.image_url}`;
+  }
+  return JSON.stringify(product);
 }
 
 // Build an Article JSON-LD block for /guides/<slug>/ buying-guide pages.
