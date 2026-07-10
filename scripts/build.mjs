@@ -1548,6 +1548,16 @@ function mkdirPage(route, html) {
   if (/^guides\//.test(route)) {
     const post = posts.find((p) => `guides/${p.slug}` === route);
     if (post) {
+      // Lane B #11 (tick 74): flip og:type from "website" to "article" for guide
+      // routes so social unfurls and AI crawlers see the same graph shape the
+      // page's Article JSON-LD already declares (article:author + published_time +
+      // modified_time already wired t73). Single-line regex rewrite on the
+      // layout-template's literal — the previous og:type="website" is the only
+      // match in the page so no false positives.
+      final = final.replace(
+        /<meta property="og:type" content="website">/,
+        `<meta property="og:type" content="article"><meta property="article:section" content="${esc(post.category || 'Buying Guides')}"><meta property="article:tag" content="${esc((post.tags && post.tags[0]) || 'practical finds')}">`
+      );
       final = final.replace(
         /<meta property="og:image:alt" content="([^"]+)">/,
         `<meta property="og:image:alt" content="$1"><meta property="article:author" content="${esc(post.author || 'Stuff Pretty Good Editorial')}"><meta property="article:published_time" content="${esc(post.published_at || '2026-07-03')}"><meta property="article:modified_time" content="${esc(post.modified_at || post.published_at || '2026-07-03')}">`
