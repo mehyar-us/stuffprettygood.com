@@ -602,7 +602,13 @@ const microsoftClaritySnippet = `<script type="text/javascript">
       var STATE = null;
       var QUOTA_PILL = null;
       function getSoftId(){
-        var m = document.cookie.match(new RegExp('(?:^|; )' + CONFIG.cookieName + '=([^;]*)'));
+        var m = null;
+        var cookies = document.cookie.split(';');
+        var prefix = CONFIG.cookieName + '=';
+        for (var i = 0; i < cookies.length; i++) {
+          var c = cookies[i].replace(/^\s+/, '');
+          if (c.indexOf(prefix) === 0) { m = [c, c.substring(prefix.length)]; break; }
+        }
         if (m) return m[1];
         var id = (global.crypto && global.crypto.randomUUID)
           ? global.crypto.randomUUID()
@@ -1241,12 +1247,21 @@ function mkdirPage(route, html) {
         /<a class="logo" href="\/">/,
         `<a class="logo" aria-current="page" href="/">`
       );
-    } else {
+        } else {
+      // Locate the nav-links <div>, find the matching <a href="/<route>/"> inside it,
+      // inject aria-current="page". Uses indexOf + slice to avoid new RegExp() with
+      // dynamic interpolation (see pitfall #97/#98 — template-literal backslash
+      // consumption silently corrupts regex patterns at runtime).
       const targetHref = `/${route}/`;
-      final = final.replace(
-        new RegExp(`(<div class="nav-links">[^<]*(?:<a[^>]*>[^<]*</a>[^<]*)*?)<a href="${targetHref.replace(/\//g, '\\/')}">`),
-        `$1<a aria-current="page" href="${targetHref}">`
-      );
+      const navOpen = final.indexOf('<div class="nav-links">');
+      const navClose = final.indexOf('</div>', navOpen);
+      if (navOpen !== -1 && navClose !== -1) {
+        const needle = `<a href="${targetHref}">`;
+        const linkAt = final.indexOf(needle, navOpen);
+        if (linkAt !== -1 && linkAt < navClose) {
+          final = final.slice(0, linkAt) + '<a aria-current="page" href="' + targetHref + '">' + final.slice(linkAt + needle.length);
+        }
+      }
     }
   }
   fs.writeFileSync(path.join(dir, 'index.html'), normalizeLinks(final));
