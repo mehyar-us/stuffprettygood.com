@@ -261,6 +261,88 @@ function pwaRegistration() {
   });
 })();</script>`;
 }
+// Lane A #28 (tick 75): SW update-available toast.
+// When the browser downloads a new service worker, the new worker fires
+// `statechange` events as it walks installed -> activating -> activated.
+// At `activated`, we know the fresh code is controlling future navigations,
+// but the current page is still serving the old code. Show a non-blocking
+// top-of-screen toast with a "Refresh" button so users can opt into the
+// freshest picks. Auto-dismisses after 45s if the user doesn't act; clicking
+// the dismiss button keeps it dismissed for this page-load (no localStorage
+// to avoid surprising return visitors with re-summoned toasts).
+function swUpdateToast() {
+  return `<script>(function(){
+  if (!('serviceWorker' in navigator)) return;
+  var DISMISSED_KEY = 'spg_sw_update_dismissed_v1';
+  function showToast(){
+    if (document.querySelector('[data-spg-update-toast]')) return;
+    var toast = document.createElement('div');
+    toast.className = 'spg-update-toast';
+    toast.setAttribute('data-spg-update-toast', '');
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    toast.innerHTML =
+      '<div class="spg-update-toast-body">' +
+        '<div class="spg-update-toast-text">' +
+          '<strong>New version available</strong>' +
+          '<span>Refresh to see the latest picks &amp; fixes.</span>' +
+        '</div>' +
+        '<div class="spg-update-toast-actions">' +
+          '<button type="button" class="spg-update-toast-refresh" data-spg-update-refresh>Refresh</button>' +
+          '<button type="button" class="spg-update-toast-dismiss" data-spg-update-dismiss aria-label="Dismiss update notification">&times;</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(toast);
+    // Slide-in next frame so the transition actually plays.
+    requestAnimationFrame(function(){ toast.classList.add('is-visible'); });
+    toast.querySelector('[data-spg-update-refresh]').addEventListener('click', function(){
+      try { sessionStorage.setItem(DISMISSED_KEY, '1'); } catch (e) {}
+      location.reload();
+    });
+    toast.querySelector('[data-spg-update-dismiss]').addEventListener('click', function(){
+      try { sessionStorage.setItem(DISMISSED_KEY, '1'); } catch (e) {}
+      dismissToast(toast);
+    });
+    // Auto-dismiss after 45s.
+    setTimeout(function(){ if (toast.parentNode) dismissToast(toast); }, 45000);
+  }
+  function dismissToast(toast){
+    if (!toast || !toast.parentNode) return;
+    toast.classList.remove('is-visible');
+    setTimeout(function(){ if (toast.parentNode) toast.parentNode.removeChild(toast); }, 320);
+  }
+  function attach(reg){
+    if (!reg || !reg.update) return;
+    // Check for updates on every load (browsers also do this on navigation,
+    // but the explicit call makes the timing deterministic for QA).
+    try { reg.update(); } catch (e) {}
+    if (!reg.installing && !reg.waiting) return;
+    function watch(sw){
+      if (!sw) return;
+      sw.addEventListener('statechange', function(){
+        // Only show when the new worker has fully activated AND we have an
+        // existing controller (so this is a real upgrade, not the first install).
+        if (sw.state === 'activated' && navigator.serviceWorker.controller) {
+          try { if (sessionStorage.getItem(DISMISSED_KEY)) return; } catch (e) {}
+          showToast();
+        }
+      });
+    }
+    if (reg.installing) watch(reg.installing);
+    if (reg.waiting) watch(reg.waiting);
+  }
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').then(attach).catch(function () {});
+    // If a controller already exists and is replaced later, re-attach via the
+    // controllerchange event (rare; happens when the new SW skips waiting).
+    navigator.serviceWorker.addEventListener('controllerchange', function(){
+      try { if (sessionStorage.getItem(DISMISSED_KEY)) return; } catch (e) {}
+      // Brief delay so the controller has actually taken over the page.
+      setTimeout(showToast, 250);
+    });
+  });
+})();</script>`;
+}
 // SPG scroll-reveal motion. IntersectionObserver + prefers-reduced-motion + fade-up
 // keyframe. Auto-targets the major card surfaces (cards, story cards, magazine
 // cards, recommendation rows, panels, signup-band, hero stack, lanes, guide links).
@@ -1431,7 +1513,7 @@ function layout(title, body, opts = {}, description) {
   return normalizeLinks(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="fo-verify" content="da9ff319-a228-4e53-905f-5cde75aaf50b"><link rel="preconnect" href="https://www.clarity.ms" crossorigin>
 <link rel="dns-prefetch" href="https://www.clarity.ms">
 <link rel="preconnect" href="https://stuffprettygood-api.mehyar.workers.dev" crossorigin>
-<link rel="dns-prefetch" href="https://stuffprettygood-api.mehyar.workers.dev">${preconnectHints}${microsoftClaritySnippet}<script>(function(){try{var t=localStorage.getItem('spg-theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}else if(t==='light'){document.documentElement.setAttribute('data-theme','light');}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();</script><title>${fullTitle}</title><meta name="description" content="${esc(desc)}"><meta property="og:title" content="${fullTitle}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="https://stuffprettygood.com${opts.canonical || '/'}"><meta property="og:site_name" content="Stuff Pretty Good"><meta property="og:locale" content="en_US"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#f6f1e8" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#111827"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="SPG"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="format-detection" content="telephone=no,email=no,address=no,date=no"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg">${jsonLdBlocks.join('')}<link rel="stylesheet" href="/styles.css"></head><body id="top" data-route="${esc(route)}"><a class="skip-link" href="#main">Skip to main content</a><div class="spg-splash" aria-hidden="true" id="spg-splash"><div class="spg-splash-logo">SPG</div><span>Stuff Pretty Good</span><small>loading</small></div><script>(function(){try{if(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches){document.documentElement.classList.add('is-pwa');}else if(navigator.standalone===true){document.documentElement.classList.add('is-pwa');}var s=document.getElementById('spg-splash');if(!s)return;function dismiss(){s.classList.add('is-loaded');setTimeout(function(){if(s&&s.parentNode){s.parentNode.removeChild(s);}},500);}if(document.readyState==='complete'||document.readyState==='interactive'){setTimeout(dismiss,80);}else{document.addEventListener('DOMContentLoaded',function(){setTimeout(dismiss,40);});}setTimeout(dismiss,1400);}catch(e){var s=document.getElementById('spg-splash');if(s&&s.parentNode){s.parentNode.removeChild(s);}}})();</script><div class="${shellClass}"><nav class="nav" aria-label="Primary navigation"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a><button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode" aria-pressed="false"><span class="moon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" focusable="false"><path fill="currentColor" d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"/></svg></span><span class="sun" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" focusable="false"><path fill="currentColor" d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66 1.41-1.41M4.93 19.07l1.41-1.41m0-11.32L4.93 4.93m14.14 14.14-1.41-1.41M12 7a5 5 0 1 0 5 5 5 5 0 0 0-5-5Z"/></svg></span><span class="label">Theme</span></button></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div><main id="main" tabindex="-1">${body}</main>${assistantWidget(route)}${backToTop()}${pwaRegistration()}${scrollRevealScript()}${themeToggleScript()}${pullToRefreshScript()}${offlineIndicatorScript()}${iosInstallHintScript()}${exitIntentScript()}${recentlyViewedScript()}${modalHtml}<footer class="footer" aria-label="Site footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
+<link rel="dns-prefetch" href="https://stuffprettygood-api.mehyar.workers.dev">${preconnectHints}${microsoftClaritySnippet}<script>(function(){try{var t=localStorage.getItem('spg-theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}else if(t==='light'){document.documentElement.setAttribute('data-theme','light');}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();</script><title>${fullTitle}</title><meta name="description" content="${esc(desc)}"><meta property="og:title" content="${fullTitle}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="https://stuffprettygood.com${opts.canonical || '/'}"><meta property="og:site_name" content="Stuff Pretty Good"><meta property="og:locale" content="en_US"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#f6f1e8" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#111827"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="SPG"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="format-detection" content="telephone=no,email=no,address=no,date=no"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/site.webmanifest"><link rel="apple-touch-icon" href="/favicon.svg"><meta property="og:image" content="/assets/site/spg-shopping-guide.svg">${jsonLdBlocks.join('')}<link rel="stylesheet" href="/styles.css"></head><body id="top" data-route="${esc(route)}"><a class="skip-link" href="#main">Skip to main content</a><div class="spg-splash" aria-hidden="true" id="spg-splash"><div class="spg-splash-logo">SPG</div><span>Stuff Pretty Good</span><small>loading</small></div><script>(function(){try{if(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches){document.documentElement.classList.add('is-pwa');}else if(navigator.standalone===true){document.documentElement.classList.add('is-pwa');}var s=document.getElementById('spg-splash');if(!s)return;function dismiss(){s.classList.add('is-loaded');setTimeout(function(){if(s&&s.parentNode){s.parentNode.removeChild(s);}},500);}if(document.readyState==='complete'||document.readyState==='interactive'){setTimeout(dismiss,80);}else{document.addEventListener('DOMContentLoaded',function(){setTimeout(dismiss,40);});}setTimeout(dismiss,1400);}catch(e){var s=document.getElementById('spg-splash');if(s&&s.parentNode){s.parentNode.removeChild(s);}}})();</script><div class="${shellClass}"><nav class="nav" aria-label="Primary navigation"><a class="logo" href="/"><img class="logo-img" src="/assets/site/spg-logo.svg" alt="Stuff Pretty Good logo"><span>Stuff Pretty Good</span></a><div class="nav-links"><a href="/gift-finder/">Gift Finder</a><a href="/starter-kits/">Starter Kits</a><a href="/under-50/">Under $50</a><a href="/walmart/">Walmart</a><a href="/stories/">Stories</a><a href="/signup/">Sign up</a><button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode" aria-pressed="false"><span class="moon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" focusable="false"><path fill="currentColor" d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"/></svg></span><span class="sun" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" focusable="false"><path fill="currentColor" d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66 1.41-1.41M4.93 19.07l1.41-1.41m0-11.32L4.93 4.93m14.14 14.14-1.41-1.41M12 7a5 5 0 1 0 5 5 5 5 0 0 0-5-5Z"/></svg></span><span class="label">Theme</span></button></div></nav><p class="impact-verification" aria-hidden="true">${impactSiteVerification}</p><div class="page-art"><img src="/assets/site/spg-shopping-guide.svg" alt="Stuff Pretty Good shopping guide visual"></div><main id="main" tabindex="-1">${body}</main>${assistantWidget(route)}${backToTop()}${pwaRegistration()}${swUpdateToast()}${scrollRevealScript()}${themeToggleScript()}${pullToRefreshScript()}${offlineIndicatorScript()}${iosInstallHintScript()}${exitIntentScript()}${recentlyViewedScript()}${modalHtml}<footer class="footer" aria-label="Site footer"><div><strong>Stuff Pretty Good</strong><p>Useful finds, starter kits, and gifts picked to help you buy faster and waste less.</p></div><div class="footer-links"><a href="/affiliate-disclosure/">Affiliate Disclosure</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/signup/">Sign up</a><a href="/unsubscribe/">Unsubscribe</a><a href="/preferences/">Preferences</a></div></footer></div></body></html>`);
   }
 
   function card(p, i = 0) {

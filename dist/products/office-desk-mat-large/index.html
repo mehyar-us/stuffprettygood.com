@@ -161,6 +161,76 @@
     if (btn) btn.setAttribute('hidden', '');
   });
 })();</script><script>(function(){
+  if (!('serviceWorker' in navigator)) return;
+  var DISMISSED_KEY = 'spg_sw_update_dismissed_v1';
+  function showToast(){
+    if (document.querySelector('[data-spg-update-toast]')) return;
+    var toast = document.createElement('div');
+    toast.className = 'spg-update-toast';
+    toast.setAttribute('data-spg-update-toast', '');
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    toast.innerHTML =
+      '<div class="spg-update-toast-body">' +
+        '<div class="spg-update-toast-text">' +
+          '<strong>New version available</strong>' +
+          '<span>Refresh to see the latest picks &amp; fixes.</span>' +
+        '</div>' +
+        '<div class="spg-update-toast-actions">' +
+          '<button type="button" class="spg-update-toast-refresh" data-spg-update-refresh>Refresh</button>' +
+          '<button type="button" class="spg-update-toast-dismiss" data-spg-update-dismiss aria-label="Dismiss update notification">&times;</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(toast);
+    // Slide-in next frame so the transition actually plays.
+    requestAnimationFrame(function(){ toast.classList.add('is-visible'); });
+    toast.querySelector('[data-spg-update-refresh]').addEventListener('click', function(){
+      try { sessionStorage.setItem(DISMISSED_KEY, '1'); } catch (e) {}
+      location.reload();
+    });
+    toast.querySelector('[data-spg-update-dismiss]').addEventListener('click', function(){
+      try { sessionStorage.setItem(DISMISSED_KEY, '1'); } catch (e) {}
+      dismissToast(toast);
+    });
+    // Auto-dismiss after 45s.
+    setTimeout(function(){ if (toast.parentNode) dismissToast(toast); }, 45000);
+  }
+  function dismissToast(toast){
+    if (!toast || !toast.parentNode) return;
+    toast.classList.remove('is-visible');
+    setTimeout(function(){ if (toast.parentNode) toast.parentNode.removeChild(toast); }, 320);
+  }
+  function attach(reg){
+    if (!reg || !reg.update) return;
+    // Check for updates on every load (browsers also do this on navigation,
+    // but the explicit call makes the timing deterministic for QA).
+    try { reg.update(); } catch (e) {}
+    if (!reg.installing && !reg.waiting) return;
+    function watch(sw){
+      if (!sw) return;
+      sw.addEventListener('statechange', function(){
+        // Only show when the new worker has fully activated AND we have an
+        // existing controller (so this is a real upgrade, not the first install).
+        if (sw.state === 'activated' && navigator.serviceWorker.controller) {
+          try { if (sessionStorage.getItem(DISMISSED_KEY)) return; } catch (e) {}
+          showToast();
+        }
+      });
+    }
+    if (reg.installing) watch(reg.installing);
+    if (reg.waiting) watch(reg.waiting);
+  }
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').then(attach).catch(function () {});
+    // If a controller already exists and is replaced later, re-attach via the
+    // controllerchange event (rare; happens when the new SW skips waiting).
+    navigator.serviceWorker.addEventListener('controllerchange', function(){
+      try { if (sessionStorage.getItem(DISMISSED_KEY)) return; } catch (e) {}
+      // Brief delay so the controller has actually taken over the page.
+      setTimeout(showToast, 250);
+    });
+  });
+})();</script><script>(function(){
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (typeof IntersectionObserver === 'undefined') return;
   var SELECTOR = '.card, .story-card, .magazine-card, .recommendation, .panel, .signup-band, .lanes a, .guide-list a, .hero-stack, .hero-card, .hero-copy, .decision-boxes div, .visual-proof';
