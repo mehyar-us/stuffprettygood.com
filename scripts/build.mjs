@@ -1441,6 +1441,108 @@ const FAQ_JSONLD = {
       { '@type': 'Question', name: 'Are the picks inside stories the same as the main catalog?', acceptedAnswer: { '@type': 'Answer', text: 'The picks come from the same approved catalog as the rest of SPG. Stories just group them by situation so you can shop the use-case rather than the category.' } },
       { '@type': 'Question', name: 'Can I ask the AI to build me a custom story list?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Open the SPG AI bubble, describe the situation, and the assistant will return a shortlist of approved picks that match — effectively a personal story list, on demand.' } }
     ]
+  },
+  // Lane B #17 (tick 79) — FAQPage JSON-LD on the 10 utility/legal pages.
+  // These pages have rich canonical Q/A potential (privacy, terms, signup, etc.)
+  // but no FAQPage today. Each entry is 3-5 unique Q/A pairs grounded in the
+  // actual page content (heading text + body shape), no overlap with the
+  // gift-finder / starter-kits / category / browse entries shipped in ticks
+  // 35 + 77 + 78. Closes the FAQPage gap on every routed page that benefits.
+  'signup': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'How does Stuff Pretty Good signup work?', acceptedAnswer: { '@type': 'Answer', text: 'Enter your email and (optionally) your name + ZIP + US mobile phone number, then confirm a single opt-in. We send a welcome confirmation email immediately, then a weekly Pretty Good Finds digest. Unsubscribe is one click in every email.' } },
+      { '@type': 'Question', name: 'Is signup free?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. The SPG newsletter is free and there is no paid tier. The site is funded through approved-affiliate commissions, not subscription fees.' } },
+      { '@type': 'Question', name: 'Do I have to give my phone number to sign up?', acceptedAnswer: { '@type': 'Answer', text: 'No. Phone number is optional and only used if you opt in to SMS reminders. Email-only signup works without sharing a phone number.' } },
+      { '@type': 'Question', name: 'How do I stop the emails once I sign up?', acceptedAnswer: { '@type': 'Answer', text: 'Click the unsubscribe link at the bottom of any email, or visit the Unsubscribe page to opt out globally. You can also manage frequency + categories on the Preferences page.' } }
+    ]
+  },
+  'unsubscribe': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'How do I unsubscribe from SPG emails?', acceptedAnswer: { '@type': 'Answer', text: 'Click the unsubscribe link at the bottom of any email or visit the Unsubscribe page and enter your email. Unsubscribes are processed within 1 business day and you stop receiving marketing email immediately.' } },
+      { '@type': 'Question', name: 'Does unsubscribing stop transactional emails too?', acceptedAnswer: { '@type': 'Answer', text: 'No. Transactional emails (signup confirmation, account changes, SMS opt-in confirmations) continue regardless of marketing-email opt-out because they are required to operate your account. They are always one-click unsubscribeable too.' } },
+      { '@type': 'Question', name: 'Can I resubscribe later?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Visit the Signup page and re-enter your email, or update your preferences on the Preferences page. We respect all opt-outs immediately but never lock you out of opting back in.' } }
+    ]
+  },
+  'preferences': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What can I manage on the SPG Preferences page?', acceptedAnswer: { '@type': 'Answer', text: 'Email frequency (weekly digest vs monthly recap), category preferences (which categories of products you want to see in the digest), and SMS opt-in status. All preferences are stored against your email address.' } },
+      { '@type': 'Question', name: 'Do I need an account to change preferences?', acceptedAnswer: { '@type': 'Answer', text: 'No. Enter the email address you used to sign up and we send a one-time link to confirm the change. No password required — it is the same magic-link pattern as signup.' } },
+      { '@type': 'Question', name: 'How long does it take for preference changes to apply?', acceptedAnswer: { '@type': 'Answer', text: 'Preference changes apply on the next digest send (within 7 days for weekly, within 30 days for monthly). Category preferences filter the next digest you receive.' } }
+    ]
+  },
+  'privacy': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What personal information does SPG collect?', acceptedAnswer: { '@type': 'Answer', text: 'Only the information you choose to share (email, optional name + ZIP + US mobile number if you opt in to SMS) plus basic device/usage info (IP, browser, pages viewed, link clicks). We do not collect anything we do not need to operate the site or send the messages you signed up for.' } },
+      { '@type': 'Question', name: 'Does SPG sell personal information?', acceptedAnswer: { '@type': 'Answer', text: 'No. We do not sell personal information. We do not deliver third-party behavioral advertising. The only third parties who see your info are service providers acting on our instructions, affiliate networks to attribute clicks, and authorities when legally required.' } },
+      { '@type': 'Question', name: 'How do I delete my SPG account and data?', acceptedAnswer: { '@type': 'Answer', text: 'Email privacy@stuffprettygood.com with your signup email and we will delete your account + personal data within 30 days, with a confirmation email when complete. You can also request a data export of everything we hold about you.' } },
+      { '@type': 'Question', name: 'How do I opt out of SMS messages?', acceptedAnswer: { '@type': 'Answer', text: 'Reply STOP to any SMS message to unsubscribe immediately. You can also email privacy@stuffprettygood.com or use the Unsubscribe page. SMS opt-out is honored within 1 business day.' } },
+      { '@type': 'Question', name: 'Does SPG use cookies or tracking?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. We use first-party cookies for theme preference and signup state, plus Microsoft Clarity for session replay analytics (anonymized) and Cloudflare for security/abuse protection. We do not use third-party advertising cookies.' } }
+    ]
+  },
+  'terms': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'Is SPG an affiliate site?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. SPG participates in the Amazon Associates program and other approved affiliate programs. When you click a product link and buy through the merchant, we may earn a commission at no extra cost to you. All affiliate relationships are disclosed per FTC guidelines.' } },
+      { '@type': 'Question', name: 'Are the AI-assisted picks professional advice?', acceptedAnswer: { '@type': 'Answer', text: 'No. The SPG AI helper and category pages are informational only. Product picks reflect editorial judgment, not professional buying advice. Always confirm current price, availability, and suitability before purchasing.' } },
+      { '@type': 'Question', name: 'Can I use SPG content on my own site?', acceptedAnswer: { '@type': 'Answer', text: 'Excerpts with attribution + a link back to the source SPG page are fine. Republishing full articles or scraping the catalog without permission is not. Contact us for syndication arrangements.' } },
+      { '@type': 'Question', name: 'What happens if I misuse the AI helper?', acceptedAnswer: { '@type': 'Answer', text: 'We rate-limit abusive or scraping usage and may temporarily suspend abusive accounts. The AI helper is for genuine shopping assistance; we do not allow prompt-injection attacks, automated scraping, or attempts to extract system prompts.' } }
+    ]
+  },
+  'contact': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'How do I contact Stuff Pretty Good?', acceptedAnswer: { '@type': 'Answer', text: 'Email hello@stuffprettygood.com for general questions, partnerships, or press. For privacy/data requests, email privacy@stuffprettygood.com. We respond within 2 business days for general inquiries and within 5 business days for privacy requests.' } },
+      { '@type': 'Question', name: 'Can I call Stuff Pretty Good?', acceptedAnswer: { '@type': 'Answer', text: 'No phone support currently. Email is the fastest channel because it lets us route your question to the right team member and keep a written record of the resolution.' } },
+      { '@type': 'Question', name: 'Where is Stuff Pretty Good based?', acceptedAnswer: { '@type': 'Answer', text: 'New York, NY, USA. Operated by MehyarSoft LLC. The site serves US, Canada, and the UK audiences primarily but is open to all visitors.' } }
+    ]
+  },
+  'about': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What is Stuff Pretty Good?', acceptedAnswer: { '@type': 'Answer', text: 'An AI-assisted shopping guide that helps people find useful products, gift ideas, and starter kits using only approved affiliate links. We curate practical, low-noise picks across home, kitchen, travel, tech, pets, gifts, and everyday problem solvers.' } },
+      { '@type': 'Question', name: 'How do you choose which products to recommend?', acceptedAnswer: { '@type': 'Answer', text: 'Three gates: (1) affiliate_status = approved in our catalog, (2) the product solves a real recurring annoyance rather than being a novelty, (3) we would recommend it to a friend without disclaimers. Picks that fail any gate do not get on the site.' } },
+      { '@type': 'Question', name: 'How does Stuff Pretty Good make money?', acceptedAnswer: { '@type': 'Answer', text: 'Approved affiliate commissions. When you click a product link and buy through the merchant, we may earn a commission at no extra cost to you. We do not run ads, sell user data, or accept paid placements that override editorial judgment.' } },
+      { '@type': 'Question', name: 'Do you use AI to pick products?', acceptedAnswer: { '@type': 'Answer', text: 'Yes — the AI bubble and Starter Kit Builder use AI to assemble shortlists from the approved catalog, but the catalog itself is human-curated. AI is the assembler, not the source of truth. Every product on the site was reviewed by a person before shipping.' } }
+    ]
+  },
+  'advertise': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'Does Stuff Pretty Good accept sponsored content?', acceptedAnswer: { '@type': 'Answer', text: 'Yes, on a limited basis. Sponsored posts are clearly labeled as sponsored at the top of the article and do not influence our editorial picks. We do not accept sponsored placements in the regular product catalog.' } },
+      { '@type': 'Question', name: 'Who reads Stuff Pretty Good?', acceptedAnswer: { '@type': 'Answer', text: 'US, Canada, and UK shoppers aged 25-55 looking for practical products without marketplace doom-scrolling. Roughly 60% mobile, 40% desktop. Strong newsletter open rates and click-through on affiliate picks.' } },
+      { '@type': 'Question', name: 'What partnership formats does SPG offer?', acceptedAnswer: { '@type': 'Answer', text: 'Standard affiliate partnerships through Amazon Associates and other programs (no contact needed — just sign up with our tag). Sponsored editorial posts on a case-by-case basis (email partners@stuffprettygood.com). We do not sell banner ads, popups, or homepage placements.' } }
+    ]
+  },
+  'affiliate-disclosure': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'Does Stuff Pretty Good earn commissions from product links?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. SPG participates in the Amazon Services LLC Associates Program and other approved affiliate programs. We earn a small commission when you click a product link and make a qualifying purchase, at no extra cost to you.' } },
+      { '@type': 'Question', name: 'Do affiliate commissions influence which products you recommend?', acceptedAnswer: { '@type': 'Answer', text: 'No. The catalog gate is editorial (approved-affiliate, solves a real problem, would recommend to a friend). Commission rate does not affect ranking or inclusion. Higher-commission picks are not prioritized over better-suited picks.' } },
+      { '@type': 'Question', name: 'How are affiliate relationships disclosed?', acceptedAnswer: { '@type': 'Answer', text: 'Every product link routes through /go/<id>/ so the relationship is structurally visible. Affiliate disclosure banners appear on the homepage and category pages. The full FTC-compliant disclosure lives on this page.' } },
+      { '@type': 'Question', name: 'What affiliate programs does SPG participate in?', acceptedAnswer: { '@type': 'Answer', text: 'Amazon Associates (primary), Walmart Affiliate Program, eBay Partner Network, and select partner programs through Skimlinks/Sovrn. We only join programs where the merchant reputation and customer service meet our editorial bar.' } }
+    ]
+  },
+  'open': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What is the Stuff Pretty Good /open/ page?', acceptedAnswer: { '@type': 'Answer', text: 'A universal deep-link router for stuffprettygood.com URLs. Pasting any SPG URL here takes you straight to the right page. The PWA share target also routes through this page so you can share any URL into SPG and land on the intended destination.' } },
+      { '@type': 'Question', name: 'Why does /open/ exist instead of just linking directly?', acceptedAnswer: { '@type': 'Answer', text: 'The deep-link page validates the URL, normalises the path, and shows a preview card before redirecting. This protects against phishing, lets us attach UTMs, and provides a fallback if the destination page is offline.' } },
+      { '@type': 'Question', name: 'Does /open/ share my URL with anyone?', acceptedAnswer: { '@type': 'Answer', text: 'No. The /open/ endpoint processes the URL server-side for validation only. We do not log URLs to third parties or share them with partners. Logs are retained for 7 days for abuse detection and then purged.' } }
+    ]
   }
 };
 
