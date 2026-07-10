@@ -2654,10 +2654,42 @@ mkdirPage('open', layout(pageTitle('open'), openDeepLinkBody, { route: 'open', s
 fs.writeFileSync(path.join(dist, 'robots.txt'), 'User-agent: *\nAllow: /\nDisallow: /open\nSitemap: https://stuffprettygood.com/sitemap.xml\n# Buying-guides RSS feed\n# https://www.rssboard.org/rss-specification\n');
 const urls = ['', 'gift-finder', 'starter-kits', 'under-25', 'under-50', 'walmart', 'stories', 'useful-finds', 'travel', 'home-office', 'kitchen', 'pets', 'tech', 'signup', 'about', 'advertise', 'affiliate-disclosure', 'privacy', 'terms', 'contact', 'unsubscribe', 'preferences', 'open', ...posts.map((p) => 'guides/' + p.slug), ...products.map((p) => 'products/' + p.id)];
 const _spgBuildIso = new Date().toISOString();
+// Lane B #13 — sitemap priority + changefreq. SEO surface; groups by route role:
+//   home=1.0/daily, money pages (gift-finder, starter-kits, under-*) = 0.9/weekly,
+//   categories = 0.8/weekly, guides = 0.7/monthly, products = 0.6/monthly,
+//   legal/info = 0.4/yearly, utility (signup, unsubscribe, open) = 0.3/yearly.
+// Fallback 0.5/monthly for any route added later not in the map.
+const _spgSitemapMeta = {
+  '':                    { priority: '1.0', changefreq: 'daily'  },
+  'gift-finder':         { priority: '0.9', changefreq: 'weekly'  },
+  'starter-kits':        { priority: '0.9', changefreq: 'weekly'  },
+  'under-25':            { priority: '0.9', changefreq: 'weekly'  },
+  'under-50':            { priority: '0.9', changefreq: 'weekly'  },
+  'walmart':             { priority: '0.9', changefreq: 'weekly'  },
+  'stories':             { priority: '0.8', changefreq: 'weekly'  },
+  'useful-finds':        { priority: '0.8', changefreq: 'weekly'  },
+  'travel':              { priority: '0.8', changefreq: 'weekly'  },
+  'home-office':         { priority: '0.8', changefreq: 'weekly'  },
+  'kitchen':             { priority: '0.8', changefreq: 'weekly'  },
+  'pets':                { priority: '0.8', changefreq: 'weekly'  },
+  'tech':                { priority: '0.8', changefreq: 'weekly'  },
+  'signup':              { priority: '0.3', changefreq: 'yearly'  },
+  'about':               { priority: '0.4', changefreq: 'yearly'  },
+  'advertise':           { priority: '0.4', changefreq: 'yearly'  },
+  'affiliate-disclosure':{ priority: '0.4', changefreq: 'yearly'  },
+  'privacy':             { priority: '0.4', changefreq: 'yearly'  },
+  'terms':               { priority: '0.4', changefreq: 'yearly'  },
+  'contact':             { priority: '0.4', changefreq: 'yearly'  },
+  'unsubscribe':         { priority: '0.3', changefreq: 'yearly'  },
+  'preferences':         { priority: '0.3', changefreq: 'yearly'  },
+  'open':                { priority: '0.3', changefreq: 'yearly'  },
+};
+const _spgSitemapMetaDefault = { priority: '0.5', changefreq: 'monthly' };
 const _spgSitemapEntries = urls.map((u) => {
   let _spgLastmod = _spgBuildIso;
   try { _spgLastmod = fs.statSync(path.join(dist, slugUrl(u), 'index.html')).mtime.toISOString(); } catch (_) { /* route not built — fall back to build-time ISO */ }
-  return `<url><loc>https://stuffprettygood.com${slugUrl(u)}</loc><lastmod>${_spgLastmod}</lastmod></url>`;
+  const _spgMeta = _spgSitemapMeta[u] || (u.startsWith('guides/') ? { priority: '0.7', changefreq: 'monthly' } : u.startsWith('products/') ? { priority: '0.6', changefreq: 'monthly' } : _spgSitemapMetaDefault);
+  return `<url><loc>https://stuffprettygood.com${slugUrl(u)}</loc><lastmod>${_spgLastmod}</lastmod><priority>${_spgMeta.priority}</priority><changefreq>${_spgMeta.changefreq}</changefreq></url>`;
 }).join('\n');
 fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${_spgSitemapEntries}\n</urlset>\n`);
 
