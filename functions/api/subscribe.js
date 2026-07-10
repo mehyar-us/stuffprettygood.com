@@ -52,10 +52,16 @@ function htmlSuccess(email) {
  * @param {string} audienceId  Resend audience UUID
  * @param {string} email
  * @param {Array<{key:string, value:string}>} tags
+ * @param {string} apiKey
+ * @param {{firstName?: string, lastName?: string}} [profile]
  * @returns {Promise<{ok:boolean, contactId?:string, error?:string}>}
  */
-async function resendAddContact(audienceId, email, tags = [], apiKey = '') {
+async function resendAddContact(audienceId, email, tags = [], apiKey = '', profile = {}) {
   if (!apiKey || !audienceId) return { ok: true, skipped: true };
+
+  const upsertBody = { email, unsubscribed: false };
+  if (profile.firstName) upsertBody.first_name = profile.firstName;
+  if (profile.lastName)  upsertBody.last_name  = profile.lastName;
 
   const upsertRes = await fetch(
     `https://api.resend.com/audiences/${audienceId}/contacts`,
@@ -65,7 +71,7 @@ async function resendAddContact(audienceId, email, tags = [], apiKey = '') {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, unsubscribed: false }),
+      body: JSON.stringify(upsertBody),
     }
   );
 
@@ -140,7 +146,6 @@ export async function onRequestPost(context) {
 
   // Read env-derived config at request time (Cloudflare Pages Functions convention)
   const apiKey   = readEnv(context, 'RESEND_API_KEY', '');
-  const fromAddr = readEnv(context, 'RESEND_FROM', 'Stuff Pretty Good <hello@stuffprettygood.com>');
   const dripAudience    = readEnv(context, 'RESEND_AUDIENCE_DRIP', 'f61e01c1-ebbb-4cab-b2fe-05a7e3f4f7e8');
   const generalAudience = readEnv(context, 'RESEND_AUDIENCE_GENERAL', '7a8c3d2e-5f6b-4a9e-b1c4-d3e2f1a0b9d6');
 
@@ -165,7 +170,7 @@ export async function onRequestPost(context) {
   if (source === 'exit-intent') {
     const exitTags = [...baseTags, { key: ' signup_type', value: 'exit_intent' }];
 
-    const added = await resendAddContact(dripAudience, email, exitTags, apiKey);
+    const added = await resendAddContact(dripAudience, email, exitTags, apiKey, { firstName, lastName });
     console.log(`[subscribe] exit-intent: ${email}, resend_added=${added.ok}`);
 
     // Trigger the drip (immediate welcome fires now; 1d + 3d handled by Resend)
@@ -178,11 +183,8 @@ export async function onRequestPost(context) {
 
   // ---- General path: add to the main pretty-good-finds audience ----
   // (exit-intent signups also get added here for complete segmentation)
-  const addedGeneral = await resendAddContact(generalAudience, email, baseTags, apiKey);
+  const addedGeneral = await resendAddContact(generalAudience, email, baseTags, apiKey, { firstName, lastName });
   console.log(`[subscribe] general: ${email}, added=${addedGeneral.ok}`);
-
-  // Unused vars (kept for readability + future use)
-  void firstName; void lastName; void fromAddr;
 
   return htmlSuccess(email);
 }
