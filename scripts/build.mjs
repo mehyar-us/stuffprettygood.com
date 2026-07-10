@@ -1385,8 +1385,65 @@ const FAQ_JSONLD = {
       { '@type': 'Question', name: 'Do you recommend travel adapters and converters?', acceptedAnswer: { '@type': 'Answer', text: 'A universal travel adapter is on the page. For voltage conversion, we link to general guidance rather than recommending a specific converter — needs vary by destination and device.' } },
       { '@type': 'Question', name: 'Can the AI build me a travel kit for a specific trip?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Open the SPG AI bubble and describe your trip — length, destination type, and whether you will check a bag — and the assistant will pull a shortlist from the approved travel catalog.' } }
     ]
+  },
+  // Lane B #16 (tick 78) — fill in the FAQPage gap on the 5 remaining
+  // category / browse routes: under-25, pets, tech, useful-finds, stories.
+  // Same shape as the tick-35 entries: 3-4 curated Q/A pairs per route,
+  // unique questions (no overlap with the 7 already-shipped FAQPage routes),
+  // grounded in the actual page content. Used by Google AI Overviews +
+  // Perplexity + ChatGPT browse mode for direct-answer surfacing.
+  'under-25': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What is the Under $25 page on Stuff Pretty Good?', acceptedAnswer: { '@type': 'Answer', text: 'A curated shortlist of useful products under $25 from the approved SPG affiliate catalog. Picks solve small daily annoyances — a missing tool, a clutter problem, a 2-minute cleanup — at a price that does not need a second thought.' } },
+      { '@type': 'Question', name: 'How is Under $25 different from Under $50?', acceptedAnswer: { '@type': 'Answer', text: 'Under $25 is the tighter, lower-price subset. Under $50 stretches into nicer builds and gift-quality picks; Under $25 sticks to small everyday wins. Both pull from the same approved catalog and the same "useful-not-filler" rule.' } },
+      { '@type': 'Question', name: 'Is Under $25 all cheap junk?', acceptedAnswer: { '@type': 'Answer', text: 'No. Cheap is not the goal. Picks are vetted as useful enough to keep in a drawer and reach for weekly. The page favors durable small tools over disposable novelty gadgets.' } },
+      { '@type': 'Question', name: 'Can I ask the AI for a sub-$25 shortlist for a specific situation?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Open the SPG AI bubble and ask something like "small gift under $25" or "desk cleanup under $25" and the assistant will pull from the same approved catalog with the Under $25 ceiling applied.' } }
+    ]
+  },
+  'pets': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What kind of pet products are on the SPG Pets page?', acceptedAnswer: { '@type': 'Answer', text: 'Practical pet helpers — slow-feeder bowls, lick mats, puzzle toys, deshedding brushes, paw cleaners, no-pull harnesses, auto waterers, and travel bowls — vetted as useful enough that an actual pet owner would reach for them weekly.' } },
+      { '@type': 'Question', name: 'Are the pet picks safe for both cats and dogs?', acceptedAnswer: { '@type': 'Answer', text: 'Most picks work for both species but a few are species-specific. Each product card on the Pets page lists which pet it is intended for so you can shop accordingly.' } },
+      { '@type': 'Question', name: 'Do you carry specialty pet food or prescription diet products?', acceptedAnswer: { '@type': 'Answer', text: 'No. SPG focuses on accessories, enrichment, grooming, and travel helpers — not food. For dietary or veterinary needs, your vet remains the right source.' } },
+      { '@type': 'Question', name: 'Can I ask the AI which pet product to start with?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Open the SPG AI bubble and describe your pet — species, size, and the problem you are trying to solve (chewing, shedding, slow eating, separation anxiety). The assistant will pull a short shortlist from the approved catalog.' } }
+    ]
+  },
+  'tech': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What kind of tech products are on the SPG Tech page?', acceptedAnswer: { '@type': 'Answer', text: 'Practical tech accessories — charging cables, USB-C hubs, screen protectors, laptop stands, wireless mice, desk cable management, Bluetooth trackers, and small everyday electronics. Each pick solves a real problem and skips the spec-sheet flexing.' } },
+      { '@type': 'Question', name: 'Does the Tech page include laptops, phones, or TVs?', acceptedAnswer: { '@type': 'Answer', text: 'No. SPG focuses on accessories and add-ons, not primary devices. For laptop, phone, or TV recommendations, we point you to mainstream buyer guides — our value is in the small useful add-ons that surround the main device.' } },
+      { '@type': 'Question', name: 'Are the tech picks compatible with both iPhone and Android?', acceptedAnswer: { '@type': 'Answer', text: 'Most picks are platform-agnostic (USB-C cables, generic hubs, Bluetooth trackers). Where a pick is platform-specific, the product card labels it clearly.' } },
+      { '@type': 'Question', name: 'Can the AI narrow the Tech shortlist for me?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Open the SPG AI bubble and describe what you are setting up — a desk, a travel kit, a home office — and the assistant will pull a small shortlist of useful tech accessories from the approved catalog.' } }
+    ]
+  },
+  'useful-finds': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What is the Useful Finds page on Stuff Pretty Good?', acceptedAnswer: { '@type': 'Answer', text: 'The full browseable catalog of approved-affiliate picks across every category SPG covers — gifts, home, kitchen, travel, tech, pets, car, wellness, organization, and everyday problem solvers. One page to scroll if you are not yet sure what you are looking for.' } },
+      { '@type': 'Question', name: 'Is Useful Finds the same as the homepage list?', acceptedAnswer: { '@type': 'Answer', text: 'Useful Finds is the complete catalog; the homepage shows a small featured subset. Useful Finds is the right page when you want to see everything we currently recommend.' } },
+      { '@type': 'Question', name: 'How often does the Useful Finds list change?', acceptedAnswer: { '@type': 'Answer', text: 'The full static catalog rotates weekly as we add new approved picks and retire ones that no longer meet the price or usefulness bar. The live "fresh daily picks" section on the same page updates daily from the SPG live catalog.' } },
+      { '@type': 'Question', name: 'Can the AI narrow Useful Finds to one situation for me?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Open the SPG AI bubble and describe your situation — "first apartment," "remote work desk," "weekend trip," "small dog enrichment" — and the assistant will return a short shortlist from the Useful Finds catalog.' } }
+    ]
+  },
+  'stories': {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What is the SPG Stories page?', acceptedAnswer: { '@type': 'Answer', text: 'A magazine-style feed of situation-driven shopping checklists — trail day, emergency prep, travel day, game day, home reset, move-in day, and other real-life moments. Each story is a short, image-backed list of approved-affiliate picks that fit the scenario.' } },
+      { '@type': 'Question', name: 'How often does a new story publish?', acceptedAnswer: { '@type': 'Answer', text: 'Stories refresh throughout the week from a daily AI process that scans prior stories for overlap before publishing new lists. The live "story-wall" section on the Stories page shows the current feed.' } },
+      { '@type': 'Question', name: 'Are the picks inside stories the same as the main catalog?', acceptedAnswer: { '@type': 'Answer', text: 'The picks come from the same approved catalog as the rest of SPG. Stories just group them by situation so you can shop the use-case rather than the category.' } },
+      { '@type': 'Question', name: 'Can I ask the AI to build me a custom story list?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Open the SPG AI bubble, describe the situation, and the assistant will return a shortlist of approved picks that match — effectively a personal story list, on demand.' } }
+    ]
   }
 };
+
 
 // Build an ItemList JSON-LD block from a list of product records shown on a
 // category page. Each top-level product on the page becomes a ListItem with the
