@@ -69,7 +69,11 @@ img{max-width:100%;display:block}
 .nav-links,.footer-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.nav-links a,.pill,.footer-links a{display:inline-flex;align-items:center;gap:8px;padding:10px 13px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.74);text-decoration:none;font-weight:850;color:#334155}
 .nav-links a:hover,.pill:hover{border-color:#fdba74;color:#9a3412;background:#fff7ed}
 .nav-links a[aria-current="page"]{border-color:#0f766e;color:#0f766e;background:#ecfdf5;font-weight:950}
-.impact-verification{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}.page-art{margin:18px auto 0;max-width:1180px}.page-art img{width:100%;max-height:176px;object-fit:cover;border-radius:30px;box-shadow:0 22px 70px rgba(15,23,42,.18);border:1px solid rgba(255,255,255,.7)}
+.impact-verification{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+/* WCAG 2.4.1 Bypass Blocks: skip-link hidden until focused; jumps to <main id="main">. Lane A tick 53. */
+.skip-link{position:absolute;left:-9999px;top:8px;z-index:9999;padding:12px 18px;border-radius:14px;background:#0f766e;color:#fff;font:950 14px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-decoration:none;box-shadow:0 12px 32px rgba(15,23,42,.28);transition:left 0s}
+.skip-link:focus,.skip-link:focus-visible{left:14px;outline:3px solid #fdba74;outline-offset:2px}
+#main{outline:0}.page-art{margin:18px auto 0;max-width:1180px}.page-art img{width:100%;max-height:176px;object-fit:cover;border-radius:30px;box-shadow:0 22px 70px rgba(15,23,42,.18);border:1px solid rgba(255,255,255,.7)}
 .hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:28px;align-items:stretch;padding:58px 0 36px}.hero+.page-art{display:none}
 .hero-copy,.hero-card,.panel,.card,.post,.signup-band,.tool{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,250,241,.96));box-shadow:var(--shadow)}
 .hero-copy{padding:44px;border-radius:38px;background:linear-gradient(145deg,#0b1220 0%,#172033 52%,#7c2d12 100%);color:#fff;position:relative;overflow:hidden}.hero-copy:after{content:"";position:absolute;right:-120px;bottom:-140px;width:360px;height:360px;border-radius:999px;background:radial-gradient(circle,#fb923c66,#ffffff00 62%)}
