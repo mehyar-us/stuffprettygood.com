@@ -406,6 +406,101 @@
   } else {
     document.addEventListener('DOMContentLoaded', function(){ setTimeout(show, 3500); });
   }
+})();</script><script>(function(){
+  if (typeof window === 'undefined' || !window.addEventListener) return;
+  if (navigator.standalone === true) return;
+  if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return;
+  var COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
+  var stored = 0;
+  try { stored = parseInt(window.localStorage.getItem('spg-exit-intent-shown') || '0', 10) || 0; } catch (e) {}
+  if (stored && (Date.now() - stored) < COOLDOWN_MS) return;
+  var fired = false;
+  function ensureCard(){
+    if (document.querySelector('.spg-exit-intent')) return document.querySelector('.spg-exit-intent');
+    var d = document.createElement('div');
+    d.className = 'spg-exit-intent';
+    d.setAttribute('role', 'dialog');
+    d.setAttribute('aria-labelledby', 'spg-exit-title');
+    d.setAttribute('aria-describedby', 'spg-exit-sub');
+    d.setAttribute('aria-hidden', 'true');
+    d.innerHTML =
+      '<button type="button" class="spg-exit-close" aria-label="Dismiss signup prompt">x</button>' +
+      '<p class="spg-exit-eyebrow">Before you go</p>' +
+      '<p id="spg-exit-title" class="spg-exit-title">Get useful finds without doom-scrolling.</p>' +
+      '<p id="spg-exit-sub" class="spg-exit-sub">One email. Unsubscribe anytime. No marketplace spam.</p>' +
+      '<form class="spg-exit-form" method="post" action="https://stuffprettygood-api.mehyar.workers.dev/api/subscribe" novalidate>' +
+        '<input type="hidden" name="source" value="exit-intent">' +
+        '<input type="hidden" name="list" value="pretty-good-finds">' +
+        '<label class="spg-exit-field">Email <input name="email" type="email" autocomplete="email" required maxlength="254"></label>' +
+        '<button class="spg-exit-btn" type="submit">Get useful finds</button>' +
+      '</form>' +
+      '<p class="spg-exit-micro" aria-hidden="true">We use your email only for our weekly drops and store it on our own infra.</p>';
+    document.body.appendChild(d);
+    d.querySelector('.spg-exit-close').addEventListener('click', function(){
+      dismiss();
+    });
+    d.querySelector('.spg-exit-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      var form = e.currentTarget;
+      var email = form.querySelector('input[name="email"]').value || '';
+      if (!/^[^@s]+@[^@s]+.[^@s]+$/.test(email)) {
+        form.querySelector('input[name="email"]').focus();
+        return;
+      }
+      try {
+        window.dispatchEvent(new CustomEvent('spg-signup-exit-intent', { detail: { email: email, ts: Date.now() } }));
+      } catch (ev) {}
+      fetch('https://stuffprettygood-api.mehyar.workers.dev/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' },
+        body: 'source=exit-intent&list=pretty-good-finds&email=' + encodeURIComponent(email)
+      }).catch(function(){});
+      d.querySelector('.spg-exit-title').textContent = "You are on the list.";
+      d.querySelector('.spg-exit-sub').textContent = 'Check your inbox. First weekly drop ships Sunday.';
+      d.querySelector('.spg-exit-form').remove();
+      d.querySelector('.spg-exit-micro').remove();
+      setTimeout(dismiss, 3200);
+    });
+    return d;
+  }
+  function show(){
+    var card = ensureCard();
+    requestAnimationFrame(function(){
+      card.classList.add('is-shown');
+      card.setAttribute('aria-hidden', 'false');
+    });
+    try { window.localStorage.setItem('spg-exit-intent-shown', String(Date.now())); } catch (e) {}
+    try { window.dispatchEvent(new CustomEvent('spg-signup-exit-intent', { detail: { ts: Date.now(), phase: 'shown' } })); } catch (e) {}
+  }
+  function dismiss(){
+    var card = document.querySelector('.spg-exit-intent');
+    if (!card) return;
+    card.classList.remove('is-shown');
+    card.setAttribute('aria-hidden', 'true');
+  }
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') dismiss();
+  });
+  document.addEventListener('mouseout', function(e){
+    if (fired) return;
+    if (e.relatedTarget || e.toElement) return;
+    if (typeof e.clientY !== 'number' || e.clientY > -2) return;
+    fired = true;
+    setTimeout(show, 2000);
+  });
+  if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+    var touchStart = null;
+    document.addEventListener('touchstart', function(e){
+      touchStart = e.touches && e.touches[0] ? e.touches[0].pageY : null;
+    }, { passive: true });
+    document.addEventListener('touchend', function(){
+      if (touchStart !== null && touchStart < 20 && !fired) {
+        fired = true;
+        setTimeout(show, 2500);
+      }
+      touchStart = null;
+    }, { passive: true });
+  }
 })();</script>
 <button class="signup-modal-launch" type="button" data-signup-modal-open aria-label="Sign up for Pretty Good Finds">
   <span class="signup-modal-launch-text">Sign up</span>
