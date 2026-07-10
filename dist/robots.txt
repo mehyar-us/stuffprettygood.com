@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /open
 Sitemap: https://stuffprettygood.com/sitemap.xml
+# Buying-guides RSS feed
+# https://www.rssboard.org/rss-specification
