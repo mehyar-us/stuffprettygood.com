@@ -675,6 +675,104 @@
       touchStart = null;
     }, { passive: true });
   }
+})();</script><script>(function(){
+  if (typeof window === 'undefined' || !window.localStorage) return;
+  var STORAGE_KEY = 'spg-recents-v1';
+  var MAX_KEEP = 8;
+  var SKIP_ROUTES = { '': 1, 'open': 1 };
+  var route = (document.body && document.body.getAttribute('data-route')) || '';
+  var seg = route.split('/')[0] || '';
+  if (SKIP_ROUTES[seg]) return;
+  if (route.indexOf('go/') === 0) return;
+  // Push current product to recents (if we are on a product page).
+  try {
+    var meta = document.getElementById('spg-product-meta');
+    if (meta) {
+      var obj = JSON.parse(meta.textContent || '{}');
+      if (obj && obj.id && obj.title) {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        var list = [];
+        try { list = raw ? JSON.parse(raw) : []; } catch (e) { list = []; }
+        if (!Array.isArray(list)) list = [];
+        // Move to front if present, otherwise unshift; cap at MAX_KEEP.
+        list = list.filter(function (r) { return r && r.id && r.id !== obj.id; });
+        list.unshift({
+          id: obj.id, title: String(obj.title).slice(0, 120),
+          image_url: obj.image_url || '', category: obj.category || '',
+          ts: Date.now()
+        });
+        if (list.length > MAX_KEEP) list = list.slice(0, MAX_KEEP);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+      }
+    }
+  } catch (e) {}
+  // Read final recents list (after the push above) and render.
+  var recents = [];
+  try {
+    var raw2 = localStorage.getItem(STORAGE_KEY);
+    var parsed = raw2 ? JSON.parse(raw2) : [];
+    if (Array.isArray(parsed)) recents = parsed;
+  } catch (e) { recents = []; }
+  // Hide bar when there are no recents OR the only recent is the current page.
+  var currentId = (function () {
+    var m = (route.match(/^products\/(.+?)\/?$/) || [])[1];
+    return m || '';
+  })();
+  var filtered = recents.filter(function (r) { return r && r.id && r.id !== currentId; });
+  if (filtered.length === 0) return;
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function ensureBar() {
+    if (document.querySelector('.spg-recents')) return document.querySelector('.spg-recents');
+    var d = document.createElement('aside');
+    d.className = 'spg-recents';
+    d.setAttribute('role', 'region');
+    d.setAttribute('aria-label', 'Recently viewed products');
+    d.setAttribute('aria-hidden', 'true');
+    d.innerHTML =
+      '<div class="spg-recents-head">' +
+        '<p class="spg-recents-eyebrow">Recently viewed</p>' +
+        '<button type="button" class="spg-recents-close" aria-label="Clear recently viewed list">&times;</button>' +
+      '</div>' +
+      '<div class="spg-recents-track" data-spg-recents-track></div>';
+    document.body.appendChild(d);
+    d.querySelector('.spg-recents-close').addEventListener('click', function () {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      d.classList.remove('is-shown');
+      d.setAttribute('aria-hidden', 'true');
+      setTimeout(function () { if (d && d.parentNode) d.parentNode.removeChild(d); }, 320);
+    });
+    return d;
+  }
+  function render() {
+    var bar = ensureBar();
+    var track = bar.querySelector('[data-spg-recents-track]');
+    track.innerHTML = filtered.map(function (r) {
+      return '<a class="spg-recents-chip" href="/products/' + esc(r.id) + '/">' +
+        '<span class="spg-recents-thumb">' +
+          (r.image_url
+            ? '<img loading="lazy" decoding="async" src="' + esc(r.image_url) + '" alt="' + esc(r.title) + ' product thumbnail">'
+            : '<span class="spg-recents-thumb-fallback" aria-hidden="true">' + esc((r.title || '?').slice(0, 1).toUpperCase()) + '</span>') +
+        '</span>' +
+        '<span class="spg-recents-meta">' +
+          '<span class="spg-recents-cat">' + esc((r.category || '').replace(/-/g, ' ')) + '</span>' +
+          '<span class="spg-recents-title">' + esc(r.title) + '</span>' +
+        '</span>' +
+      '</a>';
+    }).join('');
+    requestAnimationFrame(function () {
+      bar.classList.add('is-shown');
+      bar.setAttribute('aria-hidden', 'false');
+    });
+  }
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(render, 120);
+  } else {
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(render, 120); });
+  }
 })();</script>
 <button class="signup-modal-launch" type="button" data-signup-modal-open aria-label="Sign up for Pretty Good Finds">
   <span class="signup-modal-launch-text">Sign up</span>

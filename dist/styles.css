@@ -359,3 +359,43 @@ html.is-pwa body{overscroll-behavior:none}
 :root[data-theme="dark"] .spg-exit-intent .spg-exit-field input{background:#0b1220;border-color:#334155;color:#f1f5f9}
 :root[data-theme="dark"] .spg-exit-intent .spg-exit-close{color:#cbd5e1}
 :root[data-theme="dark"] .spg-exit-intent .spg-exit-close:hover{background:rgba(255,255,255,.08);color:#f8fafc}
+
+/* Lane A #25 — recently viewed products bar. Fixed bottom-anchored carousel
+   of product chips. Slides up after a tiny delay so the page paint is
+   unblocked. Sits above the iOS Safari install hint (9060) and exit-intent
+   card (9996) by using its own z-index band so it never visually conflicts.
+   Safe-area-inset for the iOS home indicator; dark-mode variants for the
+   chip text + thumbnail ring. */
+.spg-recents{position:fixed;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(max(12px,env(safe-area-inset-bottom)) + 12px);z-index:9070;display:none;flex-direction:column;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(255,247,237,.94));border:1px solid rgba(15,23,42,.12);border-radius:18px;box-shadow:0 18px 50px rgba(15,23,42,.24);font:600 12px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#0f172a;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);max-width:760px;margin:0 auto;transform:translateY(140%);opacity:0;transition:transform .34s cubic-bezier(.2,.8,.2,1),opacity .25s ease;pointer-events:auto}
+.spg-recents.is-shown{display:flex;transform:translateY(0);opacity:1}
+.spg-recents[aria-hidden="false"]{display:flex}
+.spg-recents-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 4px 0}
+.spg-recents-eyebrow{margin:0;font:950 10px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#0f766e}
+.spg-recents-close{width:26px;height:26px;border:0;background:transparent;color:#475569;font-size:18px;line-height:1;cursor:pointer;border-radius:999px;padding:0;display:grid;place-items:center;transition:background .15s ease,color .15s ease}
+.spg-recents-close:hover{background:rgba(15,23,42,.08);color:#0f172a}
+.spg-recents-close:focus-visible{outline:3px solid #fdba74;outline-offset:2px}
+.spg-recents-track{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 6px;scroll-snap-type:x proximity;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.spg-recents-track::-webkit-scrollbar{height:4px}
+.spg-recents-track::-webkit-scrollbar-thumb{background:rgba(15,23,42,.18);border-radius:999px}
+.spg-recents-chip{display:flex;align-items:center;gap:8px;flex:none;padding:6px 10px 6px 6px;background:#fff;border:1px solid #e2e8f0;border-radius:14px;color:#0f172a;text-decoration:none;scroll-snap-align:start;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease;min-width:160px;max-width:240px}
+.spg-recents-chip:hover{transform:translateY(-1px);border-color:#fdba74;box-shadow:0 6px 18px rgba(253,186,116,.32)}
+.spg-recents-chip:focus-visible{outline:3px solid #fdba74;outline-offset:2px}
+.spg-recents-thumb{width:36px;height:36px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#e2e8f0,#cbd5e1);display:grid;place-items:center;flex:none;border:1px solid rgba(15,23,42,.08)}
+.spg-recents-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.spg-recents-thumb-fallback{font:950 14px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#475569}
+.spg-recents-meta{display:flex;flex-direction:column;gap:2px;min-width:0;line-height:1.2}
+.spg-recents-cat{font:950 9px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#0f766e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.spg-recents-title{font:750 12px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+@media(max-width:520px){.spg-recents{left:8px;right:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));border-radius:16px}.spg-recents-chip{min-width:140px;max-width:200px}.spg-recents-title{max-width:160px}}
+@media(prefers-reduced-motion:reduce){.spg-recents{transition:none}.spg-recents-chip{transition:none}}
+:root[data-theme="dark"] .spg-recents{background:linear-gradient(145deg,rgba(15,23,42,.96),rgba(30,41,59,.94));border-color:rgba(255,255,255,.12);color:#f1f5f9;box-shadow:0 18px 50px rgba(0,0,0,.5)}
+:root[data-theme="dark"] .spg-recents-eyebrow{color:#5eead4}
+:root[data-theme="dark"] .spg-recents-close{color:#cbd5e1}
+:root[data-theme="dark"] .spg-recents-close:hover{background:rgba(255,255,255,.08);color:#f8fafc}
+:root[data-theme="dark"] .spg-recents-chip{background:#0b1220;border-color:#334155;color:#f1f5f9}
+:root[data-theme="dark"] .spg-recents-chip:hover{border-color:#5eead4;box-shadow:0 6px 18px rgba(94,234,212,.24)}
+:root[data-theme="dark"] .spg-recents-thumb{background:linear-gradient(135deg,#1e293b,#334155);border-color:rgba(255,255,255,.12)}
+:root[data-theme="dark"] .spg-recents-thumb-fallback{color:#cbd5e1}
+:root[data-theme="dark"] .spg-recents-cat{color:#5eead4}
+:root[data-theme="dark"] .spg-recents-title{color:#f1f5f9}
+:root[data-theme="dark"] .spg-recents-track::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18)}
