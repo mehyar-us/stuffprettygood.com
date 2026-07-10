@@ -436,9 +436,47 @@ var _DEFAULT_SUGGESTIONS = ["gift under $25","travel kit","desk setup","pet prob
       renderHistory();
       haptic(10);
     }
-    if (resetBtn) {
+      if (resetBtn) {
       resetBtn.addEventListener('click', function() { resetHistory(); });
     }
+
+    /* ── Copy chat transcript (Lane C #9 tick 72) ── */
+    var copyBtn = root.querySelector('[data-ai-copy]');
+    function transcriptLines() {
+      var out = [];
+      var nodes = messages ? messages.children : [];
+      for (var i = 0; i < nodes.length; i++) {
+        var n = nodes[i];
+        if (!n) continue;
+        var isUser = /user/.test(n.className || '');
+        var label = isUser ? 'You' : 'SPG';
+        var text = (n.textContent || '').replace(/\s+/g, ' ').trim();
+        if (text) out.push(label + ': ' + text);
+      }
+      return out.join('\n\n');
+    }
+    function flashCopied(btn) {
+      if (!btn) return;
+      btn.classList.add('ai-copy--copied');
+      setTimeout(function() { btn.classList.remove('ai-copy--copied'); }, 1100);
+    }
+    function bindCopyTranscript() {
+      if (!copyBtn) return;
+      copyBtn.hidden = false;
+      copyBtn.addEventListener('click', function() {
+        var body = transcriptLines();
+        var header = 'SPG AI helper — ' + (location.pathname || '/') + ' — ' + new Date().toISOString().slice(0, 16).replace('T', ' ') + '\n\n';
+        var fullText = header + (body || '(empty conversation)');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(fullText).then(function() { flashCopied(copyBtn); haptic(8); }, function() {
+            window.prompt('Copy transcript:', fullText); flashCopied(copyBtn); haptic(8);
+          });
+        } else {
+          window.prompt('Copy transcript:', fullText); flashCopied(copyBtn); haptic(8);
+        }
+      });
+    }
+    bindCopyTranscript();
 
     /* ── Saved picks (Lane A #22 tick 48) ── */
     var SAVED_KEY   = 'spg-saved-picks:v1';
