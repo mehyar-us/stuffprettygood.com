@@ -20,8 +20,9 @@
 - **Live preview gate** (`https://dbb44694.stuffprettygood.pages.dev`): curl of `/guides/best-useful-gifts-under-25/` returns 1 match each of `article:author`, `article:published_time`, `article:modified_time`, and `@type":"Article`; curl of `/` returns 0 `article:author` matches — gates confirmed live on the preview deploy.
 
 📊 RESULTS:
-- Commit: `c13218a9` — `feat(seo): Lane B #9 Article schema + article:author/published_time meta on /guides/<slug>/` (14 files changed, 319 insertions(+), 210 deletions(-))
-- Push verified: `git ls-remote origin` returns `c13218a9e4f0f085b6a2ad6786a6bc5c8a21128c` matching local HEAD; `git rev-list --count origin..HEAD` = 0 (push landed cleanly via `GIT_CONFIG_SYSTEM=/dev/null` per pitfall #96).
+- Commit: `c13218a9` (feat + dist + report + sitemap drift, 14 files / +319/-210) — pushed.
+- Follow-up commit: `96601067` (chore(reports): fill in commit SHA + push verification, 1 file / +3/-3) — pushed.
+- Push verified (both): `git ls-remote origin` returns `966010671207fdfb036871c63aeff8d51e851e97` matching local HEAD; `git rev-list --count origin..HEAD` = 0. The amend-after-push path (pitfall #58) was avoided by soft-reset + re-commit instead of force-with-lease, so the public history is a clean fast-forward from `c13218a9` → `96601067`.
 - CF deploy version: `dbb44694` (preview alias `https://dbb44694.stuffprettygood.pages.dev`); production alias routed through `production.stuffprettygood.pages.dev` → `https://stuffprettygood.com`.
 - wrangler output: `Uploaded 11 files (841 already uploaded) (3.20 sec)` — 10 guide pages + sitemap.xml.
 - Schema delta: `Organization`/`WebSite`/`BreadcrumbList` (already on guides) → `Organization`/`WebSite`/`BreadcrumbList`/`Article` (+1 distinct schema type on the 10 guide pages). Google's structured-data validator will see 4 distinct `@type` blocks on guides now.
