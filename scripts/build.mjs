@@ -2409,7 +2409,7 @@ const _spgSitemapEntries = urls.map((u) => {
   let _spgLastmod = _spgBuildIso;
   try { _spgLastmod = fs.statSync(path.join(dist, slugUrl(u), 'index.html')).mtime.toISOString(); } catch (_) { /* route not built — fall back to build-time ISO */ }
   return `<url><loc>https://stuffprettygood.com${slugUrl(u)}</loc><lastmod>${_spgLastmod}</lastmod></url>`;
-}).join('');
-fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${_spgSitemapEntries}</urlset>`);
+}).join('\n');
+fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${_spgSitemapEntries}\n</urlset>\n`);
 
 console.log(`built ${products.length} approved products, ${posts.length} guides`);
