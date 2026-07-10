@@ -20,8 +20,8 @@
 - **Live preview gate** (`https://dbb44694.stuffprettygood.pages.dev`): curl of `/guides/best-useful-gifts-under-25/` returns 1 match each of `article:author`, `article:published_time`, `article:modified_time`, and `@type":"Article`; curl of `/` returns 0 `article:author` matches — gates confirmed live on the preview deploy.
 
 📊 RESULTS:
-- Commit (this report + feat + dist + sitemap drift): `<see git log --oneline -1 after commit>`
-- Commit (sitemap drift only, if separated): `<see git log --oneline -2 after commit>`
+- Commit: `c13218a9` — `feat(seo): Lane B #9 Article schema + article:author/published_time meta on /guides/<slug>/` (14 files changed, 319 insertions(+), 210 deletions(-))
+- Push verified: `git ls-remote origin` returns `c13218a9e4f0f085b6a2ad6786a6bc5c8a21128c` matching local HEAD; `git rev-list --count origin..HEAD` = 0 (push landed cleanly via `GIT_CONFIG_SYSTEM=/dev/null` per pitfall #96).
 - CF deploy version: `dbb44694` (preview alias `https://dbb44694.stuffprettygood.pages.dev`); production alias routed through `production.stuffprettygood.pages.dev` → `https://stuffprettygood.com`.
 - wrangler output: `Uploaded 11 files (841 already uploaded) (3.20 sec)` — 10 guide pages + sitemap.xml.
 - Schema delta: `Organization`/`WebSite`/`BreadcrumbList` (already on guides) → `Organization`/`WebSite`/`BreadcrumbList`/`Article` (+1 distinct schema type on the 10 guide pages). Google's structured-data validator will see 4 distinct `@type` blocks on guides now.
@@ -29,7 +29,7 @@
 🔗 LINKS:
 - Live guide page: https://stuffprettygood.com/guides/best-useful-gifts-under-25/ (after CDN cache settles — pitfall #76 says custom domain caches drift 1-6h, preview is authoritative in the meantime)
 - Preview URL: https://dbb44694.stuffprettygood.pages.dev/guides/best-useful-gifts-under-25/
-- Commit: `<see git log --oneline -1>` — pushed via `GIT_CONFIG_SYSTEM=/dev/null GIT_TERMINAL_PROMPT=0 git push` per pitfall #96.
+- Commit: `c13218a9` (pushed, verified)
 - Source diff: `scripts/build.mjs` (+35 lines: articleJsonLd helper + mkdirPage article-meta injection + guides-loop opts threading); `data/posts.json` (+3 fields per post × 10 posts = +30 lines).
 
 🧠 MEMORY:
