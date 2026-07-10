@@ -1385,7 +1385,7 @@ function mkdirPage(route, html) {
   const twitterTitle = titleMatch ? titleMatch[1] : '';
   final = final.replace(
     /<meta property="og:image" content="([^"]+)"><meta property="og:image:width" content="960"><meta property="og:image:height" content="360">/,
-    `<meta property="og:image" content="$1"><meta property="og:image:width" content="960"><meta property="og:image:height" content="360"><meta name="twitter:image" content="$1"><meta name="twitter:title" content="${twitterTitle}"><meta name="twitter:description" content="${twitterDesc}"><meta name="twitter:site" content="@stuffprettygood">`
+    `<meta property="og:image" content="$1"><meta property="og:image:width" content="960"><meta property="og:image:height" content="360"><meta property="og:image:alt" content="Stuff Pretty Good — ${(rawTitle || 'home').slice(0, 80)} social preview"><meta name="twitter:image" content="$1"><meta name="twitter:title" content="${twitterTitle}"><meta name="twitter:description" content="${twitterDesc}"><meta name="twitter:site" content="@stuffprettygood">`
   );
   // Per-page theme-color: replace the global cream/navy triple with the route's
   // brand-tinted pair from PAGE_THEME_COLORS so the iOS Safari + Android Chrome

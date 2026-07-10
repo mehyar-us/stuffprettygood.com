@@ -12,10 +12,14 @@
  * Errors are logged but never surface to the client (CAN-SPAM safe).
  */
 
-const RESEND_API_KEY    = env.RESEND_API_KEY    ?? '';
-const RESEND_FROM       = env.RESEND_FROM        ?? ' Stuff Pretty Good <hello@stuffprettygood.com>';
-const DRIP_AUDIENCE_ID  = env.RESEND_AUDIENCE_DRIP ?? 'f61e01c1-ebbb-4cab-b2fe-05a7e3f4f7e8';
-const GENERAL_AUDIENCE_ID = env.RESEND_AUDIENCE_GENERAL ?? '7a8c3d2e-5f6b-4a9e-b1c4-d3e2f1a0b9d6';
+function envOf(context) {
+  return (context && context.env) || {};
+}
+
+function readEnv(context, key, fallback) {
+  const e = envOf(context);
+  return (e && e[key]) || fallback;
+}
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -50,15 +54,15 @@ function htmlSuccess(email) {
  * @param {Array<{key:string, value:string}>} tags
  * @returns {Promise<{ok:boolean, contactId?:string, error?:string}>}
  */
-async function resendAddContact(audienceId, email, tags = []) {
-  if (!RESEND_API_KEY || !audienceId) return { ok: true, skipped: true };
+async function resendAddContact(audienceId, email, tags = [], apiKey = '') {
+  if (!apiKey || !audienceId) return { ok: true, skipped: true };
 
   const upsertRes = await fetch(
     `https://api.resend.com/audiences/${audienceId}/contacts`,
     {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email, unsubscribed: false }),
@@ -80,7 +84,7 @@ async function resendAddContact(audienceId, email, tags = []) {
       {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${RESEND_API_KEY}`,
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(tag),
@@ -103,15 +107,15 @@ async function resendAddContact(audienceId, email, tags = []) {
  * @param {string} email
  * @param {string} sequenceId  from env.RESEND_SEQUENCE_EXIT_IMMEDIATE
  */
-async function resendTriggerDrip(email, sequenceId) {
-  if (!RESEND_API_KEY || !sequenceId) return { ok: true, skipped: true };
+async function resendTriggerDrip(email, sequenceId, dripAudienceId, apiKey = '') {
+  if (!apiKey || !sequenceId) return { ok: true, skipped: true };
 
   const res = await fetch(
-    `https://api.resend.com/audiences/${DRIP_AUDIENCE_ID}/contacts/${encodeURIComponent(email)}/sequences/${sequenceId}/trigger`,
+    `https://api.resend.com/audiences/${dripAudienceId}/contacts/${encodeURIComponent(email)}/sequences/${sequenceId}/trigger`,
     {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
     }
@@ -134,6 +138,12 @@ export async function onRequestPost(context) {
   const { request } = context;
   const formData = await request.formData();
 
+  // Read env-derived config at request time (Cloudflare Pages Functions convention)
+  const apiKey   = readEnv(context, 'RESEND_API_KEY', '');
+  const fromAddr = readEnv(context, 'RESEND_FROM', 'Stuff Pretty Good <hello@stuffprettygood.com>');
+  const dripAudience    = readEnv(context, 'RESEND_AUDIENCE_DRIP', 'f61e01c1-ebbb-4cab-b2fe-05a7e3f4f7e8');
+  const generalAudience = readEnv(context, 'RESEND_AUDIENCE_GENERAL', '7a8c3d2e-5f6b-4a9e-b1c4-d3e2f1a0b9d6');
+
   const email     = (formData.get('email')      ?? '').toString().trim().toLowerCase();
   const firstName = (formData.get('first_name')  ?? '').toString().trim();
   const lastName  = (formData.get('last_name')   ?? '').toString().trim();
@@ -155,21 +165,24 @@ export async function onRequestPost(context) {
   if (source === 'exit-intent') {
     const exitTags = [...baseTags, { key: ' signup_type', value: 'exit_intent' }];
 
-    const added = await resendAddContact(DRIP_AUDIENCE_ID, email, exitTags);
+    const added = await resendAddContact(dripAudience, email, exitTags, apiKey);
     console.log(`[subscribe] exit-intent: ${email}, resend_added=${added.ok}`);
 
     // Trigger the drip (immediate welcome fires now; 1d + 3d handled by Resend)
-    const seqId = env.RESEND_SEQUENCE_EXIT_IMMEDIATE ?? '';
+    const seqId = readEnv(context, 'RESEND_SEQUENCE_EXIT_IMMEDIATE', '');
     if (seqId) {
-      await resendTriggerDrip(email, seqId);
+      await resendTriggerDrip(email, seqId, dripAudience, apiKey);
       console.log(`[subscribe] drip triggered for ${email}`);
     }
   }
 
   // ---- General path: add to the main pretty-good-finds audience ----
   // (exit-intent signups also get added here for complete segmentation)
-  const addedGeneral = await resendAddContact(GENERAL_AUDIENCE_ID, email, baseTags);
+  const addedGeneral = await resendAddContact(generalAudience, email, baseTags, apiKey);
   console.log(`[subscribe] general: ${email}, added=${addedGeneral.ok}`);
+
+  // Unused vars (kept for readability + future use)
+  void firstName; void lastName; void fromAddr;
 
   return htmlSuccess(email);
 }

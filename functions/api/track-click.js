@@ -10,14 +10,16 @@
  * (e.g. PostHog, Segment, or a D1 insert) by replacing the `logClick` stub.
  *
  * Falls back to 204 No Content so client errors never surface.
+ *
+ * NOTE: env vars in Cloudflare Pages Functions are passed via context.env
+ * inside the handler — NOT as a module-scope global. We read them per-request.
  */
-
-const ANALYTICS_WRITE_KEY = env.ANALYTICS_WRITE_KEY ?? '';
 
 /**
  * @param {{ id: string, source: string, ts: number }} click
+ * @param {string} writeKey  env.ANALYTICS_WRITE_KEY (passed in from handler)
  */
-async function logClick(click) {
+async function logClick(click, writeKey) {
   // TODO: replace with your analytics provider SDK call, e.g.:
   //
   // PostHog:
@@ -32,13 +34,13 @@ async function logClick(click) {
   //   });
   //
   // D1 insert:
-  //   const DB = env.SPG_DB;
+  //   const DB = context.env.SPG_DB;
   //   await DB.prepare(
   //     'INSERT INTO affiliate_clicks (product_id, source, clicked_at) VALUES (?, ?, ?)'
   //   ).bind(click.id, click.source, new Date(click.ts).toISOString()).run();
   //
   // For now: log to console (visible in Cloudflare Tail logs)
-  console.log('[track-click]', JSON.stringify(click));
+  console.log('[track-click]', JSON.stringify(click), writeKey ? `(writeKey=${writeKey.slice(0, 6)}...)` : '(no write key)');
 }
 
 export async function onRequestPost(context) {
@@ -55,7 +57,9 @@ export async function onRequestPost(context) {
     return new Response(null, { status: 204 });
   }
 
-  await logClick(click).catch((err) => {
+  const writeKey = (context && context.env && context.env.ANALYTICS_WRITE_KEY) || '';
+
+  await logClick(click, writeKey).catch((err) => {
     console.error('[track-click] log error:', err);
   });
 
