@@ -3,14 +3,14 @@ import path from 'path';
 
 const root = process.cwd();
 const dist = path.join(root, 'dist');
-const AMAZON_TAG = process.env.SPG_AMAZON_ASSOCIATES_TAG || process.env.AMAZON_ASSOCIATES_TAG || 'mehyarmedia-20';
+const AMAZON_TAG = process.env.SPG_AMAZON_ASSOCIATES_TAG || process.env.AMAZON_ASSOCIATES_TAG || 'mehyarus-20';
 
 // Brand + operator constants used throughout the policy pages and the signup form.
 // Declared at the top so the signup form (which renders before the rest of the file) can reference them.
 const SPG_BRAND = 'Stuff Pretty Good';
 const SPG_OPERATOR = 'MehyarSoft LLC';
 const SPG_CONTACT_EMAIL = 'hello@mehyar.us';
-const SPG_CONTACT_PHONE = '+1 (555) 555-0100';
+const SPG_CONTACT_PHONE = '+1 (747) 777-2687';
 const SPG_DOMAIN = 'stuffprettygood.com';
 const SPG_EFFECTIVE_DATE = 'July 1, 2026';
 const SPG_SMS_CONSENT_VERSION = '2026-07-01-v2';
@@ -51,9 +51,9 @@ fs.copyFileSync('src/styles.css', path.join(dist, 'styles.css'));
 // with cache-first same-origin static assets and an /offline.html fallback.
 fs.copyFileSync('src/sw.js', path.join(dist, 'sw.js'));
 
-// Offline fallback page is regenerated on every build (it's a static asset the
+// Offline fallback page ships from src/ (it's a static asset the
 // SW serves when a navigation fails on a cold cache).
-fs.copyFileSync('dist/offline.html', path.join(dist, 'offline.html'));
+fs.copyFileSync('src/offline.html', path.join(dist, 'offline.html'));
 
 const esc = (s = '') => String(s).replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 const titleCase = (s) => esc(String(s).replaceAll('-', ' ').replace(/\b\w/g, (c) => c.toUpperCase()));
@@ -1927,73 +1927,156 @@ for (const post of posts) {
   mkdirPage(`guides/${post.slug}`, layout(post.title, `<article class="post"><p class="eyebrow">Buying guide</p><h1>${esc(post.title)}</h1><p class="sub">${esc(post.intro)}</p><ol class="pick-list">${picks.map((p) => `<li><strong>${esc(p.title)}</strong><br>Why useful: ${esc(p.why_useful)}<br>Best for: ${esc(p.best_for)}<br>Avoid if: ${esc(p.avoid_if)}<br><a href="/products/${p.id}/">Get details</a></li>`).join('')}</ol></article>`, { route: `guides/${post.slug}`, articleJsonLd: articleJsonLd(post, post.slug) }, `${esc(post.title)} — ${esc(post.intro)}`.slice(0, 160)));
 }
 
-function toolScript(seedProducts) {
-  const safeProducts = seedProducts.map((p) => ({ id: p.id, title: p.title, category: p.category, price_band: p.price_band, image_url: p.image_url, why_useful: p.why_useful, best_for: p.best_for, avoid_if: p.avoid_if }));
-  return `${rateLimitScript()}<script type="application/json" id="spg-catalog">${JSON.stringify(safeProducts).replace(/</g, '\\u003c')}</script><script>
+function liveFinderScript() {
+  return `${rateLimitScript()}<script>
 (function(){
-  const catalog = JSON.parse(document.getElementById('spg-catalog').textContent);
+  const API = 'https://stuffprettygood-api.mehyar.workers.dev';
   const form = document.querySelector('[data-finder-form]');
   const results = document.querySelector('[data-finder-results]');
   if (!form || !results) return;
-  const keywords = {
-    gift:['gift','birthday','mom','dad','friend','partner','holiday','present','safe'],
-    travel:['travel','trip','flight','hotel','carry','luggage','vacation'],
-    'home-office':['office','desk','work','computer','setup','productivity'],
-    kitchen:['kitchen','cook','meal','food','coffee'],
-    pets:['pet','dog','cat','puppy','kitten'],
-    tech:['tech','phone','charger','usb','gadget','computer'],
-    car:['car','auto','drive','vehicle'],
-    home:['home','apartment','room','organize','clean']
-  };
-  function score(p, q, budget){
-    const text = (p.title+' '+p.category+' '+p.why_useful+' '+p.best_for+' '+p.avoid_if).toLowerCase();
-    let score = 0;
-    for (const token of q.split(/[^a-z0-9]+/).filter(Boolean)) if (text.includes(token)) score += 3;
-    for (const [cat, words] of Object.entries(keywords)) if ((p.category === cat || words.some(w => q.includes(w)))) score += p.category === cat ? 5 : 1;
-    if (budget && p.price_band === budget) score += 6;
-    if (budget === 'under-50' && p.price_band === 'under-25') score += 3;
-    return score;
-  }
-  function htmlEscape(value){ return String(value).replace(/[&<>"']/g, function(ch){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]; }); }
+  function esc(v){ return String(v || '').replace(/[&<>"']/g, function(ch){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]; }); }
+  function hasRealImage(p){ return typeof p.image_url === 'string' && p.image_url.indexOf('http') === 0 && p.image_url.indexOf('/api/images/') === -1; }
   function render(items){
+    if (!items.length) { results.innerHTML = '<p class="micro">No tight matches yet — try a broader need like "desk setup" or "travel comfort".</p>'; return; }
     results.innerHTML = items.map(function(p, idx){
-      return '<article class="recommendation"><img src="'+htmlEscape(p.image_url)+'" alt="'+htmlEscape(p.title)+'"><div><span class="rank">Pick '+(idx+1)+'</span><h3>'+htmlEscape(p.title)+'</h3><p>'+htmlEscape(p.why_useful)+'</p><p><strong>Best for:</strong> '+htmlEscape(p.best_for)+'</p><p><strong>Skip if:</strong> '+htmlEscape(p.avoid_if)+'</p><a class="btn small" href="/products/'+htmlEscape(p.id)+'/">Get</a></div></article>';
+      const go = API + '/go/' + encodeURIComponent(p.id) + '?source=gift-finder';
+      return '<article class="recommendation"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'" loading="lazy" referrerpolicy="no-referrer"><div><span class="rank">Pick '+(idx+1)+'</span><h3>'+esc(p.title)+'</h3><p>'+esc(p.why_useful)+'</p><p><strong>Best for:</strong> '+esc(p.best_for)+'</p><p><strong>Skip if:</strong> '+esc(p.avoid_if)+'</p><a class="btn small" target="_blank" rel="nofollow sponsored noopener" href="'+esc(go)+'">Get</a></div></article>';
     }).join('');
   }
   form.addEventListener('submit', function(e){
     e.preventDefault();
-    const intent = new FormData(form).get('intent') || '';
-    const interests = new FormData(form).get('interests') || '';
+    const fd = new FormData(form);
+    const intent = (fd.get('intent') || '').toString();
+    const interests = (fd.get('interests') || '').toString();
+    const budget = (fd.get('budget') || '').toString();
     const q = (intent + ' ' + interests).trim();
     const rl = window.SPGRateLimit && window.SPGRateLimit.check(q.length);
-    if (rl && !rl.allowed) {
-      results.innerHTML = '<p class="notice rate-limit-msg">' + htmlEscape(rl.message) + '</p>';
-      results.scrollIntoView({behavior:'smooth', block:'start'});
-      return;
-    }
-    const query = intent.toLowerCase() + ' ' + interests.toLowerCase();
-    const budget = new FormData(form).get('budget');
-    const ranked = catalog.map(p => ({...p, score: score(p, query, budget)})).sort((a,b) => b.score - a.score).slice(0,8);
-    render(ranked);
-    results.scrollIntoView({behavior:'smooth', block:'start'});
-    if (rl && rl.allowed) window.SPGRateLimit.record();
+    if (rl && !rl.allowed) { results.innerHTML = '<p class="notice rate-limit-msg">' + esc(rl.message) + '</p>'; results.scrollIntoView({behavior:'smooth', block:'start'}); return; }
+    const budgetText = budget ? ' ' + budget.replace('-', ' $') : '';
+    const query = (intent + ' ' + interests + budgetText).trim();
+    if (!query) return;
+    results.innerHTML = '<p class="micro">Asking the SPG catalog AI…</p>';
+    fetch(API + '/api/chat', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ message: query }) })
+      .then(function(r){ return r.json(); })
+      .then(function(data){ render((data.products || []).slice(0, 6)); results.scrollIntoView({ behavior: 'smooth', block: 'start' }); if (rl && rl.allowed) window.SPGRateLimit.record(); })
+      .catch(function(){ results.innerHTML = '<p class="micro">The AI helper is refreshing — try again in a moment.</p>'; });
   });
-  render(catalog.slice(0,6));
 })();
-</script>`;
+</scr` + `ipt>`;
 }
 
-function toolPage(name, desc, mode = 'gift') {
-  const seed = products.slice(mode === 'kit' ? 8 : 0, mode === 'kit' ? 24 : 24).sort(productsWithImagesFirst);
-  const examples = mode === 'kit'
-    ? ['home office under $250', 'travel kit under $150', 'first apartment essentials']
-    : ['gift for dad under $50', 'practical gift for coworker', 'pet owner gift'];
-  const route = mode === 'kit' ? 'starter-kits' : 'gift-finder';
-  return layout(name, `<section class="section tool upgraded-tool"><div><p class="eyebrow">AI shopping assistant</p><h1>${esc(name)}</h1><span id="spg-quota-pill" class="spg-quota-pill" hidden></span><p class="sub">${esc(desc)} Ask naturally. Answers are grounded in useful picks and guides already on Stuff Pretty Good.</p><form class="finder" data-finder-form><label>What are you shopping for?<input class="input" name="intent" placeholder="${esc(examples[0])}" required></label><label>Budget<select class="input" name="budget"><option value="">Any budget</option><option value="under-25">Under $25</option><option value="under-50">Under $50</option><option value="under-100">Under $100</option></select></label><label>Interests / situation<input class="input" name="interests" placeholder="${esc(examples.slice(1).join(' · '))}"></label><button class="btn" type="submit">Find my shortlist</button></form><p class="notice">Tip: try “travel gift under $50,” “desk setup,” “pet problem,” or “kitchen time saver.”</p></div><div class="tool-preview"><h2>What you get</h2><ul><li>5–8 practical picks</li><li>why it helps</li><li>who it fits</li><li>when to skip it</li></ul></div></section><section class="section results-section"><div class="section-head"><div><p class="eyebrow">AI shortlist</p><h2>Useful picks for this session</h2></div></div><div class="recommendation-list" data-finder-results></div></section>${toolScript(seed)}`, { route }, pageDescription(mode === 'kit' ? 'starter-kits' : 'gift-finder'));
+function kitBuilderScript() {
+  return `${rateLimitScript()}<script>
+(function(){
+  const API = 'https://stuffprettygood-api.mehyar.workers.dev';
+  const PRESETS = {
+    'home office': [['Desk lighting','monitor light bar desk lamp'],['Laptop ergonomics','laptop stand ergonomic desk riser'],['Cable control','cable management box cord organizer'],['Desk comfort','foot rest cushion ergonomic'],['Focus audio','headphones earbuds desk focus']],
+    'travel': [['Pack smart','compression packing cubes organizer'],['In-flight comfort','travel neck pillow comfort'],['Power on the go','travel charger cable organizer pouch'],['Toiletries','travel toiletry bottles bag'],['Bag security','luggage lock travel tag']],
+    'kitchen': [['Prep speed','kitchen gadget chopper time saver'],['Food storage','food storage containers organizer'],['Cleanup','kitchen cleaning tools scrubber'],['Coffee corner','coffee maker accessories frother'],['Counter order','kitchen organizer rack storage']],
+    'first apartment': [['Cleaning basics','cleaning tools starter kit home'],['Storage','storage bins organizer boxes'],['Kitchen basics','kitchen essentials starter cookware'],['Bathroom','bathroom organizer shower caddy'],['Laundry','laundry hamper drying rack']],
+    'pet care': [['Feeding','pet feeder bowls slow feeder'],['Cleanup','pet hair remover lint cleaner'],['On the road','pet car seat cover carrier'],['Play time','pet toys interactive'],['Grooming','pet grooming brush deshedding']],
+    'creator desk': [['Lighting','ring light desk lamp video'],['Audio','microphone desk recording'],['Desk order','desk organizer stand monitor'],['Backdrop','room decor backdrop aesthetic'],['Power','usb hub charger desk']]
+  };
+  const form = document.querySelector('[data-kit-form]');
+  const results = document.querySelector('[data-kit-results]');
+  const titleEl = document.querySelector('[data-kit-title]');
+  const saveBox = document.querySelector('[data-kit-save]');
+  const saveForm = document.querySelector('[data-kit-save-form]');
+  const saveMsg = document.querySelector('[data-kit-save-msg]');
+  if (!form || !results) return;
+  function esc(v){ return String(v || '').replace(/[&<>"']/g, function(ch){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]; }); }
+  function titleCase(s){ return String(s||'').split(/[\s-]+/).filter(Boolean).map(function(w){ return w.charAt(0).toUpperCase()+w.slice(1); }).join(' '); }
+  function hasRealImage(p){ return typeof p.image_url === 'string' && p.image_url.indexOf('http') === 0 && p.image_url.indexOf('/api/images/') === -1; }
+  document.querySelectorAll('[data-kit-presets] button').forEach(function(b){
+    b.addEventListener('click', function(){
+      form.kit_type.value = b.getAttribute('data-kit');
+      document.querySelectorAll('[data-kit-presets] button').forEach(function(x){ x.classList.remove('active'); });
+      b.classList.add('active');
+      form.kit_type.focus();
+    });
+  });
+  function slotsFor(kitType){
+    const key = kitType.toLowerCase();
+    for (const name of Object.keys(PRESETS)) if (key.indexOf(name) !== -1) return PRESETS[name];
+    const k = kitType.trim() || 'starter';
+    return [['The essential', k],['Stay organized', k + ' organizer storage'],['Daily comfort', k + ' comfort'],['On the go', k + ' travel portable'],['The upgrade', k + ' premium']];
+  }
+  function askAI(query){
+    return fetch(API + '/api/chat', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ message: query }) })
+      .then(function(r){ return r.json(); })
+      .then(function(d){ return d.products || []; })
+      .catch(function(){ return []; });
+  }
+  let lastKitType = '';
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const fd = new FormData(form);
+    const kitType = (fd.get('kit_type') || '').toString().trim();
+    const budget = (fd.get('budget') || '').toString();
+    const situation = (fd.get('situation') || '').toString().trim();
+    if (!kitType) return;
+    const rl = window.SPGRateLimit && window.SPGRateLimit.check(kitType.length);
+    if (rl && !rl.allowed) { results.innerHTML = '<p class="notice rate-limit-msg">' + esc(rl.message) + '</p>'; return; }
+    lastKitType = kitType;
+    const budgetText = budget ? ' ' + budget.replace('-', ' $') : '';
+    const slots = slotsFor(kitType);
+    titleEl.textContent = titleCase(kitType) + ' starter kit';
+    results.innerHTML = '<p class="micro">The AI is planning your kit and pulling real product photos…</p>';
+    saveBox.hidden = true;
+    askAI('starter kit for ' + kitType + budgetText + (situation ? '. ' + situation : ''))
+      .then(function(allProducts){
+        const used = {};
+        const picks = [];
+        function slotScore(p, slotText){
+          const hay = (p.title + ' ' + p.why_useful + ' ' + p.best_for + ' ' + (p.category || '')).toLowerCase();
+          let s = 0;
+          slotText.toLowerCase().split(/[^a-z0-9]+/).filter(function(w){ return w.length > 3; }).forEach(function(w){ if (hay.indexOf(w) !== -1) s += 2; });
+          if (hasRealImage(p)) s += 5;
+          return s;
+        }
+        slots.forEach(function(s){
+          const ranked = (allProducts || []).filter(function(p){ return !used[p.id]; })
+            .map(function(p){ return { p: p, s: slotScore(p, s[0] + ' ' + s[1]) }; })
+            .sort(function(a, b){ return b.s - a.s; });
+          const pick = ranked.length ? ranked[0].p : null;
+          if (pick) { used[pick.id] = true; picks.push({ slot: s[0], product: pick }); }
+        });
+        if (!picks.length) { results.innerHTML = '<p class="micro">No tight matches yet — try a broader kit like "travel" or "kitchen".</p>'; return; }
+        results.innerHTML = picks.map(function(item, idx){
+          const p = item.product;
+          const go = API + '/go/' + encodeURIComponent(p.id) + '?source=starter-kit-builder';
+          return '<article class="recommendation kit-pick"><img src="'+esc(p.image_url)+'" alt="'+esc(p.title)+'" loading="lazy" referrerpolicy="no-referrer"><div><span class="rank">Slot '+(idx+1)+' · '+esc(item.slot)+'</span><h3>'+esc(p.title)+'</h3><p>'+esc(p.why_useful)+'</p><p><strong>Best for:</strong> '+esc(p.best_for)+'</p><p><strong>Skip if:</strong> '+esc(p.avoid_if)+'</p><a class="btn small" target="_blank" rel="nofollow sponsored noopener" href="'+esc(go)+'">Get this pick</a></div></article>';
+        }).join('');
+        saveBox.hidden = false;
+        results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (rl && rl.allowed) window.SPGRateLimit.record();
+      });
+  });
+  saveForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const fd = new FormData(saveForm);
+    const email = (fd.get('email') || '').toString().trim();
+    if (!email) return;
+    saveMsg.textContent = 'Saving…';
+    fetch(API + '/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: email, first_name: (fd.get('first_name') || '').toString(), interests: 'starter-kit: ' + lastKitType, source: 'starter-kit-builder' }) })
+      .then(function(r){ if (!r.ok) throw new Error('bad'); saveMsg.textContent = 'Done — your kit is on its way, and you are on the list for the daily 3 useful finds.'; saveForm.reset(); })
+      .catch(function(){ saveMsg.textContent = 'Hmm, that did not save. Try again in a moment.'; });
+  });
+})();
+</scr` + `ipt>`;
+}
+
+function toolPage(name, desc) {
+  const examples = ['gift for dad under $50', 'practical gift for coworker', 'pet owner gift'];
+  return layout(name, `<section class="section tool upgraded-tool"><div><p class="eyebrow">AI shopping assistant</p><h1>${esc(name)}</h1><span id="spg-quota-pill" class="spg-quota-pill" hidden></span><p class="sub">${esc(desc)} Ask naturally — the SPG catalog AI searches live approved products with real photos.</p><form class="finder" data-finder-form><label>What are you shopping for?<input class="input" name="intent" placeholder="${esc(examples[0])}" required></label><label>Budget<select class="input" name="budget"><option value="">Any budget</option><option value="under-25">Under $25</option><option value="under-50">Under $50</option><option value="under-100">Under $100</option></select></label><label>Interests / situation<input class="input" name="interests" placeholder="${esc(examples.slice(1).join(' · '))}"></label><button class="btn" type="submit">Find my shortlist</button></form><p class="notice">Tip: try “travel gift under $50,” “desk setup,” “pet problem,” or “kitchen time saver.”</p></div><div class="tool-preview"><h2>What you get</h2><ul><li>6 practical picks from the live catalog</li><li>real product photos</li><li>why it helps</li><li>who it fits</li><li>when to skip it</li></ul></div></section><section class="section results-section"><div class="section-head"><div><p class="eyebrow">AI shortlist</p><h2>Useful picks for this session</h2></div></div><div class="recommendation-list" data-finder-results></div></section>${liveFinderScript()}`, { route: 'gift-finder' }, pageDescription('gift-finder'));
+}
+
+function kitBuilderPage() {
+  return layout('AI Starter Kit Builder', `<section class="section tool upgraded-tool"><div><p class="eyebrow">AI Starter Kit Builder</p><h1>Build your starter kit</h1><span id="spg-quota-pill" class="spg-quota-pill" hidden></span><p class="sub">Tell us the setup you want. The SPG catalog AI plans the kit slot by slot and fills each one from approved products with real photos — never invented items.</p><div class="kit-presets" data-kit-presets><button type="button" data-kit="home office">Home office</button><button type="button" data-kit="travel">Travel</button><button type="button" data-kit="kitchen">Kitchen</button><button type="button" data-kit="first apartment">First apartment</button><button type="button" data-kit="pet care">Pet care</button><button type="button" data-kit="creator desk">Creator desk</button></div><form class="finder" data-kit-form><label>What kit are you building?<input class="input" name="kit_type" placeholder="home office under $250" required></label><label>Budget<select class="input" name="budget"><option value="">Any budget</option><option value="under-25">Under $25 total feel</option><option value="under-50">Under $50 total feel</option><option value="under-100">Under $100 total feel</option></select></label><label>Your situation<textarea class="input" name="situation" rows="2" placeholder="Small bedroom desk, I work from home 4 days a week…"></textarea></label><button class="btn" type="submit">Build my kit</button></form><p class="notice">Free forever. No account needed — add your email only if you want the kit sent to you.</p></div></section><section class="section results-section"><div class="section-head"><div><p class="eyebrow">Your AI kit</p><h2 data-kit-title>Your starter kit</h2></div></div><div class="kit-results" data-kit-results><p class="micro">Your kit will appear here — 5 practical picks, each earning its slot.</p></div><div class="kit-save" data-kit-save hidden><h3>Email me this kit</h3><p class="micro">Get this kit in your inbox plus the daily 3 useful finds. Unsubscribe anytime.</p><form data-kit-save-form><div class="form-grid"><label>Email<input name="email" type="email" required autocomplete="email"></label><label>First name<input name="first_name" autocomplete="given-name"></label></div><button class="btn" type="submit">Send my kit</button></form><p class="micro" data-kit-save-msg></p></div></section>${kitBuilderScript()}`, { route: 'starter-kits' }, pageDescription('starter-kits'));
 }
 mkdirPage('gift-finder', toolPage('AI Gift Finder', 'Answer a few prompts and get gift ideas from the approved-offer catalog only.'));
-mkdirPage('starter-kits', toolPage('AI Starter Kit Builder', 'Build useful setups from approved affiliate products only.', 'kit'));
-mkdirPage('useful-finds', layout(pageTitle('useful-finds'), `<section class="section"><p class="eyebrow">Useful picks</p><h1>Useful Finds</h1><p class="sub">Browse useful upgrades for gifts, home, kitchen, travel, tech, pets, and everyday problems.</p><div class="section-head"><div><p class="eyebrow">Fresh daily picks</p><h2>Newest from the live catalog</h2></div></div><div class="grid product-wall" data-live-picks="fresh"><p class="micro">Loading daily picks…</p></div>${liveDailyPicksScript('', '', '[data-live-picks="fresh"]', 60)}<div class="section-head"><div><p class="eyebrow">Walmart via Impact</p><h2>Approved Walmart catalog picks</h2></div><a class="pill" href="/walmart/">Browse Walmart</a></div><div class="grid product-wall" data-live-picks="walmart"><p class="micro">Loading Walmart picks…</p></div>${liveDailyPicksScript('', 'walmart', '[data-live-picks="walmart"]', 60)}<h2>Full launch catalog</h2><div class="grid">${products.sort(productsWithImagesFirst).map(card).join('')}</div></section>`, { route: 'useful-finds', categoryItemListJsonLd: categoryItemListJsonLd('useful-finds', pageTitle('useful-finds'), products) }, pageDescription('useful-finds')));
+mkdirPage('starter-kits', kitBuilderPage());
+mkdirPage('useful-finds', layout(pageTitle('useful-finds'), `<section class="section"><p class="eyebrow">Useful picks</p><h1>Useful Finds</h1><p class="sub">Browse useful upgrades for gifts, home, kitchen, travel, tech, pets, and everyday problems.</p><div class="section-head"><div><p class="eyebrow">Fresh daily picks</p><h2>Newest from the live catalog</h2></div></div><div class="grid product-wall" data-live-picks="fresh"><p class="micro">Loading daily picks…</p></div>${liveDailyPicksScript('', '', '[data-live-picks="fresh"]', 60)}<div class="section-head"><div><p class="eyebrow">Walmart via Impact</p><h2>Approved Walmart catalog picks</h2></div><a class="pill" href="/walmart/">Browse Walmart</a></div><div class="grid product-wall" data-live-picks="walmart"><p class="micro">Loading Walmart picks…</p></div>${liveDailyPicksScript('', 'walmart', '[data-live-picks="walmart"]', 60)}<h2>More useful finds</h2><div class="grid product-wall" data-live-picks="all"><p class="micro">Loading more picks…</p></div>${liveDailyPicksScript('', '', '[data-live-picks="all"]', 48)}</section>`, { route: 'useful-finds', categoryItemListJsonLd: categoryItemListJsonLd('useful-finds', pageTitle('useful-finds'), products) }, pageDescription('useful-finds')));
 mkdirPage('stories', layout(pageTitle('stories'), `<section class="section stories-page magazine-page"><div class="magazine-hero"><div><p class="eyebrow">Daily AI shopping stories</p><h1>Shopping magazine built from real scenarios.</h1><p class="sub">Every feature is a situation — trail day, emergency prep, travel day, game day, home reset — with image-backed products from the approved catalog and monetized /go paths. The daily AI process checks prior stories before publishing new lists.</p><div class="magazine-stats"><span>10+ live story lists</span><span>Image-backed products</span><span>Approved links only</span></div></div><div class="magazine-cover"><span>Today’s issue</span><strong>Useful stuff by situation</strong><small>Fresh checklists, practical products, no random marketplace dump.</small></div></div><div class="section-head magazine-head"><div><p class="eyebrow">Shop the issue</p><h2>Visual story checklists</h2></div><a class="pill" href="/walmart/">Walmart picks</a></div><div class="story-wall magazine-wall" data-live-stories><p class="micro">Loading today’s stories…</p></div>${liveStoriesScript(20)}</section>`, { route: 'stories' }, pageDescription('stories')));
 
 function signupForm(source = 'site') {
@@ -2022,7 +2105,7 @@ function signupForm(source = 'site') {
   </div>
   <div class="sms-consent" data-sms-consent-block aria-describedby="sms-disclosure">
     <p id="sms-disclosure" class="micro">
-      By checking the box below and submitting this form, you provide your <strong>prior express written consent</strong> for <strong>MehyarSoft LLC</strong> (operator of <strong>Stuff Pretty Good</strong>) to send you recurring automated marketing and informational text messages at the US mobile number you provided. The program is registered with The Campaign Registry (TCR) and operates on A2P 10DLC long codes registered to MehyarSoft LLC. <strong>Message frequency varies</strong>, typically up to <strong>4 messages per month</strong>. <strong>Message and data rates may apply</strong>. <strong>Consent is not a condition of any purchase</strong>, and signing up for SMS is not a condition of receiving any other benefit from Stuff Pretty Good. Carriers (e.g., AT&amp;T, T-Mobile, Verizon, and their MVNOs) are not liable for delayed or undelivered messages. By submitting, you confirm that you are the account holder for the mobile number provided, or that you have the account holder's permission to receive messages at it. You can opt out at any time by replying <strong>STOP</strong> to any message; reply <strong>HELP</strong> for help. Opt-out requests are honored within 10 business days, and usually within one business day. <strong>State notice.</strong> Residents of Florida, Washington, Oklahoma, Maryland, and other states with their own telephone-solicitation laws receive the additional protections of those laws. For questions, contact <a href="mailto:hello@mehyar.us">hello@mehyar.us</a> or call <a href="tel:+155****0100">+1 (555) 555-0100</a>. See our <a href="/privacy/">Privacy Policy</a> and <a href="/terms/">Terms of Service</a>. Consent version: <code>${esc(SPG_SMS_CONSENT_VERSION)}</code>.
+      By checking the box below and submitting this form, you provide your <strong>prior express written consent</strong> for <strong>MehyarSoft LLC</strong> (operator of <strong>Stuff Pretty Good</strong>) to send you recurring automated marketing and informational text messages at the US mobile number you provided. The program is registered with The Campaign Registry (TCR) and operates on A2P 10DLC long codes registered to MehyarSoft LLC. <strong>Message frequency varies</strong>, typically up to <strong>4 messages per month</strong>. <strong>Message and data rates may apply</strong>. <strong>Consent is not a condition of any purchase</strong>, and signing up for SMS is not a condition of receiving any other benefit from Stuff Pretty Good. Carriers (e.g., AT&amp;T, T-Mobile, Verizon, and their MVNOs) are not liable for delayed or undelivered messages. By submitting, you confirm that you are the account holder for the mobile number provided, or that you have the account holder's permission to receive messages at it. You can opt out at any time by replying <strong>STOP</strong> to any message; reply <strong>HELP</strong> for help. Opt-out requests are honored within 10 business days, and usually within one business day. <strong>State notice.</strong> Residents of Florida, Washington, Oklahoma, Maryland, and other states with their own telephone-solicitation laws receive the additional protections of those laws. For questions, contact <a href="mailto:hello@mehyar.us">hello@mehyar.us</a> or call <a href="tel:+17477772687">+1 (747) 777-2687</a>. See our <a href="/privacy/">Privacy Policy</a> and <a href="/terms/">Terms of Service</a>. Consent version: <code>${esc(SPG_SMS_CONSENT_VERSION)}</code>.
     </p>
     <label class="consent-check">
       <input type="checkbox" name="sms_consent" value="yes" data-sms-consent>

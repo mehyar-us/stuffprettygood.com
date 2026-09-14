@@ -8,7 +8,9 @@
     "seed:export": "node scripts/export-d1-seed.mjs",
     "dev": "node scripts/build.mjs --watch",
     "smoke": "node scripts/smoke.mjs",
-    "sitestripe:import": "node scripts/import-sitestripe.mjs"
+    "sitestripe:import": "node scripts/import-sitestripe.mjs",
+    "images:sync": "node scripts/sync-live-images.mjs",
+    "prebuild": "node scripts/sync-live-images.mjs || true"
   },
   "devDependencies": {
     "playwright": "^1.61.1"

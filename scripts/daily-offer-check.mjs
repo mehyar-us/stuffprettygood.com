@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-const AMAZON_TAG = process.env.SPG_AMAZON_ASSOCIATES_TAG || process.env.AMAZON_ASSOCIATES_TAG || 'mehyarmedia-20';
+const AMAZON_TAG = process.env.SPG_AMAZON_ASSOCIATES_TAG || process.env.AMAZON_ASSOCIATES_TAG || 'mehyarus-20';
 const data = JSON.parse(fs.readFileSync('data/products.json', 'utf8'));
 const products = data.products || [];
 const approved = products.filter((p) => p.affiliate_status === 'approved' && p.approval_status === 'approved');

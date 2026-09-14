@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const AMAZON_TAG = process.env.SPG_AMAZON_ASSOCIATES_TAG || process.env.AMAZON_ASSOCIATES_TAG || 'mehyarmedia-20';
+const AMAZON_TAG = process.env.SPG_AMAZON_ASSOCIATES_TAG || process.env.AMAZON_ASSOCIATES_TAG || 'mehyarus-20';
 const countArg = process.argv.find((arg) => arg.startsWith('--count='));
 const requestedCount = countArg ? Number(countArg.split('=')[1]) : 5;
 const dryRun = process.argv.includes('--dry-run');
