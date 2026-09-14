@@ -3,7 +3,7 @@ import fs from 'fs';
 const data = JSON.parse(fs.readFileSync('data/products.json', 'utf8')).products;
 const bad = [];
 for (const p of data) {
-  if (p.affiliate_status === 'approved' && !p.affiliate_url.includes('tag=mehyarmedia-20')) bad.push(`${p.id}: missing amazon tag`);
+  if (p.affiliate_status === 'approved' && !p.affiliate_url.includes('tag=mehyarus-20')) bad.push(`${p.id}: missing amazon tag`);
   if (p.affiliate_status !== 'approved' && p.affiliate_url) bad.push(`${p.id}: unapproved has url`);
   if (p.affiliate_status === 'approved' && p.image_status !== 'generated_original_placeholder') bad.push(`${p.id}: unsafe image status`);
 }
@@ -13,7 +13,7 @@ if (fs.existsSync('dist/index.html')) {
   for (const must of ['Useful stuff worth buying', 'Shop useful picks first', 'Curated Walmart finds from the approved catalog', '/signup/']) {
     if (!html.includes(must)) bad.push('homepage missing ' + must);
   }
-  for (const ugly of ['affiliate_status=approvedtag=mehyarmedia-20', 'no scraped Amazon metadata????', 'Disclosure: paid links may earn us a commission at no extra cost to you', 'Some links are paid links. If you buy through them', 'Approved links only, explained plainly', 'As an Amazon Associate']) {
+  for (const ugly of ['affiliate_status=approvedtag=mehyarus-20', 'no scraped Amazon metadata????', 'Disclosure: paid links may earn us a commission at no extra cost to you', 'Some links are paid links. If you buy through them', 'Approved links only, explained plainly', 'As an Amazon Associate']) {
     if (html.includes(ugly)) bad.push('homepage still has ugly implementation text: ' + ugly);
   }
 }

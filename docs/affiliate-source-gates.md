@@ -9,7 +9,7 @@ Public rule: no outbound product link goes live unless the merchant/network is a
 - Amazon Associates
   - Status: approved/available for v0.1
   - Env/key name: SPG_AMAZON_ASSOCIATES_TAG or AMAZON_ASSOCIATES_TAG
-  - Current tag in generated links: mehyarmedia-20
+  - Current tag in generated links: mehyarus-20
   - Image sources: approved sources only. Amazon PA-API when available, Amazon SiteStripe embeds, merchant feeds (Walmart, Impact, etc.), and licensed stock. The generated SVG is the fallback when no approved image source applies.
 
 ## Blocked until account approval / access

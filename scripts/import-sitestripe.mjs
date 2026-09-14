@@ -5,7 +5,7 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const PRODUCT_PATH = path.join(ROOT, 'data', 'products.json');
 const INBOX_PATH = path.join(ROOT, 'data', 'sitestripe-inbox.json');
-const TAG = process.env.SPG_AMAZON_ASSOCIATES_TAG || process.env.AMAZON_ASSOCIATES_TAG || 'mehyarmedia-20';
+const TAG = process.env.SPG_AMAZON_ASSOCIATES_TAG || process.env.AMAZON_ASSOCIATES_TAG || 'mehyarus-20';
 
 function fail(message) {
   console.error(`sitestripe import failed: ${message}`);
